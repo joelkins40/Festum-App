@@ -1,0 +1,315 @@
+/**
+ * 📝 Estilos para el Modal de Tipos de Evento
+ * Diseño profesional y moderno con Material Design
+ */
+
+/* Variables de color del tema */
+:host {
+  --primary-color: #20b2aa;
+  --primary-dark: #1a9690;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --surface-color: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+/* Contenedor principal del modal */
+.tipo-evento-dialog {
+  min-width: 500px;
+  max-width: 650px;
+  background: var(--surface-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-hover);
+}
+
+/* Header del modal */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  position: relative;
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+  }
+  
+  .header-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.9;
+  }
+  
+  .header-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  .close-button {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Contenido del modal */
+.dialog-content {
+  padding: 32px;
+  background-color: #fafafa;
+  min-height: 120px;
+}
+
+/* Formulario */
+.tipo-evento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-section {
+  .full-width {
+    width: 100%;
+    
+    ::ng-deep {
+      .mat-form-field-outline {
+        color: var(--border-color);
+        border-radius: 8px;
+      }
+      
+      .mat-form-field-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+      
+      .mat-input-element {
+        color: var(--text-primary);
+        font-size: 16px;
+      }
+      
+      .mat-form-field-outline-thick {
+        color: var(--primary-color);
+        border-width: 2px;
+      }
+      
+      .mat-form-field-prefix .input-icon {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+      
+      .mat-hint {
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+      
+      .mat-error {
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+/* Sección de información adicional (para edición) */
+.info-section {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .info-icon {
+      color: var(--primary-color);
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .info-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      min-width: 120px;
+    }
+    
+    .info-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      background-color: rgba(32, 178, 170, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Acciones del modal */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 32px 32px 32px;
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  
+  .cancel-button {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    min-width: 120px;
+    
+    &:hover {
+      background-color: rgba(117, 117, 117, 0.1);
+      border-color: var(--text-secondary);
+    }
+    
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+  
+  .save-button {
+    background-color: var(--primary-color);
+    color: white;
+    min-width: 160px;
+    font-weight: 600;
+    
+    &:hover:not([disabled]) {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    &[disabled] {
+      background-color: #cccccc;
+      color: #666666;
+      cursor: not-allowed;
+    }
+    
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+/* Animaciones */
+.tipo-evento-dialog {
+  animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Estados de validación personalizados */
+::ng-deep {
+  .mat-form-field.mat-focused:not(.mat-form-field-invalid) {
+    .mat-form-field-outline-thick {
+      color: var(--primary-color);
+    }
+  }
+  
+  .mat-form-field-invalid {
+    .mat-form-field-outline-thick {
+      color: var(--error-color);
+    }
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 600px) {
+  .tipo-evento-dialog {
+    min-width: 90vw;
+    max-width: 95vw;
+    margin: 20px auto;
+  }
+  
+  .dialog-header {
+    padding: 20px 16px 16px 16px;
+    
+    .header-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+    
+    .header-title {
+      font-size: 18px;
+    }
+  }
+  
+  .dialog-content {
+    padding: 20px 16px;
+  }
+  
+  .dialog-actions {
+    padding: 16px;
+    flex-direction: column-reverse;
+    gap: 12px;
+    
+    .cancel-button,
+    .save-button {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .info-section .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    
+    .info-label {
+      min-width: unset;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Efectos de hover mejorados */
+.cancel-button,
+.save-button {
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.close-button {
+  transition: all 0.2s ease;
+}

@@ -1,0 +1,252 @@
+<div class="sidebar-wrapper">
+  <!-- Logo/Brand -->
+  <div class="brand-section">
+    <div class="brand-logo">
+      <mat-icon class="brand-icon">event</mat-icon>
+      <span class="brand-text">Festum Admin</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <div class="main-nav">
+    
+    <!-- Inicio -->
+    <div class="nav-section">
+      <a 
+        class="nav-item" 
+        [class.active]="currentRoute === '/dashboard'"
+        routerLink="/dashboard"
+        (click)="onMenuClick()">
+        <mat-icon class="nav-icon home-icon">home</mat-icon>
+        <span class="nav-label">Inicio</span>
+      </a>
+    </div>
+
+    <!-- Catálogos -->
+    <div class="nav-section">
+      <div class="nav-expandable" [class.expanded]="catalogosExpanded">
+        <div class="nav-item expandable-header" (click)="toggleCatalogos()">
+          <mat-icon class="nav-icon catalog-icon">inventory_2</mat-icon>
+          <span class="nav-label">Catálogos</span>
+          <mat-icon class="expand-icon" [class.rotated]="catalogosExpanded">expand_more</mat-icon>
+        </div>
+        <div class="sub-menu" *ngIf="catalogosExpanded">
+          <a class="nav-sub-item" routerLink="/catalogos/categorias" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon category">category</mat-icon>
+            <span class="nav-sub-label">Categorías</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/catalogos/tipos-evento" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon event-type">event_note</mat-icon>
+            <span class="nav-sub-label">Tipos de evento</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/catalogos/productos-servicios" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon products">shopping_bag</mat-icon>
+            <span class="nav-sub-label">Productos y servicios</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/catalogos/paquetes" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon packages">card_giftcard</mat-icon>
+            <span class="nav-sub-label">Paquetes</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/catalogos/salones" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon venues">location_city</mat-icon>
+            <span class="nav-sub-label">Salones</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/catalogos/tipos-mobiliario" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon furniture">chair</mat-icon>
+            <span class="nav-sub-label">Tipos de mobiliario</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clientes -->
+    <div class="nav-section">
+      <div class="nav-expandable" [class.expanded]="clientesExpanded">
+        <div class="nav-item expandable-header" (click)="toggleClientes()">
+          <mat-icon class="nav-icon clients-icon">groups</mat-icon>
+          <span class="nav-label">Clientes</span>
+          <mat-icon class="expand-icon" [class.rotated]="clientesExpanded">expand_more</mat-icon>
+        </div>
+        <div class="sub-menu" *ngIf="clientesExpanded">
+          <a class="nav-sub-item" routerLink="/clientes/lista" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon clients">people</mat-icon>
+            <span class="nav-sub-label">Lista de clientes</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/clientes/direcciones" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon addresses">place</mat-icon>
+            <span class="nav-sub-label">Direcciones</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/clientes/contactos-frecuentes" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon contacts">contacts</mat-icon>
+            <span class="nav-sub-label">Contactos frecuentes</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/clientes/historial-eventos" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon history">history</mat-icon>
+            <span class="nav-sub-label">Historial de eventos</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cotizaciones y Ventas -->
+    <div class="nav-section">
+      <div class="nav-expandable" [class.expanded]="ventasExpanded">
+        <div class="nav-item expandable-header" (click)="toggleVentas()">
+          <mat-icon class="nav-icon sales-icon">receipt_long</mat-icon>
+          <span class="nav-label">Cotizaciones y Ventas</span>
+          <mat-icon class="expand-icon" [class.rotated]="ventasExpanded">expand_more</mat-icon>
+        </div>
+        <div class="sub-menu" *ngIf="ventasExpanded">
+          <div class="nav-sub-group">
+            <span class="nav-sub-group-title">
+              <mat-icon class="group-icon">request_quote</mat-icon>
+              Cotizaciones
+            </span>
+            <a class="nav-sub-item nested" routerLink="/cotizaciones/nueva" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon new-quote">add_circle</mat-icon>
+              <span class="nav-sub-label">Nueva</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/cotizaciones/listado" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon list-quotes">list_alt</mat-icon>
+              <span class="nav-sub-label">Listado</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/cotizaciones/seguimiento" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon tracking">track_changes</mat-icon>
+              <span class="nav-sub-label">Seguimiento</span>
+            </a>
+          </div>
+          <a class="nav-sub-item" routerLink="/ventas/notas" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon orders">receipt</mat-icon>
+            <span class="nav-sub-label">Notas (Pedidos)</span>
+          </a>
+          <a class="nav-sub-item optional" routerLink="/ventas/facturacion" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon billing">payment</mat-icon>
+            <span class="nav-sub-label">Facturación</span>
+            <span class="optional-badge">opcional</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eventos -->
+    <div class="nav-section">
+      <div class="nav-expandable" [class.expanded]="eventosExpanded">
+        <div class="nav-item expandable-header" (click)="toggleEventos()">
+          <mat-icon class="nav-icon events-icon">celebration</mat-icon>
+          <span class="nav-label">Eventos</span>
+          <mat-icon class="expand-icon" [class.rotated]="eventosExpanded">expand_more</mat-icon>
+        </div>
+        <div class="sub-menu" *ngIf="eventosExpanded">
+          <a class="nav-sub-item" routerLink="/eventos/lista" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
+            <span class="nav-sub-label">Lista de eventos</span>
+          </a>
+          <div class="nav-sub-group">
+            <span class="nav-sub-group-title">
+              <mat-icon class="group-icon">event_seat</mat-icon>
+              Detalle del evento
+            </span>
+            <a class="nav-sub-item nested" routerLink="/eventos/informacion-general" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon info">info</mat-icon>
+              <span class="nav-sub-label">Información general</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/cronograma" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon schedule">schedule</mat-icon>
+              <span class="nav-sub-label">Cronograma</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/invitados" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon guests">group_add</mat-icon>
+              <span class="nav-sub-label">Invitados</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/confirmaciones" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon confirmations">check_circle</mat-icon>
+              <span class="nav-sub-label">Confirmaciones</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/mobiliario-servicios" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon furniture-services">weekend</mat-icon>
+              <span class="nav-sub-label">Mobiliario / Servicios</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/plano" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon floor-plan">architecture</mat-icon>
+              <span class="nav-sub-label">Plano (drag & drop)</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/galeria" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon gallery">photo_library</mat-icon>
+              <span class="nav-sub-label">Galería</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/eventos/observaciones" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon notes">sticky_note_2</mat-icon>
+              <span class="nav-sub-label">Observaciones</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendario -->
+    <div class="nav-section">
+      <a 
+        class="nav-item" 
+        [class.active]="currentRoute === '/calendario'"
+        routerLink="/calendario"
+        (click)="onMenuClick()">
+        <mat-icon class="nav-icon calendar-icon">calendar_today</mat-icon>
+        <span class="nav-label">Calendario</span>
+      </a>
+    </div>
+
+    <!-- Reportes -->
+    <div class="nav-section">
+      <a 
+        class="nav-item" 
+        [class.active]="currentRoute === '/reportes'"
+        routerLink="/reportes"
+        (click)="onMenuClick()">
+        <mat-icon class="nav-icon reports-icon">assessment</mat-icon>
+        <span class="nav-label">Reportes</span>
+      </a>
+    </div>
+
+    <!-- Usuarios y Configuración -->
+    <div class="nav-section">
+      <div class="nav-expandable" [class.expanded]="usuariosExpanded">
+        <div class="nav-item expandable-header" (click)="toggleUsuarios()">
+          <mat-icon class="nav-icon users-icon">person</mat-icon>
+          <span class="nav-label">Usuarios y Configuración</span>
+          <mat-icon class="expand-icon" [class.rotated]="usuariosExpanded">expand_more</mat-icon>
+        </div>
+        <div class="sub-menu" *ngIf="usuariosExpanded">
+          <a class="nav-sub-item" routerLink="/usuarios/lista" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon users">manage_accounts</mat-icon>
+            <span class="nav-sub-label">Usuarios</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/usuarios/roles-permisos" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon roles">admin_panel_settings</mat-icon>
+            <span class="nav-sub-label">Roles y permisos</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/usuarios/perfil" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon profile">account_circle</mat-icon>
+            <span class="nav-sub-label">Perfil</span>
+          </a>
+          <a class="nav-sub-item" routerLink="/configuracion/general" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon settings">settings</mat-icon>
+            <span class="nav-sub-label">Configuración general</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mantenimiento (opcional) -->
+    <div class="nav-section">
+      <a 
+        class="nav-item optional" 
+        [class.active]="currentRoute === '/mantenimiento'"
+        routerLink="/mantenimiento"
+        (click)="onMenuClick()">
+        <mat-icon class="nav-icon maintenance-icon">build</mat-icon>
+        <span class="nav-label">Mantenimiento</span>
+        <span class="optional-badge">opcional</span>
+      </a>
+    </div>
+  </div>
+</div>

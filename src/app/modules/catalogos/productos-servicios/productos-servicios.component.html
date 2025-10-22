@@ -1,0 +1,304 @@
+<!-- ===== PRODUCTOS Y SERVICIOS COMPONENT ===== -->
+<div class="productos-servicios-container">
+  
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">inventory_2</mat-icon>
+        <h1>Gestión de Productos y Servicios</h1>
+      </div>
+      <p class="page-description">
+        Administra el catálogo de productos y servicios disponibles para eventos
+      </p>
+    </div>
+    
+    <!-- Action Button -->
+    <div class="header-actions">
+      <button mat-raised-button 
+              color="primary" 
+              (click)="abrirModalCrear()"
+              class="create-button">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Nuevo Producto/Servicio
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-content">
+      <mat-progress-spinner 
+        diameter="60" 
+        mode="indeterminate"
+        color="primary">
+      </mat-progress-spinner>
+      <p>Cargando catálogo...</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+    
+    <!-- Toolbar de Filtros y Acciones -->
+    <div class="table-toolbar">
+      <div class="filters-container">
+        <!-- Búsqueda General -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar en catálogo</mat-label>
+          <input matInput 
+                 [(ngModel)]="filtroTexto"
+                 (keyup)="aplicarFiltros()"
+                 placeholder="Nombre, clave, descripción...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro por Tipo -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Tipo</mat-label>
+          <mat-select [(ngModel)]="filtroTipo" (selectionChange)="aplicarFiltros()">
+            <mat-option *ngFor="let tipo of tiposDisponibles" [value]="tipo.value">
+              <mat-icon *ngIf="tipo.value">
+                {{ tipo.value === 'Producto' ? 'inventory_2' : 'miscellaneous_services' }}
+              </mat-icon>
+              {{ tipo.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>filter_alt</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro por Categoría -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="filtroCategoria" (selectionChange)="aplicarFiltros()">
+            <mat-option value="">Todas las categorías</mat-option>
+            <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+              {{ categoria.descripcion }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>category</mat-icon>
+        </mat-form-field>
+
+        <!-- Botón Limpiar Filtros -->
+        <button mat-icon-button 
+                (click)="limpiarFiltros()"
+                matTooltip="Limpiar filtros"
+                class="clear-filters-button">
+          <mat-icon>clear_all</mat-icon>
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <!-- Botón Importar -->
+        <button mat-raised-button 
+                color="accent" 
+                (click)="abrirImportador()"
+                [disabled]="loading"
+                class="toolbar-button">
+          <mat-icon>upload</mat-icon>
+          Importar CSV
+        </button>
+
+        <!-- Botón Exportar -->
+        <button mat-raised-button 
+                color="primary"
+                (click)="exportarCSV()"
+                [disabled]="loading || dataSource.data.length === 0"
+                class="toolbar-button export-button">
+          <mat-icon>download</mat-icon>
+          Exportar CSV
+        </button>
+
+        <!-- Botón Refrescar -->
+        <button mat-icon-button 
+                (click)="cargarDatos()"
+                [disabled]="loading"
+                matTooltip="Refrescar datos">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-divider class="toolbar-divider"></mat-divider>
+
+    <!-- Tabla de Productos y Servicios -->
+    <div class="table-container">
+      <table mat-table 
+             [dataSource]="dataSource" 
+             matSort 
+             class="productos-servicios-table">
+
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="id-column">ID</th>
+          <td mat-cell *matCellDef="let item" class="id-cell">
+            <span class="id-badge">{{ item.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Tipo -->
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="tipo-column">Tipo</th>
+          <td mat-cell *matCellDef="let item" class="tipo-cell">
+            <mat-chip class="tipo-chip" 
+                     [ngClass]="item.tipo.toLowerCase()">
+              <mat-icon class="tipo-icon">
+                {{ item.tipo === 'Producto' ? 'inventory_2' : 'miscellaneous_services' }}
+              </mat-icon>
+              {{ item.tipo }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Categoría -->
+        <ng-container matColumnDef="categoria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="categoria-column">Categoría</th>
+          <td mat-cell *matCellDef="let item" class="categoria-cell">
+            <div class="categoria-info">
+              <mat-icon class="categoria-icon">category</mat-icon>
+              <span class="categoria-text">{{ obtenerNombreCategoria(item.categoriaId) }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Clave -->
+        <ng-container matColumnDef="clave">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="clave-column">Clave</th>
+          <td mat-cell *matCellDef="let item" class="clave-cell">
+            <span class="clave-badge">{{ item.clave }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="nombre-column">Nombre</th>
+          <td mat-cell *matCellDef="let item" class="nombre-cell">
+            <div class="nombre-info">
+              <span class="nombre-principal">{{ item.nombre }}</span>
+              <span class="descripcion-secundaria" *ngIf="item.descripcion">
+                {{ item.descripcion | slice:0:50 }}{{ item.descripcion.length > 50 ? '...' : '' }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Stock -->
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="stock-column">Stock</th>
+          <td mat-cell *matCellDef="let item" class="stock-cell">
+            <div class="stock-info">
+              <mat-icon class="stock-icon" 
+                       [ngClass]="item.cantidadStock > 10 ? 'stock-alto' : item.cantidadStock > 0 ? 'stock-medio' : 'stock-bajo'">
+                inventory
+              </mat-icon>
+              <span class="stock-cantidad">{{ item.cantidadStock }}</span>
+              <span class="stock-label">{{ item.tipo === 'Producto' ? 'unidades' : 'N/A' }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Precio Público -->
+        <ng-container matColumnDef="precioPublico">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="precio-column">Precio Público</th>
+          <td mat-cell *matCellDef="let item" class="precio-cell">
+            <div class="precio-info">
+              <mat-icon class="precio-icon">attach_money</mat-icon>
+              <span class="precio-valor">{{ formatearPrecio(item.precioPublico) }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Precio Especial -->
+        <ng-container matColumnDef="precioEspecial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="precio-column">Precio Especial</th>
+          <td mat-cell *matCellDef="let item" class="precio-cell">
+            <div class="precio-info especial">
+              <mat-icon class="precio-icon">star</mat-icon>
+              <span class="precio-valor">{{ formatearPrecio(item.precioEspecial) }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="activo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="estado-column">Estado</th>
+          <td mat-cell *matCellDef="let item" class="estado-cell">
+            <mat-chip class="estado-chip" 
+                     [ngClass]="item.activo ? 'activo' : 'inactivo'">
+              <mat-icon class="estado-icon">
+                {{ item.activo ? 'check_circle' : 'cancel' }}
+              </mat-icon>
+              {{ item.activo ? 'Activo' : 'Inactivo' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
+          <td mat-cell *matCellDef="let item" class="acciones-cell">
+            <div class="acciones-container">
+              <button mat-icon-button 
+                      class="edit-button"
+                      (click)="abrirModalEditar(item)"
+                      matTooltip="Editar {{ item.tipo.toLowerCase() }}"
+                      [disabled]="loading">
+                <mat-icon>edit</mat-icon>
+              </button>
+              
+              <button mat-icon-button 
+                      class="delete-button"
+                      (click)="confirmarEliminacion(item)"
+                      matTooltip="Eliminar {{ item.tipo.toLowerCase() }}"
+                      [disabled]="loading">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header y Filas -->
+        <tr mat-header-row *matHeaderRowDef="columnasDisplayed" class="table-header"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDisplayed;"
+            class="table-row"
+            [class.selected]="row.id === productoServicioSeleccionado?.id"></tr>
+
+        <!-- Mensaje cuando no hay datos -->
+        <tr class="mat-row no-data-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="columnasDisplayed.length">
+            <div class="no-data-message">
+              <mat-icon class="no-data-icon">inventory_2</mat-icon>
+              <span class="no-data-text">No se encontraron productos o servicios</span>
+              <p class="no-data-subtitle">Intenta ajustar tus criterios de búsqueda o crear un nuevo elemento</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Loading Overlay dentro de la tabla -->
+      <div *ngIf="loading" class="table-loading-overlay">
+        <mat-progress-spinner 
+          color="primary" 
+          mode="indeterminate"
+          diameter="60">
+        </mat-progress-spinner>
+        <p class="loading-text">Cargando catálogo...</p>
+      </div>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                   [pageSize]="10"
+                   showFirstLastButtons
+                   class="table-paginator">
+    </mat-paginator>
+  </mat-card>
+
+  <!-- Input oculto para CSV -->
+  <input type="file" 
+         #fileInput 
+         accept=".csv" 
+         (change)="procesarArchivoCSV($event)"
+         style="display: none;">
+
+</div>

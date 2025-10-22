@@ -1,0 +1,524 @@
+/* Dashboard moderno estilo ra-admin */
+.dashboard-container {
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Card base styles */
+mat-card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  mat-card-header {
+    padding: 20px 20px 0;
+    
+    mat-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+      margin: 0;
+    }
+  }
+
+  mat-card-content {
+    padding: 16px 20px 20px;
+  }
+}
+
+/* Project Status Card */
+.project-status-card {
+  grid-column: span 2;
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+
+    &.project-item {
+      background: #20b2aa;
+      color: white;
+    }
+
+    &.assigned-item {
+      background: #374151;
+      color: white;
+    }
+
+    &.progress-item {
+      background: #fbbf24;
+      color: white;
+    }
+
+    &.completed-item {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+
+    .status-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .status-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-label {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    .status-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+
+  .completion-info {
+    .completion-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #6b7280;
+
+      strong {
+        color: #374151;
+        font-size: 18px;
+      }
+
+      .completion-badge {
+        background: #10b981;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #d1d5db, #9ca3af);
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: #6b7280;
+    }
+  }
+}
+
+/* Project Team Card */
+.project-team-card {
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .team-avatars {
+      display: flex;
+      gap: -8px;
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        margin-left: -8px;
+        border: 2px solid white;
+
+        &.avatar-red { background: #ef4444; }
+        &.avatar-dark { background: #374151; }
+        &.avatar-yellow { background: #fbbf24; }
+        &.avatar-grey { background: #9ca3af; }
+      }
+    }
+  }
+
+  .hours-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .hours-label {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .hours-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #20b2aa;
+    }
+  }
+
+  .task-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .task-info {
+      .task-label {
+        display: block;
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 4px;
+      }
+
+      .task-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #374151;
+      }
+    }
+
+    .progress-circle {
+      width: 60px;
+      height: 60px;
+
+      .circle-svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+      }
+    }
+  }
+}
+
+/* Messages Card */
+.messages-card {
+  .message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .message-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .message-content {
+      flex: 1;
+      min-width: 0;
+
+      .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+
+        .message-name {
+          font-weight: 600;
+          color: #374151;
+          font-size: 14px;
+        }
+      }
+
+      .message-text {
+        font-size: 13px;
+        color: #6b7280;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Analytics Card */
+.analytics-card {
+  .analytics-header {
+    .date-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #374151;
+
+      button {
+        color: #6b7280;
+      }
+    }
+  }
+
+  .analytics-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #374151;
+
+        &.green {
+          color: #10b981;
+        }
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .chart-container {
+    height: 120px;
+    margin-bottom: 16px;
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .chart-description {
+    p {
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+}
+
+/* Meeting Card */
+.meeting-card {
+  .meeting-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .meeting-icons {
+      display: flex;
+      gap: 4px;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+
+        &.skype-icon { color: #00aff0; }
+        &.meet-icon { color: #34a853; }
+        &.teams-icon { color: #5b5fc7; }
+      }
+    }
+
+    .meeting-info {
+      flex: 1;
+
+      .meeting-name {
+        font-weight: 600;
+        color: #374151;
+        font-size: 14px;
+      }
+
+      .meeting-desc {
+        font-size: 12px;
+        color: #6b7280;
+        margin: 2px 0 0;
+      }
+    }
+
+    .meeting-time {
+      font-size: 12px;
+      color: #6b7280;
+    }
+  }
+}
+
+/* Activity Hours Card */
+.activity-card {
+  .activity-chart {
+    height: 100px;
+    display: flex;
+    align-items: end;
+
+    .activity-bars {
+      display: flex;
+      gap: 8px;
+      align-items: end;
+      width: 100%;
+      height: 80px;
+
+      .activity-bar {
+        flex: 1;
+        background: linear-gradient(to top, #20b2aa, #17a2b8);
+        border-radius: 4px 4px 0 0;
+        min-height: 20px;
+      }
+    }
+  }
+}
+
+/* Team Chat Card */
+.team-chat-card {
+  .team-header {
+    margin-bottom: 16px;
+
+    .team-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .team-initials {
+        width: 40px;
+        height: 40px;
+        background: #20b2aa;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+
+      .team-details {
+        display: flex;
+        flex-direction: column;
+
+        .team-name {
+          font-weight: 600;
+          color: #374151;
+          font-size: 14px;
+        }
+
+        .team-status {
+          font-size: 12px;
+          color: #10b981;
+        }
+      }
+    }
+  }
+
+  .chat-message {
+    display: flex;
+    gap: 8px;
+    align-items: start;
+    margin-bottom: 16px;
+
+    .chat-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .chat-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 0;
+      flex: 1;
+    }
+  }
+
+  .help-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid #e5e7eb;
+
+    .help-text {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .help-icon {
+      font-size: 16px;
+      color: #6b7280;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .project-status-card {
+    grid-column: span 1;
+
+    .status-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .project-status-card .status-grid {
+    grid-template-columns: 1fr;
+  }
+}

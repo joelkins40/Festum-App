@@ -1,0 +1,126 @@
+<div class="login-container">
+  <!-- Background with organic shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">¡Bienvenido<br>de nuevo!</h1>
+      <p class="welcome-subtitle">Gestiona tus eventos de manera profesional</p>
+    </div>
+  </div>
+  
+  <!-- Login Form Section -->
+  <div class="login-section">
+    <mat-card class="login-card">
+      <mat-card-header class="login-header">
+        <h2 class="login-title">Iniciar Sesión</h2>
+        <p class="login-description">Accede a tu panel de administración</p>
+      </mat-card-header>
+
+      <mat-card-content class="login-content">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          
+          <!-- Email Field -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Correo Electrónico</mat-label>
+            <input 
+              matInput 
+              formControlName="email" 
+              type="email"
+              placeholder="tu@email.com"
+              autocomplete="email">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+              El email es requerido
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+              Ingresa un email válido
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password Field -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contraseña</mat-label>
+            <input 
+              matInput 
+              formControlName="password" 
+              [type]="hide ? 'password' : 'text'"
+              placeholder="Tu contraseña"
+              autocomplete="current-password">
+            <button 
+              mat-icon-button 
+              matSuffix 
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+              La contraseña es requerida
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+              Mínimo 6 caracteres
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Remember Me -->
+          <div class="form-options">
+            <mat-checkbox formControlName="recordarme" class="remember-checkbox">
+              Recordarme
+            </mat-checkbox>
+            <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <!-- Login Button -->
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            class="login-button"
+            [disabled]="loginForm.invalid || loading">
+            <div class="button-content">
+              <mat-spinner 
+                *ngIf="loading" 
+                diameter="18" 
+                strokeWidth="2"
+                class="login-spinner">
+              </mat-spinner>
+              <span class="button-text">
+                <ng-container *ngIf="!loading">Iniciar Sesión</ng-container>
+                <ng-container *ngIf="loading">Iniciando sesión...</ng-container>
+              </span>
+            </div>
+          </button>
+
+          <!-- Demo Login -->
+          <div class="demo-section">
+            <button 
+              mat-button 
+              type="button"
+              class="demo-button"
+              (click)="loginDemo()"
+              [disabled]="loading">
+              <mat-icon>play_arrow</mat-icon>
+              Usar credenciales demo
+            </button>
+            <p class="demo-info">
+              <strong>Demo:</strong> admin&#64;festum.com / 123456
+            </p>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+    
+    <!-- Help link -->
+    <div class="help-section">
+      <p>¿No tienes una cuenta? <a href="#" class="help-link">Crea una aquí</a></p>
+    </div>
+  </div>
+</div>

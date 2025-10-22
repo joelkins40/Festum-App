@@ -1,0 +1,187 @@
+/* Topbar moderno estilo ra-admin */
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  .menu-btn, .apps-btn {
+    margin-right: 16px;
+    color: #6b7280;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #f3f4f6;
+      color: #20b2aa;
+      transform: scale(1.05);
+    }
+    
+    &.active {
+      background-color: #e6f7ff;
+      color: #20b2aa;
+      
+      &:hover {
+        background-color: #bae7ff;
+      }
+    }
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      transition: all 0.2s ease;
+    }
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+/* Right side actions */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  button {
+    color: #6b7280;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+  }
+}
+
+/* Weather info */
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  color: #374151;
+
+  .weather-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #fbbf24;
+  }
+
+  .temperature {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+/* Flag button */
+.flag-btn {
+  .flag-icon {
+    width: 16px;
+    height: 12px;
+    border-radius: 2px;
+  }
+}
+
+/* Cart button with badge */
+.cart-btn {
+  position: relative;
+
+  .cart-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+    line-height: 1.2;
+  }
+}
+
+/* User avatar */
+.user-avatar-btn {
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+/* Icons styling */
+mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 16px;
+    height: 60px;
+
+    .weather-info {
+      display: none;
+    }
+
+    .topbar-actions {
+      gap: 8px;
+
+      .flag-btn,
+      .search-btn,
+      .fullscreen-btn {
+        display: none;
+      }
+    }
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] {
+  .topbar {
+    background: #1f2937;
+    border-bottom-color: #374151;
+    color: #f9fafb;
+
+    .menu-btn, .apps-btn {
+      color: #9ca3af;
+
+      &:hover {
+        background-color: #374151;
+        color: #f9fafb;
+      }
+    }
+
+    .weather-info {
+      background-color: #374151;
+      color: #f9fafb;
+    }
+
+    .topbar-actions button {
+      color: #9ca3af;
+
+      &:hover {
+        background-color: #374151;
+        color: #f9fafb;
+      }
+    }
+  }
+}

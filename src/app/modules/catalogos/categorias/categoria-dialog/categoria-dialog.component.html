@@ -1,0 +1,90 @@
+<!-- 📝 Modal para Crear/Editar Categorías -->
+<div class="categoria-dialog">
+  
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{ modo === 'crear' ? 'add_circle' : 'edit' }}</mat-icon>
+      <h2 class="header-title">{{ modo === 'crear' ? 'Nueva Categoría' : 'Editar Categoría' }}</h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <form [formGroup]="categoriaForm" class="categoria-form">
+      
+      <!-- Campo Descripción -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción de la categoría</mat-label>
+          <input 
+            matInput 
+            formControlName="descripcion"
+            placeholder="Ej: Manteles, Mesas, Sillas..."
+            maxlength="100"
+            #descripcionInput>
+          <mat-icon matPrefix class="input-icon">category</mat-icon>
+          
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['descripcion'].hasError('required')">
+            La descripción es requerida
+          </mat-error>
+          <mat-error *ngIf="f['descripcion'].hasError('minlength')">
+            La descripción debe tener al menos 3 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['descripcion'].hasError('maxlength')">
+            La descripción no puede exceder 100 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['descripcion'].hasError('pattern')">
+            Solo se permiten letras, números y espacios
+          </mat-error>
+          
+          <!-- Contador de caracteres -->
+          <mat-hint align="end">
+            {{ descripcionInput.value.length || 0 }}/100
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Información adicional para edición -->
+      <div *ngIf="modo === 'editar'" class="info-section">
+        <div class="info-item">
+          <mat-icon class="info-icon">event</mat-icon>
+          <span class="info-label">Fecha de creación:</span>
+          <span class="info-value">{{ data.categoria?.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">tag</mat-icon>
+          <span class="info-label">ID:</span>
+          <span class="info-value">#{{ data.categoria?.id }}</span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Acciones del Modal -->
+  <div class="dialog-actions">
+    <button 
+      mat-stroked-button 
+      (click)="onCancel()" 
+      class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+    
+    <button 
+      mat-raised-button 
+      color="primary"
+      (click)="onSave()" 
+      [disabled]="!categoriaForm.valid || guardando"
+      class="save-button">
+      <mat-icon>{{ guardando ? 'hourglass_empty' : (modo === 'crear' ? 'save' : 'update') }}</mat-icon>
+      {{ guardando ? 'Guardando...' : (modo === 'crear' ? 'Crear Categoría' : 'Actualizar Categoría') }}
+    </button>
+  </div>
+  
+</div>

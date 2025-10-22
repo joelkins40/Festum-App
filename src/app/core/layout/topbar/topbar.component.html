@@ -1,0 +1,59 @@
+<div class="topbar">
+  <!-- Menu button (always visible) -->
+  <button 
+    mat-icon-button 
+    class="menu-btn"
+    [class.active]="sidenavOpened"
+    (click)="onMenuClick()"
+    [matTooltip]="sidenavOpened ? 'Ocultar menú' : 'Mostrar menú'">
+    <mat-icon>{{ sidenavOpened ? 'menu_open' : 'menu' }}</mat-icon>
+  </button>
+
+
+  <!-- Spacer -->
+  <div class="spacer"></div>
+
+  <!-- Right side buttons -->
+  <div class="topbar-actions">
+
+
+
+    <!-- Theme toggle -->
+    <button 
+      mat-icon-button 
+      class="theme-btn"
+      (click)="toggleTheme()"
+      [matTooltip]="isDarkTheme ? 'Tema claro' : 'Tema oscuro'">
+      <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+
+    <!-- Notifications -->
+    <button mat-icon-button class="notifications-btn" matTooltip="Notificaciones">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- User menu -->
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-avatar-btn" matTooltip="Perfil">
+      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" 
+           alt="User Avatar" 
+           class="user-avatar">
+    </button>
+  </div>
+
+  <!-- User dropdown menu -->
+  <mat-menu #userMenu="matMenu" xPosition="before">
+    <button mat-menu-item>
+      <mat-icon>person</mat-icon>
+      <span>Mi Perfil</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Configuración</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Cerrar Sesión</span>
+    </button>
+  </mat-menu>
+</div>

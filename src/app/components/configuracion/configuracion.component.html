@@ -1,0 +1,165 @@
+<div class="configuracion-container">
+  <div class="page-header">
+    <h1 class="page-title">Configuración del Sistema</h1>
+    <div class="header-actions">
+      <button mat-button (click)="exportarConfiguracion()">
+        <mat-icon>download</mat-icon>
+        Exportar
+      </button>
+      <button mat-button color="warn" (click)="resetearConfiguracion()">
+        <mat-icon>restore</mat-icon>
+        Restablecer
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="configuracionForm" (ngSubmit)="guardarConfiguracion()">
+    <div class="config-grid">
+      
+      <!-- Configuración General -->
+      <mat-card class="config-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>settings</mat-icon>
+            Configuración General
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre del Sistema</mat-label>
+              <input matInput formControlName="nombreSistema" placeholder="Festum Admin">
+              <mat-icon matSuffix>business</mat-icon>
+              <mat-error *ngIf="configuracionForm.get('nombreSistema')?.hasError('required')">
+                El nombre del sistema es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descripción</mat-label>
+              <textarea 
+                matInput 
+                formControlName="descripcion" 
+                rows="3"
+                placeholder="Describe tu sistema...">
+              </textarea>
+              <mat-icon matSuffix>description</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email para Notificaciones</mat-label>
+              <input matInput formControlName="emailNotificaciones" type="email">
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error *ngIf="configuracionForm.get('emailNotificaciones')?.hasError('email')">
+                Ingresa un email válido
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Apariencia -->
+      <mat-card class="config-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>palette</mat-icon>
+            Apariencia e Idioma
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tema</mat-label>
+              <mat-select formControlName="tema">
+                <mat-option *ngFor="let tema of temas" [value]="tema.value">
+                  {{ tema.label }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>color_lens</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Idioma</mat-label>
+              <mat-select formControlName="idioma">
+                <mat-option *ngFor="let idioma of idiomas" [value]="idioma.value">
+                  {{ idioma.label }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>language</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tiempo de Sesión (minutos)</mat-label>
+              <input matInput formControlName="tiempoSesion" type="number" min="30" max="480">
+              <mat-icon matSuffix>timer</mat-icon>
+              <mat-error *ngIf="configuracionForm.get('tiempoSesion')?.hasError('min')">
+                Mínimo 30 minutos
+              </mat-error>
+              <mat-error *ngIf="configuracionForm.get('tiempoSesion')?.hasError('max')">
+                Máximo 8 horas (480 minutos)
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Notificaciones -->
+      <mat-card class="config-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>notifications</mat-icon>
+            Notificaciones y Sonidos
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="toggle-section">
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-title">Notificaciones Push</span>
+                <span class="toggle-description">Recibir notificaciones del sistema</span>
+              </div>
+              <mat-slide-toggle formControlName="notificaciones"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-title">Sonidos</span>
+                <span class="toggle-description">Reproducir sonidos para alertas</span>
+              </div>
+              <mat-slide-toggle formControlName="sonidos"></mat-slide-toggle>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-title">Auto-guardado</span>
+                <span class="toggle-description">Guardar cambios automáticamente</span>
+              </div>
+              <mat-slide-toggle formControlName="autoGuardado"></mat-slide-toggle>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="configuracionForm.invalid">
+        <mat-icon>save</mat-icon>
+        Guardar Configuración
+      </button>
+    </div>
+  </form>
+</div>

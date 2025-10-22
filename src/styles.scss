@@ -1,0 +1,135 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Import Angular Material prebuilt theme
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Festum brand colors as CSS custom properties
+:root {
+  --festum-primary: #20b2aa;
+  --festum-secondary: #17a2b8;
+  --festum-primary-light: #4dd0e1;
+  --festum-primary-dark: #00838f;
+  --festum-accent: #26a69a;
+  --festum-background: #fafafa;
+  --festum-surface: #ffffff;
+  --festum-text: #333333;
+  --festum-navy: #2c3e50;
+  --festum-navy-light: #34495e;
+  --festum-navy-dark: #1a252f;
+  
+  // Gradient colors
+  --festum-gradient-primary: linear-gradient(135deg, #20b2aa 0%, #17a2b8 100%);
+  --festum-gradient-light: linear-gradient(135deg, #4dd0e1 0%, #26a69a 100%);
+  --festum-gradient-navy: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+[data-theme="dark"] {
+  --festum-background: #303030;
+  --festum-surface: #424242;
+  --festum-text: #ffffff;
+  --festum-navy: #1a252f;
+  --festum-navy-light: #2c3e50;
+  --festum-navy-dark: #0f1419;
+  --festum-gradient-navy: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+}
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Global styles
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+[data-theme="dark"] {
+  ::-webkit-scrollbar-track {
+    background: #424242;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #616161;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #757575;
+  }
+}
+
+// Utility classes
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+
+.p-1 { padding: 8px; }
+.p-2 { padding: 16px; }
+.p-3 { padding: 24px; }
+.p-4 { padding: 32px; }
+
+.full-width { width: 100%; }
+
+/* ===== SNACKBAR STYLES ===== */
+.snackbar-success {
+  --mdc-snackbar-container-color: #4caf50 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}
+
+.snackbar-error {
+  --mdc-snackbar-container-color: #f44336 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}
+
+.snackbar-warning {
+  --mdc-snackbar-container-color: #ff9800 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}
+
+.snackbar-info {
+  --mdc-snackbar-container-color: #2196f3 !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+}

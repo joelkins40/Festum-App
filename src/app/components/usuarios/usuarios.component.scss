@@ -1,0 +1,176 @@
+.usuarios-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+  }
+}
+
+.table-card {
+  overflow: hidden;
+
+  .usuarios-table {
+    width: 100%;
+    min-width: 800px;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .user-avatar {
+        color: #666;
+        font-size: 24px;
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    // Role chips
+    .role-chip {
+      font-size: 12px;
+      font-weight: 500;
+      
+      &.role-administrador {
+        background-color: #e3f2fd;
+        color: #1976d2;
+      }
+
+      &.role-editor {
+        background-color: #e8f5e8;
+        color: #388e3c;
+      }
+
+      &.role-usuario {
+        background-color: #fff3e0;
+        color: #f57c00;
+      }
+    }
+
+    // Status chips
+    .status-active {
+      background-color: #e8f5e8;
+      color: #388e3c;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #c8e6c9;
+      }
+    }
+
+    .status-inactive {
+      background-color: #ffebee;
+      color: #d32f2f;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #ffcdd2;
+      }
+    }
+
+    // Table styling
+    th {
+      font-weight: 600;
+      color: #333;
+    }
+
+    td, th {
+      padding: 16px 8px;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+.delete-action {
+  color: #f44336;
+
+  mat-icon {
+    color: #f44336;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    .page-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  .table-card {
+    margin: 0 -16px;
+    border-radius: 0;
+  }
+
+  .usuarios-table {
+    font-size: 14px;
+    
+    td, th {
+      padding: 12px 4px;
+    }
+  }
+}
+
+// Dark theme
+[data-theme="dark"] {
+  .page-title {
+    color: #e0e0e0;
+  }
+
+  .usuarios-table {
+    th {
+      color: #e0e0e0;
+    }
+
+    tr:hover {
+      background-color: #424242;
+    }
+
+    .user-avatar {
+      color: #bdbdbd;
+    }
+
+    .role-administrador {
+      background-color: #1a237e;
+      color: #e3f2fd;
+    }
+
+    .role-editor {
+      background-color: #1b5e20;
+      color: #e8f5e8;
+    }
+
+    .role-usuario {
+      background-color: #e65100;
+      color: #fff3e0;
+    }
+
+    .status-active {
+      background-color: #2e7d32;
+      color: #e8f5e8;
+    }
+
+    .status-inactive {
+      background-color: #c62828;
+      color: #ffebee;
+    }
+  }
+}

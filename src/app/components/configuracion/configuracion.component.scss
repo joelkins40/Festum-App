@@ -1,0 +1,160 @@
+.configuracion-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.config-card {
+  mat-card-header {
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      
+      mat-icon {
+        color: #2196f3;
+      }
+    }
+  }
+
+  .form-row {
+    margin-bottom: 16px;
+
+    .full-width {
+      width: 100%;
+    }
+  }
+
+  .toggle-section {
+    .toggle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+
+      .toggle-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .toggle-title {
+          font-weight: 500;
+          color: #333;
+        }
+
+        .toggle-description {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+    }
+
+    mat-divider {
+      margin: 8px 0;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+
+  button {
+    padding: 12px 32px;
+    font-size: 16px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    .page-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .config-card {
+    margin: 0 -8px;
+  }
+
+  .toggle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    .toggle-info {
+      width: 100%;
+    }
+  }
+}
+
+// Dark theme
+[data-theme="dark"] {
+  .page-title {
+    color: #e0e0e0;
+  }
+
+  .config-card {
+    .toggle-info {
+      .toggle-title {
+        color: #e0e0e0;
+      }
+
+      .toggle-description {
+        color: #bdbdbd;
+      }
+    }
+  }
+}
+
+// Success and error snackbars
+::ng-deep .success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+::ng-deep .error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
