@@ -1,59 +1,90 @@
-# FestumApp
+# 🎉 Festum App - Proyecto Festum 2.0
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+Sistema integral de gestión para eventos y servicios, desarrollado con **Angular 17** y **Material Design**.
 
-## Development server
+## ✨ Características
 
-To start a local development server, run:
+- 🎨 **Interfaz Moderna**: Diseño consistente con Material Design
+- 📱 **Responsive**: Adaptable a dispositivos móviles y tablets  
+- 🔧 **TypeScript**: Desarrollo con tipado estricto
+- 📊 **CRUD Completo**: Gestión de productos, servicios y categorías
+- 🎯 **Modular**: Arquitectura organizada por módulos
+
+## 🚀 Inicio Rápido
+
+### Servidor de Desarrollo
+
+Para iniciar el servidor de desarrollo local:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navega a `http://localhost:4200/`. La aplicación se recargará automáticamente al modificar archivos.
 
-## Code scaffolding
+### Construcción
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Para construir el proyecto:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Los artefactos se almacenarán en el directorio `dist/`.
 
-## Running unit tests
+## 📁 Estructura del Proyecto
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+```
+src/app/
+├── core/                    # Servicios y modelos base
+├── modules/                 # Módulos funcionales
+│   ├── catalogos/          # Gestión de catálogos
+│   │   ├── categorias/     # ✅ Categorías
+│   │   └── productos-servicios/ # ✅ Productos y Servicios  
+│   ├── clientes/           # Gestión de clientes
+│   ├── eventos/            # Gestión de eventos
+│   └── cotizaciones/       # Sistema de cotizaciones
+└── shared/                 # Componentes compartidos
+```
+
+## 🛠️ Tecnologías
+
+- **Angular 17** - Framework principal
+- **Material Design** - Sistema de diseño
+- **TypeScript** - Lenguaje de desarrollo
+- **SCSS** - Preprocesador CSS
+- **RxJS** - Programación reactiva
+
+## 📋 Pruebas
+
+### Pruebas Unitarias
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Pruebas E2E
 
 ```bash
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🤝 Contribución
 
-## Additional Resources
+1. Fork del proyecto
+2. Crear rama de feature (`git checkout -b feature/nueva-caracteristica`)
+3. Commit de cambios (`git commit -m 'Agregar nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Crear Pull Request
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## 📞 Contacto
+
+**Joel Kins** - joel.kins40@gmail.com
+
+---
+
+Generado con ❤️ usando [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
