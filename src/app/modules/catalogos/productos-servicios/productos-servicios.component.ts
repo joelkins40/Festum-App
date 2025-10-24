@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, type OnInit, type ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule,  FormsModule, FormBuilder, type FormGroup } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -21,8 +21,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 
 // Models y Services
-import { ProductoServicio, CrearProductoServicioDto, ActualizarProductoServicioDto } from '../../../core/models/productos-servicios.model';
-import { Categoria } from '../../../core/models/categoria.model';
+import type { ProductoServicio, CrearProductoServicioDto, ActualizarProductoServicioDto } from '../../../core/models/productos-servicios.model';
+import type { Categoria } from '../../../core/models/categoria.model';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { CategoriasService } from '../../../core/services/categorias.service';
 
@@ -152,7 +152,7 @@ export class ProductosServiciosComponent implements OnInit {
         
         // Filtro por categoría
         if (filterObj.categoria) {
-          matches = matches && data.categoriaId === parseInt(filterObj.categoria);
+          matches = matches && data.categoriaId === parseInt(filterObj.categoria, 10);
         }
         
         return matches;
@@ -188,7 +188,7 @@ export class ProductosServiciosComponent implements OnInit {
     this.productosServiciosService.getProductosServicios({
       busqueda: this.filtroTexto || undefined,
       tipo: (this.filtroTipo as 'Producto' | 'Servicio') || undefined,
-      categoriaId: this.filtroCategoria ? parseInt(this.filtroCategoria) : undefined
+      categoriaId: this.filtroCategoria ? parseInt(this.filtroCategoria, 10) : undefined
     }).subscribe({
       next: (response) => {
         if (response.success) {
