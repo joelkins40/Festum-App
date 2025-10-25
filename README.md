@@ -1,11 +1,11 @@
 # 🎉 Festum App - Proyecto Festum 2.0
 
-Sistema integral de gestión para eventos y servicios, desarrollado con **Angular 17** y **Material Design**.
+Sistema integral de gestión para eventos y servicios, desarrollado con **Angular 19** y **Material Design**.
 
 ## ✨ Características
 
 - 🎨 **Interfaz Moderna**: Diseño consistente con Material Design
-- 📱 **Responsive**: Adaptable a dispositivos móviles y tablets  
+- 📱 **Responsive**: Adaptable a dispositivos móviles y tablets
 - 🔧 **TypeScript**: Desarrollo con tipado estricto
 - 📊 **CRUD Completo**: Gestión de productos, servicios y categorías
 - 🎯 **Modular**: Arquitectura organizada por módulos
@@ -40,7 +40,7 @@ src/app/
 ├── modules/                 # Módulos funcionales
 │   ├── catalogos/          # Gestión de catálogos
 │   │   ├── categorias/     # ✅ Categorías
-│   │   └── productos-servicios/ # ✅ Productos y Servicios  
+│   │   └── productos-servicios/ # ✅ Productos y Servicios
 │   ├── clientes/           # Gestión de clientes
 │   ├── eventos/            # Gestión de eventos
 │   └── cotizaciones/       # Sistema de cotizaciones
