@@ -1,0 +1,274 @@
+/**
+ * 📝 Estilos para el Modal de Salones
+ * Diseño profesional y moderno con Material Design
+ */
+
+/* Variables de color del tema */
+:host {
+  --primary-color: #20b2aa;
+  --primary-dark: #1a9690;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --surface-color: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+/* Contenedor principal del modal */
+.salon-dialog {
+  min-width: 600px;
+  max-width: 750px;
+  background: var(--surface-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-hover);
+}
+
+/* Header del modal */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  position: relative;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+  }
+
+  .header-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.9;
+  }
+
+  .header-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .close-button {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Contenido del modal */
+.dialog-content {
+  padding: 32px;
+  background-color: #fafafa;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Formulario */
+.salon-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-section {
+  .full-width {
+    width: 100%;
+
+    ::ng-deep {
+      .mat-mdc-form-field-outline {
+        color: var(--border-color);
+        border-radius: 8px;
+      }
+
+      .mat-mdc-form-field-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .mat-mdc-input-element,
+      .mat-mdc-select-value {
+        color: var(--text-primary);
+        font-size: 16px;
+      }
+
+      .mat-mdc-form-field-outline-thick {
+        color: var(--primary-color);
+        border-width: 2px;
+      }
+
+      .mat-mdc-form-field-prefix .input-icon {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+
+      .mat-mdc-form-field-hint,
+      .mat-mdc-form-field-error {
+        font-size: 12px;
+      }
+
+      .mat-mdc-form-field-hint {
+        color: var(--text-secondary);
+      }
+
+      .mat-mdc-form-field-error {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+
+  .form-field {
+    flex: 1;
+
+    ::ng-deep {
+      .mat-mdc-form-field-outline {
+        border-radius: 8px;
+      }
+
+      .mat-mdc-text-field-wrapper {
+        background-color: white;
+      }
+
+      .input-icon {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+/* Sección de información adicional (para edición) */
+.info-section {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-icon {
+      color: var(--primary-color);
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .info-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      min-width: 140px;
+    }
+
+    .info-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      background-color: rgba(32, 178, 170, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Acciones del modal */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 32px 32px 32px;
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+
+  .cancel-button {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    min-width: 120px;
+
+    &:hover {
+      background-color: rgba(117, 117, 117, 0.1);
+      border-color: var(--text-secondary);
+    }
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  .save-button {
+    background-color: var(--primary-color);
+    color: white;
+    min-width: 160px;
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+      box-shadow: var(--shadow-hover);
+    }
+
+    &:disabled {
+      background-color: #cccccc;
+      color: #888888;
+    }
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .salon-dialog {
+    min-width: auto;
+    max-width: 95vw;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .dialog-content {
+    padding: 20px;
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+
+    .cancel-button,
+    .save-button {
+      width: 100%;
+    }
+  }
+}
