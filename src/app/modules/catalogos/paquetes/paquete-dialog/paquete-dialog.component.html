@@ -1,0 +1,176 @@
+<!-- 📝 Modal para Crear/Editar Paquetes -->
+<div class="paquete-dialog">
+
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{ modo === 'crear' ? 'add_circle' : 'edit' }}</mat-icon>
+      <h2 class="header-title">{{ modo === 'crear' ? 'Nuevo Paquete' : 'Editar Paquete' }}</h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <form [formGroup]="paqueteForm" class="paquete-form">
+
+      <!-- Tipo y Nombre -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo">
+            <mat-option *ngFor="let tipo of tiposDisponibles" [value]="tipo">
+              {{ tipo }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix class="input-icon">inventory_2</mat-icon>
+          <mat-error *ngIf="f['tipo'].hasError('required')">
+            El tipo es requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field flex-2">
+          <mat-label>Nombre del paquete</mat-label>
+          <input matInput formControlName="nombre" placeholder="Ej: Paquete Boda Clásico" maxlength="100">
+          <mat-icon matPrefix class="input-icon">label</mat-icon>
+          <mat-error *ngIf="f['nombre'].hasError('required')">
+            El nombre es requerido
+          </mat-error>
+          <mat-error *ngIf="f['nombre'].hasError('minlength')">
+            Mínimo 3 caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción corta</mat-label>
+          <textarea matInput formControlName="descripcionCorta" placeholder="Describe el paquete..." rows="3"
+            maxlength="200"></textarea>
+          <mat-icon matPrefix class="input-icon">description</mat-icon>
+          <mat-error *ngIf="f['descripcionCorta'].hasError('required')">
+            La descripción es requerida
+          </mat-error>
+          <mat-error *ngIf="f['descripcionCorta'].hasError('minlength')">
+            Mínimo 10 caracteres
+          </mat-error>
+          <mat-hint align="end">{{ f['descripcionCorta'].value?.length || 0 }}/200</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Categoría y Disponibilidad -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="categoria">
+            <mat-option *ngFor="let cat of categoriasDisponibles" [value]="cat">
+              {{ cat }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix class="input-icon">category</mat-icon>
+          <mat-error *ngIf="f['categoria'].hasError('required')">
+            La categoría es requerida
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Disponibilidad</mat-label>
+          <input matInput type="number" formControlName="disponibilidad" min="0">
+          <mat-icon matPrefix class="input-icon">inventory</mat-icon>
+          <mat-error *ngIf="f['disponibilidad'].hasError('required')">
+            La disponibilidad es requerida
+          </mat-error>
+          <mat-error *ngIf="f['disponibilidad'].hasError('min')">
+            No puede ser negativo
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Precio e Imagen -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Precio Total</mat-label>
+          <input matInput type="number" formControlName="precioTotal" min="0" step="0.01">
+          <mat-icon matPrefix class="input-icon">attach_money</mat-icon>
+          <mat-error *ngIf="f['precioTotal'].hasError('required')">
+            El precio es requerido
+          </mat-error>
+          <mat-error *ngIf="f['precioTotal'].hasError('min')">
+            No puede ser negativo
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field flex-2">
+          <mat-label>URL de imagen (opcional)</mat-label>
+          <input matInput formControlName="imagen" placeholder="https://...">
+          <mat-icon matPrefix class="input-icon">image</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Muebles incluidos -->
+      <div class="muebles-section">
+        <div class="section-header">
+          <mat-icon>weekend</mat-icon>
+          <h3>Muebles incluidos</h3>
+          <button mat-icon-button type="button" (click)="agregarMueble()" matTooltip="Agregar mueble">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+
+        <div formArrayName="muebles" class="muebles-list">
+          <div *ngFor="let mueble of muebles.controls; let i = index" [formGroupName]="i" class="mueble-item">
+            <mat-form-field appearance="outline" class="mueble-nombre">
+              <mat-label>Nombre del mueble</mat-label>
+              <input matInput formControlName="nombre" placeholder="Ej: Silla Chiavari">
+              <mat-error>Requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mueble-cantidad">
+              <mat-label>Cantidad</mat-label>
+              <input matInput type="number" formControlName="cantidad" min="1">
+              <mat-error>Requerido</mat-error>
+            </mat-form-field>
+
+            <button mat-icon-button type="button" (click)="eliminarMueble(i)" [disabled]="muebles.length === 1"
+              matTooltip="Eliminar mueble" class="delete-mueble-btn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información adicional para edición -->
+      <div *ngIf="modo === 'editar'" class="info-section">
+        <div class="info-item">
+          <mat-icon class="info-icon">event</mat-icon>
+          <span class="info-label">Fecha de creación:</span>
+          <span class="info-value">{{ data.paquete?.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">tag</mat-icon>
+          <span class="info-label">ID:</span>
+          <span class="info-value">#{{ data.paquete?.id }}</span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Acciones del Modal -->
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!paqueteForm.valid || guardando"
+      class="save-button">
+      <mat-icon>{{ guardando ? 'hourglass_empty' : (modo === 'crear' ? 'save' : 'update') }}</mat-icon>
+      {{ guardando ? 'Guardando...' : (modo === 'crear' ? 'Crear Paquete' : 'Actualizar Paquete') }}
+    </button>
+  </div>
+
+</div>

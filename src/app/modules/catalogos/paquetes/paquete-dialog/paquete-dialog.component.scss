@@ -1,0 +1,301 @@
+/**
+ * 📝 Estilos para el Modal de Paquetes
+ * Diseño profesional y moderno con Material Design
+ */
+
+/* Variables de color del tema */
+:host {
+  --primary-color: #20b2aa;
+  --primary-dark: #1a9690;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --surface-color: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+/* Contenedor principal del modal */
+.paquete-dialog {
+  min-width: 600px;
+  max-width: 800px;
+  background: var(--surface-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-hover);
+}
+
+/* Header del modal */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  position: relative;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+  }
+
+  .header-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.9;
+  }
+
+  .header-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .close-button {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Contenido del modal */
+.dialog-content {
+  padding: 32px;
+  background-color: #fafafa;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Formulario */
+.paquete-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+
+  .form-field {
+    flex: 1;
+
+    &.flex-2 {
+      flex: 2;
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}
+
+.form-field, .full-width {
+  ::ng-deep {
+    .mat-mdc-form-field-outline {
+      border-radius: 8px;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      background-color: white;
+    }
+
+    .input-icon {
+      color: var(--primary-color);
+      margin-right: 8px;
+    }
+  }
+}
+
+/* Sección de muebles */
+.muebles-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid var(--border-color);
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color);
+
+    mat-icon {
+      color: var(--primary-color);
+      font-size: 24px;
+    }
+
+    h3 {
+      margin: 0;
+      flex: 1;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    button {
+      color: var(--primary-color);
+    }
+  }
+
+  .muebles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mueble-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+
+    .mueble-nombre {
+      flex: 2;
+    }
+
+    .mueble-cantidad {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .delete-mueble-btn {
+      color: var(--error-color);
+      margin-top: 8px;
+
+      &:disabled {
+        color: var(--text-secondary);
+        opacity: 0.3;
+      }
+    }
+  }
+}
+
+/* Sección de información adicional (para edición) */
+.info-section {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-icon {
+      color: var(--primary-color);
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .info-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .info-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      background-color: rgba(32, 178, 170, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Acciones del modal */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 32px 32px 32px;
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+
+  .cancel-button {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    min-width: 120px;
+
+    &:hover {
+      background-color: rgba(117, 117, 117, 0.1);
+      border-color: var(--text-secondary);
+    }
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  .save-button {
+    background-color: var(--primary-color);
+    color: white;
+    min-width: 160px;
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+      box-shadow: var(--shadow-hover);
+    }
+
+    &:disabled {
+      background-color: #cccccc;
+      color: #888888;
+    }
+
+    ::ng-deep .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .paquete-dialog {
+    min-width: auto;
+    max-width: 95vw;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .mueble-item {
+    flex-wrap: wrap;
+
+    .mueble-nombre,
+    .mueble-cantidad {
+      flex: 1 1 100%;
+    }
+  }
+}
