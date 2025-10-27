@@ -17,8 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { PaquetesService } from './paquetes.service';
-import type { Paquete } from './paquetes.model';
+import { PaquetesService } from '../../../core/services/paquetes.service';
+import type { Paquete } from '../../../core/models/paquete.model';
 import { PaqueteDialogComponent } from './paquete-dialog/paquete-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -170,9 +170,12 @@ export class PaquetesComponent implements OnInit {
 	 */
 	abrirModalCrear(): void {
 		const dialogRef = this.dialog.open(PaqueteDialogComponent, {
-			width: '800px',
+			width: '1200px',
 			maxWidth: '95vw',
+			height: '90vh',
+			maxHeight: '900px',
 			disableClose: true,
+			panelClass: 'large-dialog-panel',
 			data: {
 				modo: 'crear',
 			},
@@ -190,9 +193,12 @@ export class PaquetesComponent implements OnInit {
 	 */
 	editarPaquete(paquete: Paquete): void {
 		const dialogRef = this.dialog.open(PaqueteDialogComponent, {
-			width: '800px',
+			width: '1200px',
 			maxWidth: '95vw',
+			height: '90vh',
+			maxHeight: '900px',
 			disableClose: true,
+			panelClass: 'large-dialog-panel',
 			data: {
 				paquete: paquete,
 				modo: 'editar',

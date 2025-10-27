@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { Paquete, PaquetesResponse } from './paquetes.model';
+import { Paquete, PaquetesResponse, ProductoIncluido } from '../models/paquete.model';
+import { ProductoServicio } from '../models/productos-servicios.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,12 +14,41 @@ export class PaquetesService {
 			tipo: 'Paquete',
 			nombre: 'Paquete Boda Clásico',
 			descripcionCorta: 'Incluye mantelería, sillas chiavari y centro de mesa',
-			muebles: [
-				{ id: 5, nombre: 'Silla Chiavari', cantidad: 100 },
-				{ id: 1, nombre: 'Mantel Rectangular Blanco', cantidad: 12 },
-				{ id: 10, nombre: 'Centro de Mesa Floral', cantidad: 12 },
+			productos: [
+				{
+					productoServicio: {
+						id: 1,
+						tipo: 'Producto',
+						categoriaId: 1,
+						clave: 'PRD001',
+						cantidadStock: 50,
+						nombre: 'Silla Chiavari Dorada',
+						descripcion: 'Silla elegante para eventos',
+						precioPublico: 15.00,
+						precioEspecial: 12.00,
+						fechaCreacion: new Date(),
+						activo: true
+					},
+					cantidad: 100
+				},
+				{
+					productoServicio: {
+						id: 2,
+						tipo: 'Producto',
+						categoriaId: 1,
+						clave: 'PRD002',
+						cantidadStock: 25,
+						nombre: 'Mantel Rectangular Blanco',
+						descripcion: 'Mantel de alta calidad',
+						precioPublico: 25.00,
+						precioEspecial: 20.00,
+						fechaCreacion: new Date(),
+						activo: true
+					},
+					cantidad: 12
+				}
 			],
-			precioTotal: 48000,
+			precioTotal: 1800.00,
 			categoria: 'Boda',
 			disponibilidad: 3,
 			imagen: 'assets/images/paquete-boda.jpg',
@@ -30,11 +60,25 @@ export class PaquetesService {
 			tipo: 'Servicio',
 			nombre: 'Servicio Lounge Corporativo',
 			descripcionCorta: 'Mobiliario lounge para eventos corporativos',
-			muebles: [
-				{ id: 20, nombre: 'Sofa Modular', cantidad: 4 },
-				{ id: 21, nombre: 'Mesa Baja', cantidad: 4 },
+			productos: [
+				{
+					productoServicio: {
+						id: 3,
+						tipo: 'Servicio',
+						categoriaId: 2,
+						clave: 'SRV001',
+						cantidadStock: 10,
+						nombre: 'Montaje Lounge',
+						descripcion: 'Servicio completo de montaje',
+						precioPublico: 500.00,
+						precioEspecial: 450.00,
+						fechaCreacion: new Date(),
+						activo: true
+					},
+					cantidad: 1
+				}
 			],
-			precioTotal: 25000,
+			precioTotal: 500.00,
 			categoria: 'Corporativo',
 			disponibilidad: 5,
 			imagen: 'assets/images/paquete-lounge.jpg',
@@ -46,9 +90,23 @@ export class PaquetesService {
 			tipo: 'Paquete',
 			nombre: 'Paquete Fiesta Lounge',
 			descripcionCorta: 'Combo pequeño para lounges y after parties',
-			muebles: [
-				{ id: 5, nombre: 'Silla Chiavari', cantidad: 20 },
-				{ id: 22, nombre: 'Puff Redondo', cantidad: 10 },
+			productos: [
+				{
+					productoServicio: {
+						id: 4,
+						tipo: 'Producto',
+						categoriaId: 3,
+						clave: 'PRD003',
+						cantidadStock: 30,
+						nombre: 'Puff Redondo',
+						descripcion: 'Puff cómodo para lounge',
+						precioPublico: 35.00,
+						precioEspecial: 30.00,
+						fechaCreacion: new Date(),
+						activo: true
+					},
+					cantidad: 10
+				}
 			],
 			precioTotal: 15000,
 			categoria: 'Lounge',
@@ -97,7 +155,7 @@ export class PaquetesService {
 			tipo: paquete.tipo || 'Paquete',
 			nombre: paquete.nombre || '',
 			descripcionCorta: paquete.descripcionCorta || '',
-			muebles: paquete.muebles || [],
+			productos: paquete.productos || [],
 			precioTotal: paquete.precioTotal || 0,
 			categoria: paquete.categoria || '',
 			disponibilidad: paquete.disponibilidad || 0,
