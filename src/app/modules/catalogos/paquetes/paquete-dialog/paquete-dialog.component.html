@@ -1,5 +1,5 @@
 <!-- 📝 Modal para Crear/Editar Paquetes -->
-<div class="paquete-dialog">
+<div class="paquete-dialog large-dialog">
 
   <!-- Header del Modal -->
   <div class="dialog-header">
@@ -16,143 +16,226 @@
   <div class="dialog-content">
     <form [formGroup]="paqueteForm" class="paquete-form">
 
-      <!-- Tipo y Nombre -->
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Tipo</mat-label>
-          <mat-select formControlName="tipo">
-            <mat-option *ngFor="let tipo of tiposDisponibles" [value]="tipo">
-              {{ tipo }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matPrefix class="input-icon">inventory_2</mat-icon>
-          <mat-error *ngIf="f['tipo'].hasError('required')">
-            El tipo es requerido
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field flex-2">
-          <mat-label>Nombre del paquete</mat-label>
-          <input matInput formControlName="nombre" placeholder="Ej: Paquete Boda Clásico" maxlength="100">
-          <mat-icon matPrefix class="input-icon">label</mat-icon>
-          <mat-error *ngIf="f['nombre'].hasError('required')">
-            El nombre es requerido
-          </mat-error>
-          <mat-error *ngIf="f['nombre'].hasError('minlength')">
-            Mínimo 3 caracteres
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <!-- Descripción -->
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Descripción corta</mat-label>
-          <textarea matInput formControlName="descripcionCorta" placeholder="Describe el paquete..." rows="3"
-            maxlength="200"></textarea>
-          <mat-icon matPrefix class="input-icon">description</mat-icon>
-          <mat-error *ngIf="f['descripcionCorta'].hasError('required')">
-            La descripción es requerida
-          </mat-error>
-          <mat-error *ngIf="f['descripcionCorta'].hasError('minlength')">
-            Mínimo 10 caracteres
-          </mat-error>
-          <mat-hint align="end">{{ f['descripcionCorta'].value?.length || 0 }}/200</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <!-- Categoría y Disponibilidad -->
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Categoría</mat-label>
-          <mat-select formControlName="categoria">
-            <mat-option *ngFor="let cat of categoriasDisponibles" [value]="cat">
-              {{ cat }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matPrefix class="input-icon">category</mat-icon>
-          <mat-error *ngIf="f['categoria'].hasError('required')">
-            La categoría es requerida
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Disponibilidad</mat-label>
-          <input matInput type="number" formControlName="disponibilidad" min="0">
-          <mat-icon matPrefix class="input-icon">inventory</mat-icon>
-          <mat-error *ngIf="f['disponibilidad'].hasError('required')">
-            La disponibilidad es requerida
-          </mat-error>
-          <mat-error *ngIf="f['disponibilidad'].hasError('min')">
-            No puede ser negativo
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <!-- Precio e Imagen -->
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Precio Total</mat-label>
-          <input matInput type="number" formControlName="precioTotal" min="0" step="0.01">
-          <mat-icon matPrefix class="input-icon">attach_money</mat-icon>
-          <mat-error *ngIf="f['precioTotal'].hasError('required')">
-            El precio es requerido
-          </mat-error>
-          <mat-error *ngIf="f['precioTotal'].hasError('min')">
-            No puede ser negativo
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field flex-2">
-          <mat-label>URL de imagen (opcional)</mat-label>
-          <input matInput formControlName="imagen" placeholder="https://...">
-          <mat-icon matPrefix class="input-icon">image</mat-icon>
-        </mat-form-field>
-      </div>
-
-      <!-- Muebles incluidos -->
-      <div class="muebles-section">
+      <!-- === DATOS BÁSICOS === -->
+      <div class="section-card">
         <div class="section-header">
-          <mat-icon>weekend</mat-icon>
-          <h3>Muebles incluidos</h3>
-          <button mat-icon-button type="button" (click)="agregarMueble()" matTooltip="Agregar mueble">
-            <mat-icon>add_circle</mat-icon>
-          </button>
+          <mat-icon>info</mat-icon>
+          <h3>Información Básica</h3>
         </div>
 
-        <div formArrayName="muebles" class="muebles-list">
-          <div *ngFor="let mueble of muebles.controls; let i = index" [formGroupName]="i" class="mueble-item">
-            <mat-form-field appearance="outline" class="mueble-nombre">
-              <mat-label>Nombre del mueble</mat-label>
-              <input matInput formControlName="nombre" placeholder="Ej: Silla Chiavari">
-              <mat-error>Requerido</mat-error>
-            </mat-form-field>
+        <!-- Fila 1: Tipo y Nombre -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tipo *</mat-label>
+            <mat-select formControlName="tipo" required>
+              <mat-option *ngFor="let tipo of tiposDisponibles" [value]="tipo">
+                <mat-icon class="option-icon">{{ tipo === 'Paquete' ? 'inventory_2' : 'handyman' }}</mat-icon>
+                {{ tipo }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-error *ngIf="f['tipo'].hasError('required')">
+              El tipo es requerido
+            </mat-error>
+          </mat-form-field>
 
-            <mat-form-field appearance="outline" class="mueble-cantidad">
-              <mat-label>Cantidad</mat-label>
-              <input matInput type="number" formControlName="cantidad" min="1">
-              <mat-error>Requerido</mat-error>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field flex-2">
+            <mat-label>Nombre del paquete *</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: Paquete Boda Clásico" maxlength="100" required>
+            <mat-icon matSuffix>label</mat-icon>
+            <mat-hint align="end">{{ f['nombre'].value?.length || 0 }}/100</mat-hint>
+            <mat-error *ngIf="f['nombre'].hasError('required')">
+              El nombre es requerido
+            </mat-error>
+            <mat-error *ngIf="f['nombre'].hasError('minlength')">
+              Mínimo 3 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-            <button mat-icon-button type="button" (click)="eliminarMueble(i)" [disabled]="muebles.length === 1"
-              matTooltip="Eliminar mueble" class="delete-mueble-btn">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+        <!-- Fila 2: Descripción -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción corta *</mat-label>
+            <textarea matInput formControlName="descripcionCorta" placeholder="Describe el paquete..." rows="2" maxlength="200" required></textarea>
+            <mat-icon matSuffix>description</mat-icon>
+            <mat-hint align="end">{{ f['descripcionCorta'].value?.length || 0 }}/200</mat-hint>
+            <mat-error *ngIf="f['descripcionCorta'].hasError('required')">
+              La descripción es requerida
+            </mat-error>
+            <mat-error *ngIf="f['descripcionCorta'].hasError('minlength')">
+              Mínimo 10 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Fila 3: Categoría, Disponibilidad y Precio -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Categoría *</mat-label>
+            <mat-select formControlName="categoria" required>
+              <mat-option *ngFor="let cat of categoriasDisponibles" [value]="cat">
+                {{ cat }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>event</mat-icon>
+            <mat-error *ngIf="f['categoria'].hasError('required')">
+              La categoría es requerida
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Stock disponible *</mat-label>
+            <input matInput type="number" formControlName="disponibilidad" min="0" required>
+            <mat-icon matSuffix>inventory</mat-icon>
+            <mat-error *ngIf="f['disponibilidad'].hasError('required')">
+              El stock es requerido
+            </mat-error>
+            <mat-error *ngIf="f['disponibilidad'].hasError('min')">
+              No puede ser negativo
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Precio total *</mat-label>
+            <input matInput type="number" formControlName="precioTotal" min="0" step="0.01" required>
+            <span matTextPrefix>$&nbsp;</span>
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error *ngIf="f['precioTotal'].hasError('required')">
+              El precio es requerido
+            </mat-error>
+            <mat-error *ngIf="f['precioTotal'].hasError('min')">
+              No puede ser negativo
+            </mat-error>
+          </mat-form-field>
         </div>
       </div>
 
-      <!-- Información adicional para edición -->
-      <div *ngIf="modo === 'editar'" class="info-section">
-        <div class="info-item">
-          <mat-icon class="info-icon">event</mat-icon>
-          <span class="info-label">Fecha de creación:</span>
-          <span class="info-value">{{ data.paquete?.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+      <!-- === PRODUCTOS INCLUIDOS === -->
+      <div class="section-card productos-section">
+        <div class="section-header">
+          <mat-icon>shopping_cart</mat-icon>
+          <h3>Productos/Servicios Incluidos</h3>
+
         </div>
-        <div class="info-item">
-          <mat-icon class="info-icon">tag</mat-icon>
-          <span class="info-label">ID:</span>
-          <span class="info-value">#{{ data.paquete?.id }}</span>
+
+        <!-- Agregar Producto -->
+        <div class="add-producto-section">
+          <mat-form-field appearance="outline" class="producto-autocomplete full-width">
+            <mat-label>Buscar producto/servicio para agregar</mat-label>
+            <input type="text"
+                   placeholder="Escriba el nombre del producto..."
+                   aria-label="Producto"
+                   matInput
+                   [formControl]="productoControl"
+                   [matAutocomplete]="autoProducto"
+                   (keydown.enter)="onEnterAutocomplete($event)">
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-autocomplete #autoProducto="matAutocomplete"
+                              (optionSelected)="onProductoSeleccionado($event)"
+                              [displayWith]="displayProducto">
+              <mat-option *ngFor="let producto of productosFiltrados$ | async"
+                          [value]="producto"
+                          class="producto-option">
+                <div class="option-content">
+                  <div class="option-main">
+                    <span class="producto-nombre">{{ producto.nombre }}</span>
+                    <mat-chip class="producto-tipo" [class]="'tipo-' + producto.tipo.toLowerCase()">
+                      {{ producto.tipo }}
+                    </mat-chip>
+                  </div>
+                  <div class="option-details">
+                    <span class="producto-precio">${{ producto.precioPublico | number:'1.2-2' }}</span>
+                    <span class="producto-stock">Stock: {{ producto.cantidadStock }}</span>
+                  </div>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <!-- Tabla de Productos -->
+        <div class="productos-table-container">
+          <table mat-table [dataSource]="productosDataSource" class="productos-table" #productosTable>
+
+            <!-- Columna Producto -->
+            <ng-container matColumnDef="producto">
+              <th mat-header-cell *matHeaderCellDef>Producto/Servicio</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="producto-info">
+                  <div class="producto-nombre">{{ element.productoServicio.nombre }}</div>
+                  <mat-chip class="producto-tipo-chip" [class]="'tipo-' + element.productoServicio.tipo.toLowerCase()">
+                    {{ element.productoServicio.tipo }}
+                  </mat-chip>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Columna Cantidad -->
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field appearance="outline" class="cantidad-table-field">
+                  <input matInput
+                         type="number"
+                         [(ngModel)]="element.cantidad"
+                         (ngModelChange)="actualizarCantidadProducto(i, $event)"
+                         (keydown.enter)="onCantidadEnter($event, i)"
+                         min="1"
+                         max="999">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Columna Precio Unitario -->
+            <ng-container matColumnDef="precioUnitario">
+              <th mat-header-cell *matHeaderCellDef>Precio Unit.</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <mat-form-field appearance="outline" class="precio-table-field">
+                  <span matTextPrefix>$</span>
+                  <input matInput
+                         type="number"
+                         [(ngModel)]="element.precioUnitario"
+                         (ngModelChange)="actualizarPrecioProducto(i, $event)"
+                         (keydown.enter)="onPrecioEnter($event, i)"
+                         min="0"
+                         step="0.01"
+                         [placeholder]="element.productoServicio.precioPublico.toString()">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Columna Subtotal -->
+            <ng-container matColumnDef="subtotal">
+              <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="subtotal">${{ calcularSubtotal(element) | number:'1.2-2' }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Columna Acciones -->
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef class="acciones-header">Acciones</th>
+              <td mat-cell *matCellDef="let element; let i = index" class="acciones-cell">
+                <button mat-icon-button
+                        color="warn"
+                        (click)="eliminarProductoDeTabla(i)"
+                        matTooltip="Eliminar producto">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; trackBy: trackByProducto;"></tr>
+          </table>
+
+          <!-- Mensaje cuando no hay productos -->
+          <div *ngIf="productosSeleccionados.length === 0" class="no-productos">
+            <mat-icon>inventory_2</mat-icon>
+            <p>No hay productos agregados</p>
+            <span>Use el buscador para agregar productos o servicios</span>
+          </div>
         </div>
       </div>
 
@@ -161,13 +244,22 @@
 
   <!-- Acciones del Modal -->
   <div class="dialog-actions">
-    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+     <div class="section-actions">
+            <span class="total-precio">Total: ${{ calcularPrecioTotal() | number:'1.2-2' }}</span>
+          </div>
+    <button mat-stroked-button
+            (click)="onCancel()"
+            class="cancel-button"
+            [disabled]="guardando">
       <mat-icon>cancel</mat-icon>
       Cancelar
     </button>
 
-    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!paqueteForm.valid || guardando"
-      class="save-button">
+    <button mat-raised-button
+            color="primary"
+            (click)="onSave()"
+            [disabled]="!paqueteForm.valid || guardando"
+            class="save-button">
       <mat-icon>{{ guardando ? 'hourglass_empty' : (modo === 'crear' ? 'save' : 'update') }}</mat-icon>
       {{ guardando ? 'Guardando...' : (modo === 'crear' ? 'Crear Paquete' : 'Actualizar Paquete') }}
     </button>
