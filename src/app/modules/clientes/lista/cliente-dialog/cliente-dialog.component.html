@@ -16,74 +16,163 @@
   <div class="dialog-content">
     <form [formGroup]="clienteForm" class="cliente-form">
 
-      <!-- Campo Nombre -->
-      <div class="form-section">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nombre completo del cliente</mat-label>
-          <input matInput formControlName="nombre" placeholder="Ej: María González Rodríguez..." maxlength="100"
-            #nombreInput>
-          <mat-icon matPrefix class="input-icon">person</mat-icon>
+      <!-- CAMPO NOMBRE -->
+      <div class="section-card">
 
-          <!-- Mensajes de Error -->
-          <mat-error *ngIf="nombre?.hasError('required')">
-            El nombre es requerido
-          </mat-error>
-          <mat-error *ngIf="nombre?.hasError('minlength')">
-            El nombre debe tener al menos 2 caracteres
-          </mat-error>
-          <mat-error *ngIf="nombre?.hasError('maxlength')">
-            El nombre no puede exceder 100 caracteres
-          </mat-error>
-          <mat-error *ngIf="nombre?.hasError('pattern')">
-            Solo se permiten letras y espacios
-          </mat-error>
+        <div class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre completo del cliente</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: María González Rodríguez..." maxlength="100"
+              #nombreInput>
+            <mat-icon matPrefix class="input-icon">person</mat-icon>
 
-          <!-- Contador de caracteres -->
-          <mat-hint align="end">
-            {{ nombreInput.value.length || 0 }}/100
-          </mat-hint>
-        </mat-form-field>
-      </div>
+            <!-- Mensajes de Error -->
+            <mat-error *ngIf="nombre?.hasError('required')">
+              El nombre es requerido
+            </mat-error>
+            <mat-error *ngIf="nombre?.hasError('minlength')">
+              El nombre debe tener al menos 2 caracteres
+            </mat-error>
+            <mat-error *ngIf="nombre?.hasError('maxlength')">
+              El nombre no puede exceder 100 caracteres
+            </mat-error>
+            <mat-error *ngIf="nombre?.hasError('pattern')">
+              Solo se permiten letras y espacios
+            </mat-error>
 
-      <!-- Campo Dirección -->
-      <div class="form-section">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Dirección (opcional)</mat-label>
-          <textarea matInput formControlName="direccion"
-            placeholder="Dirección completa del cliente (por definir estructura...)" maxlength="200" rows="3"
-            #direccionInput></textarea>
-          <mat-icon matPrefix class="input-icon">location_on</mat-icon>
-
-          <!-- Mensajes de Error -->
-          <mat-error *ngIf="direccion?.hasError('maxlength')">
-            La dirección no puede exceder 200 caracteres
-          </mat-error>
-
-          <!-- Contador de caracteres -->
-          <mat-hint align="end">
-            {{ direccionInput.value.length || 0 }}/200
-          </mat-hint>
-        </mat-form-field>
-      </div>
-
-      <!-- Campo Cliente Preferente -->
-      <div class="form-section">
-        <div class="checkbox-container">
-          <mat-checkbox formControlName="clientePreferente" class="cliente-preferente-checkbox">
-            <div class="checkbox-content">
-              <div class="checkbox-label">
-                <mat-icon class="checkbox-icon">star</mat-icon>
-                <span class="checkbox-text">Cliente Preferente</span>
-              </div>
-              <div class="checkbox-description">
-                Los clientes preferentes reciben descuentos especiales y atención prioritaria
-              </div>
-            </div>
-          </mat-checkbox>
+            <!-- Contador de caracteres -->
+            <mat-hint align="end">
+              {{ nombreInput.value.length || 0 }}/100
+            </mat-hint>
+          </mat-form-field>
         </div>
       </div>
 
-      <!-- Información adicional para edición -->
+
+      <!-- SECCIÓN DE DIRECCIÓN -->
+      <div class="section-card">
+        <div class="form-section" formGroupName="direccion">
+          <div class="section-header">
+            <mat-icon class="section-icon">location_on</mat-icon>
+            <h3 class="section-title">Dirección del Cliente</h3>
+          </div>
+
+          <!-- Dirección Completa -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Dirección completa</mat-label>
+            <textarea matInput formControlName="fullAddress"
+              placeholder="Ej: Av. Revolución 1234, Col. Centro, Guadalajara, Jalisco 44100, México" maxlength="300"
+              rows="2" #fullAddressInput></textarea>
+            <mat-icon matPrefix class="input-icon">place</mat-icon>
+            <mat-error *ngIf="direccionFullAddress?.hasError('required')">La dirección completa es requerida</mat-error>
+            <mat-error *ngIf="direccionFullAddress?.hasError('maxlength')">Máximo 300 caracteres</mat-error>
+            <mat-hint align="end">{{ fullAddressInput.value.length || 0 }}/300</mat-hint>
+          </mat-form-field>
+
+          <!-- Fila 1: Calle y Número -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field-large">
+              <mat-label>Calle</mat-label>
+              <input matInput formControlName="street" placeholder="Ej: Av. Revolución" maxlength="100">
+              <mat-error *ngIf="direccionStreet?.hasError('required')">La calle es requerida</mat-error>
+              <mat-error *ngIf="direccionStreet?.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field-small">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="number" placeholder="1234" maxlength="20">
+              <mat-error *ngIf="direccionNumber?.hasError('required')">El número es requerido</mat-error>
+              <mat-error *ngIf="direccionNumber?.hasError('maxlength')">Máximo 20 caracteres</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Fila 2: Colonia y Ciudad -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field-half">
+              <mat-label>Colonia/Barrio</mat-label>
+              <input matInput formControlName="neighborhood" placeholder="Ej: Centro" maxlength="100">
+              <mat-error *ngIf="direccionNeighborhood?.hasError('required')">La colonia es requerida</mat-error>
+              <mat-error *ngIf="direccionNeighborhood?.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field-half">
+              <mat-label>Ciudad</mat-label>
+              <input matInput formControlName="city" placeholder="Ej: Guadalajara" maxlength="100">
+              <mat-error *ngIf="direccionCity?.hasError('required')">La ciudad es requerida</mat-error>
+              <mat-error *ngIf="direccionCity?.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Fila 3: Estado y Código Postal -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field-large">
+              <mat-label>Estado</mat-label>
+              <input matInput formControlName="state" placeholder="Ej: Jalisco" maxlength="100">
+              <mat-error *ngIf="direccionState?.hasError('required')">El estado es requerido</mat-error>
+              <mat-error *ngIf="direccionState?.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field-small">
+              <mat-label>C.P.</mat-label>
+              <input matInput formControlName="postalCode" placeholder="44100" maxlength="5" type="text">
+              <mat-error *ngIf="direccionPostalCode?.hasError('required')">El código postal es requerido</mat-error>
+              <mat-error *ngIf="direccionPostalCode?.hasError('pattern')">Debe ser un código postal válido (5
+                dígitos)</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Fila 4: País -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>País</mat-label>
+            <input matInput formControlName="country" maxlength="100">
+            <mat-error *ngIf="direccionCountry?.hasError('required')">El país es requerido</mat-error>
+            <mat-error *ngIf="direccionCountry?.hasError('maxlength')">Máximo 100 caracteres</mat-error>
+          </mat-form-field>
+
+          <!-- Fila 5: Coordenadas (opcional/oculto por ahora) -->
+          <div class="coordinates-section" style="display: none;">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field-half">
+                <mat-label>Latitud</mat-label>
+                <input matInput formControlName="lat" type="number" step="any" placeholder="20.6736">
+                <mat-error *ngIf="direccionLat?.hasError('required')">La latitud es requerida</mat-error>
+                <mat-error *ngIf="direccionLat?.hasError('min') || direccionLat?.hasError('max')">Latitud
+                  inválida</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field-half">
+                <mat-label>Longitud</mat-label>
+                <input matInput formControlName="lng" type="number" step="any" placeholder="-103.3744">
+                <mat-error *ngIf="direccionLng?.hasError('required')">La longitud es requerida</mat-error>
+                <mat-error *ngIf="direccionLng?.hasError('min') || direccionLng?.hasError('max')">Longitud
+                  inválida</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMPO CLIENTE PREFERENTE -->
+      <div class="section-card">
+        <div class="form-section">
+          <div class="checkbox-container">
+            <mat-checkbox formControlName="clientePreferente" class="cliente-preferente-checkbox">
+              <div class="checkbox-content">
+                <div class="checkbox-label">
+                  <mat-icon class="checkbox-icon">star</mat-icon>
+                  <span class="checkbox-text">Cliente Preferente</span>
+                </div>
+                <div class="checkbox-description">
+                  Los clientes preferentes reciben descuentos especiales y atención prioritaria
+                </div>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFORMACIÓN ADICIONAL PARA EDICIÓN -->
+
       <div class="info-section" *ngIf="modo === 'editar' && data.cliente">
         <div class="info-card">
           <h4 class="info-title">
