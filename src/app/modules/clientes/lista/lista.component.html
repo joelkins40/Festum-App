@@ -109,6 +109,19 @@
           </td>
         </ng-container>
 
+        <!-- Columna Dirección -->
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="direccion-column">Dirección</th>
+          <td mat-cell *matCellDef="let cliente" class="direccion-cell">
+            <div class="direccion-info">
+              <mat-icon class="direccion-icon">location_on</mat-icon>
+              <span class="direccion-text" [title]="cliente.direccion.fullAddress">
+                {{ cliente.direccion.fullAddress }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
         <!-- Columna Cliente Preferente -->
         <ng-container matColumnDef="clientePreferente">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="preferente-column">Tipo</th>

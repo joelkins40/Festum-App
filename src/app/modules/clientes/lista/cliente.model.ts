@@ -1,10 +1,26 @@
 /**
+ * Estructura de dirección completa
+ */
+export interface Direccion {
+	fullAddress: string;
+	street: string;
+	number: string;
+	neighborhood: string;
+	city: string;
+	state: string;
+	country: string;
+	postalCode: string;
+	lat: number;
+	lng: number;
+}
+
+/**
  * Modelo de datos para Cliente
  */
 export interface Cliente {
 	id: number;
 	nombre: string;
-	direccion?: string; // Undefined until structure is defined
+	direccion: Direccion;
 	clientePreferente: boolean;
 	fechaCreacion?: Date;
 	fechaActualizacion?: Date;
@@ -16,7 +32,7 @@ export interface Cliente {
  */
 export interface CrearClienteDto {
 	nombre: string;
-	direccion?: string;
+	direccion: Direccion;
 	clientePreferente: boolean;
 }
 
@@ -26,7 +42,7 @@ export interface CrearClienteDto {
 export interface ActualizarClienteDto {
 	id: number;
 	nombre: string;
-	direccion?: string;
+	direccion: Direccion;
 	clientePreferente: boolean;
 }
 

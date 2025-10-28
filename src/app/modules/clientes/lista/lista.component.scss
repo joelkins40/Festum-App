@@ -258,6 +258,11 @@
     max-width: 350px;
   }
 
+  .direccion-column, .direccion-cell {
+    min-width: 300px;
+    max-width: 400px;
+  }
+
   .preferente-column, .preferente-cell {
     width: 140px;
     text-align: center;
@@ -311,6 +316,36 @@
   .cliente-text {
     font-weight: 500;
     color: #2d3436;
+  }
+}
+
+.direccion-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+
+  .direccion-icon {
+    color: #28a745;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .direccion-text {
+    color: #636e72;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 350px;
+
+    &:hover {
+      color: #2d3436;
+      cursor: help;
+    }
   }
 }
 

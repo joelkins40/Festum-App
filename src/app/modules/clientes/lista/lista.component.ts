@@ -64,6 +64,7 @@ export class ListaComponent implements OnInit {
 	columnasDisplayed: string[] = [
 		'id',
 		'nombre',
+		'direccion',
 		'clientePreferente',
 		'fechaCreacion',
 		'activo',
@@ -184,7 +185,7 @@ export class ListaComponent implements OnInit {
 	 */
 	crearCliente(): void {
 		const dialogRef = this.dialog.open(ClienteDialogComponent, {
-			width: '500px',
+			width: '1200px',
 			disableClose: true,
 			data: {
 				modo: 'crear',
@@ -227,7 +228,7 @@ export class ListaComponent implements OnInit {
 	 */
 	editarCliente(cliente: Cliente): void {
 		const dialogRef = this.dialog.open(ClienteDialogComponent, {
-			width: '500px',
+			width: '1200px',
 			disableClose: true,
 			data: {
 				modo: 'editar',
