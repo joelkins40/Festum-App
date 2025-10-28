@@ -1,10 +1,26 @@
+:host {
+  --surface-color: #ffffff;
+  --border-color: #e0e0e0;
+  --background-color: #f5f5f5;
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+}
+
 /* ===== CLIENTE DIALOG STYLES ===== */
 .cliente-dialog {
-  width: 100%;
-  max-width: 600px;
+  min-width: 300px;
+  max-width: 1200px;
+  width: auto;
+  height: 100%;
+  min-height: 70vh;
+  max-height: 95vh;
+  border-radius: 16px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: sans-serif;
+
+  background: var(--background-color);
+  box-shadow: var(--shadow-hover);
 }
 
 /* ===== HEADER ===== */
@@ -16,54 +32,130 @@
   border-bottom: 1px solid #e9ecef;
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
+  position: relative;
 
-  .header-content {
+    .header-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
+    flex: 1;
+  }
 
-    .header-icon {
-      font-size: 28px;
-      width: 28px;
-      height: 28px;
-      color: rgba(255, 255, 255, 0.9);
-    }
+  .header-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.9;
+  }
 
-    .header-title {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: white;
-      letter-spacing: -0.3px;
-    }
+  .header-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   .close-button {
-    color: rgba(255, 255, 255, 0.8);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
 
     &:hover {
-      color: white;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
     }
   }
 }
 
 /* ===== CONTENIDO ===== */
 .dialog-content {
+  flex: 1;
   padding: 24px;
-  background: #fafafa;
-  min-height: 300px;
+  background-color: var(--background-color);
+  overflow-y: auto;
+  overflow-x: hidden; // Evitar scroll horizontal
+  display: flex;
+  flex-direction: column;
+  min-height: 0; // Importante para flexbox
 }
 
 .cliente-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  flex: 1; // Cambio: usar flex en lugar de height 100%
+  min-height: 0; // Importante para flexbox
+}
+
+/* Tarjetas de sección */
+.section-card {
+  background: var(--surface-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+
+  &.productos-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: auto; // Reducido y permite expansión
+    max-height: none; // Sin límite máximo
+  }
 }
 
 .form-section {
-  .full-width {
-    width: 100%;
+  // .full-width {
+  //   width: 100%;
+  // }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e9ecef;
+
+    .section-icon {
+      color: #28a745;
+      font-size: 20px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #2d3436;
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+
+    .form-field-half {
+      flex: 1;
+    }
+
+    .form-field-large {
+      flex: 2;
+    }
+
+    .form-field-small {
+      flex: 1;
+      min-width: 120px;
+    }
+  }
+
+  .coordinates-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
   }
 
   ::ng-deep {
@@ -226,18 +318,24 @@
 
 /* ===== FOOTER ===== */
 .dialog-footer {
-  padding: 16px 24px 24px 24px;
-  background: white;
-  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
 
   .button-group {
     display: flex;
-    justify-content: flex-end;
-    gap: 12px;
+    align-items: center;
+    gap: 16px;
 
     .cancel-button {
-      color: #666;
-      font-weight: 500;
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+      min-width: 120px;
 
       &:hover:not([disabled]) {
         background-color: #f5f5f5;
@@ -355,6 +453,61 @@
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
       border-color: #28a745 !important;
+    }
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .cliente-dialog {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+
+  .form-section {
+    .form-row {
+      flex-direction: column;
+      gap: 12px;
+
+      .form-field-half,
+      .form-field-large,
+      .form-field-small {
+        flex: 1;
+        min-width: auto;
+      }
+    }
+
+    .section-header {
+      .section-title {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .dialog-header {
+    padding: 16px;
+
+    .header-content {
+      .header-title {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .dialog-content {
+    padding: 16px;
+  }
+
+  .dialog-footer {
+    padding: 16px;
+
+    .button-group {
+      flex-direction: column;
+      gap: 12px;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }
