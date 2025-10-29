@@ -19,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 
 import { Cliente } from '../cliente.model';
+import { LoggerService } from '../../../../core/services/logger.service';
 
 export interface ClienteDialogData {
 	cliente?: Cliente;
@@ -51,6 +52,9 @@ export class ClienteDialogComponent implements OnInit {
 	modo: 'crear' | 'editar';
 	guardando = false;
 	data: ClienteDialogData;
+
+	// LOGGER
+	logger = inject(LoggerService);
 
 	constructor(
 		private fb: FormBuilder,
@@ -208,7 +212,7 @@ export class ClienteDialogComponent implements OnInit {
 	}
 
 	get esFormularioValido(): boolean {
-		console.log({
+		this.logger.log({
 			errorForm: this.clienteForm.errors,
 			esValido: this.clienteForm.valid,
 			valoresForm: this.clienteForm.value,
