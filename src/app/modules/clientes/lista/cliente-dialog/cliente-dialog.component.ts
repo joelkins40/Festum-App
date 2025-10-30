@@ -71,7 +71,7 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	// LOGGER
 	logger = inject(LoggerService);
 
-	@ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+	@ViewChild('nombreInput') nombreInput!: ElementRef<HTMLInputElement>;
 
 	constructor(
 		private fb: FormBuilder,
@@ -91,10 +91,10 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	}
 
 	ngAfterViewInit(): void {
-		// Focus en el input de búsqueda después de que la vista esté lista
+		// Focus en el input de nombre
 		setTimeout(() => {
-			if (this.searchInput) {
-				this.searchInput.nativeElement.focus();
+			if (this.nombreInput) {
+				this.nombreInput.nativeElement.focus();
 			}
 		}, 200);
 	}
