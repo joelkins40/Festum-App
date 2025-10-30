@@ -44,6 +44,9 @@ importers:
       '@angular/ssr':
         specifier: ^19.2.17
         version: 19.2.18(79bed71b7149df9d0594d2e27a5fd26d)
+      '@geoapify/geocoder-autocomplete':
+        specifier: ^2.2.1
+        version: 2.2.1
       express:
         specifier: ^4.18.2
         version: 4.21.2
@@ -1055,6 +1058,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@geoapify/geocoder-autocomplete@2.2.1':
+    resolution: {integrity: sha512-bK1vWeDpsrNn8j6sj9BFBEPLgENZ8yXkIQTntXGWzbZoNViYj77vI0LiaxMQvaCBgEiRH7BxRouaJlsWt67CPg==}
 
   '@inquirer/ansi@1.0.1':
     resolution: {integrity: sha512-yqq0aJW/5XPhi5xOAL1xRCpe1eh8UFVgYFpFsjEqmIR8rKLyP+HINvFXwUaxYICflJrVlxnp7lLN6As735kVpw==}
@@ -5644,6 +5650,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.4':
     optional: true
+
+  '@geoapify/geocoder-autocomplete@2.2.1': {}
 
   '@inquirer/ansi@1.0.1': {}
 
