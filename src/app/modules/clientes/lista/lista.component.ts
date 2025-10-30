@@ -199,7 +199,7 @@ export class ListaComponent implements OnInit {
 
 				const dto: CrearClienteDto = {
 					nombre: resultado.nombre,
-					direccion: resultado.direccion,
+					direcciones: resultado.direcciones,
 					clientePreferente: resultado.clientePreferente,
 				};
 
@@ -244,7 +244,7 @@ export class ListaComponent implements OnInit {
 				const dto: ActualizarClienteDto = {
 					id: cliente.id,
 					nombre: resultado.nombre,
-					direccion: resultado.direccion,
+					direcciones: resultado.direcciones,
 					clientePreferente: resultado.clientePreferente,
 				};
 

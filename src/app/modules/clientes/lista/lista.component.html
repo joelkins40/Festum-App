@@ -115,9 +115,16 @@
           <td mat-cell *matCellDef="let cliente" class="direccion-cell">
             <div class="direccion-info">
               <mat-icon class="direccion-icon">location_on</mat-icon>
-              <span class="direccion-text" [title]="cliente.direccion.fullAddress">
-                {{ cliente.direccion.fullAddress }}
+              <span class="direccion-text" [title]="cliente.direcciones?.[0]?.formatted?.line1 || 'Sin dirección'">
+                {{ cliente.direcciones?.[0]?.formatted?.line1 || 'Sin dirección' }}
               </span>
+              @if (cliente.direcciones && cliente.direcciones.length > 1) {
+              <mat-chip class="multi-address-chip"
+                [matTooltip]="'Cliente con ' + cliente.direcciones.length + ' direcciones'">
+                <mat-icon>location_city</mat-icon>
+                +{{ cliente.direcciones.length - 1 }}
+              </mat-chip>
+              }
             </div>
           </td>
         </ng-container>
