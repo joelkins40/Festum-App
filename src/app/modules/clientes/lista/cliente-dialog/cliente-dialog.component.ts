@@ -127,10 +127,9 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	 * 📍 Configurar autocompletado de direcciones
 	 */
 	private setupAutocomplete(): void {
-		// Si no hay direcciones, agregar una dirección vacía para comenzar
-		if (this.direccionesArray.length === 0) {
-			this.agregarDireccion();
-		}
+		// No agregar dirección vacía automáticamente
+		// El usuario debe seleccionar una dirección del autocompletado primero
+		// o hacer clic en el botón "Agregar dirección manualmente"
 	}
 
 	/**
@@ -149,10 +148,9 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 				this.data.cliente.direcciones.forEach((direccion: Direccion) => {
 					this.agregarDireccion(direccion);
 				});
-			} else {
-				// Si no hay direcciones, agregar una vacía
-				this.agregarDireccion();
 			}
+			// No agregar dirección vacía si no hay direcciones existentes
+			// El usuario debe seleccionar una dirección del autocompletado o agregarla manualmente
 		}
 	}
 
