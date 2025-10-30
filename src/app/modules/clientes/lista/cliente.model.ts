@@ -1,8 +1,7 @@
 /**
- * Estructura de dirección completa
+ * Estructura de dirección completa con formato Geoapify
  */
 export interface Direccion {
-	fullAddress: string;
 	street: string;
 	number: string;
 	neighborhood: string;
@@ -10,8 +9,14 @@ export interface Direccion {
 	state: string;
 	country: string;
 	postalCode: string;
-	lat: number;
-	lng: number;
+	formatted: {
+		line1: string;
+		line2: string;
+		line3: string;
+	};
+	geoapifyPlaceId: string;
+	confidence: number;
+	source: 'Geoapify';
 }
 
 /**
@@ -20,7 +25,7 @@ export interface Direccion {
 export interface Cliente {
 	id: number;
 	nombre: string;
-	direccion: Direccion;
+	direcciones: Direccion[];
 	clientePreferente: boolean;
 	fechaCreacion?: Date;
 	fechaActualizacion?: Date;
@@ -32,7 +37,7 @@ export interface Cliente {
  */
 export interface CrearClienteDto {
 	nombre: string;
-	direccion: Direccion;
+	direcciones: Direccion[];
 	clientePreferente: boolean;
 }
 
@@ -42,7 +47,7 @@ export interface CrearClienteDto {
 export interface ActualizarClienteDto {
 	id: number;
 	nombre: string;
-	direccion: Direccion;
+	direcciones: Direccion[];
 	clientePreferente: boolean;
 }
 
@@ -85,4 +90,66 @@ export interface ClienteDialogData {
 	modo: 'crear' | 'editar' | 'ver';
 	cliente?: Cliente;
 	titulo?: string;
+}
+
+/**
+ * Interface para manejar las respuestas de autocompletado de Geoapify
+ */
+export interface GeoapifyAutocompleteResponse {
+	type: string;
+	features: GeoapifyFeature[];
+	query: GeoapifyQuery;
+}
+
+export interface GeoapifyFeature {
+	type: string;
+	properties: GeoapifyProperties;
+	geometry: {
+		type: string;
+		coordinates: number[];
+	};
+	bbox: number[];
+}
+
+export interface GeoapifyProperties {
+	datasource: {
+		sourcename: string;
+		attribution: string;
+		license: string;
+		url: string;
+	};
+	country: string;
+	country_code: string;
+	region?: string;
+	state: string;
+	city: string;
+	lon: number;
+	lat: number;
+	result_type: string;
+	formatted: string;
+	address_line1: string;
+	address_line2: string;
+	rank: {
+		importance: number;
+		confidence: number;
+		confidence_city_level: number;
+		match_type: string;
+	};
+	place_id: string;
+	county?: string;
+	state_code?: string;
+	suburb?: string;
+	hamlet?: string;
+	name?: string;
+	district?: string;
+	town?: string;
+}
+
+export interface GeoapifyQuery {
+	text: string;
+	parsed: {
+		city: string;
+		expected_type: string;
+	};
+	categories: unknown[];
 }

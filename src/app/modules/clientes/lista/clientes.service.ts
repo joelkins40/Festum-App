@@ -18,9 +18,7 @@ export class ClientesService {
 		{
 			id: 1,
 			nombre: 'María González Rodríguez',
-			direccion: {
-				fullAddress:
-					'Av. Revolución 1234, Col. Centro, Guadalajara, Jalisco 44100, México',
+			direcciones: [{
 				street: 'Av. Revolución',
 				number: '1234',
 				neighborhood: 'Centro',
@@ -28,9 +26,15 @@ export class ClientesService {
 				state: 'Jalisco',
 				country: 'México',
 				postalCode: '44100',
-				lat: 20.6736,
-				lng: -103.3744,
-			},
+				formatted: {
+					line1: 'Av. Revolución 1234, Col. Centro',
+					line2: 'Guadalajara, Jalisco',
+					line3: 'México 44100'
+				},
+				geoapifyPlaceId: 'mock-place-id-1',
+				confidence: 0.95,
+				source: 'Geoapify'
+			}],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-15'),
 			activo: true,
@@ -38,9 +42,7 @@ export class ClientesService {
 		{
 			id: 2,
 			nombre: 'Carlos Eduardo Martínez',
-			direccion: {
-				fullAddress:
-					'Calle Juárez 567, Col. Americana, Guadalajara, Jalisco 44160, México',
+			direcciones: [{
 				street: 'Calle Juárez',
 				number: '567',
 				neighborhood: 'Americana',
@@ -48,9 +50,15 @@ export class ClientesService {
 				state: 'Jalisco',
 				country: 'México',
 				postalCode: '44160',
-				lat: 20.671,
-				lng: -103.364,
-			},
+				formatted: {
+					line1: 'Calle Juárez 567, Col. Americana',
+					line2: 'Guadalajara, Jalisco',
+					line3: 'México 44160'
+				},
+				geoapifyPlaceId: 'mock-place-id-2',
+				confidence: 0.92,
+				source: 'Geoapify'
+			}],
 			clientePreferente: false,
 			fechaCreacion: new Date('2024-01-16'),
 			activo: true,
@@ -58,9 +66,7 @@ export class ClientesService {
 		{
 			id: 3,
 			nombre: 'Ana Lucía Hernández',
-			direccion: {
-				fullAddress:
-					'Av. Chapultepec 890, Col. Moderna, Guadalajara, Jalisco 44190, México',
+			direcciones: [{
 				street: 'Av. Chapultepec',
 				number: '890',
 				neighborhood: 'Moderna',
@@ -68,9 +74,31 @@ export class ClientesService {
 				state: 'Jalisco',
 				country: 'México',
 				postalCode: '44190',
-				lat: 20.6667,
-				lng: -103.359,
-			},
+				formatted: {
+					line1: 'Av. Chapultepec 890, Col. Moderna',
+					line2: 'Guadalajara, Jalisco',
+					line3: 'México 44190'
+				},
+				geoapifyPlaceId: 'mock-place-id-3',
+				confidence: 0.89,
+				source: 'Geoapify'
+			}, {
+				street: 'Calle Secundaria',
+				number: '100',
+				neighborhood: 'Centro',
+				city: 'Zapopan',
+				state: 'Jalisco',
+				country: 'México',
+				postalCode: '45100',
+				formatted: {
+					line1: 'Calle Secundaria 100, Col. Centro',
+					line2: 'Zapopan, Jalisco',
+					line3: 'México 45100'
+				},
+				geoapifyPlaceId: 'mock-place-id-3b',
+				confidence: 0.87,
+				source: 'Geoapify'
+			}],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-17'),
 			activo: true,
@@ -78,9 +106,7 @@ export class ClientesService {
 		{
 			id: 4,
 			nombre: 'Roberto Silva Castro',
-			direccion: {
-				fullAddress:
-					'Calle Hidalgo 345, Col. Tlaquepaque Centro, Tlaquepaque, Jalisco 45500, México',
+			direcciones: [{
 				street: 'Calle Hidalgo',
 				number: '345',
 				neighborhood: 'Tlaquepaque Centro',
@@ -88,9 +114,15 @@ export class ClientesService {
 				state: 'Jalisco',
 				country: 'México',
 				postalCode: '45500',
-				lat: 20.6401,
-				lng: -103.3128,
-			},
+				formatted: {
+					line1: 'Calle Hidalgo 345, Col. Tlaquepaque Centro',
+					line2: 'Tlaquepaque, Jalisco',
+					line3: 'México 45500'
+				},
+				geoapifyPlaceId: 'mock-place-id-4',
+				confidence: 0.91,
+				source: 'Geoapify'
+			}],
 			clientePreferente: false,
 			fechaCreacion: new Date('2024-01-18'),
 			activo: true,
@@ -98,9 +130,7 @@ export class ClientesService {
 		{
 			id: 5,
 			nombre: 'Patricia Morales López',
-			direccion: {
-				fullAddress:
-					'Av. López Mateos 2156, Col. Italia Providencia, Guadalajara, Jalisco 44648, México',
+			direcciones: [{
 				street: 'Av. López Mateos',
 				number: '2156',
 				neighborhood: 'Italia Providencia',
@@ -108,111 +138,17 @@ export class ClientesService {
 				state: 'Jalisco',
 				country: 'México',
 				postalCode: '44648',
-				lat: 20.6953,
-				lng: -103.3975,
-			},
+				formatted: {
+					line1: 'Av. López Mateos 2156, Col. Italia Providencia',
+					line2: 'Guadalajara, Jalisco',
+					line3: 'México 44648'
+				},
+				geoapifyPlaceId: 'mock-place-id-5',
+				confidence: 0.94,
+				source: 'Geoapify'
+			}],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-19'),
-			activo: true,
-		},
-		{
-			id: 6,
-			nombre: 'Alejandro Ruiz Vargas',
-			direccion: {
-				fullAddress:
-					'Calle Morelos 123, Col. San Juan de Dios, Guadalajara, Jalisco 44360, México',
-				street: 'Calle Morelos',
-				number: '123',
-				neighborhood: 'San Juan de Dios',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44360',
-				lat: 20.6719,
-				lng: -103.3461,
-			},
-			clientePreferente: false,
-			fechaCreacion: new Date('2024-01-20'),
-			activo: true,
-		},
-		{
-			id: 7,
-			nombre: 'Sofía Ramírez Jiménez',
-			direccion: {
-				fullAddress:
-					'Av. Patria 1678, Col. Puerta de Hierro, Zapopan, Jalisco 45116, México',
-				street: 'Av. Patria',
-				number: '1678',
-				neighborhood: 'Puerta de Hierro',
-				city: 'Zapopan',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '45116',
-				lat: 20.6965,
-				lng: -103.4217,
-			},
-			clientePreferente: true,
-			fechaCreacion: new Date('2024-01-21'),
-			activo: true,
-		},
-		{
-			id: 8,
-			nombre: 'Diego Torres Medina',
-			direccion: {
-				fullAddress:
-					'Calle Independencia 432, Col. Zona Centro, Guadalajara, Jalisco 44100, México',
-				street: 'Calle Independencia',
-				number: '432',
-				neighborhood: 'Zona Centro',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44100',
-				lat: 20.6755,
-				lng: -103.3466,
-			},
-			clientePreferente: false,
-			fechaCreacion: new Date('2024-01-22'),
-			activo: true,
-		},
-		{
-			id: 9,
-			nombre: 'Valentina Cruz Peña',
-			direccion: {
-				fullAddress:
-					'Av. Vallarta 3456, Col. Providencia, Guadalajara, Jalisco 44630, México',
-				street: 'Av. Vallarta',
-				number: '3456',
-				neighborhood: 'Providencia',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44630',
-				lat: 20.6872,
-				lng: -103.3918,
-			},
-			clientePreferente: true,
-			fechaCreacion: new Date('2024-01-23'),
-			activo: false,
-		},
-		{
-			id: 10,
-			nombre: 'Fernando Delgado Soto',
-			direccion: {
-				fullAddress:
-					'Calle 16 de Septiembre 789, Col. Analco, Guadalajara, Jalisco 44450, México',
-				street: 'Calle 16 de Septiembre',
-				number: '789',
-				neighborhood: 'Analco',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44450',
-				lat: 20.6643,
-				lng: -103.337,
-			},
-			clientePreferente: false,
-			fechaCreacion: new Date('2024-01-24'),
 			activo: true,
 		},
 	];
@@ -301,7 +237,7 @@ export class ClientesService {
 		const nuevoCliente: Cliente = {
 			id: nuevoId,
 			nombre: dto.nombre,
-			direccion: dto.direccion,
+			direcciones: dto.direcciones,
 			clientePreferente: dto.clientePreferente,
 			fechaCreacion: new Date(),
 			fechaActualizacion: new Date(),
@@ -354,7 +290,7 @@ export class ClientesService {
 		this.mockClientes[index] = {
 			...this.mockClientes[index],
 			nombre: dto.nombre,
-			direccion: dto.direccion,
+			direcciones: dto.direcciones,
 			clientePreferente: dto.clientePreferente,
 			fechaActualizacion: new Date(),
 		};
@@ -535,7 +471,7 @@ export class ClientesService {
 				[
 					cliente.id,
 					`"${cliente.nombre}"`,
-					cliente.direccion || 'Sin definir',
+					cliente.direcciones || 'Sin definir',
 					cliente.clientePreferente ? 'Sí' : 'No',
 					cliente.fechaCreacion?.toISOString().split('T')[0] || '',
 					cliente.activo ? 'Sí' : 'No',
