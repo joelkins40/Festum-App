@@ -125,6 +125,7 @@ export interface GeoapifyProperties {
 	city: string;
 	lon: number;
 	lat: number;
+  postcode: string;
 	result_type: string;
 	formatted: string;
 	address_line1: string;

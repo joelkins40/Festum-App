@@ -66,7 +66,7 @@ export class GeoapifyService {
 		const city = props.city || '';
 		const state = props.state || '';
 		const country = props.country || 'México';
-		const postalCode = '';
+		const postalCode = props.postcode || '';
 
 		return {
 			street,
