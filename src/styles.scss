@@ -1,7 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================================
+   FESTUM APP - GLOBAL STYLES
+   ============================================================================
+
+   REPEATED PATTERNS DETECTED AND REFACTORED:
+
+   1. DIALOG/MODAL HEADERS - Gradient backgrounds with icons, titles, close buttons
+   2. DIALOG CONTENT AREAS - Consistent padding, backgrounds, overflow handling
+   3. DIALOG ACTIONS/FOOTERS - Flex layouts with cancel/save button patterns
+   4. PAGE HEADERS - Title sections with icons, descriptions, and action buttons
+   5. TABLE TOOLBARS - Search fields, filters, and action button groups
+   6. TABLE LAYOUTS - Headers, rows, hover states, selected states
+   7. STATUS CHIPS - Color-coded badges for active/inactive, preferente/regular states
+   8. ACTION BUTTON GROUPS - Edit/delete icon buttons with hover effects
+   9. LOADING OVERLAYS - Centered spinners with semi-transparent backgrounds
+   10. EMPTY STATE MESSAGES - Centered icons with text for no-data scenarios
+   11. INFO CARDS - Metadata display with icons, labels, and values
+   12. FORM SECTIONS - Section headers with icons and bottom borders
+   13. CARD CONTAINERS - Rounded corners, shadows, white backgrounds
+   14. ICON WITH TEXT PATTERNS - Flex layouts combining icons with labels
+   15. RESPONSIVE BUTTON GROUPS - Mobile-friendly stacked layouts
+
+   ============================================================================ */
 
 // Import Angular Material prebuilt theme
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// ============================================================================
+// CSS CUSTOM PROPERTIES (VARIABLES)
+// ============================================================================
 
 // Festum brand colors as CSS custom properties
 :root {
@@ -16,11 +42,55 @@
   --festum-navy: #2c3e50;
   --festum-navy-light: #34495e;
   --festum-navy-dark: #1a252f;
-  
+
   // Gradient colors
   --festum-gradient-primary: linear-gradient(135deg, #20b2aa 0%, #17a2b8 100%);
   --festum-gradient-light: linear-gradient(135deg, #4dd0e1 0%, #26a69a 100%);
   --festum-gradient-navy: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+
+  // Common colors found across components
+  --color-success: #28a745;
+  --color-success-dark: #218838;
+  --color-error: #f44336;
+  --color-error-dark: #dc3545;
+  --color-warning: #ffc107;
+  --color-warning-dark: #ff9800;
+  --color-info: #2196f3;
+
+  // Text colors
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --text-muted: #9ca3af;
+
+  // Border and background colors
+  --border-light: #e9ecef;
+  --border-medium: #e0e0e0;
+  --border-dark: #d1d5db;
+  --bg-light: #f8f9fa;
+  --bg-lighter: #fafafa;
+  --bg-hover: #f1f3f4;
+
+  // Shadow variables
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  // Spacing scale (commonly used values)
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+
+  // Border radius scale
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 16px;
+  --radius-circle: 50%;
 }
 
 [data-theme="dark"] {
@@ -31,6 +101,12 @@
   --festum-navy-light: #2c3e50;
   --festum-navy-dark: #0f1419;
   --festum-gradient-navy: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --border-light: #374151;
+  --bg-light: #1f2937;
+  --bg-hover: #374151;
 }
 
 // Global styles
@@ -45,10 +121,10 @@ html, body {
 }
 
 // Global styles
-html, body { 
-  height: 100%; 
-  margin: 0; 
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 * {
@@ -87,7 +163,518 @@ html, body {
   }
 }
 
-// Utility classes
+// ============================================================================
+// REUSABLE COMPONENT CLASSES
+// ============================================================================
+
+/* === 1. DIALOG/MODAL HEADERS === */
+.dialog-header-gradient {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xl) var(--spacing-2xl) 20px var(--spacing-2xl);
+  background: var(--festum-gradient-primary);
+  color: white;
+  position: relative;
+}
+
+.dialog-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 1;
+}
+
+.dialog-header-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.9;
+}
+
+.dialog-header-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.dialog-close-button {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-circle);
+  transition: all 0.2s ease;
+}
+
+.dialog-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* === 2. DIALOG CONTENT AREAS === */
+.dialog-content-standard {
+  padding: var(--spacing-2xl);
+  background-color: var(--bg-lighter);
+  min-height: 120px;
+}
+
+.dialog-content-scrollable {
+  flex: 1;
+  padding: var(--spacing-xl);
+  background-color: var(--bg-lighter);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* === 3. DIALOG ACTIONS/FOOTERS === */
+.dialog-actions-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: 20px var(--spacing-2xl) var(--spacing-2xl) var(--spacing-2xl);
+  background-color: var(--festum-surface);
+  border-top: 1px solid var(--border-medium);
+  flex-shrink: 0;
+}
+
+.dialog-cancel-button {
+  color: var(--text-secondary);
+  border-color: var(--border-medium);
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+
+.dialog-cancel-button:hover {
+  background-color: rgba(117, 117, 117, 0.1);
+  border-color: var(--text-secondary);
+}
+
+.dialog-save-button {
+  background-color: var(--festum-primary);
+  color: white;
+  min-width: 160px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dialog-save-button:hover:not(:disabled) {
+  background-color: #1a9690;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialog-save-button:disabled {
+  background-color: #cccccc;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+/* === 4. PAGE HEADERS === */
+.page-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+  background: var(--festum-surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.page-header-with-accent {
+  border-left: 4px solid var(--festum-primary);
+}
+
+.page-title-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-title-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.page-title-text {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.page-description-text {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* === 5. TABLE TOOLBARS === */
+.table-toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px var(--spacing-xl);
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.toolbar-action-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.toolbar-button-styled {
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.toolbar-button-styled:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+/* === 6. TABLE LAYOUTS === */
+.table-header-row {
+  background-color: var(--bg-light);
+}
+
+.table-header-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-light);
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.table-row-interactive {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--bg-hover);
+}
+
+.table-row-interactive:hover {
+  background-color: var(--bg-light);
+}
+
+.table-row-selected {
+  background-color: rgba(32, 178, 170, 0.1);
+  border-left: 4px solid var(--festum-primary);
+}
+
+/* === 7. STATUS CHIPS === */
+.status-chip-base {
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.status-chip-active {
+  background-color: rgba(32, 178, 170, 0.15);
+  color: var(--festum-primary);
+  border: 1px solid rgba(32, 178, 170, 0.3);
+}
+
+.status-chip-inactive {
+  background-color: rgba(244, 67, 54, 0.15);
+  color: var(--color-error);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.status-chip-success {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status-chip-warning {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+/* === 8. ACTION BUTTON GROUPS === */
+.action-buttons-group {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.action-button-edit {
+  color: var(--festum-primary);
+  background-color: rgba(32, 178, 170, 0.1);
+  transition: all 0.2s ease;
+}
+
+.action-button-edit:hover:not(:disabled) {
+  background-color: rgba(32, 178, 170, 0.2);
+  transform: scale(1.1);
+}
+
+.action-button-delete {
+  color: var(--color-error-dark);
+  background-color: rgba(220, 53, 69, 0.1);
+  transition: all 0.2s ease;
+}
+
+.action-button-delete:hover:not(:disabled) {
+  background-color: rgba(220, 53, 69, 0.2);
+  transform: scale(1.1);
+}
+
+/* === 9. LOADING OVERLAYS === */
+.loading-overlay-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-overlay-absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.loading-content-centered {
+  text-align: center;
+}
+
+.loading-text-standard {
+  margin-top: var(--spacing-lg);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* === 10. EMPTY STATE MESSAGES === */
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-subtitle {
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* === 11. INFO CARDS === */
+.info-card-container {
+  background-color: var(--festum-surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid var(--border-medium);
+}
+
+.info-item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.info-item-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-item-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.info-item-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.info-item-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  background-color: rgba(32, 178, 170, 0.1);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+/* === 12. FORM SECTIONS === */
+.form-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.form-section-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.form-section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-row-flex {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+}
+
+/* === 13. CARD CONTAINERS === */
+.card-elevated {
+  background: var(--festum-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.card-section {
+  background: var(--festum-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-medium);
+}
+
+/* === 14. ICON WITH TEXT PATTERNS === */
+.icon-text-combo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.icon-text-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* === 15. ID BADGES === */
+.id-badge-standard {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--bg-light);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  min-width: 32px;
+  height: 24px;
+}
+
+/* === 16. BUTTON HOVER EFFECTS === */
+.button-hover-lift {
+  transition: all 0.2s ease-in-out;
+}
+
+.button-hover-lift:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.button-hover-scale {
+  transition: all 0.2s ease-in-out;
+}
+
+.button-hover-scale:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+/* === 17. CONTAINER LAYOUTS === */
+.container-page-standard {
+  padding: var(--spacing-xl);
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.container-with-max-width {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* === 18. ANIMATIONS === */
+@keyframes slideInDialog {
+  from {
+    transform: translateY(-30px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideInDialog 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+// ============================================================================
+// UTILITY CLASSES (Keep existing ones)
+// ============================================================================
+
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
