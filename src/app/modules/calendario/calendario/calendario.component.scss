@@ -1,0 +1,563 @@
+/* ===== VARIABLES ===== */
+:root {
+  --primary-color: #20b2aa;
+  --primary-light: #4dd0c7;
+  --primary-dark: #158a7f;
+  --accent-color: #ff6b35;
+  --background-color: #f8f9fa;
+  --card-background: #ffffff;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --border-color: #e9ecef;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --info-color: #17a2b8;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.calendario-container {
+  padding: 24px;
+  background: var(--background-color);
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  margin-bottom: 32px;
+
+  .header-content {
+    text-align: center;
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+
+      .page-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: var(--primary-color);
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+    }
+
+    .page-description {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+}
+
+/* ===== TARJETA PRINCIPAL ===== */
+.calendario-card {
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+/* ===== TOOLBAR ===== */
+.calendario-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: #fafbfc;
+
+  .navegacion-fecha {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .fecha-actual {
+      text-align: center;
+      min-width: 200px;
+
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 4px 0;
+      }
+
+      .total-eventos {
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .btn-hoy {
+      background: var(--primary-color);
+      color: white;
+      font-weight: 500;
+
+      &:hover {
+        background: var(--primary-dark);
+      }
+    }
+  }
+}
+
+/* ===== CONTENIDO DEL CALENDARIO ===== */
+.calendario-contenido {
+  position: relative;
+  padding: 24px;
+
+  &.loading {
+    min-height: 400px;
+  }
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+
+    p {
+      margin-top: 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  }
+}
+
+/* ===== VISTA MENSUAL ===== */
+.vista-mensual {
+  .cabecera-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 16px;
+
+    .dia-semana {
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+  }
+
+  .grilla-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+
+    .celda-dia {
+      background: white;
+      min-height: 120px;
+      padding: 8px;
+      position: relative;
+      transition: all 0.2s ease;
+
+      &:not(.mes-actual) {
+        background: #f8f9fa;
+        opacity: 0.6;
+
+        .numero-dia {
+          color: var(--text-secondary);
+        }
+      }
+
+      &.hoy {
+        background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+
+        .numero-dia {
+          color: white;
+          font-weight: 700;
+        }
+      }
+
+      &.con-eventos:hover {
+        background: #f0f8ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+      }
+
+      .numero-dia {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-primary);
+
+        .badge-eventos {
+          width: 6px;
+          height: 6px;
+        }
+      }
+
+      .eventos-dia {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .evento-preview {
+          padding: 4px 6px;
+          border-radius: 4px;
+          color: white;
+          font-size: 11px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          &:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+          }
+
+          .evento-titulo {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+          }
+
+          .evento-hora {
+            font-size: 10px;
+            opacity: 0.9;
+            margin-left: 4px;
+          }
+        }
+
+        .mas-eventos {
+          font-size: 10px;
+          color: var(--text-secondary);
+          font-weight: 500;
+          text-align: center;
+          padding: 2px;
+        }
+      }
+    }
+  }
+}
+
+/* ===== VISTA ANUAL ===== */
+.vista-anual {
+  .grilla-meses {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+
+    .mes-anual {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(32, 178, 170, 0.15);
+      }
+
+      &.mes-actual {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, rgba(32, 178, 170, 0.05), rgba(32, 178, 170, 0.1));
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 0 16px 0;
+      }
+
+      .estadisticas-mes {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        .numero-eventos {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--primary-color);
+          font-weight: 500;
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        .sin-eventos {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--text-secondary);
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ===== PANEL DE DETALLES ===== */
+.evento-detalle {
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  .detalle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: #fafbfc;
+    border-bottom: 1px solid var(--border-color);
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+
+  .detalle-contenido {
+    padding: 24px;
+
+    .detalle-campo {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+
+      mat-icon {
+        color: var(--primary-color);
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      .campo-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+
+        strong {
+          color: var(--text-primary);
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        span {
+          color: var(--text-secondary);
+        }
+
+        mat-chip {
+          width: fit-content;
+          font-weight: 500;
+        }
+      }
+
+      &:first-child {
+        justify-content: flex-start;
+
+        mat-chip {
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+
+  .detalle-acciones {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 12px;
+
+    button {
+      font-weight: 500;
+    }
+  }
+}
+
+/* ===== FILTROS ===== */
+.filtros-menu {
+  .filtros-contenido {
+    padding: 20px;
+    width: 300px;
+
+    h3 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .option-with-color {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .color-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+    }
+
+    .filtros-acciones {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .calendario-container {
+    padding: 16px;
+  }
+
+  .calendario-toolbar {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+
+    .navegacion-fecha {
+      gap: 12px;
+
+      .fecha-actual h2 {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .grilla-calendario {
+    .celda-dia {
+      min-height: 80px;
+      padding: 4px;
+
+      .evento-preview {
+        padding: 2px 4px;
+        font-size: 10px;
+
+        .evento-hora {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .vista-anual .grilla-meses {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+
+    .mes-anual {
+      padding: 16px;
+    }
+  }
+
+  .evento-detalle {
+    .detalle-contenido {
+      padding: 16px;
+    }
+
+    .detalle-acciones {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.evento-detalle {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.celda-dia.con-eventos .evento-preview {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* ===== ESTADOS DE EVENTOS ===== */
+.estado-cotizacion {
+  background-color: var(--warning-color) !important;
+}
+
+.estado-confirmado {
+  background-color: var(--success-color) !important;
+}
+
+.estado-en-proceso {
+  background-color: var(--info-color) !important;
+}
+
+.estado-completado {
+  background-color: #8bc34a !important;
+}
+
+.estado-cancelado {
+  background-color: var(--danger-color) !important;
+}

@@ -1,1 +1,293 @@
-<p>calendario works!</p>
+<div class="calendario-container">
+
+  <!-- Header con controles -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">event</mat-icon>
+        <h1>Calendario de Eventos</h1>
+      </div>
+      <p class="page-description">Gestiona y visualiza todos tus eventos organizados</p>
+    </div>
+  </div>
+
+  <!-- Tarjeta principal -->
+  <mat-card class="calendario-card">
+
+    <!-- Toolbar de navegación y filtros -->
+    <div class="calendario-toolbar">
+
+      <!-- Navegación de fecha -->
+      <div class="navegacion-fecha">
+        <button mat-icon-button (click)="mesAnterior()" matTooltip="Mes anterior">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="fecha-actual">
+          <h2>{{ nombreMesActual }} {{ anioActual }}</h2>
+          <span class="total-eventos" *ngIf="totalEventosDelMes > 0">
+            {{ totalEventosDelMes }} evento{{ totalEventosDelMes !== 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <button mat-icon-button (click)="mesSiguiente()" matTooltip="Mes siguiente">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="acciones">
+        <button mat-button (click)="irAHoy()" class="btn-hoy">
+          <mat-icon>today</mat-icon>
+          Hoy
+        </button>
+
+        <button mat-icon-button [matMenuTriggerFor]="vistaMenu" matTooltip="Cambiar vista">
+          <mat-icon>view_module</mat-icon>
+        </button>
+        <mat-menu #vistaMenu="matMenu">
+          <button mat-menu-item (click)="cambiarVista('mes')" [class.active]="vistaActual === 'mes'">
+            <mat-icon>calendar_view_month</mat-icon>
+            Vista Mensual
+          </button>
+          <button mat-menu-item (click)="cambiarVista('anio')" [class.active]="vistaActual === 'anio'">
+            <mat-icon>calendar_view_year</mat-icon>
+            Vista Anual
+          </button>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="filtrosMenu" matTooltip="Filtros">
+          <mat-icon [matBadge]="(tipoEventoSeleccionado || estadoSeleccionado) ? '!' : ''"
+                    matBadgeColor="accent"
+                    matBadgeSize="small">
+            filter_list
+          </mat-icon>
+        </button>
+        <mat-menu #filtrosMenu="matMenu" class="filtros-menu">
+          <div class="filtros-contenido" (click)="$event.stopPropagation()">
+
+            <h3>Filtrar eventos</h3>
+            <mat-divider></mat-divider>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de evento</mat-label>
+              <mat-select [(value)]="tipoEventoSeleccionado" (selectionChange)="aplicarFiltros()">
+                <mat-option value="">Todos los tipos</mat-option>
+                <mat-option *ngFor="let tipo of tiposEvento" [value]="tipo">
+                  <div class="option-with-color">
+                    <div class="color-indicator" [style.background-color]="obtenerColorTipo(tipo)"></div>
+                    {{ obtenerNombreTipo(tipo) }}
+                  </div>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select [(value)]="estadoSeleccionado" (selectionChange)="aplicarFiltros()">
+                <mat-option value="">Todos los estados</mat-option>
+                <mat-option *ngFor="let estado of estadosEvento" [value]="estado">
+                  <div class="option-with-color">
+                    <div class="color-indicator" [style.background-color]="obtenerColorEstado(estado)"></div>
+                    {{ obtenerNombreEstado(estado) }}
+                  </div>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="filtros-acciones">
+              <button mat-button (click)="limpiarFiltros()">
+                <mat-icon>clear</mat-icon>
+                Limpiar
+              </button>
+            </div>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- Contenido del calendario -->
+    <div class="calendario-contenido" [class.loading]="cargando">
+
+      <!-- Spinner de carga -->
+      <div class="loading-spinner" *ngIf="cargando">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Cargando eventos...</p>
+      </div>
+
+      <!-- Vista mensual -->
+      <div class="vista-mensual" *ngIf="vistaActual === 'mes' && !cargando">
+
+        <!-- Cabecera de días de la semana -->
+        <div class="cabecera-dias">
+          <div class="dia-semana" *ngFor="let dia of diasSemana">
+            {{ dia }}
+          </div>
+        </div>
+
+        <!-- Grilla del calendario -->
+        <div class="grilla-calendario">
+          <div class="celda-dia"
+               *ngFor="let dia of diasCalendario"
+               [class.mes-actual]="dia.esMesActual"
+               [class.hoy]="dia.esHoy"
+               [class.con-eventos]="dia.numeroEventos > 0">
+
+            <!-- Número del día -->
+            <div class="numero-dia">
+              {{ dia.fecha.getDate() }}
+              <span class="badge-eventos" *ngIf="dia.numeroEventos > 0"
+                    [matBadge]="dia.numeroEventos"
+                    matBadgeSize="small"
+                    matBadgeColor="primary">
+              </span>
+            </div>
+
+            <!-- Eventos del día -->
+            <div class="eventos-dia" *ngIf="dia.esMesActual && dia.numeroEventos > 0">
+              <div class="evento-preview"
+                   *ngFor="let evento of dia.eventos | slice:0:3"
+                   [style.background-color]="evento.color"
+                   [matTooltip]="evento.titulo + ' - ' + formatearHora(evento.horaInicio)"
+                   (click)="seleccionarEvento(evento, $event)">
+                <span class="evento-titulo">{{ evento.titulo }}</span>
+                <span class="evento-hora">{{ formatearHora(evento.horaInicio) }}</span>
+              </div>
+
+              <div class="mas-eventos" *ngIf="dia.numeroEventos > 3">
+                +{{ dia.numeroEventos - 3 }} más
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista anual -->
+      <div class="vista-anual" *ngIf="vistaActual === 'anio' && !cargando">
+        <div class="grilla-meses">
+          <div class="mes-anual"
+               *ngFor="let mes of mesesDelAnio"
+               (click)="seleccionarMes(mes.mes)"
+               [class.mes-actual]="mes.mes === mesActual">
+
+            <h3>{{ mes.nombre }}</h3>
+            <div class="estadisticas-mes">
+              <div class="numero-eventos" *ngIf="mes.numeroEventos">
+                <mat-icon>event</mat-icon>
+                {{ mes.numeroEventos }} evento{{ mes.numeroEventos !== 1 ? 's' : '' }}
+              </div>
+              <div class="sin-eventos" *ngIf="!mes.numeroEventos">
+                <mat-icon>event_busy</mat-icon>
+                Sin eventos
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Panel lateral de detalles del evento -->
+  <mat-card class="evento-detalle" *ngIf="eventoSeleccionado">
+    <div class="detalle-header">
+      <h3>{{ eventoSeleccionado.titulo }}</h3>
+      <button mat-icon-button (click)="eventoSeleccionado = null">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="detalle-contenido">
+
+      <!-- Estado del evento -->
+      <div class="detalle-campo">
+        <mat-chip [style.background-color]="obtenerColorEstado(eventoSeleccionado.estado)"
+                  [style.color]="'white'">
+          {{ obtenerNombreEstado(eventoSeleccionado.estado) }}
+        </mat-chip>
+      </div>
+
+      <!-- Información básica -->
+      <div class="detalle-campo">
+        <mat-icon>event</mat-icon>
+        <div class="campo-info">
+          <strong>Fecha:</strong>
+          <span>{{ eventoSeleccionado.fechaInicio | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo">
+        <mat-icon>schedule</mat-icon>
+        <div class="campo-info">
+          <strong>Horario:</strong>
+          <span>{{ formatearHora(eventoSeleccionado.horaInicio) }} - {{ formatearHora(eventoSeleccionado.horaFin) }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo">
+        <mat-icon>category</mat-icon>
+        <div class="campo-info">
+          <strong>Tipo:</strong>
+          <mat-chip [style.background-color]="obtenerColorTipo(eventoSeleccionado.tipoEvento)"
+                    [style.color]="'white'">
+            {{ obtenerNombreTipo(eventoSeleccionado.tipoEvento) }}
+          </mat-chip>
+        </div>
+      </div>
+
+      <div class="detalle-campo">
+        <mat-icon>person</mat-icon>
+        <div class="campo-info">
+          <strong>Cliente:</strong>
+          <span>{{ eventoSeleccionado.cliente }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo" *ngIf="eventoSeleccionado.ubicacion">
+        <mat-icon>location_on</mat-icon>
+        <div class="campo-info">
+          <strong>Ubicación:</strong>
+          <span>{{ eventoSeleccionado.ubicacion }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo" *ngIf="eventoSeleccionado.numeroInvitados">
+        <mat-icon>group</mat-icon>
+        <div class="campo-info">
+          <strong>Invitados:</strong>
+          <span>{{ eventoSeleccionado.numeroInvitados }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo" *ngIf="eventoSeleccionado.presupuesto">
+        <mat-icon>attach_money</mat-icon>
+        <div class="campo-info">
+          <strong>Presupuesto:</strong>
+          <span>${{ eventoSeleccionado.presupuesto | number:'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <div class="detalle-campo" *ngIf="eventoSeleccionado.descripcion">
+        <mat-icon>description</mat-icon>
+        <div class="campo-info">
+          <strong>Descripción:</strong>
+          <span>{{ eventoSeleccionado.descripcion }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones del evento -->
+    <div class="detalle-acciones">
+      <button mat-raised-button color="primary">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button mat-button color="accent">
+        <mat-icon>visibility</mat-icon>
+        Ver detalles
+      </button>
+    </div>
+  </mat-card>
+
+</div>

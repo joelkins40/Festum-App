@@ -307,8 +307,8 @@
 
 /* ===== ELEMENTOS EN EL CANVAS ===== */
 .elemento-canvas {
-  border: 2px solid transparent;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
   cursor: move;
   transition: all 0.2s ease;
   display: flex;
@@ -316,28 +316,28 @@
   justify-content: center;
   user-select: none;
   position: absolute;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(2px);
-  min-width: 30px;
-  min-height: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(1px);
+  min-width: 40px;
+  min-height: 40px;
 
   &:hover {
-    background: rgba(32, 178, 170, 0.1);
-    border-color: rgba(32, 178, 170, 0.3);
-    box-shadow: 0 4px 12px rgba(32, 178, 170, 0.2);
+    background: rgba(32, 178, 170, 0.08);
+    border-color: rgba(32, 178, 170, 0.4);
+    box-shadow: 0 2px 8px rgba(32, 178, 170, 0.15);
     z-index: 10;
   }
 
   &.elemento-seleccionado {
     border-color: #20b2aa;
     background: rgba(32, 178, 170, 0.15);
-    box-shadow: 0 0 0 4px rgba(32, 178, 170, 0.3);
+    box-shadow: 0 0 0 2px rgba(32, 178, 170, 0.4);
     z-index: 15;
   }
 
   &.elemento-fijo {
     border-color: #ffc107;
-    background: rgba(255, 193, 7, 0.1);
+    background: rgba(255, 193, 7, 0.08);
 
     &::before {
       content: '';
@@ -377,9 +377,13 @@
 
     mat-icon {
       transition: all 0.2s ease;
-      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
       flex-shrink: 0;
       line-height: 1;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     .elemento-label {
@@ -452,12 +456,10 @@
   border-radius: 6px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   opacity: 0.9;
-  transform: rotate(5deg);
 }
 
 .cdk-drag-placeholder {
   opacity: 0.3;
-  transform: scale(0.9);
 }
 
 .cdk-drag-animating {

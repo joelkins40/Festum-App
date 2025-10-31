@@ -84,7 +84,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Mesa Redonda',
       icono: 'table_restaurant',
       color: '#8b4513',
-      tamano: { ancho: 80, alto: 80 }
+      tamano: { ancho: 120, alto: 120 }
     },
     {
       id: 'mesa-rectangular',
@@ -92,7 +92,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Mesa Rectangular',
       icono: 'table_bar',
       color: '#8b4513',
-      tamano: { ancho: 120, alto: 60 }
+      tamano: { ancho: 180, alto: 90 }
     },
     {
       id: 'silla',
@@ -100,7 +100,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Silla',
       icono: 'event_seat',
       color: '#654321',
-      tamano: { ancho: 30, alto: 30 }
+      tamano: { ancho: 50, alto: 50 }
     },
     {
       id: 'escenario',
@@ -108,7 +108,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Escenario',
       icono: 'theater_comedy',
       color: '#9c27b0',
-      tamano: { ancho: 200, alto: 100 }
+      tamano: { ancho: 300, alto: 150 }
     },
     {
       id: 'barra',
@@ -116,7 +116,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Barra',
       icono: 'local_bar',
       color: '#20b2aa',
-      tamano: { ancho: 150, alto: 50 }
+      tamano: { ancho: 220, alto: 80 }
     },
     {
       id: 'cabina-dj',
@@ -124,7 +124,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Cabina DJ/Sonido',
       icono: 'library_music',
       color: '#4a4a4a',
-      tamano: { ancho: 100, alto: 80 }
+      tamano: { ancho: 150, alto: 120 }
     },
     {
       id: 'zona-comida',
@@ -132,7 +132,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Zona de Comida',
       icono: 'restaurant_menu',
       color: '#ff6b35',
-      tamano: { ancho: 180, alto: 120 }
+      tamano: { ancho: 250, alto: 180 }
     },
     {
       id: 'entrada',
@@ -140,7 +140,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Entrada',
       icono: 'meeting_room',
       color: '#607d8b',
-      tamano: { ancho: 60, alto: 100 }
+      tamano: { ancho: 90, alto: 150 }
     },
     {
       id: 'baños',
@@ -148,7 +148,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Baños',
       icono: 'wc',
       color: '#795548',
-      tamano: { ancho: 80, alto: 80 }
+      tamano: { ancho: 120, alto: 120 }
     },
     {
       id: 'planta',
@@ -156,7 +156,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Planta/Decoración',
       icono: 'local_florist',
       color: '#4caf50',
-      tamano: { ancho: 40, alto: 40 }
+      tamano: { ancho: 60, alto: 60 }
     },
     {
       id: 'mesa-regalos',
@@ -164,7 +164,7 @@ export class PlanoComponent implements OnInit {
       nombre: 'Mesa de Regalos',
       icono: 'card_giftcard',
       color: '#e91e63',
-      tamano: { ancho: 100, alto: 60 }
+      tamano: { ancho: 150, alto: 90 }
     }
   ];
 
@@ -275,42 +275,73 @@ export class PlanoComponent implements OnInit {
     }
   }
 
-  private dragStartPosition: { x: number, y: number } | null = null;
+  private originalPosition: { x: number, y: number } | null = null;
 
   onElementDragStart(event: any, elemento: ElementoEnCanvas) {
-    // Guardar la posición inicial para referencia
-    this.dragStartPosition = {
+    // Guardar la posición original antes del drag
+    this.originalPosition = {
       x: elemento.posicion.x,
       y: elemento.posicion.y
     };
+    // Debug: Drag started
   }
 
   onElementDragEnd(event: any, elemento: ElementoEnCanvas) {
-    if (!this.dragStartPosition) return;
+    if (!this.originalPosition || !event?.source) return;
 
-    // Obtener el desplazamiento total del drag
+    // Obtener el desplazamiento del drag (en píxeles de pantalla)
     const transform = event.source.getFreeDragPosition();
-    
-    // Calcular la nueva posición basada en la posición inicial + desplazamiento
-    const nuevaX = Math.max(0, Math.min(
-      this.dragStartPosition.x + transform.x,
-      (this.plantillaSeleccionada?.dimensiones.ancho || 800) - elemento.tamano.ancho
-    ));
-    
-    const nuevaY = Math.max(0, Math.min(
-      this.dragStartPosition.y + transform.y,
-      (this.plantillaSeleccionada?.dimensiones.alto || 600) - elemento.tamano.alto
-    ));
+    if (!transform) return;
 
-    // Actualizar la posición del elemento
-    elemento.posicion.x = Math.round(nuevaX);
-    elemento.posicion.y = Math.round(nuevaY);
+    // Debug: Got transform
 
-    // Limpiar la posición de inicio
-    this.dragStartPosition = null;
+    // Convertir el desplazamiento a coordenadas lógicas del canvas
+    // Para esto necesitamos saber la escala actual del canvas
+    const canvasElement = this.canvasRef?.nativeElement;
+    if (!canvasElement) return;
+
+    const canvasRect = canvasElement.getBoundingClientRect();
+    const canvasLogicalWidth = this.plantillaSeleccionada?.dimensiones?.ancho || 800;
+    const canvasLogicalHeight = this.plantillaSeleccionada?.dimensiones?.alto || 600;
+
+    // Calcular la escala del canvas
+    const scaleX = canvasRect.width / canvasLogicalWidth;
+    const scaleY = canvasRect.height / canvasLogicalHeight;
+
+    // Verificar que las escalas sean válidas
+    if (scaleX <= 0 || scaleY <= 0 || !isFinite(scaleX) || !isFinite(scaleY)) {
+      console.warn('Invalid canvas scales:', { scaleX, scaleY });
+      return;
+    }
+
+    // Convertir el desplazamiento de píxeles a coordenadas lógicas
+    const deltaX = transform.x / scaleX;
+    const deltaY = transform.y / scaleY;
+
+    // Verificar que los deltas sean válidos
+    if (!isFinite(deltaX) || !isFinite(deltaY)) {
+      console.warn('Invalid deltas:', { deltaX, deltaY });
+      return;
+    }
+
+    // Calcular nueva posición
+    const nuevaX = this.originalPosition.x + deltaX;
+    const nuevaY = this.originalPosition.y + deltaY;
+
+    // Aplicar límites
+    const maxX = Math.max(0, canvasLogicalWidth - (elemento.tamano?.ancho || 50));
+    const maxY = Math.max(0, canvasLogicalHeight - (elemento.tamano?.alto || 50));
+
+    elemento.posicion.x = Math.max(0, Math.min(Math.round(nuevaX), maxX));
+    elemento.posicion.y = Math.max(0, Math.min(Math.round(nuevaY), maxY));
+
+    // Debug: Element positioned
 
     // Resetear el transform del drag
     event.source.reset();
+
+    // Limpiar posición original
+    this.originalPosition = null;
 
     this.guardarAutomaticamente();
   }
@@ -350,8 +381,8 @@ export class PlanoComponent implements OnInit {
     }
 
     const factor = direccion === 'mas' ? 1.2 : 0.8;
-    const nuevoAncho = Math.max(25, Math.min(300, elemento.tamano.ancho * factor));
-    const nuevoAlto = Math.max(25, Math.min(300, elemento.tamano.alto * factor));
+    const nuevoAncho = Math.max(40, Math.min(500, elemento.tamano.ancho * factor));
+    const nuevoAlto = Math.max(40, Math.min(500, elemento.tamano.alto * factor));
 
     elemento.tamano.ancho = nuevoAncho;
     elemento.tamano.alto = nuevoAlto;
@@ -451,28 +482,40 @@ export class PlanoComponent implements OnInit {
   }
 
   trackByElementId(index: number, elemento: ElementoEnCanvas): string {
-    return elemento.id;
+    return elemento.id || `elemento-${index}`;
   }
 
   getIconSize(elemento: ElementoEnCanvas): number {
-    // Calcular el tamaño basado en el área del elemento para mejor proporción
-    const area = elemento.tamano.ancho * elemento.tamano.alto;
-    const baseSize = Math.sqrt(area) * 0.35;
+    if (!elemento?.tamano) return 24;
 
-    // Usar límites más amplios para elementos grandes
-    const minSize = 18;
-    const maxSize = 72;
+    // Usar una fórmula más simple y efectiva
+    const averageSize = (elemento.tamano.ancho + elemento.tamano.alto) / 2;
 
-    return Math.max(minSize, Math.min(maxSize, Math.round(baseSize)));
+    // El ícono será proporcional al tamaño promedio
+    const iconSize = averageSize * 0.4;
+
+    // Límites más conservadores para mejor visualización
+    const minSize = 20;
+    const maxSize = 64;
+
+    const result = Math.max(minSize, Math.min(maxSize, Math.round(iconSize)));
+    return isFinite(result) ? result : 24;
   }
 
   shouldShowLabel(elemento: ElementoEnCanvas): boolean {
-    return elemento.tamano.ancho > 80 && elemento.tamano.alto > 50;
+    if (!elemento?.tamano) return false;
+
+    // Mostrar etiqueta si el elemento es lo suficientemente grande
+    const area = elemento.tamano.ancho * elemento.tamano.alto;
+    return area > 4000; // Aproximadamente 60x60 o mayor
   }
 
   getLabelFontSize(elemento: ElementoEnCanvas): number {
+    if (!elemento?.tamano) return 10;
+
     const baseSize = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
-    return Math.max(8, Math.min(12, baseSize * 0.15));
+    const result = Math.max(8, Math.min(12, baseSize * 0.15));
+    return isFinite(result) ? result : 10;
   }
 
   private getCanvasScale(): number {
@@ -581,23 +624,28 @@ export class PlanoComponent implements OnInit {
       };
     }
 
-    return {
+    const style = {
       'width.px': this.plantillaSeleccionada.dimensiones.ancho,
       'height.px': this.plantillaSeleccionada.dimensiones.alto,
       'min-width.px': this.plantillaSeleccionada.dimensiones.ancho,
       'min-height.px': this.plantillaSeleccionada.dimensiones.alto
     };
+
+    return style;
   }
 
   getElementoStyle(elemento: ElementoEnCanvas) {
-    return {
+    const style = {
       'position': 'absolute',
       'left.px': elemento.posicion.x,
       'top.px': elemento.posicion.y,
       'width.px': elemento.tamano.ancho,
       'height.px': elemento.tamano.alto,
       'background-color': 'transparent',
-      'transform': elemento.rotacion ? `rotate(${elemento.rotacion}deg)` : 'none'
+      'transform': elemento.rotacion ? `rotate(${elemento.rotacion}deg)` : 'none',
+      'z-index': 1
     };
+
+    return style;
   }
 }
