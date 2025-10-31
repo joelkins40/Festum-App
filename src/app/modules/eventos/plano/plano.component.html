@@ -1,1 +1,181 @@
-<p>plano works!</p>
+<div class="plano-container" (keydown)="onKeyDown($event)" tabindex="0">
+
+  <!-- Header con toolbar -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">map</mat-icon>
+        <h1>Diseñador de Planos</h1>
+      </div>
+      <p class="page-description">Organiza visualmente los elementos de tu evento</p>
+    </div>
+
+    <div class="header-actions">
+      <mat-form-field appearance="outline" class="plantilla-select">
+        <mat-label>Plantilla del lugar</mat-label>
+        <mat-select [(value)]="plantillaSeleccionada" (selectionChange)="seleccionarPlantilla($event.value)">
+          <mat-option *ngFor="let plantilla of plantillasDisponibles" [value]="plantilla">
+            {{ plantilla.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="warn" (click)="nuevoDiseno()" matTooltip="Limpiar área de trabajo">
+        <mat-icon>clear_all</mat-icon>
+        Nuevo Diseño
+      </button>
+
+      <button mat-raised-button color="primary" (click)="guardarDiseno()" matTooltip="Exportar diseño en JSON">
+        <mat-icon>save</mat-icon>
+        Guardar Diseño
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor principal con sidebar y canvas -->
+  <div class="main-container">
+
+    <!-- Sidebar con elementos arrastrables -->
+    <mat-drawer-container class="drawer-container" [hasBackdrop]="false">
+      <mat-drawer #drawer [opened]="sidebarAbierto" mode="side" position="start" class="sidebar">
+        <div class="sidebar-header">
+          <h3>
+            <mat-icon>drag_indicator</mat-icon>
+            Elementos
+          </h3>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div class="elementos-lista">
+          <div class="elemento-categoria">
+            <h4>Mobiliario y Decoración</h4>
+            <div
+              cdkDropList
+              cdkDropListSortingDisabled="true"
+              [cdkDropListData]="elementosArrastrables"
+              [cdkDropListConnectedTo]="['canvas-drop-list']"
+              class="elementos-drop-list"
+            >
+              <div
+                *ngFor="let elemento of elementosArrastrables"
+                class="elemento-arrastrable"
+                cdkDrag
+                [cdkDragData]="elemento"
+                matTooltip="{{ elemento.nombre }}"
+              >
+                <mat-icon [style.color]="elemento.color">{{ elemento.icono }}</mat-icon>
+                <span>{{ elemento.nombre }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-drawer>
+
+      <!-- Área de trabajo (Canvas) -->
+      <mat-drawer-content class="canvas-container">
+        <div class="canvas-toolbar">
+          <button mat-icon-button (click)="toggleSidebar()" matTooltip="Mostrar/Ocultar panel">
+            <mat-icon>{{ sidebarAbierto ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+          </button>
+
+          <div class="canvas-info" *ngIf="plantillaSeleccionada">
+            <span class="plantilla-nombre">{{ plantillaSeleccionada.nombre }}</span>
+            <span class="dimensiones">
+              {{ plantillaSeleccionada.dimensiones.ancho }} x {{ plantillaSeleccionada.dimensiones.alto }} px
+            </span>
+          </div>
+
+          <div class="elemento-controls" *ngIf="elementoSeleccionado">
+            <span class="elemento-info">{{ elementoSeleccionado.nombre }}</span>
+            <button mat-icon-button (click)="rotarElemento(elementoSeleccionado)" matTooltip="Rotar elemento (R)" [disabled]="isElementoFijo(elementoSeleccionado)">
+              <mat-icon>rotate_right</mat-icon>
+            </button>
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'mas')" matTooltip="Aumentar tamaño (+)" [disabled]="isElementoFijo(elementoSeleccionado)">
+              <mat-icon>zoom_in</mat-icon>
+            </button>
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'menos')" matTooltip="Reducir tamaño (-)" [disabled]="isElementoFijo(elementoSeleccionado)">
+              <mat-icon>zoom_out</mat-icon>
+            </button>
+            <button mat-icon-button (click)="eliminarElemento(elementoSeleccionado)" matTooltip="Eliminar elemento (Delete)" color="warn" [disabled]="isElementoFijo(elementoSeleccionado)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <div class="ayuda-controles" *ngIf="!elementoSeleccionado">
+            <span class="ayuda-texto">Arrastra elementos desde el panel lateral o selecciona uno para editarlo</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <div
+            #canvas
+            class="canvas"
+            [ngStyle]="getCanvasStyle()"
+            cdkDropList
+            id="canvas-drop-list"
+            [cdkDropListData]="elementosEnCanvas"
+            (cdkDropListDropped)="onDrop($event)"
+            (click)="elementoSeleccionado = null"
+          >
+            <!-- Elementos en el canvas -->
+            <div
+              *ngFor="let elemento of elementosEnCanvas; trackBy: trackByElementId"
+              class="elemento-canvas"
+              [class.elemento-seleccionado]="elementoSeleccionado === elemento"
+              [class.elemento-fijo]="isElementoFijo(elemento)"
+              [ngStyle]="getElementoStyle(elemento)"
+              cdkDrag
+              [cdkDragData]="elemento"
+              [cdkDragDisabled]="isElementoFijo(elemento)"
+              (click)="seleccionarElemento(elemento, $event)"
+              (cdkDragEnded)="onElementDragEnd($event, elemento)"
+              (cdkDragStarted)="onElementDragStart($event, elemento)"
+            >
+              <div class="elemento-contenido">
+              <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
+                {{ elemento.icono }}
+              </mat-icon>
+                <span
+                  class="elemento-label"
+                  *ngIf="shouldShowLabel(elemento)"
+                  [style.font-size.px]="getLabelFontSize(elemento)">
+                  {{ elemento.nombre }}
+                </span>
+              </div>
+
+              <!-- Indicador de que es elemento fijo -->
+              <mat-icon
+                *ngIf="isElementoFijo(elemento)"
+                class="icono-fijo"
+                matTooltip="Elemento fijo de la plantilla"
+              >
+                push_pin
+              </mat-icon>
+            </div>
+
+            <!-- Indicador de área vacía -->
+            <div class="canvas-placeholder" *ngIf="elementosEnCanvas.length === 0">
+              <mat-icon>add_location</mat-icon>
+              <p>Arrastra elementos aquí para comenzar a diseñar</p>
+            </div>
+          </div>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
+
+  <!-- Mini-mapa (opcional) -->
+  <div class="mini-mapa" *ngIf="plantillaSeleccionada && elementosEnCanvas.length > 5">
+    <h4>Vista previa</h4>
+    <div class="mini-canvas" [ngStyle]="{
+      'width.px': plantillaSeleccionada.dimensiones.ancho / 10,
+      'height.px': plantillaSeleccionada.dimensiones.alto / 10
+    }">
+      <div
+        *ngFor="let elemento of elementosEnCanvas"
+        class="mini-elemento"
+        [ngStyle]="getMiniElementoStyle(elemento)"
+      ></div>
+    </div>
+  </div>
+</div>
