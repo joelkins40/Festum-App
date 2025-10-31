@@ -1,0 +1,87 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon>{{ isEditMode ? 'edit' : 'person_add' }}</mat-icon>
+      <h2>{{ isEditMode ? 'Editar Contacto' : 'Nuevo Contacto' }}</h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="contactoForm">
+      <div class="form-section">
+        <h3>Información del Contacto</h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre completo</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: Juan Pérez García">
+            <mat-icon matPrefix>person</mat-icon>
+            @if (contactoForm.get('nombre')?.hasError('required') && contactoForm.get('nombre')?.touched) {
+            <mat-error>El nombre es requerido</mat-error>
+            }
+            @if (contactoForm.get('nombre')?.hasError('minlength') && contactoForm.get('nombre')?.touched) {
+            <mat-error>El nombre debe tener al menos 3 caracteres</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone" placeholder="Ej: +52 55 1234 5678">
+            <mat-icon matPrefix>phone</mat-icon>
+            @if (contactoForm.get('phone')?.hasError('required') && contactoForm.get('phone')?.touched) {
+            <mat-error>El teléfono es requerido</mat-error>
+            }
+            @if (contactoForm.get('phone')?.hasError('pattern') && contactoForm.get('phone')?.touched) {
+            <mat-error>Formato de teléfono inválido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="Ej: contacto@ejemplo.com">
+            <mat-icon matPrefix>email</mat-icon>
+            @if (contactoForm.get('email')?.hasError('required') && contactoForm.get('email')?.touched) {
+            <mat-error>El email es requerido</mat-error>
+            }
+            @if (contactoForm.get('email')?.hasError('email') && contactoForm.get('email')?.touched) {
+            <mat-error>Formato de email inválido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contacto alternativo (opcional)</mat-label>
+            <input matInput formControlName="contactoAlternativo" placeholder="Ej: +52 55 8765 4321">
+            <mat-icon matPrefix>contacts</mat-icon>
+            <mat-hint>Teléfono o email alternativo</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-checkbox formControlName="clientePreferente" color="primary">
+            Cliente Preferente
+          </mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-stroked-button (click)="onCancel()" type="button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="contactoForm.invalid">
+      <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+      {{ isEditMode ? 'Guardar Cambios' : 'Crear Contacto' }}
+    </button>
+  </div>
+</div>
