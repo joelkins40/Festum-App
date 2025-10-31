@@ -1,0 +1,174 @@
+{
+  "plantillas": [
+    {
+      "id": "salon-a",
+      "nombre": "Salón Elegance",
+      "tipo": "rectangular",
+      "dimensiones": {
+        "ancho": 800,
+        "alto": 600
+      },
+      "elementosFijos": [
+        {
+          "id": "entrada-principal",
+          "tipo": "entrada",
+          "posicion": { "x": 350, "y": 0 },
+          "tamano": { "ancho": 100, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "columna-1",
+          "tipo": "columna",
+          "posicion": { "x": 200, "y": 150 },
+          "tamaño": { "ancho": 30, "alto": 30 },
+          "color": "#696969"
+        },
+        {
+          "id": "columna-2",
+          "tipo": "columna",
+          "posicion": { "x": 570, "y": 150 },
+          "tamaño": { "ancho": 30, "alto": 30 },
+          "color": "#696969"
+        },
+        {
+          "id": "columna-3",
+          "tipo": "columna",
+          "posicion": { "x": 200, "y": 420 },
+          "tamaño": { "ancho": 30, "alto": 30 },
+          "color": "#696969"
+        },
+        {
+          "id": "columna-4",
+          "tipo": "columna",
+          "posicion": { "x": 570, "y": 420 },
+          "tamaño": { "ancho": 30, "alto": 30 },
+          "color": "#696969"
+        }
+      ]
+    },
+    {
+      "id": "jardin-b",
+      "nombre": "Jardín Rosales",
+      "tipo": "circular",
+      "dimensiones": {
+        "ancho": 900,
+        "alto": 700
+      },
+      "elementosFijos": [
+        {
+          "id": "entrada-jardin",
+          "tipo": "entrada",
+          "posicion": { "x": 400, "y": 0 },
+          "tamaño": { "ancho": 100, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "fuente-central",
+          "tipo": "fuente",
+          "posicion": { "x": 425, "y": 325 },
+          "tamaño": { "ancho": 50, "alto": 50 },
+          "color": "#4682b4"
+        },
+        {
+          "id": "arbol-1",
+          "tipo": "arbol",
+          "posicion": { "x": 100, "y": 100 },
+          "tamaño": { "ancho": 40, "alto": 40 },
+          "color": "#228b22"
+        },
+        {
+          "id": "arbol-2",
+          "tipo": "arbol",
+          "posicion": { "x": 760, "y": 100 },
+          "tamaño": { "ancho": 40, "alto": 40 },
+          "color": "#228b22"
+        },
+        {
+          "id": "arbol-3",
+          "tipo": "arbol",
+          "posicion": { "x": 100, "y": 560 },
+          "tamaño": { "ancho": 40, "alto": 40 },
+          "color": "#228b22"
+        },
+        {
+          "id": "arbol-4",
+          "tipo": "arbol",
+          "posicion": { "x": 760, "y": 560 },
+          "tamaño": { "ancho": 40, "alto": 40 },
+          "color": "#228b22"
+        }
+      ]
+    },
+    {
+      "id": "terraza-c",
+      "nombre": "Terraza Vista Mar",
+      "tipo": "terraza",
+      "dimensiones": {
+        "ancho": 1000,
+        "alto": 500
+      },
+      "elementosFijos": [
+        {
+          "id": "entrada-terraza",
+          "tipo": "entrada",
+          "posicion": { "x": 450, "y": 0 },
+          "tamaño": { "ancho": 100, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "barandal-frente",
+          "tipo": "barandal",
+          "posicion": { "x": 0, "y": 480 },
+          "tamaño": { "ancho": 1000, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "barandal-izq",
+          "tipo": "barandal",
+          "posicion": { "x": 0, "y": 0 },
+          "tamaño": { "ancho": 20, "alto": 500 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "barandal-der",
+          "tipo": "barandal",
+          "posicion": { "x": 980, "y": 0 },
+          "tamaño": { "ancho": 20, "alto": 500 },
+          "color": "#8b4513"
+        }
+      ]
+    },
+    {
+      "id": "salon-eventos",
+      "nombre": "Salón Diamante",
+      "tipo": "rectangular",
+      "dimensiones": {
+        "ancho": 1200,
+        "alto": 800
+      },
+      "elementosFijos": [
+        {
+          "id": "entrada-1",
+          "tipo": "entrada",
+          "posicion": { "x": 300, "y": 0 },
+          "tamaño": { "ancho": 80, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "entrada-2",
+          "tipo": "entrada",
+          "posicion": { "x": 820, "y": 0 },
+          "tamaño": { "ancho": 80, "alto": 20 },
+          "color": "#8b4513"
+        },
+        {
+          "id": "tarima-fija",
+          "tipo": "tarima",
+          "posicion": { "x": 500, "y": 750 },
+          "tamaño": { "ancho": 200, "alto": 50 },
+          "color": "#daa520"
+        }
+      ]
+    }
+  ]
+}
