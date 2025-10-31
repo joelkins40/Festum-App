@@ -1,0 +1,100 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon>{{ isEditMode ? 'edit_note' : 'event_available' }}</mat-icon>
+      <h2>{{ isEditMode ? 'Editar Evento' : 'Nuevo Evento' }}</h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="eventoForm">
+      <div class="form-section">
+        <h3>Información del Evento</h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Cliente</mat-label>
+            <input matInput formControlName="cliente" placeholder="Ej: Juan Pérez García" />
+            <mat-icon matPrefix>person</mat-icon>
+            @if (eventoForm.get('cliente')?.hasError('required') &&
+            eventoForm.get('cliente')?.touched) {
+            <mat-error>El nombre del cliente es requerido</mat-error>
+            } @if (eventoForm.get('cliente')?.hasError('minlength') &&
+            eventoForm.get('cliente')?.touched) {
+            <mat-error>El nombre debe tener al menos 3 caracteres</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tipo de Evento</mat-label>
+            <input matInput formControlName="tipoEvento" placeholder="Ej: Boda, XV Años, Bautizo" />
+            <mat-icon matPrefix>celebration</mat-icon>
+            @if (eventoForm.get('tipoEvento')?.hasError('required') &&
+            eventoForm.get('tipoEvento')?.touched) {
+            <mat-error>El tipo de evento es requerido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Fecha del Evento</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fechaEvento" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-icon matPrefix>calendar_today</mat-icon>
+            @if (eventoForm.get('fechaEvento')?.hasError('required') &&
+            eventoForm.get('fechaEvento')?.touched) {
+            <mat-error>La fecha del evento es requerida</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Lugar</mat-label>
+            <input matInput formControlName="lugar" placeholder="Ej: Salón Real del Bosque" />
+            <mat-icon matPrefix>place</mat-icon>
+            @if (eventoForm.get('lugar')?.hasError('required') &&
+            eventoForm.get('lugar')?.touched) {
+            <mat-error>El lugar es requerido</mat-error>
+            } @if (eventoForm.get('lugar')?.hasError('minlength') &&
+            eventoForm.get('lugar')?.touched) {
+            <mat-error>El lugar debe tener al menos 3 caracteres</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Monto Total (opcional)</mat-label>
+            <input matInput type="number" formControlName="montoTotal" placeholder="0.00" />
+            <span matPrefix>$&nbsp;</span>
+            <mat-icon matPrefix>attach_money</mat-icon>
+            @if (eventoForm.get('montoTotal')?.hasError('min') &&
+            eventoForm.get('montoTotal')?.touched) {
+            <mat-error>El monto no puede ser negativo</mat-error>
+            }
+            <mat-hint>Monto en pesos mexicanos (MXN)</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-stroked-button (click)="onCancel()" type="button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="eventoForm.invalid">
+      <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+      {{ isEditMode ? 'Guardar Cambios' : 'Crear Evento' }}
+    </button>
+  </div>
+</div>
