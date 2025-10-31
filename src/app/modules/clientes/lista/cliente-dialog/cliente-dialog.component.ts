@@ -1,4 +1,12 @@
-import { Component, OnInit, inject, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	inject,
+	OnDestroy,
+	AfterViewInit,
+	ViewChild,
+	ElementRef,
+} from '@angular/core';
 import {
 	FormBuilder,
 	FormGroup,
@@ -56,7 +64,9 @@ export interface ClienteDialogData {
 	templateUrl: './cliente-dialog.component.html',
 	styleUrl: './cliente-dialog.component.scss',
 })
-export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ClienteDialogComponent
+	implements OnInit, OnDestroy, AfterViewInit
+{
 	clienteForm!: FormGroup;
 	modo: 'crear' | 'editar';
 	guardando = false;
@@ -118,7 +128,10 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 					Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/),
 				],
 			],
-			direcciones: this.fb.array([], [Validators.required, Validators.minLength(1)]),
+			direcciones: this.fb.array(
+				[],
+				[Validators.required, Validators.minLength(1)],
+			),
 			clientePreferente: [false, []],
 		});
 	}
@@ -144,7 +157,10 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 
 			// Cargar direcciones existentes
 			this.direccionesArray.clear();
-			if (this.data.cliente.direcciones && this.data.cliente.direcciones.length > 0) {
+			if (
+				this.data.cliente.direcciones &&
+				this.data.cliente.direcciones.length > 0
+			) {
 				this.data.cliente.direcciones.forEach((direccion: Direccion) => {
 					this.agregarDireccion(direccion);
 				});
@@ -158,6 +174,8 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	 * ➕ Agregar nueva dirección al formulario
 	 */
 	agregarDireccion(direccion?: Direccion): void {
+		// console.log("===agregarDireccion===")
+		// console.log({direccion})
 		const direccionForm = this.fb.group({
 			street: [direccion?.street || '', [Validators.required]],
 			number: [direccion?.number || '', [Validators.required]],
@@ -169,11 +187,11 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 			formatted: this.fb.group({
 				line1: [direccion?.formatted?.line1 || '', [Validators.required]],
 				line2: [direccion?.formatted?.line2 || ''],
-				line3: [direccion?.formatted?.line3 || '']
+				line3: [direccion?.formatted?.line3 || ''],
 			}),
 			geoapifyPlaceId: [direccion?.geoapifyPlaceId || ''],
 			confidence: [direccion?.confidence || 0],
-			source: [direccion?.source || 'Geoapify']
+			source: [direccion?.source || 'Geoapify'],
 		});
 
 		this.direccionesArray.push(direccionForm);
@@ -198,18 +216,20 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 			return;
 		}
 
-		this.geoapifyService.autocomplete(query, 5)
+		this.geoapifyService
+			.autocomplete(query, 5)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (response) => {
 					this.autocompleteResults = response.features;
 					this.showAutocomplete = this.autocompleteResults.length > 0;
+					// console.log({autocompleteResults:this.autocompleteResults})
 				},
 				error: (error) => {
 					console.error('Error en autocompletado:', error);
 					this.autocompleteResults = [];
 					this.showAutocomplete = false;
-				}
+				},
 			});
 	}
 
@@ -217,7 +237,15 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	 * 📍 Seleccionar dirección del autocompletado
 	 */
 	seleccionarDireccion(feature: GeoapifyFeature): void {
-		const direccionFormateada = this.geoapifyService.formatearDireccion(feature);
+		const direccionFormateada =
+			this.geoapifyService.formatearDireccion(feature);
+		//! BUG: numero de la casa no es debuelto por la API de Geoapify
+		//! BUG: neighborhood no es debuelto por la API de Geoapify
+		// console.log({
+		//   direccionActual: feature,
+		//   postalCode: feature.properties.postcode,
+		//   direccionFormateada: direccionFormateada
+		// })
 		this.agregarDireccion(direccionFormateada);
 		this.searchText = '';
 		this.showAutocomplete = false;
@@ -258,9 +286,9 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 			if (control) {
 				control.markAsTouched();
 				if (control instanceof FormArray) {
-					control.controls.forEach(innerControl => {
+					control.controls.forEach((innerControl) => {
 						if (innerControl instanceof FormGroup) {
-							Object.keys(innerControl.controls).forEach(innerKey => {
+							Object.keys(innerControl.controls).forEach((innerKey) => {
 								innerControl.get(innerKey)?.markAsTouched();
 							});
 						}
@@ -277,6 +305,10 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 	}
 
 	get direccionesArray(): FormArray {
+		// console.log({
+		//   valoresFormulario: this.clienteForm.value.nombre,
+		//   niIdea: this.clienteForm.get('direcciones')
+		// })
 		return this.clienteForm.get('direcciones') as FormArray;
 	}
 
@@ -286,13 +318,13 @@ export class ClienteDialogComponent implements OnInit, OnDestroy, AfterViewInit 
 
 	get esFormularioValido(): boolean {
 		const esValido = this.clienteForm.valid && this.direccionesArray.length > 0;
-		this.logger.log({
-			errorForm: this.clienteForm.errors,
-			esValido,
-			valoresForm: this.clienteForm.value,
-			direccionesCount: this.direccionesArray.length,
-      veamos: this.clienteForm.get('direccion.lng')
-		});
+		// this.logger.log({
+		// 	errorForm: this.clienteForm.errors,
+		// 	esValido,
+		// 	valoresForm: this.clienteForm.value,
+		// 	direccionesCount: this.direccionesArray.length,
+		//   veamos: this.clienteForm.get('direccion.lng')
+		// });
 		return esValido;
 	}
 
