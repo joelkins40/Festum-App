@@ -1,1 +1,145 @@
-<p>direcciones works!</p>
+<div class="direcciones-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">location_city</mat-icon>
+        <h1>Direcciones de Clientes</h1>
+      </div>
+      <p class="page-description">Gestión de direcciones registradas por cliente</p>
+    </div>
+
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="createDireccion()">
+        <mat-icon>add_location</mat-icon>
+        Nueva Dirección
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+  <div class="loading-overlay">
+    <mat-progress-spinner diameter="60" mode="indeterminate" color="primary"></mat-progress-spinner>
+    <p>Cargando direcciones...</p>
+  </div>
+  }
+
+  <!-- Main Content -->
+  <mat-card class="main-card">
+    <!-- Toolbar -->
+    <div class="table-toolbar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar</mat-label>
+        <input matInput [(ngModel)]="searchText" (keyup)="applyFilter()" placeholder="Cliente, ciudad o estado...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-icon-button (click)="clearFilter()" matTooltip="Limpiar filtro">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="direcciones-table">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let direccion">
+            <span class="id-badge">{{ direccion.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Cliente Column -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+          <td mat-cell *matCellDef="let direccion">
+            <div class="cliente-info">
+              <mat-icon>person</mat-icon>
+              <span>{{ direccion.cliente }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Full Address Column -->
+        <ng-container matColumnDef="fullAddress">
+          <th mat-header-cell *matHeaderCellDef>Dirección Completa</th>
+          <td mat-cell *matCellDef="let direccion">
+            <div class="address-info">
+              <mat-icon>place</mat-icon>
+              <span>{{ direccion.fullAddress }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- City Column -->
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Ciudad</th>
+          <td mat-cell *matCellDef="let direccion">{{ direccion.city }}</td>
+        </ng-container>
+
+        <!-- State Column -->
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let direccion">{{ direccion.state }}</td>
+        </ng-container>
+
+        <!-- Creation Date Column -->
+        <ng-container matColumnDef="creationDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Creación</th>
+          <td mat-cell *matCellDef="let direccion">
+            {{ direccion.creationDate | date:'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <!-- Active Column -->
+        <ng-container matColumnDef="active">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let direccion">
+            <mat-chip [ngClass]="direccion.active ? 'active' : 'inactive'">
+              <mat-icon>{{ direccion.active ? 'check_circle' : 'cancel' }}</mat-icon>
+              {{ direccion.active ? 'Activo' : 'Inactivo' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let direccion">
+            <div class="actions-container">
+              <button mat-icon-button (click)="editDireccion(direccion)" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteDireccion(direccion)" matTooltip="Eliminar" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button (click)="toggleActive(direccion)"
+                [matTooltip]="direccion.active ? 'Desactivar' : 'Activar'">
+                <mat-icon>{{ direccion.active ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-data-message">
+              <mat-icon>location_off</mat-icon>
+              <p>No se encontraron direcciones</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>

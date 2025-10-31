@@ -1,0 +1,128 @@
+<div class="direccion-dialog">
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{ icon }}</mat-icon>
+      <h2>{{ title }}</h2>
+    </div>
+    <button mat-icon-button (click)="cancel()" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="dialog-content">
+    <form [formGroup]="form">
+
+      <!-- Cliente Info -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-small">
+          <mat-label>ID Cliente</mat-label>
+          <input matInput formControlName="clienteId" type="number">
+          <mat-error *ngIf="form.get('clienteId')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-large">
+          <mat-label>Nombre del Cliente</mat-label>
+          <input matInput formControlName="cliente">
+          <mat-error *ngIf="form.get('cliente')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Full Address -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección Completa</mat-label>
+        <textarea matInput formControlName="fullAddress" rows="2"></textarea>
+        <mat-error *ngIf="form.get('fullAddress')?.hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Street & Number -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-large">
+          <mat-label>Calle</mat-label>
+          <input matInput formControlName="street">
+          <mat-error *ngIf="form.get('street')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-small">
+          <mat-label>Número</mat-label>
+          <input matInput formControlName="number">
+          <mat-error *ngIf="form.get('number')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Neighborhood & City -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Colonia</mat-label>
+          <input matInput formControlName="neighborhood">
+          <mat-error *ngIf="form.get('neighborhood')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Ciudad</mat-label>
+          <input matInput formControlName="city">
+          <mat-error *ngIf="form.get('city')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- State, Country & Postal Code -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-third">
+          <mat-label>Estado</mat-label>
+          <input matInput formControlName="state">
+          <mat-error *ngIf="form.get('state')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-third">
+          <mat-label>País</mat-label>
+          <input matInput formControlName="country">
+          <mat-error *ngIf="form.get('country')?.hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-third">
+          <mat-label>Código Postal</mat-label>
+          <input matInput formControlName="postalCode" maxlength="5">
+          <mat-error *ngIf="form.get('postalCode')?.hasError('required')">
+            Requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('postalCode')?.hasError('pattern')">
+            5 dígitos
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="dialog-footer">
+    <button mat-button (click)="cancel()" [disabled]="saving">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
+      <mat-icon>{{ saving ? 'hourglass_empty' : 'save' }}</mat-icon>
+      {{ saving ? 'Guardando...' : (mode === 'create' ? 'Crear' : 'Actualizar') }}
+    </button>
+  </div>
+</div>

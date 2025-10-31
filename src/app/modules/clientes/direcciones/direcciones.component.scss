@@ -1,0 +1,135 @@
+.direcciones-container {
+  padding: 24px;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .header-content {
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .page-icon {
+        font-size: 32px;
+        color: #28a745;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 500;
+      }
+    }
+
+    .page-description {
+      margin: 8px 0 0 44px;
+      color: #666;
+    }
+  }
+}
+
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 16px;
+}
+
+.main-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+
+  .search-field {
+    flex: 1;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.direcciones-table {
+  width: 100%;
+
+  .id-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e3f2fd;
+    border-radius: 12px;
+    font-weight: 500;
+    color: #1976d2;
+  }
+
+  .cliente-info,
+  .address-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+      color: #28a745;
+      font-size: 20px;
+    }
+  }
+
+  mat-chip {
+    &.active {
+      background: #d4edda;
+      color: #155724;
+
+      mat-icon {
+        color: #28a745;
+      }
+    }
+
+    &.inactive {
+      background: #f8d7da;
+      color: #721c24;
+
+      mat-icon {
+        color: #dc3545;
+      }
+    }
+  }
+
+  .actions-container {
+    display: flex;
+    gap: 4px;
+  }
+
+  .no-data-cell {
+    text-align: center;
+    padding: 40px;
+
+    .no-data-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: #999;
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+}
