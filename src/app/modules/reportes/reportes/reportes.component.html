@@ -1,1 +1,159 @@
-<p>reportes works!</p>
+<div class="reportes-container">
+  <!-- Header -->
+  <mat-toolbar color="primary" class="reportes-toolbar">
+    <mat-icon>assessment</mat-icon>
+    <span class="toolbar-title">Dashboard de Reportes</span>
+  </mat-toolbar>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <mat-card class="filters-card">
+      <mat-card-content>
+        <div class="filters-container">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Tipo de Evento</mat-label>
+            <mat-select [(value)]="selectedFilter" (selectionChange)="onFilterChange($event.value)">
+              @for (option of filterOptions; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Período</mat-label>
+            <mat-select [(value)]="selectedMonthRange" (selectionChange)="onMonthRangeChange($event.value)">
+              @for (option of monthRangeOptions; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  @if (reportesData) {
+    <!-- Resumen Cards -->
+    <div class="summary-section">
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-icon class="summary-icon events-icon">event</mat-icon>
+          <mat-card-title>Total de Eventos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-value">{{ reportesData.resumen.totalEventos }}</div>
+          <div class="summary-label">Eventos registrados</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-header>
+          <mat-icon class="summary-icon revenue-icon">attach_money</mat-icon>
+          <mat-card-title>Ingresos Totales</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-value">{{ formatCurrency(reportesData.resumen.totalVentas) }}</div>
+          <div class="summary-label">Ventas acumuladas</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <!-- Bar Chart - Ventas por Mes -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>bar_chart</mat-icon>
+            Ventas Mensuales
+          </mat-card-title>
+          <mat-card-subtitle>Total de ventas por mes del año</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-bar-vertical
+              [view]="view"
+              [results]="reportesData.totalVentasPorMes"
+              [xAxis]="showXAxis"
+              [yAxis]="showYAxis"
+              [legend]="false"
+              [showXAxisLabel]="showXAxisLabel"
+              [showYAxisLabel]="showYAxisLabel"
+              [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="yAxisLabel"
+              [gradient]="gradient"
+              [scheme]="colorScheme"
+              (select)="onSelect($event)">
+            </ngx-charts-bar-vertical>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Pie Chart - Estado de Eventos -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>pie_chart</mat-icon>
+            Estado de Eventos
+          </mat-card-title>
+          <mat-card-subtitle>Distribución de eventos por estado</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [view]="view"
+              [results]="reportesData.estadoEventos"
+              [legend]="showLegend"
+              [labels]="true"
+              [doughnut]="false"
+              [gradient]="gradient"
+              [scheme]="pieColorScheme"
+              (select)="onSelect($event)">
+            </ngx-charts-pie-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Additional Charts Row -->
+    <div class="charts-section">
+      <!-- Advanced Bar Chart -->
+      <mat-card class="chart-card chart-card-wide">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>trending_up</mat-icon>
+            Análisis de Tendencias
+          </mat-card-title>
+          <mat-card-subtitle>Comparativa de ventas mensuales</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container chart-container-wide">
+            <ngx-charts-bar-vertical-2d
+              [view]="[1000, 400]"
+              [results]="[{ name: 'Ventas', series: reportesData.totalVentasPorMes }]"
+              [xAxis]="showXAxis"
+              [yAxis]="showYAxis"
+              [legend]="showLegend"
+              [showXAxisLabel]="showXAxisLabel"
+              [showYAxisLabel]="showYAxisLabel"
+              [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="yAxisLabel"
+              [gradient]="gradient"
+              [scheme]="colorScheme"
+              (select)="onSelect($event)">
+            </ngx-charts-bar-vertical-2d>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <!-- Loading State -->
+    <div class="loading-container">
+      <mat-card>
+        <mat-card-content>
+          <p>Cargando datos de reportes...</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>
