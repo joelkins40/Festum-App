@@ -1,0 +1,193 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>
+    <mat-icon>{{ mode === 'create' ? 'add_circle' : 'edit' }}</mat-icon>
+    {{ dialogTitle }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="eventoForm" class="evento-form">
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>event_note</mat-icon>
+          Información del Evento
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Folio</mat-label>
+            <input matInput formControlName="folio" placeholder="NV-00001" />
+            <mat-icon matPrefix>tag</mat-icon>
+            @if (eventoForm.get('folio')?.invalid &&
+            eventoForm.get('folio')?.touched) {
+            <mat-error>{{ getErrorMessage('folio') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del Evento</mat-label>
+            <input matInput formControlName="nombreEvento" placeholder="Boda, XV Años, etc." />
+            <mat-icon matPrefix>celebration</mat-icon>
+            @if (eventoForm.get('nombreEvento')?.invalid &&
+            eventoForm.get('nombreEvento')?.touched) {
+            <mat-error>{{ getErrorMessage('nombreEvento') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Recepción</mat-label>
+            <input matInput [matDatepicker]="pickerRecepcion" formControlName="fechaRecepcion" />
+            <mat-datepicker-toggle matSuffix [for]="pickerRecepcion"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRecepcion></mat-datepicker>
+            @if (eventoForm.get('fechaRecepcion')?.invalid &&
+            eventoForm.get('fechaRecepcion')?.touched) {
+            <mat-error>{{ getErrorMessage('fechaRecepcion') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Regreso</mat-label>
+            <input matInput [matDatepicker]="pickerRegreso" formControlName="fechaRegreso" />
+            <mat-datepicker-toggle matSuffix [for]="pickerRegreso"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRegreso></mat-datepicker>
+            @if (eventoForm.get('fechaRegreso')?.invalid &&
+            eventoForm.get('fechaRegreso')?.touched) {
+            <mat-error>{{ getErrorMessage('fechaRegreso') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Cliente -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>person</mat-icon>
+          Cliente
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del Cliente</mat-label>
+            <input matInput formControlName="clienteNombre" placeholder="Nombre completo" />
+            <mat-icon matPrefix>person</mat-icon>
+            @if (eventoForm.get('clienteNombre')?.invalid &&
+            eventoForm.get('clienteNombre')?.touched) {
+            <mat-error>{{ getErrorMessage('clienteNombre') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-checkbox formControlName="clienteEspecial">
+            Cliente Especial
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Lugar -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>place</mat-icon>
+          Lugar del Evento
+        </h3>
+
+        <div class="form-row">
+          <mat-radio-group formControlName="lugarTipo" class="radio-group">
+            @for (tipo of tiposLugar; track tipo.value) {
+            <mat-radio-button [value]="tipo.value">
+              {{ tipo.label }}
+            </mat-radio-button>
+            }
+          </mat-radio-group>
+        </div>
+
+        <!-- Campos para Dirección -->
+        @if (shouldShowDireccionFields()) {
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Dirección Completa</mat-label>
+            <input matInput formControlName="lugarFullAddress" placeholder="Calle, número, colonia" />
+            <mat-icon matPrefix>home</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row three-cols">
+          <mat-form-field appearance="outline">
+            <mat-label>Ciudad</mat-label>
+            <input matInput formControlName="lugarCity" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <input matInput formControlName="lugarState" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Código Postal</mat-label>
+            <input matInput formControlName="lugarPostalCode" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>País</mat-label>
+            <input matInput formControlName="lugarCountry" />
+          </mat-form-field>
+        </div>
+        }
+
+        <!-- Campos para Salón -->
+        @if (shouldShowSalonFields()) {
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del Salón</mat-label>
+            <input matInput formControlName="lugarNombreSalon" />
+            <mat-icon matPrefix>domain</mat-icon>
+          </mat-form-field>
+        </div>
+        }
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Total -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>attach_money</mat-icon>
+          Total del Evento
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Total</mat-label>
+            <input matInput type="number" formControlName="total" placeholder="0.00" />
+            <span matPrefix>$&nbsp;</span>
+            @if (eventoForm.get('total')?.invalid &&
+            eventoForm.get('total')?.touched) {
+            <mat-error>{{ getErrorMessage('total') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="!eventoForm.valid">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</div>
