@@ -105,7 +105,7 @@ export const routes: Routes = [
       },
       {
         path: 'eventos/confirmaciones',
-        loadComponent: () => import('./modules/eventos/confirmaciones/confirmaciones.component').then(m => m.ConfirmacionesComponent)
+        loadComponent: () => import('./modules/eventos/checking-invitados/checking-invitados.component').then(m => m.CheckingInvitadosComponent)
       },
       {
         path: 'eventos/mobiliario-servicios',
