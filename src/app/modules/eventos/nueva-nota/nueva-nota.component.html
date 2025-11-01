@@ -1,0 +1,409 @@
+<div class="nueva-nota-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">receipt_long</mat-icon>
+      <div>
+        <h1>Nueva Nota / Venta</h1>
+        <p class="subtitle">Registrar nueva venta de evento</p>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="notaForm" class="nota-form">
+    <!-- Sección 1: Datos del Evento -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>event</mat-icon>
+          Datos del Evento
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-medium">
+            <mat-label>Folio</mat-label>
+            <input matInput formControlName="folio" />
+            <mat-icon matPrefix>tag</mat-icon>
+            <mat-hint>Autogenerado, editable manualmente</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-medium">
+            <mat-label>Nombre del Evento</mat-label>
+            <input matInput formControlName="nombreEvento" placeholder="Ej: Boda de Juan y María" />
+            <mat-icon matPrefix>celebration</mat-icon>
+            @if (notaForm.get('nombreEvento')?.hasError('required') &&
+            notaForm.get('nombreEvento')?.touched) {
+            <mat-error>El nombre del evento es requerido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-medium">
+            <mat-label>Fecha de Recepción</mat-label>
+            <input matInput [matDatepicker]="pickerRecepcion" formControlName="fechaRecepcion" />
+            <mat-datepicker-toggle matSuffix [for]="pickerRecepcion"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRecepcion></mat-datepicker>
+            <mat-icon matPrefix>calendar_today</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-medium">
+            <mat-label>Fecha de Regreso</mat-label>
+            <input matInput [matDatepicker]="pickerRegreso" formControlName="fechaRegreso" />
+            <mat-datepicker-toggle matSuffix [for]="pickerRegreso"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRegreso></mat-datepicker>
+            <mat-icon matPrefix>event_available</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sección 2: Cliente -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Cliente
+          @if (esClienteEspecial) {
+          <span class="badge-especial">Cliente Especial</span>
+          }
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-large">
+            <mat-label>Buscar Cliente</mat-label>
+            <input matInput formControlName="clienteBusqueda" [matAutocomplete]="autoCliente"
+              placeholder="Escriba para buscar..." />
+            <mat-icon matPrefix>search</mat-icon>
+            <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayCliente"
+              (optionSelected)="onClienteSelected($event.option.value)">
+              @for (cliente of clientesFiltrados$ | async; track cliente.id) {
+              <mat-option [value]="cliente">
+                {{ cliente.nombre }}
+                @if (cliente.clientePreferente) {
+                <mat-icon class="icon-star">star</mat-icon>
+                }
+              </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <button mat-raised-button color="accent" type="button" class="btn-nuevo-cliente">
+            <mat-icon>person_add</mat-icon>
+            Nuevo Cliente
+          </button>
+        </div>
+
+        @if (clienteSeleccionado) {
+        <div class="cliente-info">
+          <mat-icon>info</mat-icon>
+          <span>
+            <strong>{{ clienteSeleccionado.nombre }}</strong>
+            @if (clienteSeleccionado.direcciones?.length! > 0) { -
+            {{ clienteSeleccionado.direcciones[0].formatted.line1 }} }
+          </span>
+        </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sección 3: Lugar del Evento -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>place</mat-icon>
+          Lugar del Evento
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-radio-group formControlName="tipoLugar" class="radio-group">
+          <mat-radio-button [value]="tipoLugarEnum.DIRECCION_CLIENTE">
+            Usar dirección del cliente
+          </mat-radio-button>
+          <mat-radio-button [value]="tipoLugarEnum.NUEVA_DIRECCION">
+            Agregar nueva dirección
+          </mat-radio-button>
+          <mat-radio-button [value]="tipoLugarEnum.SALON">
+            Seleccionar salón
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <!-- Dirección del cliente -->
+        @if (notaForm.get('tipoLugar')?.value ===
+        tipoLugarEnum.DIRECCION_CLIENTE) {
+        <mat-form-field appearance="outline" class="field-full">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="direccionCliente" readonly />
+          <mat-icon matPrefix>home</mat-icon>
+        </mat-form-field>
+        }
+
+        <!-- Nueva dirección -->
+        @if (notaForm.get('tipoLugar')?.value ===
+        tipoLugarEnum.NUEVA_DIRECCION) {
+        <div class="direccion-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="field-large">
+              <mat-label>Calle</mat-label>
+              <input matInput formControlName="nuevaDireccionCalle" placeholder="Nombre de la calle" />
+              <mat-icon matPrefix>signpost</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-small">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="nuevaDireccionNumero" placeholder="123" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="field-medium">
+              <mat-label>Colonia</mat-label>
+              <input matInput formControlName="nuevaDireccionColonia" placeholder="Colonia" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-medium">
+              <mat-label>Ciudad</mat-label>
+              <input matInput formControlName="nuevaDireccionCiudad" placeholder="Ciudad" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="field-medium">
+              <mat-label>Estado</mat-label>
+              <input matInput formControlName="nuevaDireccionEstado" placeholder="Estado" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-small">
+              <mat-label>Código Postal</mat-label>
+              <input matInput formControlName="nuevaDireccionCP" placeholder="12345" />
+            </mat-form-field>
+          </div>
+        </div>
+        }
+
+        <!-- Selector de salón -->
+        @if (notaForm.get('tipoLugar')?.value === tipoLugarEnum.SALON) {
+        <mat-form-field appearance="outline" class="field-full">
+          <mat-label>Seleccionar Salón</mat-label>
+          <mat-select formControlName="salon">
+            <mat-option value="salon1">Salón Principal</mat-option>
+            <mat-option value="salon2">Salón Jardín</mat-option>
+            <mat-option value="salon3">Salón Terraza</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>domain</mat-icon>
+        </mat-form-field>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sección 4: Productos y Servicios -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>inventory_2</mat-icon>
+          Productos y Servicios
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="toolbar-productos">
+          <mat-form-field appearance="outline" class="search-producto">
+            <mat-label>Buscar producto/servicio</mat-label>
+            <input matInput placeholder="Buscar..." />
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="button">
+            <mat-icon>add</mat-icon>
+            Agregar Producto/Servicio
+          </button>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="table-container">
+          <table mat-table [dataSource]="productosEnNota" class="productos-table">
+            <!-- Nombre Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>Producto / Servicio</th>
+              <td mat-cell *matCellDef="let producto">
+                <div class="producto-cell">
+                  <mat-icon class="tipo-icon">{{
+                    producto.tipo === 'Producto' ? 'inventory_2' : 'handyman'
+                    }}</mat-icon>
+                  <span>{{ producto.nombre }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Descripción Column -->
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell *matHeaderCellDef>Descripción</th>
+              <td mat-cell *matCellDef="let producto">
+                {{ producto.descripcion }}
+              </td>
+            </ng-container>
+
+            <!-- Cantidad Column -->
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let producto">
+                <mat-form-field appearance="outline" class="field-cantidad">
+                  <input matInput type="number" [value]="producto.cantidad" (change)="
+											editarCantidad(producto, $any($event.target).value)
+										" min="1" />
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Precio Unitario Column -->
+            <ng-container matColumnDef="precioUnitario">
+              <th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
+              <td mat-cell *matCellDef="let producto">
+                <mat-form-field appearance="outline" class="field-precio">
+                  <span matPrefix>$&nbsp;</span>
+                  <input matInput type="number" [value]="producto.precioUnitario" (change)="
+											editarPrecio(producto, $any($event.target).value)
+										" min="0" step="0.01" />
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Subtotal Column -->
+            <ng-container matColumnDef="subtotal">
+              <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+              <td mat-cell *matCellDef="let producto">
+                <span class="subtotal-cell">{{
+                  formatCurrency(producto.subtotal)
+                  }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let producto">
+                <button mat-icon-button color="warn" type="button" (click)="eliminarProducto(producto)"
+                  matTooltip="Eliminar">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <!-- No data row -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+                <div class="no-data-message">
+                  <mat-icon>shopping_cart</mat-icon>
+                  <p>No hay productos agregados</p>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Totales -->
+        <div class="totales-section">
+          <div class="total-row">
+            <span class="total-label">Subtotal:</span>
+            <span class="total-value">{{ formatCurrency(subtotal) }}</span>
+          </div>
+          <div class="total-row">
+            <span class="total-label">IVA (16%):</span>
+            <span class="total-value">{{ formatCurrency(iva) }}</span>
+          </div>
+          <div class="total-row total-final">
+            <span class="total-label">Total:</span>
+            <span class="total-value">{{ formatCurrency(total) }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sección 5: Observaciones -->
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>note</mat-icon>
+          Observaciones
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="field-full">
+          <mat-label>Observaciones adicionales</mat-label>
+          <textarea matInput formControlName="observaciones" rows="4"
+            placeholder="Notas o comentarios adicionales..."></textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sección 6: Resumen y Acciones -->
+    <mat-card class="form-card resumen-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>summarize</mat-icon>
+          Resumen
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="resumen-grid">
+          <div class="resumen-item">
+            <mat-icon>tag</mat-icon>
+            <div>
+              <strong>Folio:</strong>
+              <span>{{ notaForm.get('folio')?.value }}</span>
+            </div>
+          </div>
+
+          <div class="resumen-item">
+            <mat-icon>event</mat-icon>
+            <div>
+              <strong>Evento:</strong>
+              <span>{{ notaForm.get('nombreEvento')?.value || 'Sin nombre' }}</span>
+            </div>
+          </div>
+
+          <div class="resumen-item">
+            <mat-icon>person</mat-icon>
+            <div>
+              <strong>Cliente:</strong>
+              <span>{{ clienteSeleccionado?.nombre || 'Sin seleccionar' }}</span>
+            </div>
+          </div>
+
+          <div class="resumen-item">
+            <mat-icon>inventory_2</mat-icon>
+            <div>
+              <strong>Productos:</strong>
+              <span>{{ productosEnNota.length }} item(s)</span>
+            </div>
+          </div>
+
+          <div class="resumen-item total-resumen">
+            <mat-icon>payments</mat-icon>
+            <div>
+              <strong>Total:</strong>
+              <span class="total-amount">{{ formatCurrency(total) }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="actions-section">
+        <button mat-stroked-button type="button" (click)="cancelar()" class="btn-cancel">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+
+        <button mat-raised-button color="primary" type="button" (click)="guardarNota()"
+          [disabled]="notaForm.invalid || productosEnNota.length === 0" class="btn-save">
+          <mat-icon>save</mat-icon>
+          Guardar Nota / Venta
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
