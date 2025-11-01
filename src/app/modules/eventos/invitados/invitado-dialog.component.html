@@ -1,0 +1,122 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>
+    <mat-icon>{{ mode === 'create' ? 'person_add' : 'edit' }}</mat-icon>
+    {{ dialogTitle }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="invitadoForm" class="invitado-form">
+      <!-- Información Personal -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>person</mat-icon>
+          Información Personal
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput formControlName="fullName" placeholder="Nombre completo del invitado" />
+            <mat-icon matPrefix>badge</mat-icon>
+            @if (invitadoForm.get('fullName')?.invalid &&
+            invitadoForm.get('fullName')?.touched) {
+            <mat-error>{{ getErrorMessage('fullName') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Información de Contacto -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>phone</mat-icon>
+          Información de Contacto
+        </h3>
+
+        @if (hasPhoneError()) {
+        <div class="phone-error-message">
+          <mat-icon>error</mat-icon>
+          <span>Se requiere al menos un número de teléfono</span>
+        </div>
+        }
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Teléfono Principal</mat-label>
+            <input matInput formControlName="contactPhone" placeholder="+52 55 1234 5678" />
+            <mat-icon matPrefix>phone</mat-icon>
+            @if (invitadoForm.get('contactPhone')?.invalid &&
+            invitadoForm.get('contactPhone')?.touched) {
+            <mat-error>{{ getErrorMessage('contactPhone') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Teléfono Secundario (Opcional)</mat-label>
+            <input matInput formControlName="secondaryContactPhone" placeholder="+52 33 8765 4321" />
+            <mat-icon matPrefix>phone_iphone</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email (Opcional)</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+            <mat-icon matPrefix>email</mat-icon>
+            @if (invitadoForm.get('email')?.invalid &&
+            invitadoForm.get('email')?.touched) {
+            <mat-error>{{ getErrorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Información del Evento -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>event</mat-icon>
+          Información del Evento
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Número de Acompañantes</mat-label>
+            <input matInput type="number" formControlName="numberOfCompanions" min="0" placeholder="0" />
+            <mat-icon matPrefix>group_add</mat-icon>
+            @if (invitadoForm.get('numberOfCompanions')?.invalid &&
+            invitadoForm.get('numberOfCompanions')?.touched) {
+            <mat-error>{{ getErrorMessage('numberOfCompanions') }}</mat-error>
+            }
+            <mat-hint>Número de personas que acompañarán al invitado</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-checkbox formControlName="willAttend" class="checkbox-field">
+            <div class="checkbox-content">
+              <mat-icon>check_circle</mat-icon>
+              <span>Confirmó asistencia</span>
+            </div>
+          </mat-checkbox>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="!invitadoForm.valid">
+      <mat-icon>save</mat-icon>
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</div>
