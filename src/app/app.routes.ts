@@ -88,6 +88,10 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/eventos/lista/lista.component').then(m => m.ListaComponent)
       },
       {
+        path: 'eventos/nueva-nota',
+        loadComponent: () => import('./modules/eventos/nueva-nota/nueva-nota.component').then(m => m.NuevaNotaComponent)
+      },
+      {
         path: 'eventos/informacion-general',
         loadComponent: () => import('./modules/eventos/informacion-general/informacion-general.component').then(m => m.InformacionGeneralComponent)
       },

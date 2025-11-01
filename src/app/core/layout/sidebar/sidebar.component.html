@@ -9,13 +9,10 @@
 
   <!-- Main Navigation -->
   <div class="main-nav">
-    
+
     <!-- Inicio -->
     <div class="nav-section">
-      <a 
-        class="nav-item" 
-        [class.active]="currentRoute === '/dashboard'"
-        routerLink="/dashboard"
+      <a class="nav-item" [class.active]="currentRoute === '/dashboard'" routerLink="/dashboard"
         (click)="onMenuClick()">
         <mat-icon class="nav-icon home-icon">home</mat-icon>
         <span class="nav-label">Inicio</span>
@@ -141,6 +138,10 @@
             <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
             <span class="nav-sub-label">Lista de eventos</span>
           </a>
+          <a class="nav-sub-item" routerLink="/eventos/nueva-nota" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon orders">receipt</mat-icon>
+            <span class="nav-sub-label">Nueva nota</span>
+          </a>
           <div class="nav-sub-group">
             <span class="nav-sub-group-title">
               <mat-icon class="group-icon">event_seat</mat-icon>
@@ -185,10 +186,7 @@
 
     <!-- Calendario -->
     <div class="nav-section">
-      <a 
-        class="nav-item" 
-        [class.active]="currentRoute === '/calendario'"
-        routerLink="/calendario"
+      <a class="nav-item" [class.active]="currentRoute === '/calendario'" routerLink="/calendario"
         (click)="onMenuClick()">
         <mat-icon class="nav-icon calendar-icon">calendar_today</mat-icon>
         <span class="nav-label">Calendario</span>
@@ -197,11 +195,7 @@
 
     <!-- Reportes -->
     <div class="nav-section">
-      <a 
-        class="nav-item" 
-        [class.active]="currentRoute === '/reportes'"
-        routerLink="/reportes"
-        (click)="onMenuClick()">
+      <a class="nav-item" [class.active]="currentRoute === '/reportes'" routerLink="/reportes" (click)="onMenuClick()">
         <mat-icon class="nav-icon reports-icon">assessment</mat-icon>
         <span class="nav-label">Reportes</span>
       </a>
@@ -238,10 +232,7 @@
 
     <!-- Mantenimiento (opcional) -->
     <div class="nav-section">
-      <a 
-        class="nav-item optional" 
-        [class.active]="currentRoute === '/mantenimiento'"
-        routerLink="/mantenimiento"
+      <a class="nav-item optional" [class.active]="currentRoute === '/mantenimiento'" routerLink="/mantenimiento"
         (click)="onMenuClick()">
         <mat-icon class="nav-icon maintenance-icon">build</mat-icon>
         <span class="nav-label">Mantenimiento</span>
