@@ -18,10 +18,10 @@
 | **Cotizaciones**             |                                |                                          |
 | ├── Nueva                    | /cotizaciones/nueva            | ⚪ Irrelevante (ya se maneja en listado) |
 | ├── Listado                  | /cotizaciones/listado          | ✅ Terminado                             |
-| └── Seguimiento              | /cotizaciones/seguimiento      | ❌ Pendiente                             |
+| └── Seguimiento              | /cotizaciones/seguimiento      | ✅ Terminado                             |
 | ├── **Ventas**               |                                |                                          |
 | ├── Notas                    | /ventas/notas                  | ✅ Terminado                             |
-| └── Facturación              | /ventas/facturacion            | ❌ Pendiente                             |
+| └── Facturación              | /ventas/facturacion            | ✅ Terminado                             |
 | **Eventos**                  |                                |                                          |
 | ├── Lista de Eventos         | /eventos/lista                 | ✅ Terminado                             |
 | ├── Nueva Nota               | /eventos/nueva                 | ✅ Terminado                             |
