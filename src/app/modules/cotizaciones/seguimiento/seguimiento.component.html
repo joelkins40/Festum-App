@@ -1,1 +1,170 @@
-<p>seguimiento works!</p>
+<!-- ===== SEGUIMIENTO DE COTIZACIONES ===== -->
+<div class="seguimiento-container">
+
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">assignment</mat-icon>
+        <h1>Seguimiento de Cotizaciones</h1>
+      </div>
+      <p class="page-description">
+        Administra y da seguimiento al estado de todas las cotizaciones
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-content">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p>Cargando cotizaciones...</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+
+    <!-- Toolbar de Filtros Avanzados -->
+    <div class="filter-toolbar">
+      <div class="filter-row">
+        <!-- Búsqueda por cliente -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Buscar por cliente</mat-label>
+          <input matInput [(ngModel)]="filtroTexto" (keyup)="applyFilter()" placeholder="Nombre del cliente...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro por estado -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Filtrar por estado</mat-label>
+          <mat-select [(ngModel)]="filtroEstado" (selectionChange)="applyFilter()">
+            <mat-option value="">Todos los estados</mat-option>
+            <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              {{ estado }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>filter_list</mat-icon>
+        </mat-form-field>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button mat-raised-button color="warn" (click)="clearFilters()" [disabled]="!filtroTexto && !filtroEstado"
+            class="clear-button">
+            <mat-icon>clear</mat-icon>
+            Limpiar filtros
+          </button>
+
+          <button mat-icon-button (click)="refresh()" [disabled]="loading" matTooltip="Refrescar datos">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="toolbar-divider"></mat-divider>
+
+    <!-- Tabla de Cotizaciones -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="seguimiento-table">
+
+        <!-- Columna Cliente -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+          <td mat-cell *matCellDef="let cotizacion" class="cliente-cell">
+            <div class="cliente-info">
+              <mat-icon class="cliente-icon">person</mat-icon>
+              <span class="cliente-nombre">{{ cotizacion.cliente }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Fecha -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let cotizacion">
+            <div class="fecha-cell">
+              <mat-icon class="fecha-icon">event</mat-icon>
+              <span>{{ formatDate(cotizacion.fecha) }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Total -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+          <td mat-cell *matCellDef="let cotizacion" class="total-cell">
+            <span class="precio">{{ formatPrice(cotizacion.total) }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let cotizacion">
+            <mat-chip-set>
+              <mat-chip [class]="getEstadoClass(cotizacion.estado)">
+                <mat-icon class="chip-icon">{{ getEstadoIcon(cotizacion.estado) }}</mat-icon>
+                {{ cotizacion.estado }}
+              </mat-chip>
+            </mat-chip-set>
+          </td>
+        </ng-container>
+
+        <!-- Columna Último Seguimiento -->
+        <ng-container matColumnDef="ultimoSeguimiento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Último seguimiento</th>
+          <td mat-cell *matCellDef="let cotizacion">
+            <div class="seguimiento-cell" *ngIf="cotizacion.ultimoSeguimiento">
+              <div class="seguimiento-fecha">
+                <mat-icon class="seguimiento-icon">schedule</mat-icon>
+                <span>{{ formatDate(cotizacion.ultimoSeguimiento) }}</span>
+              </div>
+              <span class="dias-transcurridos"
+                [class.alerta]="getDaysSinceLastFollowUp(cotizacion.ultimoSeguimiento) > 7">
+                (hace {{ getDaysSinceLastFollowUp(cotizacion.ultimoSeguimiento) }} días)
+              </span>
+            </div>
+            <span class="sin-seguimiento" *ngIf="!cotizacion.ultimoSeguimiento">
+              Sin seguimiento
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
+          <td mat-cell *matCellDef="let cotizacion" class="acciones-cell">
+            <button mat-icon-button color="primary" (click)="viewQuotation(cotizacion)" matTooltip="Ver detalles">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="updateStatus(cotizacion)"
+              matTooltip="Actualizar seguimiento">
+              <mat-icon>edit_note</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Definición de filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+        <!-- Mensaje cuando no hay datos -->
+        <tr class="mat-row no-data-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-data-content">
+              <mat-icon class="no-data-icon">search_off</mat-icon>
+              <p class="no-data-text">No se encontraron cotizaciones</p>
+              <p class="no-data-hint">Intenta cambiar los filtros de búsqueda</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10" showFirstLastButtons class="table-paginator">
+    </mat-paginator>
+  </mat-card>
+</div>

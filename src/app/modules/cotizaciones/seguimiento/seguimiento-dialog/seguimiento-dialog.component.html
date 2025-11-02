@@ -1,0 +1,155 @@
+<!-- 📝 Modal para Ver/Actualizar Seguimiento de Cotización -->
+<div class="seguimiento-dialog">
+
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{ modo === 'ver' ? 'visibility' : 'edit_note' }}</mat-icon>
+      <h2 class="header-title">
+        {{ modo === 'ver' ? 'Detalles de Cotización' : 'Actualizar Seguimiento' }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Información de la Cotización -->
+  <div class="cotizacion-info">
+    <div class="info-row">
+      <div class="info-item">
+        <mat-icon class="info-icon">tag</mat-icon>
+        <div class="info-content">
+          <span class="info-label">ID Cotización</span>
+          <span class="info-value">#{{ data.cotizacion.id }}</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon class="info-icon">person</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Cliente</span>
+          <span class="info-value">{{ data.cotizacion.cliente }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-item">
+        <mat-icon class="info-icon">event</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Fecha</span>
+          <span class="info-value">{{ formatDate(data.cotizacion.fecha) }}</span>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon class="info-icon">payments</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Total</span>
+          <span class="info-value precio">{{ formatPrice(data.cotizacion.total) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-row" *ngIf="data.cotizacion.ultimoSeguimiento">
+      <div class="info-item full-width">
+        <mat-icon class="info-icon">schedule</mat-icon>
+        <div class="info-content">
+          <span class="info-label">Último seguimiento</span>
+          <span class="info-value">{{ formatDate(data.cotizacion.ultimoSeguimiento) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <form [formGroup]="seguimientoForm" class="seguimiento-form">
+
+      <!-- Campo Estado -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Estado de la cotización</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              <div class="estado-option">
+                <mat-icon class="estado-icon">{{ getEstadoIcon(estado) }}</mat-icon>
+                <span>{{ estado }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix class="input-icon">flag</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['estado'].hasError('required')">
+            El estado es requerido
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Chip de estado actual (solo en modo ver) -->
+        <div class="estado-actual" *ngIf="modo === 'ver'">
+          <mat-chip-set>
+            <mat-chip [class]="getEstadoClass(data.cotizacion.estado)">
+              <mat-icon class="chip-icon">{{ getEstadoIcon(data.cotizacion.estado) }}</mat-icon>
+              {{ data.cotizacion.estado }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
+
+      <!-- Campo Notas -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notas de seguimiento</mat-label>
+          <textarea matInput formControlName="notas"
+            placeholder="Agrega comentarios sobre el estado de la cotización, contactos realizados, pendientes, etc."
+            rows="6" maxlength="500" #notasInput>
+          </textarea>
+          <mat-icon matPrefix class="input-icon textarea-icon">notes</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['notas'].hasError('required')">
+            Las notas de seguimiento son requeridas
+          </mat-error>
+          <mat-error *ngIf="f['notas'].hasError('minlength')">
+            Las notas deben tener al menos 10 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['notas'].hasError('maxlength')">
+            Las notas no pueden exceder 500 caracteres
+          </mat-error>
+
+          <!-- Contador de caracteres -->
+          <mat-hint align="end">
+            {{ notasInput.value.length || 0 }}/500
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Información adicional para modo ver -->
+      <div class="notas-existentes" *ngIf="modo === 'ver' && data.cotizacion.notasSeguimiento">
+        <div class="notas-header">
+          <mat-icon>info</mat-icon>
+          <span>Notas anteriores</span>
+        </div>
+        <p class="notas-texto">{{ data.cotizacion.notasSeguimiento }}</p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer con botones de acción -->
+  <div class="dialog-footer">
+    <button mat-stroked-button (click)="onCancel()" [disabled]="guardando" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      {{ modo === 'ver' ? 'Cerrar' : 'Cancelar' }}
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!seguimientoForm.valid || guardando"
+      *ngIf="modo === 'editar'" class="save-button">
+      <mat-icon *ngIf="!guardando">save</mat-icon>
+      <mat-progress-spinner *ngIf="guardando" diameter="20" mode="indeterminate" color="accent">
+      </mat-progress-spinner>
+      {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+    </button>
+  </div>
+</div>
