@@ -29,3 +29,22 @@ export interface CotizacionStats {
 	aprobadas: number;
 	rechazadas: number;
 }
+
+/**
+ * Interfaz para el seguimiento de cotizaciones
+ */
+export interface CotizacionSeguimiento {
+	id: number;
+	cotizacionId: number;
+	fecha: Date;
+	nota: string;
+	usuario?: string;
+}
+
+/**
+ * Interfaz extendida de cotización con seguimiento
+ */
+export interface CotizacionConSeguimiento extends Cotizacion {
+	seguimientos: CotizacionSeguimiento[];
+	ultimoSeguimiento?: Date;
+}

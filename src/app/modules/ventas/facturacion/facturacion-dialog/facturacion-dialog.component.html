@@ -1,0 +1,165 @@
+<!-- ===== FACTURACIÓN DIALOG ===== -->
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>
+      <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+      {{ dialogTitle }}
+    </h2>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <mat-dialog-content>
+    <form [formGroup]="invoiceForm" class="invoice-form">
+
+      <!-- Tipo y Estado -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Tipo de Factura</mat-label>
+          <mat-select formControlName="tipo">
+            @for (tipo of tiposNota; track tipo) {
+            <mat-option [value]="tipo">
+              <mat-icon>{{ tipo === 'Paquete' ? 'inventory_2' : 'miscellaneous_services' }}</mat-icon>
+              {{ tipo }}
+            </mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>category</mat-icon>
+          @if (hasError('tipo', 'required')) {
+          <mat-error>{{ getErrorMessage('tipo') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado">
+            @for (estado of estadosNota; track estado) {
+            <mat-option [value]="estado">{{ estado }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>flag</mat-icon>
+          @if (hasError('estado', 'required')) {
+          <mat-error>{{ getErrorMessage('estado') }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <mat-divider class="section-divider"></mat-divider>
+
+      <!-- Cliente -->
+      <mat-form-field appearance="outline" class="form-field-full">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="clienteId">
+          @for (cliente of clientes; track cliente.id) {
+          <mat-option [value]="cliente.id">
+            <div class="cliente-option">
+              <span>{{ cliente.nombre }}</span>
+              @if (cliente.clientePreferente) {
+              <span class="preferente-badge">★ Preferente</span>
+              }
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        <mat-icon matSuffix>person</mat-icon>
+        @if (hasError('clienteId', 'required')) {
+        <mat-error>{{ getErrorMessage('clienteId') }}</mat-error>
+        }
+        <mat-hint>Selecciona el cliente asociado a esta factura</mat-hint>
+      </mat-form-field>
+
+      <!-- Evento -->
+      <mat-form-field appearance="outline" class="form-field-full">
+        <mat-label>Evento</mat-label>
+        <mat-select formControlName="eventoId">
+          @for (evento of eventos; track evento.id) {
+          <mat-option [value]="evento.id">
+            <div class="evento-option">
+              <span class="evento-nombre">{{ evento.nombre }}</span>
+              <span class="evento-lugar">{{ evento.lugar }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        <mat-icon matSuffix>event</mat-icon>
+        @if (hasError('eventoId', 'required')) {
+        <mat-error>{{ getErrorMessage('eventoId') }}</mat-error>
+        }
+        <mat-hint>Selecciona el evento para el cual se genera la factura</mat-hint>
+      </mat-form-field>
+
+      <mat-divider class="section-divider"></mat-divider>
+
+      <!-- Fecha y Total -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Fecha de Factura</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fecha" placeholder="Selecciona una fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (hasError('fecha', 'required')) {
+          <mat-error>{{ getErrorMessage('fecha') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Total</mat-label>
+          <input matInput type="number" formControlName="total" placeholder="0.00" min="0" step="0.01">
+          <span matPrefix>$&nbsp;</span>
+          <mat-icon matSuffix>attach_money</mat-icon>
+          @if (hasError('total', 'required')) {
+          <mat-error>{{ getErrorMessage('total') }}</mat-error>
+          }
+          @if (hasError('total', 'min')) {
+          <mat-error>{{ getErrorMessage('total') }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Descripción -->
+      <mat-form-field appearance="outline" class="form-field-full">
+        <mat-label>Descripción (Opcional)</mat-label>
+        <textarea matInput formControlName="descripcion" rows="4" maxlength="500"
+          placeholder="Agrega detalles adicionales sobre esta factura..."></textarea>
+        <mat-icon matSuffix>description</mat-icon>
+        @if (hasError('descripcion', 'maxlength')) {
+        <mat-error>{{ getErrorMessage('descripcion') }}</mat-error>
+        }
+        <mat-hint align="end">
+          {{ invoiceForm.get('descripcion')?.value?.length || 0 }}/500
+        </mat-hint>
+      </mat-form-field>
+
+      <!-- Resumen del Total (si hay valor) -->
+      @if (invoiceForm.get('total')?.value > 0) {
+      <div class="total-summary">
+        <mat-icon>calculate</mat-icon>
+        <div class="summary-content">
+          <span class="summary-label">Total de la Factura:</span>
+          <span class="summary-value">{{ formatCurrency(invoiceForm.get('total')?.value) }}</span>
+        </div>
+      </div>
+      }
+
+    </form>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="invoiceForm.invalid"
+      class="submit-button">
+      <mat-icon>{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+      {{ isEditMode ? 'Actualizar Factura' : 'Crear Factura' }}
+    </button>
+  </mat-dialog-actions>
+
+</div>

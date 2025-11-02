@@ -1,1 +1,248 @@
-<p>facturacion works!</p>
+<!-- ===== FACTURACIÓN COMPONENT ===== -->
+<div class="facturacion-container">
+
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">receipt</mat-icon>
+        <h1>Facturación</h1>
+      </div>
+      <p class="page-description">
+        Administra todas las facturas de paquetes y servicios
+      </p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="openCreateDialog()" class="create-button">
+        <mat-icon>add_circle</mat-icon>
+        Nueva Factura
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  @if (loading) {
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p>Cargando facturas...</p>
+    </div>
+  </div>
+  }
+
+  <!-- Estadísticas Cards -->
+  <div class="stats-section">
+    <mat-card class="stat-card">
+      <div class="stat-content">
+        <div class="stat-icon ventas-icon">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Total Ventas del Mes</p>
+          <h2 class="stat-value">{{ estadisticas.totalVentasMes }}</h2>
+          <p class="stat-sublabel">facturas este mes</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-content">
+        <div class="stat-icon ingresos-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Ingresos Totales</p>
+          <h2 class="stat-value">{{ formatCurrency(estadisticas.totalIngresos) }}</h2>
+          <p class="stat-sublabel">del mes actual</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-content">
+        <div class="stat-icon promedio-icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Promedio por Venta</p>
+          <h2 class="stat-value">{{ formatCurrency(estadisticas.promedioVenta) }}</h2>
+          <p class="stat-sublabel">ticket promedio</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-content">
+        <div class="stat-icon cantidad-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-label">Cantidad de Notas</p>
+          <h2 class="stat-value">{{ estadisticas.cantidadNotas }}</h2>
+          <p class="stat-sublabel">total de facturas</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+
+    <!-- Toolbar de Filtros -->
+    <div class="table-toolbar">
+      <div class="filters-container">
+        <!-- Filtro de Texto -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar facturas</mat-label>
+          <input matInput [(ngModel)]="filtroTexto" (keyup)="applyFilter()"
+            placeholder="Buscar por folio, cliente, evento...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro de Estado -->
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="filtroEstado" (selectionChange)="applyFilter()">
+            @for (estado of estadosNota; track estado) {
+            <mat-option [value]="estado">{{ estado }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>filter_list</mat-icon>
+        </mat-form-field>
+
+        <!-- Botón Limpiar Filtros -->
+        <button mat-stroked-button (click)="clearFilters()" class="clear-filters-btn"
+          [disabled]="filtroTexto === '' && filtroEstado === 'Todos'">
+          <mat-icon>clear</mat-icon>
+          Limpiar
+        </button>
+      </div>
+
+      <div class="table-info">
+        <span class="results-count">
+          <mat-icon>description</mat-icon>
+          {{ dataSource.data.length }} resultados
+        </span>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Tabla de Facturas -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="facturas-table">
+
+        <!-- Columna: Tipo -->
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+          <td mat-cell *matCellDef="let invoice">
+            <mat-chip class="tipo-chip" [class.paquete]="invoice.tipo === 'Paquete'"
+              [class.servicio]="invoice.tipo === 'Servicio'">
+              <mat-icon>{{ invoice.tipo === 'Paquete' ? 'inventory_2' : 'miscellaneous_services' }}</mat-icon>
+              {{ invoice.tipo }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Folio -->
+        <ng-container matColumnDef="folio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Folio</th>
+          <td mat-cell *matCellDef="let invoice">
+            <strong class="folio-text">{{ invoice.folio }}</strong>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Cliente -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+          <td mat-cell *matCellDef="let invoice">
+            <div class="cliente-cell">
+              <mat-icon class="cliente-icon">person</mat-icon>
+              <span>{{ invoice.cliente.nombre }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Evento -->
+        <ng-container matColumnDef="evento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Evento</th>
+          <td mat-cell *matCellDef="let invoice">
+            <div class="evento-cell">
+              <mat-icon class="evento-icon">event</mat-icon>
+              <span>{{ invoice.evento.nombre }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Fecha -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let invoice">
+            {{ formatDate(invoice.fecha) }}
+          </td>
+        </ng-container>
+
+        <!-- Columna: Total -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+          <td mat-cell *matCellDef="let invoice">
+            <strong class="total-amount">{{ formatCurrency(invoice.total) }}</strong>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let invoice">
+            <mat-chip [color]="getStatusColor(invoice.estado)">
+              <mat-icon>{{ getStatusIcon(invoice.estado) }}</mat-icon>
+              {{ invoice.estado }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna: Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-header">Acciones</th>
+          <td mat-cell *matCellDef="let invoice" class="acciones-cell">
+            <div class="action-buttons">
+              <button mat-icon-button color="primary" (click)="viewInvoice(invoice)" matTooltip="Ver detalle">
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <button mat-icon-button color="accent" (click)="openEditDialog(invoice)" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn" (click)="openDeleteDialog(invoice)" matTooltip="Eliminar">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasDisplayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDisplayed;" class="table-row"></tr>
+
+        <!-- Mensaje cuando no hay datos -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="columnasDisplayed.length">
+            <div class="no-data-content">
+              <mat-icon>inbox</mat-icon>
+              <p>No se encontraron facturas</p>
+              <p class="no-data-subtitle">Intenta ajustar los filtros o crear una nueva factura</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons
+      aria-label="Seleccionar página de facturas">
+    </mat-paginator>
+  </mat-card>
+</div>
