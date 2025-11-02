@@ -1,0 +1,76 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>
+    <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+    {{ dialogTitle }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="cotizacionForm" class="cotizacion-form">
+      <!-- Cliente -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del Cliente</mat-label>
+        <input matInput formControlName="cliente" placeholder="Ej. María González">
+        <mat-icon matPrefix>person</mat-icon>
+        @if (cotizacionForm.get('cliente')?.invalid && cotizacionForm.get('cliente')?.touched) {
+        <mat-error>{{ getErrorMessage('cliente') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Número de Cotización -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Número de Cotización</mat-label>
+        <input matInput type="number" formControlName="id" placeholder="Ej. 1001">
+        <mat-icon matPrefix>tag</mat-icon>
+        @if (cotizacionForm.get('id')?.invalid && cotizacionForm.get('id')?.touched) {
+        <mat-error>{{ getErrorMessage('id') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Total -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Monto Total</mat-label>
+        <input matInput type="number" formControlName="total" placeholder="Ej. 50000">
+        <span matPrefix>$ &nbsp;</span>
+        @if (cotizacionForm.get('total')?.invalid && cotizacionForm.get('total')?.touched) {
+        <mat-error>{{ getErrorMessage('total') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Fecha -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (cotizacionForm.get('fecha')?.invalid && cotizacionForm.get('fecha')?.touched) {
+        <mat-error>{{ getErrorMessage('fecha') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Estado -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          @for (estado of estados; track estado) {
+          <mat-option [value]="estado">{{ estado }}</mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>assignment</mat-icon>
+        @if (cotizacionForm.get('estado')?.invalid && cotizacionForm.get('estado')?.touched) {
+        <mat-error>{{ getErrorMessage('estado') }}</mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" type="button">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="cotizacionForm.invalid" type="button">
+      <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+      {{ buttonText }}
+    </button>
+  </mat-dialog-actions>
+</div>

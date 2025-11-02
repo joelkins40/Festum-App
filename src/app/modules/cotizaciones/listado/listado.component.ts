@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ViewChild,
+	inject,
+	AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -13,6 +19,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import {
 	Cotizacion,
@@ -20,6 +30,7 @@ import {
 	CotizacionStats,
 } from '../../../core/models/cotizacion.model';
 import { CotizacionesMockService } from './cotizaciones-mock.service';
+import { CotizacionesListadoDialogComponent } from './cotizaciones-listado-dialog/cotizaciones-listado-dialog.component';
 
 /**
  * Componente para mostrar el listado de cotizaciones
@@ -43,20 +54,22 @@ import { CotizacionesMockService } from './cotizaciones-mock.service';
 		MatProgressSpinnerModule,
 		MatTooltipModule,
 		MatSnackBarModule,
+		MatSelectModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatDialogModule,
 	],
 	templateUrl: './listado.component.html',
 	styleUrl: './listado.component.scss',
 })
-export class ListadoComponent implements OnInit {
-	// Inyección de dependencias usando inject()
+export class ListadoComponent implements OnInit, AfterViewInit {
 	private cotizacionesService = inject(CotizacionesMockService);
 	private snackBar = inject(MatSnackBar);
+	private dialog = inject(MatDialog);
 
-	// Referencias a componentes de Material
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
 
-	// Propiedades del componente
 	displayedColumns: string[] = [
 		'id',
 		'cliente',
@@ -66,7 +79,14 @@ export class ListadoComponent implements OnInit {
 		'acciones',
 	];
 	dataSource = new MatTableDataSource<Cotizacion>([]);
-	searchTerm = '';
+	allCotizaciones: Cotizacion[] = [];
+
+	// Filtros
+	filterClientName = '';
+	filterStatus = '';
+	filterStartDate: Date | null = null;
+	filterEndDate: Date | null = null;
+
 	isLoading = true;
 	stats: CotizacionStats = {
 		total: 0,
@@ -75,30 +95,26 @@ export class ListadoComponent implements OnInit {
 		rechazadas: 0,
 	};
 
-	// Referencia a enum para usar en template
 	CotizacionEstado = CotizacionEstado;
+	estadosArray = Object.values(CotizacionEstado);
 
 	ngOnInit(): void {
 		this.loadCotizaciones();
 		this.loadStats();
 	}
 
-	/**
-	 * Carga las cotizaciones desde el servicio
-	 * Simula un tiempo de carga inicial
-	 */
+	ngAfterViewInit(): void {
+		this.dataSource.paginator = this.paginator;
+		this.dataSource.sort = this.sort;
+	}
+
 	loadCotizaciones(): void {
 		this.isLoading = true;
 
 		this.cotizacionesService.getCotizaciones().subscribe({
 			next: (cotizaciones) => {
+				this.allCotizaciones = cotizaciones;
 				this.dataSource.data = cotizaciones;
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
-
-				// Configurar filtro personalizado
-				this.dataSource.filterPredicate = this.createFilterPredicate();
-
 				this.isLoading = false;
 			},
 			error: (error) => {
@@ -123,40 +139,52 @@ export class ListadoComponent implements OnInit {
 		});
 	}
 
-	/**
-	 * Crea una función de filtrado personalizada para la tabla
-	 * Busca coincidencias en cliente y otros campos
-	 */
-	createFilterPredicate() {
-		return (cotizacion: Cotizacion, filter: string): boolean => {
-			const searchStr = filter.toLowerCase();
-			return (
-				cotizacion.cliente.toLowerCase().includes(searchStr) ||
-				cotizacion.id.toString().includes(searchStr) ||
-				cotizacion.estado.toLowerCase().includes(searchStr) ||
-				this.formatCurrency(cotizacion.total).includes(searchStr)
+	applyFilters(): void {
+		let filtered = [...this.allCotizaciones];
+
+		// Filtro por nombre de cliente
+		if (this.filterClientName) {
+			const searchTerm = this.filterClientName.toLowerCase();
+			filtered = filtered.filter((c) =>
+				c.cliente.toLowerCase().includes(searchTerm),
 			);
-		};
-	}
+		}
 
-	/**
-	 * Aplica el filtro de búsqueda a la tabla
-	 */
-	applyFilter(): void {
-		this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+		// Filtro por estado
+		if (this.filterStatus) {
+			filtered = filtered.filter((c) => c.estado === this.filterStatus);
+		}
 
-		// Volver a la primera página después de filtrar
+		// Filtro por rango de fechas
+		if (this.filterStartDate) {
+			const startDate = this.filterStartDate;
+			filtered = filtered.filter((c) => {
+				const cotizacionDate = new Date(c.fecha);
+				return cotizacionDate >= startDate;
+			});
+		}
+
+		if (this.filterEndDate) {
+			const endDate = this.filterEndDate;
+			filtered = filtered.filter((c) => {
+				const cotizacionDate = new Date(c.fecha);
+				return cotizacionDate <= endDate;
+			});
+		}
+
+		this.dataSource.data = filtered;
+
 		if (this.dataSource.paginator) {
 			this.dataSource.paginator.firstPage();
 		}
 	}
 
-	/**
-	 * Limpia el filtro de búsqueda
-	 */
-	clearFilter(): void {
-		this.searchTerm = '';
-		this.applyFilter();
+	clearFilters(): void {
+		this.filterClientName = '';
+		this.filterStatus = '';
+		this.filterStartDate = null;
+		this.filterEndDate = null;
+		this.applyFilters();
 	}
 
 	/**
@@ -169,14 +197,61 @@ export class ListadoComponent implements OnInit {
 		// TODO: Navegar a página de detalle o abrir modal
 	}
 
-	/**
-	 * Maneja la acción de editar una cotización
-	 * @param cotizacion - Cotización a editar
-	 */
+	openCreateDialog(): void {
+		const dialogRef = this.dialog.open(CotizacionesListadoDialogComponent, {
+			width: '600px',
+			data: { mode: 'create' },
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.cotizacionesService.createCotizacion(result).subscribe({
+					next: () => {
+						this.showNotification('Cotización creada exitosamente', 'success');
+						this.loadCotizaciones();
+						this.loadStats();
+					},
+					error: (error) => {
+						console.error('Error al crear:', error);
+						this.showNotification('Error al crear la cotización', 'error');
+					},
+				});
+			}
+		});
+	}
+
 	editCotizacion(cotizacion: Cotizacion): void {
-		console.log('Editar cotización:', cotizacion);
-		this.showNotification(`Editar: ${cotizacion.cliente}`, 'info');
-		// TODO: Abrir dialog de edición
+		const dialogRef = this.dialog.open(CotizacionesListadoDialogComponent, {
+			width: '600px',
+			data: {
+				mode: 'edit',
+				cotizacion: { ...cotizacion },
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.cotizacionesService
+					.updateCotizacion(cotizacion.id, result)
+					.subscribe({
+						next: () => {
+							this.showNotification(
+								'Cotización actualizada exitosamente',
+								'success',
+							);
+							this.loadCotizaciones();
+							this.loadStats();
+						},
+						error: (error) => {
+							console.error('Error al actualizar:', error);
+							this.showNotification(
+								'Error al actualizar la cotización',
+								'error',
+							);
+						},
+					});
+			}
+		});
 	}
 
 	/**
@@ -273,11 +348,78 @@ export class ListadoComponent implements OnInit {
 			: 0;
 	}
 
-	/**
-	 * Muestra una notificación al usuario
-	 * @param message - Mensaje a mostrar
-	 * @param type - Tipo de notificación (success, error, info)
-	 */
+	exportToCSV(): void {
+		const data = this.dataSource.data;
+
+		if (data.length === 0) {
+			this.showNotification('No hay datos para exportar', 'info');
+			return;
+		}
+
+		const headers = ['ID', 'Cliente', 'Fecha', 'Total', 'Estado'];
+		const csvData = data.map((c) => [
+			c.id,
+			c.cliente,
+			this.formatDate(c.fecha),
+			c.total,
+			c.estado,
+		]);
+
+		const csvContent = [
+			headers.join(','),
+			...csvData.map((row) => row.join(',')),
+		].join('\n');
+
+		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+		const link = document.createElement('a');
+		const url = URL.createObjectURL(blob);
+
+		link.setAttribute('href', url);
+		link.setAttribute('download', `cotizaciones_${Date.now()}.csv`);
+		link.style.visibility = 'hidden';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+
+		this.showNotification('CSV exportado exitosamente', 'success');
+	}
+
+	importFromCSV(): void {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = '.csv';
+
+		input.onchange = (e: Event) => {
+			const target = e.target as HTMLInputElement;
+			const file = target.files?.[0];
+
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = (event) => {
+					const csv = event.target?.result as string;
+					this.processCSV(csv);
+				};
+				reader.readAsText(file);
+			}
+		};
+
+		input.click();
+	}
+
+	private processCSV(csv: string): void {
+		const lines = csv.split('\n');
+		const headers = lines[0].split(',');
+
+		// Validación básica
+		if (lines.length < 2) {
+			this.showNotification('El archivo CSV está vacío', 'error');
+			return;
+		}
+
+		this.showNotification('Funcionalidad de importación en desarrollo', 'info');
+		console.log('CSV procesado:', { headers, rowCount: lines.length - 1 });
+	}
+
 	private showNotification(
 		message: string,
 		type: 'success' | 'error' | 'info',

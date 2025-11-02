@@ -57,26 +57,64 @@
 
 <!-- Contenedor principal de la tabla -->
 <mat-card class="table-card">
-  <!-- Barra de herramientas con búsqueda -->
-  <div class="toolbar">
-    <mat-form-field class="search-field" appearance="outline">
-      <mat-label>Buscar por cliente</mat-label>
-      <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Ej. María González"
-        autocomplete="off" />
-      <mat-icon matPrefix>search</mat-icon>
-      @if (searchTerm) {
-      <button mat-icon-button matSuffix (click)="clearFilter()" matTooltip="Limpiar búsqueda">
-        <mat-icon>close</mat-icon>
+  <!-- Header con botones de acción -->
+  <div class="table-header">
+    <h2>
+      <mat-icon>list</mat-icon>
+      Cotizaciones
+    </h2>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="openCreateDialog()">
+        <mat-icon>add_circle</mat-icon>
+        Nueva Cotización
       </button>
-      }
-    </mat-form-field>
-
-    <div class="toolbar-actions">
-      <button mat-raised-button color="primary" (click)="loadCotizaciones()" matTooltip="Recargar datos">
-        <mat-icon>refresh</mat-icon>
-        Actualizar
+      <button mat-stroked-button (click)="exportToCSV()">
+        <mat-icon>file_download</mat-icon>
+        Exportar CSV
+      </button>
+      <button mat-stroked-button (click)="importFromCSV()">
+        <mat-icon>file_upload</mat-icon>
+        Importar CSV
       </button>
     </div>
+  </div>
+
+  <!-- Filtros múltiples -->
+  <div class="filters-container">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Cliente</mat-label>
+      <input matInput [(ngModel)]="filterClientName" (keyup)="applyFilters()" placeholder="Buscar por nombre">
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Estado</mat-label>
+      <mat-select [(ngModel)]="filterStatus" (selectionChange)="applyFilters()">
+        <mat-option value="">Todos</mat-option>
+        @for (estado of estadosArray; track estado) {
+        <mat-option [value]="estado">{{ estado }}</mat-option>
+        }
+      </mat-select>
+      <mat-icon matPrefix>assignment</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="filterStartDate" (dateChange)="applyFilters()">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Fecha Fin</mat-label>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="filterEndDate" (dateChange)="applyFilters()">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-icon-button color="warn" (click)="clearFilters()" matTooltip="Limpiar filtros">
+      <mat-icon>clear_all</mat-icon>
+    </button>
   </div>
 
   <!-- Estado de carga -->
@@ -169,10 +207,10 @@
           <div class="no-data-message">
             <mat-icon>search_off</mat-icon>
             <p>No se encontraron cotizaciones</p>
-            @if (searchTerm) {
+            @if (filterClientName || filterStatus || filterStartDate || filterEndDate) {
             <p class="no-data-hint">
-              Intenta con otros términos de búsqueda o
-              <button mat-button color="primary" (click)="clearFilter()">limpia el filtro</button>
+              Intenta ajustar los filtros o
+              <button mat-button color="primary" (click)="clearFilters()">límpia los filtros</button>
             </p>
             }
           </div>
