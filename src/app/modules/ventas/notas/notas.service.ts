@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
-import { Nota, CrearNotaDto, ActualizarNotaDto, EstadisticasNotas, Cliente, Evento } from './notas.models';
+import { delay, map, tap } from 'rxjs/operators';
+import { Nota, CrearNotaDto, ActualizarNotaDto, EstadisticasNotas, Cliente, Evento, EstadoNota, TipoNota } from './notas.models';
 
 @Injectable({
   providedIn: 'root'
@@ -182,19 +182,19 @@ export class NotasService {
     }
 
     const notaActual = this.mockNotas[index];
-    
+
     // Actualizar campos si se proporcionan
     if (dto.tipo) notaActual.tipo = dto.tipo;
     if (dto.total !== undefined) notaActual.total = dto.total;
     if (dto.estado) notaActual.estado = dto.estado;
     if (dto.fecha) notaActual.fecha = dto.fecha;
     if (dto.descripcion !== undefined) notaActual.descripcion = dto.descripcion;
-    
+
     if (dto.clienteId) {
       const cliente = this.mockClientes.find(c => c.id === dto.clienteId);
       if (cliente) notaActual.cliente = cliente;
     }
-    
+
     if (dto.eventoId) {
       const evento = this.mockEventos.find(e => e.id === dto.eventoId);
       if (evento) notaActual.evento = evento;
@@ -243,7 +243,7 @@ export class NotasService {
     // Filtrar notas del mes actual
     const notasMes = this.mockNotas.filter(nota => {
       const fechaNota = new Date(nota.fecha);
-      return fechaNota.getMonth() === mesActual && 
+      return fechaNota.getMonth() === mesActual &&
              fechaNota.getFullYear() === anioActual;
     });
 
@@ -274,5 +274,104 @@ export class NotasService {
   // Obtener lista de eventos para el selector
   getEventos(): Observable<Evento[]> {
     return of(this.mockEventos).pipe(delay(200));
+  }
+
+  // Exportar notas a CSV
+  exportarACSV(): Observable<Blob> {
+    const headers = ['ID', 'Tipo', 'Folio', 'Cliente', 'Evento', 'Fecha', 'Total', 'Estado', 'Descripción'];
+    const rows = this.mockNotas.map(nota => [
+      nota.id.toString(),
+      nota.tipo,
+      nota.folio,
+      nota.cliente.nombre,
+      nota.evento.nombre,
+      new Date(nota.fecha).toLocaleDateString('es-MX'),
+      nota.total.toString(),
+      nota.estado,
+      nota.descripcion || ''
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    return of(blob).pipe(delay(300));
+  }
+
+  // Importar notas desde CSV
+  importarDesdeCSV(file: File): Observable<{ success: boolean; message: string }> {
+    return new Observable<{ success: boolean; message: string }>(observer => {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        try {
+          const csv = e.target.result;
+          const lines = csv.split('\n');
+
+          // Saltar la primera línea (headers)
+          const dataLines = lines.slice(1).filter((line: string) => line.trim());
+          let importedCount = 0;
+
+          dataLines.forEach((line: string) => {
+            const values = line.split(',').map((v: string) => v.replace(/^"|"$/g, '').trim());
+
+            if (values.length >= 8) {
+              const tipo = values[1] as TipoNota;
+              const clienteId = parseInt(values[3]) || 1;
+              const eventoId = parseInt(values[4]) || 1;
+              const total = parseFloat(values[6]) || 0;
+              const estado = values[7] as EstadoNota;
+
+              const cliente = this.mockClientes.find(c => c.id === clienteId) || this.mockClientes[0];
+              const evento = this.mockEventos.find(e => e.id === eventoId) || this.mockEventos[0];
+
+              const nuevaNota: Nota = {
+                id: this.nextId++,
+                tipo,
+                folio: `NT-2025-${String(this.nextId - 1).padStart(3, '0')}`,
+                cliente,
+                evento,
+                fecha: new Date(),
+                total,
+                estado,
+                descripcion: values[8] || ''
+              };
+
+              this.mockNotas.unshift(nuevaNota);
+              importedCount++;
+            }
+          });
+
+          this.notasSubject.next(this.mockNotas);
+
+          observer.next({
+            success: true,
+            message: `${importedCount} notas importadas exitosamente`
+          });
+          observer.complete();
+        } catch (error) {
+          observer.next({
+            success: false,
+            message: 'Error al procesar el archivo CSV'
+          });
+          observer.complete();
+        }
+      };
+
+      reader.onerror = () => {
+        observer.next({
+          success: false,
+          message: 'Error al leer el archivo'
+        });
+        observer.complete();
+      };
+
+      reader.readAsText(file);
+    }).pipe(
+      tap(r => console.log('Resultado CSV:', r.message)),
+      delay(500)
+    );
   }
 }

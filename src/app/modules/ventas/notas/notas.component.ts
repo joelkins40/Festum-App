@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -65,6 +65,7 @@ export class NotasComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
     private notasService: NotasService,
@@ -263,6 +264,57 @@ export class NotasComponent implements OnInit {
   // Formatear moneda
   formatearMoneda(valor: number): string {
     return `$${valor.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  // Abrir selector de archivo para importar
+  abrirImportador(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  // Procesar archivo CSV seleccionado
+  procesarArchivoCSV(event: any): void {
+    const archivo = event.target.files[0];
+    if (archivo && archivo.type === 'text/csv') {
+      this.notasService.importarDesdeCSV(archivo).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.mostrarMensaje(response.message, 'success');
+            // Resetear el input file
+            this.fileInput.nativeElement.value = '';
+          } else {
+            this.mostrarMensaje(response.message, 'error');
+          }
+        },
+        error: (error) => {
+          console.error('Error al importar CSV:', error);
+          this.mostrarMensaje('Error al procesar el archivo CSV', 'error');
+        }
+      });
+    } else {
+      this.mostrarMensaje('Por favor seleccione un archivo CSV válido', 'warning');
+    }
+  }
+
+  // Exportar notas a CSV
+  exportarCSV(): void {
+    this.notasService.exportarACSV().subscribe({
+      next: (blob) => {
+        // Crear enlace de descarga
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `notas_venta_${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+        
+        // Limpiar
+        window.URL.revokeObjectURL(url);
+        this.mostrarMensaje('Archivo CSV descargado exitosamente', 'success');
+      },
+      error: (error) => {
+        console.error('Error al exportar CSV:', error);
+        this.mostrarMensaje('Error al exportar el archivo CSV', 'error');
+      }
+    });
   }
 
   private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' | 'warning' | 'info' = 'info'): void {

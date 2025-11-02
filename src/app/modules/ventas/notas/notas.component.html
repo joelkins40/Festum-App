@@ -95,6 +95,26 @@
       </div>
 
       <div class="action-buttons">
+        <!-- Botón Importar -->
+        <button mat-raised-button 
+                color="accent" 
+                (click)="abrirImportador()"
+                [disabled]="loading"
+                class="toolbar-button">
+          <mat-icon>upload</mat-icon>
+          Importar CSV
+        </button>
+
+        <!-- Botón Exportar -->
+        <button mat-raised-button 
+                color="primary"
+                (click)="exportarCSV()"
+                [disabled]="loading || dataSource.data.length === 0"
+                class="toolbar-button export-button">
+          <mat-icon>download</mat-icon>
+          Exportar CSV
+        </button>
+
         <!-- Botón Refrescar -->
         <button mat-icon-button 
                 (click)="cargarNotas()"
@@ -237,4 +257,11 @@
       showFirstLastButtons>
     </mat-paginator>
   </mat-card>
+
+  <!-- Hidden file input for CSV import -->
+  <input #fileInput 
+         type="file" 
+         accept=".csv" 
+         (change)="procesarArchivoCSV($event)"
+         style="display: none;">
 </div>
