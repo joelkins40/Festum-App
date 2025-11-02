@@ -31,6 +31,8 @@ import {
 } from '../../../core/models/cotizacion.model';
 import { CotizacionesMockService } from './cotizaciones-mock.service';
 import { CotizacionesListadoDialogComponent } from './cotizaciones-listado-dialog/cotizaciones-listado-dialog.component';
+import { CotizacionDetalleDialogComponent } from './cotizacion-detalle-dialog/cotizacion-detalle-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 /**
  * Componente para mostrar el listado de cotizaciones
@@ -95,6 +97,11 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 		rechazadas: 0,
 	};
 
+	// Paginación
+	totalRecords = 0;
+	pageSize = 10;
+	pageSizeOptions = [5, 10, 25, 50, 100];
+
 	CotizacionEstado = CotizacionEstado;
 	estadosArray = Object.values(CotizacionEstado);
 
@@ -104,8 +111,13 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 	}
 
 	ngAfterViewInit(): void {
-		this.dataSource.paginator = this.paginator;
-		this.dataSource.sort = this.sort;
+		if (this.paginator) {
+			this.dataSource.paginator = this.paginator;
+			this.paginator.pageSize = this.pageSize;
+		}
+		if (this.sort) {
+			this.dataSource.sort = this.sort;
+		}
 	}
 
 	loadCotizaciones(): void {
@@ -114,6 +126,7 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 		this.cotizacionesService.getCotizaciones().subscribe({
 			next: (cotizaciones) => {
 				this.allCotizaciones = cotizaciones;
+				this.totalRecords = cotizaciones.length;
 				this.dataSource.data = cotizaciones;
 				this.isLoading = false;
 			},
@@ -173,6 +186,7 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 		}
 
 		this.dataSource.data = filtered;
+		this.totalRecords = filtered.length;
 
 		if (this.dataSource.paginator) {
 			this.dataSource.paginator.firstPage();
@@ -187,14 +201,19 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 		this.applyFilters();
 	}
 
-	/**
-	 * Maneja la acción de ver detalle de una cotización
-	 * @param cotizacion - Cotización a visualizar
-	 */
 	viewDetail(cotizacion: Cotizacion): void {
-		console.log('Ver detalle de cotización:', cotizacion);
-		this.showNotification(`Ver detalle: ${cotizacion.cliente}`, 'info');
-		// TODO: Navegar a página de detalle o abrir modal
+		const dialogRef = this.dialog.open(CotizacionDetalleDialogComponent, {
+			width: '800px',
+			maxWidth: '95vw',
+			data: cotizacion,
+			panelClass: 'detalle-dialog-panel',
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result?.action === 'edit') {
+				this.editCotizacion(result.cotizacion);
+			}
+		});
 	}
 
 	openCreateDialog(): void {
@@ -254,27 +273,35 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 		});
 	}
 
-	/**
-	 * Maneja la acción de eliminar una cotización
-	 * @param cotizacion - Cotización a eliminar
-	 */
 	deleteCotizacion(cotizacion: Cotizacion): void {
-		console.log('Eliminar cotización:', cotizacion);
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+			width: '450px',
+			data: {
+				title: '¿Eliminar Cotización?',
+				message: `¿Estás seguro de que deseas eliminar la cotización #${cotizacion.id} de ${cotizacion.cliente}? Esta acción no se puede deshacer.`,
+				confirmText: 'Eliminar',
+				cancelText: 'Cancelar',
+				type: 'danger',
+			},
+		});
 
-		// Simular eliminación (en producción, mostrar confirmación primero)
-		this.cotizacionesService.deleteCotizacion(cotizacion.id).subscribe({
-			next: () => {
-				this.showNotification(
-					`Cotización ${cotizacion.id} eliminada`,
-					'success',
-				);
-				this.loadCotizaciones(); // Recargar datos
-				this.loadStats(); // Actualizar estadísticas
-			},
-			error: (error) => {
-				console.error('Error al eliminar:', error);
-				this.showNotification('Error al eliminar la cotización', 'error');
-			},
+		dialogRef.afterClosed().subscribe((confirmed) => {
+			if (confirmed) {
+				this.cotizacionesService.deleteCotizacion(cotizacion.id).subscribe({
+					next: () => {
+						this.showNotification(
+							`Cotización #${cotizacion.id} eliminada exitosamente`,
+							'success',
+						);
+						this.loadCotizaciones();
+						this.loadStats();
+					},
+					error: (error) => {
+						console.error('Error al eliminar:', error);
+						this.showNotification('Error al eliminar la cotización', 'error');
+					},
+				});
+			}
 		});
 	}
 

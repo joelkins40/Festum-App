@@ -219,8 +219,15 @@
     </table>
   </div>
 
-  <!-- Paginador -->
-  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons
-    aria-label="Seleccionar página de cotizaciones"></mat-paginator>
+  <!-- Paginador mejorado -->
+  <div class="pagination-container">
+    <div class="pagination-info">
+      <span class="total-records">
+        <strong>{{ totalRecords }}</strong> cotización{{ totalRecords !== 1 ? 'es' : '' }} en total
+      </span>
+    </div>
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons aria-label="Seleccionar página de cotizaciones"></mat-paginator>
+  </div>
   }
 </mat-card>

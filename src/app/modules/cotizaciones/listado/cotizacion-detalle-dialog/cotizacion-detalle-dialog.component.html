@@ -1,0 +1,129 @@
+<div class="detalle-dialog">
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">receipt_long</mat-icon>
+      <div class="header-text">
+        <h2>Detalle de Cotización</h2>
+        <span class="cotizacion-id">#{{ cotizacion.id }}</span>
+      </div>
+    </div>
+    <button mat-icon-button (click)="close()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="dialog-content">
+    <!-- Estado -->
+    <div class="info-section estado-section">
+      <mat-chip [class]="getEstadoClass(cotizacion.estado)" class="estado-chip-large">
+        <mat-icon>{{ getEstadoIcon(cotizacion.estado) }}</mat-icon>
+        {{ cotizacion.estado }}
+      </mat-chip>
+    </div>
+
+    <!-- Información del Cliente -->
+    <div class="info-section">
+      <div class="section-header">
+        <mat-icon>person</mat-icon>
+        <h3>Información del Cliente</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Nombre Completo</span>
+          <span class="value">{{ cotizacion.cliente }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Información Financiera -->
+    <div class="info-section">
+      <div class="section-header">
+        <mat-icon>attach_money</mat-icon>
+        <h3>Información Financiera</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Monto Total</span>
+          <span class="value total-amount">{{ formatCurrency(cotizacion.total) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Número de Cotización</span>
+          <span class="value">#{{ cotizacion.id }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Fechas -->
+    <div class="info-section">
+      <div class="section-header">
+        <mat-icon>event</mat-icon>
+        <h3>Fechas Importantes</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Fecha de Cotización</span>
+          <span class="value">{{ formatDate(cotizacion.fecha) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Resumen -->
+    <div class="info-section summary-section">
+      <div class="section-header">
+        <mat-icon>summarize</mat-icon>
+        <h3>Resumen</h3>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <mat-icon>tag</mat-icon>
+          <div>
+            <span class="summary-label">ID</span>
+            <span class="summary-value">{{ cotizacion.id }}</span>
+          </div>
+        </div>
+        <div class="summary-item">
+          <mat-icon>person_outline</mat-icon>
+          <div>
+            <span class="summary-label">Cliente</span>
+            <span class="summary-value">{{ cotizacion.cliente }}</span>
+          </div>
+        </div>
+        <div class="summary-item">
+          <mat-icon>calendar_today</mat-icon>
+          <div>
+            <span class="summary-label">Fecha</span>
+            <span class="summary-value">{{ formatDate(cotizacion.fecha) }}</span>
+          </div>
+        </div>
+        <div class="summary-item">
+          <mat-icon>payments</mat-icon>
+          <div>
+            <span class="summary-label">Total</span>
+            <span class="summary-value">{{ formatCurrency(cotizacion.total) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="dialog-actions">
+    <button mat-button (click)="close()">
+      <mat-icon>close</mat-icon>
+      Cerrar
+    </button>
+    <button mat-raised-button color="primary" (click)="edit()">
+      <mat-icon>edit</mat-icon>
+      Editar Cotización
+    </button>
+  </div>
+</div>

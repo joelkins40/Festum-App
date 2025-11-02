@@ -414,12 +414,41 @@
 }
 
 // ----------------------------------------------------------------------------
-// PAGINADOR
+// PAGINADOR MEJORADO
 // ----------------------------------------------------------------------------
-mat-paginator {
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+.pagination-container {
+  border-top: 2px solid rgba(102, 126, 234, 0.2);
   background-color: #fafafa;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   border-radius: 0 0 8px 8px;
+
+  .pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .total-records {
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.7);
+
+      strong {
+        color: #667eea;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  mat-paginator {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -593,6 +622,22 @@ mat-paginator {
 
     p {
       font-size: 1rem;
+    }
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+
+    .pagination-info {
+      justify-content: center;
+      text-align: center;
+    }
+
+    mat-paginator {
+      display: flex;
+      justify-content: center;
     }
   }
 }
