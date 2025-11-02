@@ -1,0 +1,649 @@
+// ============================================================================
+// ESTILOS DEL COMPONENTE LISTADO DE COTIZACIONES
+// Diseño responsive y moderno con gradient header y Material Design
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// ENCABEZADO DE LA PÁGINA
+// ----------------------------------------------------------------------------
+.page-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    .header-icon {
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+
+  .header-subtitle {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 1.1rem;
+    padding-left: 3.5rem;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TARJETAS DE ESTADÍSTICAS
+// ----------------------------------------------------------------------------
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .stat-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .stat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.6);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .stat-percentage {
+      font-size: 0.75rem;
+      color: rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+    }
+  }
+
+  // Colores específicos por tipo
+  &.total {
+    border-left-color: #667eea;
+    .stat-icon { color: #667eea; }
+    .stat-value { color: #667eea; }
+  }
+
+  &.pendientes {
+    border-left-color: #ffc107;
+    .stat-icon { color: #ffc107; }
+    .stat-value { color: #ffc107; }
+  }
+
+  &.aprobadas {
+    border-left-color: #28a745;
+    .stat-icon { color: #28a745; }
+    .stat-value { color: #28a745; }
+  }
+
+  &.rechazadas {
+    border-left-color: #dc3545;
+    .stat-icon { color: #dc3545; }
+    .stat-value { color: #dc3545; }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// TARJETA DE LA TABLA
+// ----------------------------------------------------------------------------
+.table-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// ----------------------------------------------------------------------------
+// BARRA DE HERRAMIENTAS
+// ----------------------------------------------------------------------------
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  .search-field {
+    flex: 1;
+    min-width: 250px;
+    max-width: 500px;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// ESTADO DE CARGA
+// ----------------------------------------------------------------------------
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// CONTENEDOR DE LA TABLA
+// ----------------------------------------------------------------------------
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.cotizaciones-table {
+  width: 100%;
+  background: white;
+
+  // Encabezados
+  th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    padding: 1rem;
+    border-bottom: 2px solid #667eea;
+  }
+
+  // Celdas de datos
+  td {
+    padding: 1rem;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  // Filas de datos con hover
+  .data-row {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(102, 126, 234, 0.05);
+    }
+  }
+
+  // Badge de ID
+  .id-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  // Celda de cliente
+  .cliente-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .cliente-icon {
+      color: #667eea;
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    span {
+      font-weight: 500;
+    }
+  }
+
+  // Celda de fecha
+  .fecha-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .fecha-icon {
+      color: #764ba2;
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+  }
+
+  // Monto total
+  .total-amount {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #28a745;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  // Chips de estado
+  mat-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+
+    .chip-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  .estado-aprobada {
+    background-color: #d4edda;
+    color: #155724;
+
+    .chip-icon {
+      color: #28a745;
+    }
+  }
+
+  .estado-pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+
+    .chip-icon {
+      color: #ffc107;
+    }
+  }
+
+  .estado-rechazada {
+    background-color: #f8d7da;
+    color: #721c24;
+
+    .chip-icon {
+      color: #dc3545;
+    }
+  }
+
+  // Botones de acción
+  .action-buttons {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: flex-start;
+
+    button {
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// MENSAJE DE SIN DATOS
+// ----------------------------------------------------------------------------
+.no-data-row {
+  height: 300px;
+
+  .mat-cell {
+    border: none;
+  }
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: rgba(0, 0, 0, 0.5);
+
+  mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  .no-data-hint {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.4);
+
+    button {
+      text-transform: none;
+      font-weight: 600;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// PAGINADOR
+// ----------------------------------------------------------------------------
+mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: #fafafa;
+  border-radius: 0 0 8px 8px;
+}
+
+// ----------------------------------------------------------------------------
+// RESPONSIVE DESIGN
+// ----------------------------------------------------------------------------
+
+// Tablets
+@media (max-width: 1200px) {
+  .page-header {
+    .header-title {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .header-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+
+    .header-subtitle {
+      font-size: 1rem;
+      padding-left: 3rem;
+    }
+  }
+
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    .search-field {
+      max-width: none;
+    }
+
+    .toolbar-actions {
+      justify-content: flex-end;
+    }
+  }
+}
+
+// Móviles
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    .header-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .header-subtitle {
+      font-size: 0.9rem;
+      padding-left: 0;
+    }
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+
+    .stat-icon {
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .stat-info {
+      .stat-value {
+        font-size: 1.75rem;
+      }
+    }
+  }
+
+  .table-card {
+    padding: 1rem;
+  }
+
+  .toolbar {
+    margin-bottom: 1rem;
+
+    .search-field {
+      min-width: 100%;
+    }
+
+    .toolbar-actions {
+      width: 100%;
+
+      button {
+        flex: 1;
+      }
+    }
+  }
+
+  .cotizaciones-table {
+    th, td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .id-badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .cliente-cell,
+    .fecha-cell {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    .total-amount {
+      font-size: 0.95rem;
+    }
+
+    mat-chip {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.8rem;
+
+      .chip-icon {
+        font-size: 0.875rem;
+        width: 0.875rem;
+        height: 0.875rem;
+      }
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      gap: 0.125rem;
+
+      button mat-icon {
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+
+  .no-data-message {
+    padding: 2rem 1rem;
+
+    mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Móviles pequeños
+@media (max-width: 480px) {
+  .page-header {
+    padding: 1rem;
+
+    .header-title h1 {
+      font-size: 1.25rem;
+    }
+
+    .header-subtitle {
+      font-size: 0.85rem;
+    }
+  }
+
+  .stat-card {
+    .stat-content {
+      gap: 0.75rem;
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .stat-info {
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  .table-card {
+    padding: 0.75rem;
+  }
+
+  .cotizaciones-table {
+    th, td {
+      padding: 0.5rem 0.25rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// CLASES GLOBALES DE SNACKBAR (notificaciones)
+// ----------------------------------------------------------------------------
+::ng-deep {
+  .snackbar-success {
+    background-color: #28a745 !important;
+    color: white !important;
+
+    .mat-simple-snack-bar-content {
+      color: white !important;
+    }
+
+    button {
+      color: white !important;
+    }
+  }
+
+  .snackbar-error {
+    background-color: #dc3545 !important;
+    color: white !important;
+
+    .mat-simple-snack-bar-content {
+      color: white !important;
+    }
+
+    button {
+      color: white !important;
+    }
+  }
+
+  .snackbar-info {
+    background-color: #667eea !important;
+    color: white !important;
+
+    .mat-simple-snack-bar-content {
+      color: white !important;
+    }
+
+    button {
+      color: white !important;
+    }
+  }
+}

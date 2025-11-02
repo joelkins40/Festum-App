@@ -1,1 +1,188 @@
-<p>listado works!</p>
+<!-- Encabezado de la página -->
+<div class="page-header">
+  <div class="header-content">
+    <div class="header-title">
+      <mat-icon class="header-icon">receipt_long</mat-icon>
+      <h1>Listado de Cotizaciones</h1>
+    </div>
+    <p class="header-subtitle">Gestiona y consulta todas las cotizaciones del sistema</p>
+  </div>
+</div>
+
+<!-- Tarjetas de estadísticas -->
+<div class="stats-container">
+  <mat-card class="stat-card total">
+    <div class="stat-content">
+      <mat-icon class="stat-icon">assignment</mat-icon>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.total }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card pendientes">
+    <div class="stat-content">
+      <mat-icon class="stat-icon">schedule</mat-icon>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.pendientes }}</span>
+        <span class="stat-label">Pendientes</span>
+        <span class="stat-percentage">{{ getPercentage(stats.pendientes) }}%</span>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card aprobadas">
+    <div class="stat-content">
+      <mat-icon class="stat-icon">check_circle</mat-icon>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.aprobadas }}</span>
+        <span class="stat-label">Aprobadas</span>
+        <span class="stat-percentage">{{ getPercentage(stats.aprobadas) }}%</span>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card rechazadas">
+    <div class="stat-content">
+      <mat-icon class="stat-icon">cancel</mat-icon>
+      <div class="stat-info">
+        <span class="stat-value">{{ stats.rechazadas }}</span>
+        <span class="stat-label">Rechazadas</span>
+        <span class="stat-percentage">{{ getPercentage(stats.rechazadas) }}%</span>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<!-- Contenedor principal de la tabla -->
+<mat-card class="table-card">
+  <!-- Barra de herramientas con búsqueda -->
+  <div class="toolbar">
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-label>Buscar por cliente</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Ej. María González"
+        autocomplete="off" />
+      <mat-icon matPrefix>search</mat-icon>
+      @if (searchTerm) {
+      <button mat-icon-button matSuffix (click)="clearFilter()" matTooltip="Limpiar búsqueda">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </mat-form-field>
+
+    <div class="toolbar-actions">
+      <button mat-raised-button color="primary" (click)="loadCotizaciones()" matTooltip="Recargar datos">
+        <mat-icon>refresh</mat-icon>
+        Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Estado de carga -->
+  @if (isLoading) {
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando cotizaciones...</p>
+  </div>
+  } @else {
+  <!-- Tabla de cotizaciones -->
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="cotizaciones-table">
+
+      <!-- Columna ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <span class="id-badge">#{{ cotizacion.id }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Columna Cliente -->
+      <ng-container matColumnDef="cliente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <div class="cliente-cell">
+            <mat-icon class="cliente-icon">person</mat-icon>
+            <span>{{ cotizacion.cliente }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Columna Fecha -->
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <div class="fecha-cell">
+            <mat-icon class="fecha-icon">event</mat-icon>
+            <span>{{ formatDate(cotizacion.fecha) }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Columna Total -->
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <span class="total-amount">{{ formatCurrency(cotizacion.total) }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Columna Estado -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <mat-chip [class]="getEstadoClass(cotizacion.estado)">
+            <mat-icon class="chip-icon">{{ getEstadoIcon(cotizacion.estado) }}</mat-icon>
+            {{ cotizacion.estado }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let cotizacion">
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" (click)="viewDetail(cotizacion)" matTooltip="Ver detalle">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="editCotizacion(cotizacion)" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCotizacion(cotizacion)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Fila de encabezados -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <!-- Fila de datos -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+      <!-- Fila cuando no hay datos -->
+      <tr class="mat-row no-data-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <div class="no-data-message">
+            <mat-icon>search_off</mat-icon>
+            <p>No se encontraron cotizaciones</p>
+            @if (searchTerm) {
+            <p class="no-data-hint">
+              Intenta con otros términos de búsqueda o
+              <button mat-button color="primary" (click)="clearFilter()">limpia el filtro</button>
+            </p>
+            }
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Paginador -->
+  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons
+    aria-label="Seleccionar página de cotizaciones"></mat-paginator>
+  }
+</mat-card>
