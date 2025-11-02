@@ -1,0 +1,86 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 16px;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+
+    mat-icon {
+      color: #3f51b5;
+    }
+  }
+
+  .close-button {
+    mat-icon {
+      color: #666;
+    }
+  }
+}
+
+mat-dialog-content {
+  padding: 0 24px;
+  overflow-y: auto;
+}
+
+.venta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-field {
+    width: 100%;
+  }
+
+  .form-field-full {
+    width: 100%;
+  }
+
+  .preferente-badge {
+    color: #ffc107;
+    margin-left: 8px;
+    font-size: 14px;
+  }
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  margin: 0;
+  border-top: 1px solid #e0e0e0;
+  gap: 12px;
+
+  button {
+    min-width: 100px;
+
+    mat-icon {
+      margin-right: 4px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
