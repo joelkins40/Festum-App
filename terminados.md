@@ -35,16 +35,16 @@
 | ├── Galería                  | /eventos/galeria               | ✅ Terminado                             |       |
 | └── Observaciones            | /eventos/observaciones         | ❌ Pendiente                             |       |
 | **Calendario**               |                                |                                          |       |
-| ├── Calendario               | /calendario                    | ✅ Terminado                             |       |
+| └── Calendario               | /calendario                    | ✅ Terminado                             |       |
 | **Reportes**                 |                                |                                          |       |
-| ├── Reportes                 | /reportes                      | ✅ Terminado                             |       |
+| └── Reportes                 | /reportes                      | ✅ Terminado                             |       |
 | **usuarios y configuracion** |                                |                                          |       |
-| ├── usuarios                 | /usuarios                      | ❌ Pendiente                             |       |
-| ├── Roles y permisos         | /usuarios                      | ❌ Pendiente                             |       |
-| ├── perfil                   | /usuarios                      | ❌ Pendiente                             |       |
-| ├── configuracion            | /configuracion                 | ❌ Pendiente                             |       |
+| ├── usuarios                 | /usuarios/lista                | ❌ Pendiente                             |       |
+| ├── Roles y permisos         | /usuarios/roles-permisos       | ❌ Pendiente                             |       |
+| ├── perfil                   | /usuarios/perfil               | ❌ Pendiente                             |       |
+| └── configuracion            | /configuracion/general         | ❌ Pendiente                             |       |
 | **Mantenimiento**            |                                |                                          |       |
-| ├── Mantenimiento            | /reportes                      | ❌ Pendiente                             |       |
+| └── Mantenimiento            | /mantenimiento                 | ❌ Pendiente                             |       |
 
 ---
 
