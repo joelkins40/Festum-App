@@ -33,7 +33,7 @@
 | ├── Mobiliario y servicios   | /eventos/mobiliario-servicios  | ❌ Pendiente                             |       |
 | ├── Plano                    | /eventos/plano                 | ✅ Terminado                             |       |
 | ├── Galería                  | /eventos/galeria               | ✅ Terminado                             |       |
-| └── Observaciones            | /eventos/observaciones         | ❌ Pendiente                             |       |
+| └── Observaciones            | /eventos/observaciones         | ✅ Terminado                             |       |
 | **Calendario**               |                                |                                          |       |
 | └── Calendario               | /calendario                    | ✅ Terminado                             |       |
 | **Reportes**                 |                                |                                          |       |

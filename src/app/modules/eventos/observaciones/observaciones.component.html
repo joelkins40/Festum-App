@@ -1,1 +1,96 @@
-<p>observaciones works!</p>
+<div class="observaciones-container">
+  <!-- Header -->
+  <div class="observaciones-header">
+    <div class="header-content">
+      <div class="header-title">
+        <mat-icon>comment</mat-icon>
+        <h1>Observaciones del Evento</h1>
+      </div>
+      <p class="header-subtitle">
+        Registro cronológico de notas, cambios y comentarios importantes
+      </p>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline-container">
+    @if (observations().length === 0) {
+    <div class="empty-state">
+      <mat-icon>speaker_notes_off</mat-icon>
+      <h3>No hay observaciones registradas</h3>
+      <p>Comienza agregando la primera observación del evento</p>
+    </div>
+    } @else {
+    <div class="timeline">
+      @for (observation of observations(); track trackByObservation($index, observation)) {
+      <div class="timeline-item" [class.alternate]="$index % 2 !== 0">
+        <!-- Timeline dot -->
+        <div class="timeline-dot">
+          <mat-icon [color]="getStatusColor(observation.status)">
+            {{ getStatusIcon(observation.status) }}
+          </mat-icon>
+        </div>
+
+        <!-- Timeline line -->
+        @if (!$last) {
+        <div class="timeline-line"></div>
+        }
+
+        <!-- Observation card -->
+        <mat-card class="observation-card">
+          <mat-card-header>
+            <div class="observation-header">
+              <div class="author-info">
+                <mat-icon class="avatar-icon">account_circle</mat-icon>
+                <div class="author-details">
+                  <span class="author-name">{{ observation.author }}</span>
+                  <span class="observation-time">{{ formatDateTime(observation.date) }}</span>
+                </div>
+              </div>
+
+              <div class="observation-actions">
+                <button mat-icon-button (click)="openDialog(observation)" matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteObservation(observation.id)" matTooltip="Eliminar">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p class="observation-text">{{ observation.text }}</p>
+
+            <div class="observation-meta">
+              <!-- Status chip -->
+              <mat-chip-set>
+                <mat-chip [color]="getStatusColor(observation.status)" highlighted>
+                  <mat-icon>{{ getStatusIcon(observation.status) }}</mat-icon>
+                  {{ observation.status }}
+                </mat-chip>
+              </mat-chip-set>
+
+              <!-- Tags -->
+              @if (observation.tags && observation.tags.length > 0) {
+              <div class="observation-tags">
+                @for (tag of observation.tags; track tag) {
+                <mat-chip>{{ tag }}</mat-chip>
+                }
+              </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Floating action button -->
+  <button mat-fab color="primary" class="fab-add" (click)="openDialog()" matTooltip="Agregar observación"
+    matTooltipPosition="left">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

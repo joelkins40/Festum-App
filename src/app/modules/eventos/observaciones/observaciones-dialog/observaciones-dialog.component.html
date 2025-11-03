@@ -1,0 +1,112 @@
+<div class="dialog-container">
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="header-icon">
+      <mat-icon>{{ isEditMode() ? 'edit_note' : 'note_add' }}</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2 mat-dialog-title>
+        {{ isEditMode() ? 'Editar Observación' : 'Nueva Observación' }}
+      </h2>
+      <p class="header-subtitle">
+        {{ isEditMode() ? 'Modifica los detalles de la observación' : 'Registra una nueva nota o comentario del evento'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <mat-dialog-content>
+    <form [formGroup]="observationForm" class="observation-form">
+
+      <!-- Author -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Autor</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput formControlName="author" placeholder="Nombre del autor" maxlength="100">
+        @if (observationForm.get('author')?.hasError('required')) {
+        <mat-error>El autor es requerido</mat-error>
+        }
+        @if (observationForm.get('author')?.hasError('minlength')) {
+        <mat-error>Mínimo 3 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Status -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-icon matPrefix>flag</mat-icon>
+        <mat-select formControlName="status">
+          @for (status of statusOptions; track status.value) {
+          <mat-option [value]="status.value">
+            <div class="status-option">
+              <mat-icon>{{ status.icon }}</mat-icon>
+              <span>{{ status.label }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        @if (observationForm.get('status')?.hasError('required')) {
+        <mat-error>El estado es requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Observation text -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observación</mat-label>
+        <mat-icon matPrefix>comment</mat-icon>
+        <textarea matInput formControlName="text" placeholder="Describe la observación, cambio o comentario..." rows="6"
+          maxlength="1000"></textarea>
+        <mat-hint align="end">{{ getCharacterCount() }}</mat-hint>
+        @if (observationForm.get('text')?.hasError('required')) {
+        <mat-error>La observación es requerida</mat-error>
+        }
+        @if (observationForm.get('text')?.hasError('minlength')) {
+        <mat-error>Mínimo 10 caracteres</mat-error>
+        }
+        @if (observationForm.get('text')?.hasError('maxlength')) {
+        <mat-error>Máximo 1000 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Tags -->
+      <div class="tags-section">
+        <label class="tags-label">
+          <mat-icon>label</mat-icon>
+          <span>Etiquetas (opcional)</span>
+        </label>
+
+        <mat-chip-grid #chipGrid aria-label="Etiquetas">
+          @for (tag of tags(); track tag) {
+          <mat-chip-row (removed)="removeTag(tag)">
+            {{ tag }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+          }
+        </mat-chip-grid>
+
+        <mat-form-field appearance="outline" class="full-width tag-input">
+          <mat-label>Agregar etiqueta</mat-label>
+          <input matInput placeholder="Escribe y presiona Enter..." [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addTag($event)">
+          <mat-hint>Presiona Enter o coma para agregar (máximo 10)</mat-hint>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="observationForm.invalid">
+      <mat-icon>{{ isEditMode() ? 'save' : 'add' }}</mat-icon>
+      {{ isEditMode() ? 'Guardar cambios' : 'Agregar observación' }}
+    </button>
+  </mat-dialog-actions>
+</div>

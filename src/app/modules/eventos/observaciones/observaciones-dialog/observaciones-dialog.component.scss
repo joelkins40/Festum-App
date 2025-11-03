@@ -1,0 +1,173 @@
+/* ===== OBSERVACIONES DIALOG ===== */
+
+.dialog-container {
+  min-width: 500px;
+  max-width: 600px;
+}
+
+/* ===== DIALOG HEADER ===== */
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--mat-primary-color, #20b2aa) 0%, #17a398 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+  }
+
+  .header-text {
+    flex: 1;
+
+    h2 {
+      margin: 0 0 4px 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2d3436;
+    }
+
+    .header-subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: #636e72;
+      line-height: 1.5;
+    }
+  }
+}
+
+/* ===== DIALOG CONTENT ===== */
+mat-dialog-content {
+  padding: 0 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  .observation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .full-width {
+      width: 100%;
+    }
+
+    /* Status option styling */
+    .status-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+/* ===== TAGS SECTION ===== */
+.tags-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .tags-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #636e72;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  mat-chip-grid {
+    margin-bottom: 8px;
+  }
+
+  mat-chip-row {
+    font-size: 13px;
+    background: #e9ecef;
+    color: #2d3436;
+
+    button[matChipRemove] {
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .tag-input {
+    mat-hint {
+      font-size: 12px;
+    }
+  }
+}
+
+/* ===== DIALOG ACTIONS ===== */
+mat-dialog-actions {
+  padding: 16px 24px;
+  margin: 0;
+  gap: 12px;
+
+  button {
+    min-width: 120px;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .dialog-container {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .dialog-header {
+    flex-direction: column;
+    gap: 12px;
+
+    .header-icon {
+      align-self: flex-start;
+    }
+  }
+
+  mat-dialog-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
