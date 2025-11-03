@@ -1,53 +1,200 @@
 .invitados-container {
 	padding: 2rem;
-	max-width: 1400px;
+	max-width: 1600px;
 	margin: 0 auto;
+	background-color: #f8f9fa;
+	min-height: calc(100vh - 64px);
 }
 
-// Page Header
+// ==================== Header ====================
 .page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	background: white;
+	border-left: 4px solid #20b2aa;
+	border-radius: 8px;
 	padding: 1.5rem 2rem;
 	margin-bottom: 2rem;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	border-radius: 12px;
-	color: white;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
 	.header-content {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		justify-content: space-between;
 
-		.header-icon {
-			font-size: 2.5rem;
-			width: 2.5rem;
-			height: 2.5rem;
-		}
-
-		h1 {
+		.page-title {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
 			margin: 0;
 			font-size: 1.75rem;
 			font-weight: 600;
-		}
+			color: #2c3e50;
 
-		.subtitle {
-			margin: 0.25rem 0 0 0;
-			font-size: 0.875rem;
-			opacity: 0.9;
-		}
-	}
-
-	button {
-		mat-icon {
-			margin-right: 0.5rem;
+			mat-icon {
+				color: #20b2aa;
+				font-size: 2rem;
+				width: 2rem;
+				height: 2rem;
+			}
 		}
 	}
 }
 
-// Stats Cards
+// ==================== Tabla de Eventos ====================
+.eventos-card {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	margin-bottom: 2rem;
+
+	mat-card-header {
+		background: linear-gradient(135deg, #20b2aa 0%, #17a2b8 100%);
+		color: white;
+		padding: 1rem 1.5rem;
+		border-radius: 8px 8px 0 0;
+		margin: 0;
+
+		mat-card-title {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			font-size: 1.25rem;
+			font-weight: 600;
+			margin: 0;
+			color: white;
+
+			.card-title-icon {
+				font-size: 1.5rem;
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+		}
+	}
+
+	mat-card-content {
+		padding: 0;
+	}
+
+	.table-container {
+		overflow-x: auto;
+
+		.eventos-table {
+			width: 100%;
+			border-collapse: collapse;
+
+			th {
+				background-color: #f8f9fa;
+				color: #495057;
+				font-weight: 600;
+				font-size: 0.875rem;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				padding: 1rem;
+				border-bottom: 2px solid #e9ecef;
+			}
+
+			td {
+				padding: 1rem;
+				border-bottom: 1px solid #e9ecef;
+				color: #495057;
+				font-size: 0.9375rem;
+
+				strong {
+					color: #2c3e50;
+					font-weight: 600;
+				}
+			}
+
+			.mat-mdc-row {
+				cursor: pointer;
+				transition: background-color 0.2s ease;
+
+				&:hover {
+					background-color: #f8f9fa;
+				}
+
+				&.selected-row {
+					background-color: rgba(32, 178, 170, 0.1);
+					border-left: 4px solid #20b2aa;
+				}
+			}
+
+			.tipo-chip {
+				background-color: rgba(32, 178, 170, 0.1);
+				color: #20b2aa;
+				font-weight: 500;
+				font-size: 0.8125rem;
+				padding: 0.25rem 0.75rem;
+				border-radius: 12px;
+			}
+
+			.no-data-row {
+				text-align: center;
+				padding: 3rem 1rem;
+
+				.no-data {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 1rem;
+					color: #6c757d;
+
+					mat-icon {
+						font-size: 3rem;
+						width: 3rem;
+						height: 3rem;
+						color: #adb5bd;
+					}
+
+					p {
+						margin: 0;
+						font-size: 1rem;
+					}
+				}
+			}
+
+			button {
+				&[color="primary"] {
+					color: #20b2aa;
+
+					&.selected {
+						background-color: rgba(32, 178, 170, 0.1);
+					}
+				}
+			}
+		}
+	}
+}
+
+// ==================== Sección de Invitados ====================
+.invitados-section {
+	.section-header {
+		background: white;
+		border-left: 4px solid #20b2aa;
+		border-radius: 8px;
+		padding: 1rem 1.5rem;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+		.section-title {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			margin: 0;
+			font-size: 1.5rem;
+			font-weight: 600;
+			color: #2c3e50;
+
+			mat-icon {
+				color: #20b2aa;
+				font-size: 1.75rem;
+				width: 1.75rem;
+				height: 1.75rem;
+			}
+		}
+	}
+}
+
+// ==================== Estadísticas ====================
 .stats-cards {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -55,13 +202,15 @@
 	margin-bottom: 2rem;
 
 	.stat-card {
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-		border-radius: 12px;
+		background: white;
+		border-radius: 8px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		overflow: hidden;
 
 		&:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 		}
 
 		mat-card-content {
@@ -74,221 +223,338 @@
 			gap: 1rem;
 
 			.stat-icon {
-				font-size: 3rem;
-				width: 3rem;
-				height: 3rem;
-				padding: 0.5rem;
+				font-size: 2.5rem;
+				width: 2.5rem;
+				height: 2.5rem;
+				padding: 0.75rem;
 				border-radius: 12px;
 
 				&.total {
-					color: #667eea;
-					background-color: rgba(102, 126, 234, 0.1);
+					color: #20b2aa;
+					background: linear-gradient(135deg, rgba(32, 178, 170, 0.1) 0%, rgba(32, 178, 170, 0.2) 100%);
 				}
 
 				&.confirmed {
 					color: #28a745;
-					background-color: rgba(40, 167, 69, 0.1);
+					background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.2) 100%);
 				}
 
 				&.pending {
 					color: #ffc107;
-					background-color: rgba(255, 193, 7, 0.1);
+					background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.2) 100%);
 				}
 
 				&.companions {
 					color: #17a2b8;
-					background-color: rgba(23, 162, 184, 0.1);
+					background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.2) 100%);
 				}
 			}
 
 			.stat-info {
+				flex: 1;
+
 				.stat-label {
-					margin: 0;
+					margin: 0 0 0.25rem 0;
 					font-size: 0.875rem;
 					color: #6c757d;
 					font-weight: 500;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
 				}
 
 				.stat-value {
-					margin: 0.25rem 0 0 0;
-					font-size: 1.75rem;
+					margin: 0;
+					font-size: 2rem;
 					font-weight: 700;
-					color: #212529;
+					color: #2c3e50;
 				}
 			}
 		}
 	}
 }
 
-// Main Card
+// ==================== Tabla de Invitados ====================
 .main-card {
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-	border-radius: 12px;
-	overflow: hidden;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
 	mat-card-content {
-		padding: 0;
-	}
-}
-
-// Toolbar
-.table-toolbar {
-	padding: 1.5rem;
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #e9ecef;
-
-	.search-field {
-		width: 100%;
-		max-width: 500px;
-	}
-}
-
-// Table Container
-.table-container {
-	overflow-x: auto;
-}
-
-.invitados-table {
-	width: 100%;
-	background-color: white;
-
-	th {
-		background-color: #f8f9fa;
-		font-weight: 600;
-		font-size: 0.875rem;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		color: #495057;
+		padding: 1.5rem;
 	}
 
-	td {
-		padding: 1rem 0.75rem;
-		font-size: 0.875rem;
-	}
-
-	tr:hover {
-		background-color: #f8f9fa;
-		transition: background-color 0.2s ease;
-	}
-
-	// ID Badge
-	.id-badge {
-		display: inline-block;
-		padding: 0.25rem 0.75rem;
-		background-color: #667eea;
-		color: white;
-		border-radius: 12px;
-		font-weight: 600;
-		font-size: 0.75rem;
-	}
-
-	// Cells con iconos
-	.name-cell,
-	.phone-cell,
-	.email-cell,
-	.companions-cell {
+	.table-toolbar {
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+		flex-wrap: wrap;
 
-		.cell-icon {
-			font-size: 1.25rem;
-			width: 1.25rem;
-			height: 1.25rem;
-			color: #6c757d;
-		}
-	}
-
-	.companions-cell {
-		.companions-count {
-			font-weight: 600;
-			color: #17a2b8;
-		}
-	}
-
-	.no-data {
-		color: #6c757d;
-		font-style: italic;
-	}
-
-	// Chips para estado
-	mat-chip {
-		&.chip-confirmed {
-			background-color: rgba(40, 167, 69, 0.1);
-			color: #28a745;
-			font-weight: 600;
+		.search-field {
+			flex: 1;
+			min-width: 300px;
 
 			mat-icon {
-				font-size: 1rem;
-				width: 1rem;
-				height: 1rem;
-				margin-right: 0.25rem;
+				color: #6c757d;
 			}
 		}
 
-		&.chip-pending {
-			background-color: rgba(255, 193, 7, 0.1);
-			color: #d39e00;
-			font-weight: 600;
+		.toolbar-actions {
+			display: flex;
+			gap: 0.75rem;
+			flex-wrap: wrap;
 
-			mat-icon {
-				font-size: 1rem;
-				width: 1rem;
-				height: 1rem;
-				margin-right: 0.25rem;
+			.add-button {
+				background: linear-gradient(135deg, #20b2aa 0%, #17a2b8 100%);
+				color: white;
+				font-weight: 500;
+
+				mat-icon {
+					margin-right: 0.5rem;
+				}
+			}
+
+			.csv-button {
+				color: #20b2aa;
+				border-color: #20b2aa;
+
+				mat-icon {
+					margin-right: 0.5rem;
+				}
+
+				&:hover {
+					background-color: rgba(32, 178, 170, 0.05);
+				}
 			}
 		}
 	}
 
-	// Action Buttons
-	.action-buttons {
-		display: flex;
-		gap: 0.25rem;
+	.table-container {
+		overflow-x: auto;
+		border-radius: 8px;
+		border: 1px solid #e9ecef;
 
-		button {
-			transition: transform 0.2s ease;
+		.invitados-table {
+			width: 100%;
+			border-collapse: collapse;
 
-			&:hover {
-				transform: scale(1.1);
+			th {
+				background-color: #f8f9fa;
+				color: #495057;
+				font-weight: 600;
+				font-size: 0.875rem;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				padding: 1rem;
+				border-bottom: 2px solid #e9ecef;
+			}
+
+			td {
+				padding: 1rem;
+				border-bottom: 1px solid #e9ecef;
+				color: #495057;
+				font-size: 0.9375rem;
+			}
+
+			.mat-mdc-row {
+				transition: background-color 0.2s ease;
+
+				&:hover {
+					background-color: #f8f9fa;
+				}
+
+				&:last-child td {
+					border-bottom: none;
+				}
+			}
+
+			.id-badge {
+				display: inline-block;
+				padding: 0.25rem 0.75rem;
+				background: linear-gradient(135deg, rgba(32, 178, 170, 0.1) 0%, rgba(32, 178, 170, 0.2) 100%);
+				color: #20b2aa;
+				border-radius: 12px;
+				font-weight: 600;
+				font-size: 0.8125rem;
+			}
+
+			.name-cell,
+			.phone-cell,
+			.email-cell {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				.cell-icon {
+					color: #6c757d;
+					font-size: 1.25rem;
+					width: 1.25rem;
+					height: 1.25rem;
+				}
+			}
+
+			.status-chip {
+				padding: 0.375rem 0.875rem;
+				border-radius: 12px;
+				font-weight: 500;
+				font-size: 0.8125rem;
+				display: inline-block;
+
+				&.confirmed {
+					background-color: rgba(40, 167, 69, 0.1);
+					color: #28a745;
+				}
+
+				&.pending {
+					background-color: rgba(255, 193, 7, 0.1);
+					color: #ffc107;
+				}
+			}
+
+			.companions-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.375rem;
+				padding: 0.375rem 0.875rem;
+				background-color: rgba(23, 162, 184, 0.1);
+				color: #17a2b8;
+				border-radius: 12px;
+				font-weight: 500;
+				font-size: 0.8125rem;
+
+				mat-icon {
+					font-size: 1.125rem;
+					width: 1.125rem;
+					height: 1.125rem;
+				}
+			}
+
+			.actions-cell {
+				display: flex;
+				gap: 0.5rem;
+				align-items: center;
+
+				button {
+					&[color="primary"] {
+						color: #20b2aa;
+					}
+
+					&[color="warn"] {
+						color: #dc3545;
+					}
+				}
+			}
+
+			.no-data-row {
+				text-align: center;
+				padding: 3rem 1rem;
+
+				.no-data {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 1rem;
+					color: #6c757d;
+
+					mat-icon {
+						font-size: 3rem;
+						width: 3rem;
+						height: 3rem;
+						color: #adb5bd;
+					}
+
+					p {
+						margin: 0;
+						font-size: 1rem;
+					}
+				}
 			}
 		}
+	}
+
+	mat-paginator {
+		border-top: 1px solid #e9ecef;
+		background-color: #f8f9fa;
+		border-radius: 0 0 8px 8px;
 	}
 }
 
-// No Data Message
-.no-data-row {
-	text-align: center;
-	padding: 3rem 1rem !important;
+// ==================== Mensaje sin selección ====================
+.no-selection-card {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	margin-top: 2rem;
 
-	.no-data-message {
+	mat-card-content {
+		padding: 4rem 2rem;
+	}
+
+	.no-selection {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
+		text-align: center;
 		color: #6c757d;
 
 		mat-icon {
 			font-size: 4rem;
 			width: 4rem;
 			height: 4rem;
+			color: #20b2aa;
 			opacity: 0.5;
+		}
+
+		h3 {
+			margin: 0;
+			font-size: 1.5rem;
+			color: #495057;
+			font-weight: 600;
 		}
 
 		p {
 			margin: 0;
 			font-size: 1rem;
+			max-width: 500px;
 		}
 	}
 }
 
-// Responsive Design
+// ==================== Responsive ====================
 @media (max-width: 1200px) {
 	.invitados-container {
 		padding: 1.5rem;
 	}
 
 	.stats-cards {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 1024px) {
+	.page-header {
+		.header-content {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+		}
+	}
+
+	.table-toolbar {
+		flex-direction: column;
+		align-items: stretch !important;
+
+		.search-field {
+			width: 100%;
+		}
+
+		.toolbar-actions {
+			width: 100%;
+			justify-content: flex-start;
+		}
 	}
 }
 
@@ -298,38 +564,62 @@
 	}
 
 	.page-header {
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem;
+		padding: 1rem 1.5rem;
 
-		.header-content {
-			flex-direction: column;
-			text-align: center;
-
-			h1 {
-				font-size: 1.5rem;
-			}
+		.page-title {
+			font-size: 1.5rem;
 		}
+	}
 
-		button {
-			width: 100%;
+	.stats-cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.main-card,
+	.eventos-card {
+		mat-card-content {
+			padding: 1rem;
+		}
+	}
+
+	.table-toolbar {
+		.search-field {
+			min-width: unset;
+		}
+	}
+
+	.eventos-table,
+	.invitados-table {
+		th,
+		td {
+			padding: 0.75rem 0.5rem;
+			font-size: 0.875rem;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.page-header {
+		.page-title {
+			font-size: 1.25rem;
+
+			mat-icon {
+				font-size: 1.5rem;
+				width: 1.5rem;
+				height: 1.5rem;
+			}
 		}
 	}
 
 	.stats-cards {
 		grid-template-columns: 1fr;
-		gap: 1rem;
 
 		.stat-card {
-			mat-card-content {
-				padding: 1rem;
-			}
-
 			.stat-content {
 				.stat-icon {
-					font-size: 2.5rem;
-					width: 2.5rem;
-					height: 2.5rem;
+					font-size: 2rem;
+					width: 2rem;
+					height: 2rem;
 				}
 
 				.stat-info {
@@ -341,44 +631,11 @@
 		}
 	}
 
-	.table-toolbar {
-		padding: 1rem;
+	.toolbar-actions {
+		flex-direction: column;
 
-		.search-field {
-			max-width: 100%;
-		}
-	}
-
-	.invitados-table {
-		td,
-		th {
-			padding: 0.5rem;
-			font-size: 0.8125rem;
-		}
-
-		.id-badge {
-			font-size: 0.6875rem;
-			padding: 0.2rem 0.5rem;
-		}
-	}
-}
-
-@media (max-width: 480px) {
-	.page-header {
-		.header-content {
-			.header-icon {
-				font-size: 2rem;
-				width: 2rem;
-				height: 2rem;
-			}
-
-			h1 {
-				font-size: 1.25rem;
-			}
-
-			.subtitle {
-				font-size: 0.75rem;
-			}
+		button {
+			width: 100%;
 		}
 	}
 }
