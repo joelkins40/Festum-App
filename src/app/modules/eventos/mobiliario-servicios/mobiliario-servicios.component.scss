@@ -1,0 +1,448 @@
+/* ===== MOBILIARIO Y SERVICIOS ===== */
+
+.mobiliario-servicios-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 24px;
+
+  .header-content {
+    flex: 1;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: var(--mat-primary-color, #20b2aa);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: #2d3436;
+      }
+    }
+
+    .header-subtitle {
+      margin: 0 0 0 44px;
+      font-size: 15px;
+      color: #636e72;
+    }
+  }
+
+  button {
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* ===== FILTERS CARD ===== */
+.filters-card {
+  margin-bottom: 24px;
+  padding: 20px;
+
+  .filters-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: center;
+
+    .filter-field {
+      margin: 0;
+      width: 100%;
+    }
+
+    button {
+      height: 56px;
+
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+/* ===== TABLE CONTAINER ===== */
+.table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #95a5a6;
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: #2d3436;
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    color: #636e72;
+  }
+
+  button {
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* ===== TABLE ===== */
+.items-table {
+  width: 100%;
+
+  th {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #636e72;
+    padding: 16px;
+  }
+
+  td {
+    padding: 16px;
+    font-size: 14px;
+    color: #2d3436;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  tr:hover {
+    background: #f8f9fa;
+    transition: background 0.2s ease;
+  }
+
+  // Columnas específicas
+  .nombre-cell {
+    strong {
+      font-weight: 600;
+      color: #2d3436;
+    }
+  }
+
+  .descripcion-cell {
+    max-width: 300px;
+    color: #636e72;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .cantidad-cell {
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: center;
+
+      button {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      .quantity-value {
+        min-width: 40px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+        color: #2d3436;
+      }
+    }
+  }
+
+  .precio-cell {
+    font-family: 'Roboto Mono', monospace;
+    color: #636e72;
+    white-space: nowrap;
+  }
+
+  .subtotal-cell {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: #2d3436;
+    white-space: nowrap;
+
+    strong {
+      font-size: 15px;
+    }
+  }
+
+  .acciones-cell {
+    text-align: right;
+    white-space: nowrap;
+
+    button {
+      margin-left: 4px;
+    }
+  }
+
+  // Chips styling
+  mat-chip {
+    font-size: 12px;
+    font-weight: 500;
+    height: 28px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+  }
+}
+
+/* ===== TOTALES CARD ===== */
+.totales-card {
+  padding: 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 2px solid #e9ecef;
+
+  .totales-container {
+    .totales-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e9ecef;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        color: var(--mat-primary-color, #20b2aa);
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #2d3436;
+      }
+    }
+
+    .totales-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+
+        .total-label {
+          font-size: 15px;
+          color: #636e72;
+          font-weight: 500;
+        }
+
+        .total-value {
+          font-size: 18px;
+          font-weight: 600;
+          font-family: 'Roboto Mono', monospace;
+          color: #2d3436;
+        }
+
+        &.total-general {
+          margin-top: 8px;
+          padding-top: 16px;
+          border-top: 2px solid #e9ecef;
+
+          .total-label {
+            font-size: 18px;
+            color: #2d3436;
+            font-weight: 700;
+          }
+
+          .total-value {
+            font-size: 24px;
+            color: var(--mat-primary-color, #20b2aa);
+          }
+        }
+      }
+    }
+
+    .totales-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(32, 178, 170, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--mat-primary-color, #20b2aa);
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: var(--mat-primary-color, #20b2aa);
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        color: #2d3436;
+
+        strong {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .items-table {
+    .descripcion-cell {
+      max-width: 200px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .filters-card {
+    .filters-container {
+      grid-template-columns: 1fr 1fr;
+
+      .filter-field:first-child {
+        grid-column: 1 / -1;
+      }
+
+      button {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .items-table {
+    font-size: 13px;
+
+    th, td {
+      padding: 12px 8px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .mobiliario-servicios-container {
+    padding: 16px;
+  }
+
+  .page-header {
+    .header-content {
+      .header-title {
+        h1 {
+          font-size: 24px;
+        }
+      }
+
+      .header-subtitle {
+        font-size: 14px;
+        margin-left: 0;
+      }
+    }
+  }
+
+  .filters-card {
+    .filters-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Tabla scroll horizontal en móvil
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .items-table {
+    min-width: 900px;
+  }
+
+  .totales-card {
+    .totales-content {
+      .total-row {
+        .total-label {
+          font-size: 14px;
+        }
+
+        .total-value {
+          font-size: 16px;
+        }
+
+        &.total-general {
+          .total-label {
+            font-size: 16px;
+          }
+
+          .total-value {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    .header-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+}
