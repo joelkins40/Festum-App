@@ -1,0 +1,198 @@
+<!-- ===== HOME / LANDING PAGE ===== -->
+<div class="home-container">
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <div class="gradient-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <mat-icon>star</mat-icon>
+        <span>Espacios para eventos inolvidables</span>
+      </div>
+
+      <h1 class="hero-title">
+        El lugar perfecto para
+        <span class="gradient-text">tu celebración</span>
+      </h1>
+
+      <p class="hero-description">
+        Festum es una empresa inmobiliaria con sede en Tehuacán, Puebla, dedicada a ofrecer
+        espacios únicos para la celebración de eventos y fiestas.
+      </p>
+
+      <div class="hero-actions">
+        <button mat-raised-button color="primary" class="primary-btn" (click)="exploreProperties()">
+          <mat-icon>explore</mat-icon>
+          Explorar inmuebles
+        </button>
+        <button mat-stroked-button class="secondary-btn" (click)="contactUs()">
+          <mat-icon>mail</mat-icon>
+          Contactar
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Años de experiencia</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Eventos realizados</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">15+</span>
+          <span class="stat-label">Espacios disponibles</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-badge">Sobre nosotros</span>
+        <h2 class="section-title">Experiencia que transforma espacios en recuerdos</h2>
+      </div>
+
+      <div class="about-content">
+        <div class="about-text">
+          <p class="about-paragraph">
+            Nuestro compromiso es brindar lugares cómodos, amplios y seguros que se adapten a todo
+            tipo de ocasión: desde reuniones familiares hasta eventos corporativos. En Festum
+            entendemos que cada celebración es especial, y por eso buscamos ofrecer ambientes que
+            inspiren momentos memorables.
+          </p>
+
+          <p class="about-paragraph">
+            Con años de experiencia en el sector, nuestro equipo trabaja para conectar a las personas
+            con los mejores inmuebles disponibles, siempre priorizando la calidad, el mantenimiento
+            y la accesibilidad. Nuestro catálogo incluye desde salones elegantes hasta amplios jardines,
+            diseñados para ofrecer la mejor experiencia posible a nuestros clientes y sus invitados.
+          </p>
+        </div>
+
+        <div class="about-image">
+          <div class="image-placeholder">
+            <mat-icon>celebration</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-container">
+      <div class="section-header centered">
+        <span class="section-badge">¿Por qué Festum?</span>
+        <h2 class="section-title">Todo lo que necesitas en un solo lugar</h2>
+        <p class="section-description">
+          Cada detalle cuenta: iluminación, entorno, ubicación y comodidad.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        @for (feature of features; track trackByIndex($index)) {
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="philosophy-section">
+    <div class="section-container">
+      <div class="philosophy-content">
+        <div class="philosophy-icon">
+          <mat-icon>auto_awesome</mat-icon>
+        </div>
+
+        <h2 class="philosophy-title">
+          Un buen evento comienza con el lugar perfecto
+        </h2>
+
+        <p class="philosophy-text">
+          En Festum creemos que cada detalle cuenta: iluminación, entorno, ubicación y comodidad.
+          Estamos aquí para ayudarte a encontrar ese espacio ideal donde cada momento se convierta
+          en una historia que recordar.
+        </p>
+
+        <p class="philosophy-highlight">
+          Descubre nuestras opciones, explora nuestros inmuebles y haz de tu próxima celebración
+          un evento inolvidable con Festum.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2 class="cta-title">¿Listo para encontrar tu espacio ideal?</h2>
+        <p class="cta-description">
+          Comienza hoy y descubre los mejores lugares para tu próximo evento
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <button mat-raised-button color="primary" class="cta-btn" (click)="exploreProperties()">
+          <mat-icon>explore</mat-icon>
+          Ver catálogo completo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <div class="footer-logo">
+          <mat-icon>celebration</mat-icon>
+          <span>Festum</span>
+        </div>
+        <p class="footer-tagline">
+          Espacios únicos para eventos memorables en Tehuacán, Puebla
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <p>Tehuacán, Puebla</p>
+          <p>contacto&#64;festum.com</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Síguenos</h4>
+          <div class="social-links">
+            <button mat-icon-button>
+              <mat-icon>facebook</mat-icon>
+            </button>
+            <button mat-icon-button>
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Festum. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</div>

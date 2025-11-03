@@ -2,7 +2,7 @@
 
 | Módulo / Página              | URL                            | Estado                                   | Notas |
 | ---------------------------- | ------------------------------ | ---------------------------------------- | ----- |
-| **Dashboard**                | /dashboard                     | ❌ Pendiente                             |       |
+| **Dashboard**                | /dashboard                     | ✅ Terminado                             |       |
 | **Catalogos**                | /catalogos                     |                                          |       |
 | ├── Listado                  | /catalogos/categorias          | ✅ Terminado                             |       |
 | ├── Tipos Evento             | /catalogos/tipos-evento        | ✅ Terminado                             |       |
@@ -32,7 +32,7 @@
 | ├── Confirmaciones           | /eventos/confirmaciones        | ✅ Terminado                             |       |
 | ├── Mobiliario y servicios   | /eventos/mobiliario-servicios  | ❌ Pendiente                             |       |
 | ├── Plano                    | /eventos/plano                 | ✅ Terminado                             |       |
-| ├── Galería                  | /eventos/galeria               | ❌ Pendiente                             |       |
+| ├── Galería                  | /eventos/galeria               | ✅ Terminado                             |       |
 | └── Observaciones            | /eventos/observaciones         | ❌ Pendiente                             |       |
 | **Calendario**               |                                |                                          |       |
 | ├── Calendario               | /calendario                    | ✅ Terminado                             |       |

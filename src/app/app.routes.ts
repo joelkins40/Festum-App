@@ -11,7 +11,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent)
+        loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
       },
       
       // Catálogos
