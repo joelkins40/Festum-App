@@ -1,0 +1,173 @@
+<!-- ===== CRONOGRAMA DIALOG ===== -->
+<div class="cronograma-dialog">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{ data.mode === 'create' ? 'add_circle' : 'edit' }}</mat-icon>
+      <h2 class="header-title">
+        {{ data.mode === 'create' ? 'Crear Nuevo Evento' : 'Editar Evento' }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="dialog-content">
+    <form [formGroup]="eventForm" class="event-form">
+
+      <!-- Nombre del Evento -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del Evento</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Boda María y Carlos" maxlength="100">
+        <mat-icon matPrefix>event_note</mat-icon>
+
+        <mat-error *ngIf="f['nombre'].hasError('required')">
+          El nombre del evento es requerido
+        </mat-error>
+        <mat-error *ngIf="f['nombre'].hasError('minlength')">
+          Mínimo 3 caracteres
+        </mat-error>
+        <mat-hint align="end">{{ f['nombre'].value?.length || 0 }}/100</mat-hint>
+      </mat-form-field>
+
+      <!-- Cliente -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="clienteId" placeholder="Seleccionar cliente">
+          @for (client of availableClients; track client.id) {
+          <mat-option [value]="client.id">
+            <div class="client-option">
+              <mat-icon>person</mat-icon>
+              <span>{{ client.nombre }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>person</mat-icon>
+
+        <mat-error *ngIf="f['clienteId'].hasError('required')">
+          Debe seleccionar un cliente
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Rango de Fechas -->
+      <div class="date-range-group">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Fecha de Inicio</mat-label>
+          <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" placeholder="Seleccionar fecha">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+          <mat-datepicker #pickerInicio></mat-datepicker>
+          <mat-icon matPrefix>event_available</mat-icon>
+
+          <mat-error *ngIf="f['fechaInicio'].hasError('required')">
+            La fecha de inicio es requerida
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Fecha de Fin</mat-label>
+          <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin" placeholder="Seleccionar fecha">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFin></mat-datepicker>
+          <mat-icon matPrefix>event_busy</mat-icon>
+
+          <mat-error *ngIf="f['fechaFin'].hasError('required')">
+            La fecha de fin es requerida
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Tipo de Ubicación -->
+      <div class="location-section">
+        <label class="section-label">
+          <mat-icon>location_on</mat-icon>
+          Tipo de Ubicación
+        </label>
+
+        <mat-radio-group formControlName="locationType" class="location-radio-group">
+          <mat-radio-button [value]="LocationType.SALON">
+            <div class="radio-content">
+              <mat-icon>business</mat-icon>
+              <span>Salón de Eventos</span>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button [value]="LocationType.ADDRESS">
+            <div class="radio-content">
+              <mat-icon>home</mat-icon>
+              <span>Dirección</span>
+            </div>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Campos condicionales según tipo de ubicación -->
+      @if (f['locationType'].value === LocationType.SALON) {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del Salón</mat-label>
+        <input matInput formControlName="salonName" placeholder="Ej: Salón Jardín Imperial">
+        <mat-icon matPrefix>business</mat-icon>
+
+        <mat-error *ngIf="f['salonName'].hasError('required')">
+          El nombre del salón es requerido
+        </mat-error>
+      </mat-form-field>
+      } @else {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección</mat-label>
+        <textarea matInput formControlName="address" rows="2" placeholder="Calle, número, colonia, ciudad"></textarea>
+        <mat-icon matPrefix>map</mat-icon>
+
+        <mat-error *ngIf="f['address'].hasError('required')">
+          La dirección es requerida
+        </mat-error>
+      </mat-form-field>
+      }
+
+      <!-- Estado -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          @for (status of availableStatuses; track status) {
+          <mat-option [value]="status">
+            <div class="status-option">
+              <mat-icon>{{ getStatusIcon(status) }}</mat-icon>
+              <span>{{ status }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>flag</mat-icon>
+
+        <mat-error *ngIf="f['status'].hasError('required')">
+          El estado es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Descripción -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción (opcional)</mat-label>
+        <textarea matInput formControlName="descripcion" rows="4" maxlength="500"
+          placeholder="Detalles adicionales sobre el evento..."></textarea>
+        <mat-icon matPrefix>notes</mat-icon>
+
+        <mat-hint align="end">{{ f['descripcion'].value?.length || 0 }}/500</mat-hint>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="dialog-footer">
+    <button mat-stroked-button (click)="onCancel()" [disabled]="saving">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!eventForm.valid || saving">
+      <mat-icon *ngIf="!saving">save</mat-icon>
+      {{ saving ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</div>

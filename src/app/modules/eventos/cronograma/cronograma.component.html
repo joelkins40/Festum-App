@@ -1,1 +1,185 @@
-<p>cronograma works!</p>
+<!-- ===== CRONOGRAMA DE EVENTOS ===== -->
+<div class="cronograma-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="page-icon">calendar_month</mat-icon>
+      <div class="header-text">
+        <h1>Cronograma de Eventos</h1>
+        <p class="header-description">Visualiza y gestiona todos los eventos programados</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="createEvent()" matTooltip="Crear nuevo evento">
+        <mat-icon>add_circle</mat-icon>
+        Nuevo Evento
+      </button>
+    </div>
+  </div>
+
+  <!-- View Mode Toggle -->
+  <div class="view-controls">
+    <mat-button-toggle-group [value]="viewMode()" (change)="changeViewMode($event.value)" class="view-toggle">
+      <mat-button-toggle [value]="ViewMode.MONTHLY" matTooltip="Vista mensual">
+        <mat-icon>view_module</mat-icon>
+        Mensual
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ViewMode.YEARLY" matTooltip="Vista anual">
+        <mat-icon>view_list</mat-icon>
+        Anual
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+  <div class="loading-container">
+    <mat-icon class="loading-icon">schedule</mat-icon>
+    <p>Cargando eventos...</p>
+  </div>
+  }
+
+  <!-- Timeline Content -->
+  @if (!loading()) {
+  <div class="timeline-content" [@fadeSlide]>
+
+    <!-- Vista Mensual -->
+    @if (viewMode() === ViewMode.MONTHLY) {
+    <div class="monthly-view">
+      @for (monthGroup of monthlyGroups(); track trackByMonth($index, monthGroup)) {
+      <div class="month-section" [@fadeSlide]>
+        <div class="month-header">
+          <div class="month-title">
+            <mat-icon>event</mat-icon>
+            <h2>{{ monthGroup.month }} {{ monthGroup.year }}</h2>
+          </div>
+          <span class="event-count">{{ monthGroup.events.length }} evento(s)</span>
+        </div>
+
+        <div class="events-grid">
+          @for (event of monthGroup.events; track trackByEventId($index, event)) {
+          <div class="event-card" (click)="openEventDialog(event)" [style.border-left-color]="event.color" [@fadeSlide]>
+            <div class="event-header">
+              <h3 class="event-name">{{ event.nombre }}</h3>
+              <button mat-icon-button class="delete-btn" (click)="deleteEvent(event, $event)"
+                matTooltip="Eliminar evento">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <div class="event-body">
+              <div class="event-info">
+                <mat-icon>person</mat-icon>
+                <span>{{ event.cliente.nombre }}</span>
+              </div>
+
+              <div class="event-info">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ formatDateRange(event.fechaInicio, event.fechaFin) }}</span>
+              </div>
+
+              <div class="event-info">
+                <mat-icon>location_on</mat-icon>
+                <span>{{ getLocationText(event.ubicacion) }}</span>
+              </div>
+
+              @if (event.descripcion) {
+              <div class="event-description">
+                <mat-icon>notes</mat-icon>
+                <span>{{ event.descripcion }}</span>
+              </div>
+              }
+            </div>
+
+            <div class="event-footer">
+              <mat-chip-set>
+                <mat-chip [class]="getStatusClass(event.status)">
+                  <mat-icon class="chip-icon">{{ getStatusIcon(event.status) }}</mat-icon>
+                  {{ event.status }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+          } @empty {
+          <div class="empty-state">
+            <mat-icon>event_busy</mat-icon>
+            <p>No hay eventos en este mes</p>
+          </div>
+          }
+        </div>
+      </div>
+      } @empty {
+      <div class="global-empty-state">
+        <mat-icon>event_available</mat-icon>
+        <h3>No hay eventos registrados</h3>
+        <p>Comienza agregando tu primer evento</p>
+        <button mat-raised-button color="primary" (click)="createEvent()">
+          <mat-icon>add_circle</mat-icon>
+          Crear Evento
+        </button>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Vista Anual -->
+    @if (viewMode() === ViewMode.YEARLY) {
+    <div class="yearly-view">
+      @for (yearGroup of yearlyGroups(); track trackByYear($index, yearGroup)) {
+      <div class="year-section" [@fadeSlide]>
+        <div class="year-header">
+          <div class="year-title">
+            <mat-icon>calendar_view_month</mat-icon>
+            <h2>{{ yearGroup.year }}</h2>
+          </div>
+          <span class="total-count">Total: {{ yearGroup.totalEvents }} evento(s)</span>
+        </div>
+
+        <div class="months-grid">
+          @for (month of yearGroup.months; track trackByMonth($index, month)) {
+          <div class="month-card">
+            <div class="month-card-header">
+              <h4>{{ month.month }}</h4>
+              <span class="month-count">{{ month.events.length }}</span>
+            </div>
+
+            <div class="month-events-list">
+              @for (event of month.events; track trackByEventId($index, event)) {
+              <div class="compact-event" (click)="openEventDialog(event)" [style.border-left-color]="event.color">
+                <div class="compact-event-content">
+                  <span class="compact-event-name">{{ event.nombre }}</span>
+                  <span class="compact-event-client">{{ event.cliente.nombre }}</span>
+                </div>
+                <mat-icon class="compact-event-icon" [style.color]="event.color">
+                  {{ getStatusIcon(event.status) }}
+                </mat-icon>
+              </div>
+              } @empty {
+              <div class="month-empty">
+                <mat-icon>event_busy</mat-icon>
+                <span>Sin eventos</span>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      } @empty {
+      <div class="global-empty-state">
+        <mat-icon>event_available</mat-icon>
+        <h3>No hay eventos registrados</h3>
+        <p>Comienza agregando tu primer evento</p>
+        <button mat-raised-button color="primary" (click)="createEvent()">
+          <mat-icon>add_circle</mat-icon>
+          Crear Evento
+        </button>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>
