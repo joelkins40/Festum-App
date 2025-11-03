@@ -1,1 +1,326 @@
-<p>informacion-general works!</p>
+<!-- ===== INFORMACIÓN GENERAL DEL EVENTO ===== -->
+<div class="info-general-container">
+
+  <!-- Header con acciones -->
+  <div class="page-header">
+    <div class="header-left">
+      <mat-icon class="page-icon">event_note</mat-icon>
+      <div class="header-text">
+        <h1>Información General del Evento</h1>
+        <p class="folio">{{ nota.folio }}</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      @if (!isEditMode()) {
+      <button mat-raised-button color="primary" (click)="toggleEditMode()" matTooltip="Editar información del evento">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      } @else {
+      <button mat-stroked-button (click)="cancelEdit()" [disabled]="isSaving()" matTooltip="Cancelar cambios">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" (click)="saveChanges()" [disabled]="!eventForm.valid || isSaving()"
+        matTooltip="Guardar cambios">
+        <mat-icon>save</mat-icon>
+        {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="content-wrapper">
+
+    <!-- Sección 1: Información del Evento -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">event</mat-icon>
+        <h2>Detalles del Evento</h2>
+      </div>
+
+      <form [formGroup]="eventForm" class="info-grid">
+
+        <!-- Folio (solo lectura) -->
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>tag</mat-icon>
+            Folio
+          </label>
+          <mat-form-field appearance="outline" class="info-field">
+            <input matInput formControlName="folio" readonly>
+          </mat-form-field>
+        </div>
+
+        <!-- Nombre del Evento -->
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>celebration</mat-icon>
+            Nombre del Evento
+          </label>
+          <mat-form-field appearance="outline" class="info-field">
+            <input matInput formControlName="nombreEvento" placeholder="Ej: Boda María y Carlos" maxlength="100">
+            <mat-error *ngIf="f['nombreEvento'].hasError('required')">
+              El nombre del evento es requerido
+            </mat-error>
+            <mat-error *ngIf="f['nombreEvento'].hasError('minlength')">
+              Mínimo 3 caracteres
+            </mat-error>
+            <mat-hint align="end" *ngIf="isEditMode()">
+              {{ f['nombreEvento'].value?.length || 0 }}/100
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Fechas -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>event_available</mat-icon>
+            Fecha de Recepción
+          </label>
+          <mat-form-field appearance="outline" class="info-field">
+            <input matInput [matDatepicker]="pickerRecepcion" formControlName="fechaRecepcion">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerRecepcion"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRecepcion></mat-datepicker>
+            <mat-error *ngIf="f['fechaRecepcion'].hasError('required')">
+              La fecha de recepción es requerida
+            </mat-error>
+          </mat-form-field>
+          @if (!isEditMode()) {
+          <p class="readable-date">{{ formatDate(nota.fechaRecepcion) }}</p>
+          }
+        </div>
+
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>event_busy</mat-icon>
+            Fecha de Regreso
+          </label>
+          <mat-form-field appearance="outline" class="info-field">
+            <input matInput [matDatepicker]="pickerRegreso" formControlName="fechaRegreso">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerRegreso"></mat-datepicker-toggle>
+            <mat-datepicker #pickerRegreso></mat-datepicker>
+            <mat-error *ngIf="f['fechaRegreso'].hasError('required')">
+              La fecha de regreso es requerida
+            </mat-error>
+          </mat-form-field>
+          @if (!isEditMode()) {
+          <p class="readable-date">{{ formatDate(nota.fechaRegreso) }}</p>
+          }
+        </div>
+
+        <!-- Estado -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>flag</mat-icon>
+            Estado
+          </label>
+          @if (isEditMode()) {
+          <mat-form-field appearance="outline" class="info-field">
+            <mat-select formControlName="estado">
+              <mat-option *ngFor="let estado of estadosDisponibles" [value]="estado">
+                <div class="estado-option">
+                  <mat-icon>{{ getEstadoIcon(estado) }}</mat-icon>
+                  <span>{{ estado | titlecase }}</span>
+                </div>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          } @else {
+          <mat-chip-set>
+            <mat-chip [class]="getEstadoClass(nota.estado)">
+              <mat-icon class="chip-icon">{{ getEstadoIcon(nota.estado) }}</mat-icon>
+              {{ nota.estado | titlecase }}
+            </mat-chip>
+          </mat-chip-set>
+          }
+        </div>
+
+        <!-- Observaciones -->
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>notes</mat-icon>
+            Observaciones
+          </label>
+          <mat-form-field appearance="outline" class="info-field">
+            <textarea matInput formControlName="observaciones" rows="3" maxlength="500"
+              placeholder="Notas adicionales sobre el evento..."></textarea>
+            <mat-hint align="end" *ngIf="isEditMode()">
+              {{ f['observaciones'].value?.length || 0 }}/500
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </form>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 2: Información del Cliente -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">person</mat-icon>
+        <h2>Información del Cliente</h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>badge</mat-icon>
+            Nombre Completo
+          </label>
+          <div class="info-value">
+            {{ nota.cliente.nombre }}
+            @if (nota.cliente.clientePreferente) {
+            <mat-chip class="chip-preferente" matTooltip="Cliente Preferente">
+              <mat-icon class="chip-icon">star</mat-icon>
+              Preferente
+            </mat-chip>
+            }
+          </div>
+        </div>
+
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>phone</mat-icon>
+            Teléfono
+          </label>
+          <div class="info-value">
+            (555) 123-4567
+            <button mat-icon-button color="primary" matTooltip="Copiar teléfono">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>email</mat-icon>
+            Correo Electrónico
+          </label>
+          <div class="info-value">
+            cliente&#64;example.com
+            <button mat-icon-button color="primary" matTooltip="Enviar correo">
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 3: Lugar del Evento -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">location_on</mat-icon>
+        <h2>Ubicación del Evento</h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>business</mat-icon>
+            Tipo de Lugar
+          </label>
+          <div class="info-value">
+            {{ getTipoLugarLabel() }}
+          </div>
+        </div>
+
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>map</mat-icon>
+            Dirección Completa
+          </label>
+          <div class="info-value address-block">
+            <pre>{{ getFormattedAddress() }}</pre>
+            <button mat-icon-button color="primary" matTooltip="Ver en mapa">
+              <mat-icon>map</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 4: Resumen de Costos -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">payments</mat-icon>
+        <h2>Resumen Financiero</h2>
+      </div>
+
+      <div class="costs-summary">
+        <div class="cost-row">
+          <span class="cost-label">
+            <mat-icon>receipt</mat-icon>
+            Subtotal
+          </span>
+          <span class="cost-value">{{ formatPrice(nota.subtotal) }}</span>
+        </div>
+
+        <div class="cost-row">
+          <span class="cost-label">
+            <mat-icon>percent</mat-icon>
+            IVA (16%)
+          </span>
+          <span class="cost-value">{{ formatPrice(nota.iva) }}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="cost-row total-row">
+          <span class="cost-label">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <strong>Total</strong>
+          </span>
+          <span class="cost-value total-value">
+            <strong>{{ formatPrice(nota.total) }}</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Lista de Productos/Servicios -->
+      <div class="products-list">
+        <h3 class="products-title">
+          <mat-icon>inventory_2</mat-icon>
+          Productos y Servicios
+        </h3>
+
+        <div class="products-table">
+          <div class="product-header">
+            <span class="col-tipo">Tipo</span>
+            <span class="col-nombre">Descripción</span>
+            <span class="col-cantidad">Cantidad</span>
+            <span class="col-precio">P. Unitario</span>
+            <span class="col-subtotal">Subtotal</span>
+          </div>
+
+          @for (producto of nota.productos; track trackByProductId($index, producto)) {
+          <div class="product-row">
+            <span class="col-tipo">
+              <mat-chip [class]="producto.tipo === 'Producto' ? 'chip-producto' : 'chip-servicio'">
+                <mat-icon class="chip-icon">
+                  {{ producto.tipo === 'Producto' ? 'inventory' : 'room_service' }}
+                </mat-icon>
+                {{ producto.tipo }}
+              </mat-chip>
+            </span>
+            <span class="col-nombre">
+              <strong>{{ producto.nombre }}</strong>
+              <small>{{ producto.descripcion }}</small>
+            </span>
+            <span class="col-cantidad">{{ producto.cantidad }}</span>
+            <span class="col-precio">{{ formatPrice(producto.precioUnitario) }}</span>
+            <span class="col-subtotal">{{ formatPrice(producto.subtotal) }}</span>
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

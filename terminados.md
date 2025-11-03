@@ -26,7 +26,7 @@
 | ├── Lista de Eventos         | /eventos/lista                 | ✅ Terminado                             |
 | ├── Nueva Nota               | /eventos/nueva                 | ✅ Terminado                             |
 | ├── **Detalle de Evento**    |                                |                                          |
-| ├── Informacion General      | /eventos/informacion-general   | ❌ Pendiente                             |
+| ├── Informacion General      | /eventos/informacion-general   | ✅ Terminado                             |
 | ├── Cronograma               | /eventos/cronograma            | ❌ Pendiente                             |
 | ├── Invitados                | /eventos/invitados             | ✅ Terminado                             |
 | ├── Confirmaciones           | /eventos/confirmaciones        | ✅ Terminado                             |
