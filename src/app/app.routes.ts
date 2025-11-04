@@ -123,6 +123,12 @@ export const routes: Routes = [
         path: 'eventos/observaciones',
         loadComponent: () => import('./modules/eventos/observaciones/observaciones.component').then(m => m.ObservacionesComponent)
       },
+
+      // Rutas dinamicas para eventos específicos src/app/modules/eventos/EventoDetalleComponent
+      {
+        path: 'eventos/:id',
+        loadComponent: () => import('./modules/eventos/eventoDetalleComponent/eventoDetalleComponent.component').then(m => m.EventoDetalleComponent)
+      },
       
       // Otros módulos
       {
