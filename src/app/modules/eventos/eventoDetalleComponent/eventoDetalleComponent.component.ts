@@ -1,6 +1,9 @@
+import { ListaEventosService } from './../lista/lista-eventos.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { Evento } from '../lista/lista-eventos.service';
 
 @Component({
 	selector: 'app-evento-detalle-component',
@@ -11,12 +14,27 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventoDetalleComponent {
 	route = inject(ActivatedRoute);
-  
-  currentIdEvent = signal(this.route.snapshot.paramMap.get('id'))
+	eventosService = inject(ListaEventosService);
 
+	currentIdEvent = signal(this.route.snapshot.paramMap.get('id'));
+	currentEvent = signal<Evento>({} as Evento);
 
 	ngOnInit() {
 		const id = this.route.snapshot.paramMap.get('id');
-		console.log('ID del evento:', id);
+
+		// todo: manejar este error
+		if (!id) return;
+
+		this.eventosService.getEventoByFolio(id).subscribe({
+			next: (res) => {
+				if (res.success && res.data) {
+					this.currentEvent.set(res.data);
+				}
+			},
+			error: (err) => {
+				console.error('Error al obtener el evento:', err);
+			},
+		});
+		// console.log('ID del evento:', id);
 	}
 }
