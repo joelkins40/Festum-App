@@ -1,7 +1,298 @@
-<p>Hola mundo</p>
-<p> {{currentIdEvent()}} </p>
+<!-- ===== DETALLE DEL EVENTO ===== -->
+<div class="evento-detalle-container">
 
-<pre>
-  {{ currentEvent() | json }}
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="loading-state">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Cargando información del evento...</p>
+  </div>
+  }
 
-</pre>
+  <!-- Error State -->
+  @if (hasError() && !isLoading()) {
+  <div class="error-state">
+    <mat-icon>error_outline</mat-icon>
+    <h2>Error al cargar el evento</h2>
+    <p>No se pudo encontrar el evento solicitado.</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a la lista
+    </button>
+  </div>
+  }
+
+  <!-- Content -->
+  @if (currentEvent() && !isLoading()) {
+
+  <!-- Header con acciones -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()" matTooltip="Volver a la lista">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <mat-icon class="page-icon">event_note</mat-icon>
+      <div class="header-text">
+        <h1>{{ currentEvent()!.nombreEvento }}</h1>
+        <p class="folio">{{ currentEvent()!.folio }}</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button mat-stroked-button matTooltip="Imprimir">
+        <mat-icon>print</mat-icon>
+        Imprimir
+      </button>
+      <button mat-raised-button color="primary" matTooltip="Editar evento">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="content-wrapper">
+
+    <!-- Sección 1: Información del Evento -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">event</mat-icon>
+        <h2>Detalles del Evento</h2>
+      </div>
+
+      <div class="info-grid">
+        <!-- Folio -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>tag</mat-icon>
+            Folio
+          </label>
+          <div class="info-value">
+            <span>{{ currentEvent()!.folio }}</span>
+            <button mat-icon-button color="primary" (click)="copyToClipboard(currentEvent()!.folio)"
+              matTooltip="Copiar folio">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Nombre del Evento -->
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>celebration</mat-icon>
+            Nombre del Evento
+          </label>
+          <div class="info-value">
+            {{ currentEvent()!.nombreEvento }}
+          </div>
+        </div>
+
+        <!-- Fecha de Recepción -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>event_available</mat-icon>
+            Fecha de Recepción
+          </label>
+          <div class="info-value">
+            {{ formatDate(currentEvent()!.fechaRecepcion) }}
+          </div>
+        </div>
+
+        <!-- Fecha de Regreso -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>event_busy</mat-icon>
+            Fecha de Regreso
+          </label>
+          <div class="info-value">
+            {{ formatDate(currentEvent()!.fechaRegreso) }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 2: Información del Cliente -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">person</mat-icon>
+        <h2>Información del Cliente</h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>badge</mat-icon>
+            Nombre Completo
+          </label>
+          <div class="info-value">
+            {{ currentEvent()!.cliente.nombre }}
+            @if (currentEvent()!.cliente.clienteEspecial) {
+            <mat-chip class="chip-preferente" matTooltip="Cliente Especial">
+              <mat-icon class="chip-icon">star</mat-icon>
+              Especial
+            </mat-chip>
+            }
+          </div>
+        </div>
+
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>fingerprint</mat-icon>
+            ID Cliente
+          </label>
+          <div class="info-value">
+            #{{ currentEvent()!.cliente.id }}
+          </div>
+        </div>
+
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>check_circle</mat-icon>
+            Estado
+          </label>
+          <div class="info-value">
+            @if (currentEvent()!.cliente.activo) {
+            <mat-chip class="chip-activo">
+              <mat-icon class="chip-icon">check_circle</mat-icon>
+              Activo
+            </mat-chip>
+            } @else {
+            <mat-chip class="chip-inactivo">
+              <mat-icon class="chip-icon">cancel</mat-icon>
+              Inactivo
+            </mat-chip>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 3: Lugar del Evento -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">location_on</mat-icon>
+        <h2>Ubicación del Evento</h2>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>business</mat-icon>
+            Tipo de Lugar
+          </label>
+          <div class="info-value">
+            {{ getTipoLugarLabel(currentEvent()!.lugar.tipo) }}
+          </div>
+        </div>
+
+        <div class="info-item full-width">
+          <label class="info-label">
+            <mat-icon>map</mat-icon>
+            Dirección
+          </label>
+          <div class="info-value address-block">
+            <pre>{{ getFormattedAddress() }}</pre>
+            <button mat-icon-button color="primary" matTooltip="Ver en mapa">
+              <mat-icon>map</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 4: Productos y Servicios -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">inventory_2</mat-icon>
+        <h2>Productos y Servicios</h2>
+      </div>
+
+      @if (currentEvent()!.productos && currentEvent()!.productos.length > 0) {
+      <div class="products-table">
+        <div class="product-header">
+          <span class="col-tipo">Tipo</span>
+          <span class="col-nombre">Descripción</span>
+          <span class="col-cantidad">Cantidad</span>
+          <span class="col-precio">P. Unitario</span>
+          <span class="col-subtotal">Subtotal</span>
+        </div>
+
+        @for (producto of currentEvent()!.productos; track trackByProductId($index, producto)) {
+        <div class="product-row">
+          <span class="col-tipo">
+            <mat-chip [class]="producto.esServicio ? 'chip-servicio' : 'chip-producto'">
+              <mat-icon class="chip-icon">
+                {{ producto.esServicio ? 'room_service' : 'inventory' }}
+              </mat-icon>
+              {{ producto.esServicio ? 'Servicio' : 'Producto' }}
+            </mat-chip>
+          </span>
+          <span class="col-nombre">
+            <strong>{{ producto.nombre }}</strong>
+            @if (producto.descripcion) {
+            <small>{{ producto.descripcion }}</small>
+            }
+          </span>
+          <span class="col-cantidad">{{ producto.cantidad }}</span>
+          <span class="col-precio">{{ formatPrice(producto.precioUnitario) }}</span>
+          <span class="col-subtotal">{{ formatPrice(producto.subtotal) }}</span>
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="empty-products">
+        <mat-icon>inventory_2</mat-icon>
+        <p>No hay productos o servicios registrados</p>
+      </div>
+      }
+    </section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 5: Resumen Financiero -->
+    <section class="info-section">
+      <div class="section-header">
+        <mat-icon class="section-icon">payments</mat-icon>
+        <h2>Resumen Financiero</h2>
+      </div>
+
+      <div class="costs-summary">
+        <div class="cost-row">
+          <span class="cost-label">
+            <mat-icon>receipt</mat-icon>
+            Subtotal
+          </span>
+          <span class="cost-value">{{ formatPrice(subtotalProductos()) }}</span>
+        </div>
+
+        <div class="cost-row">
+          <span class="cost-label">
+            <mat-icon>percent</mat-icon>
+            IVA (16%)
+          </span>
+          <span class="cost-value">{{ formatPrice(iva()) }}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="cost-row total-row">
+          <span class="cost-label">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <strong>Total</strong>
+          </span>
+          <span class="cost-value total-value">
+            <strong>{{ formatPrice(totalConIva()) }}</strong>
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  }
+</div>
