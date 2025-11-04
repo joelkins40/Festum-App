@@ -1,0 +1,186 @@
+.dialog-container {
+	min-width: 600px;
+	max-width: 800px;
+
+	h2[mat-dialog-title] {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 1.5rem;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+		font-size: 1.5rem;
+		font-weight: 600;
+
+		mat-icon {
+			font-size: 1.75rem;
+			width: 1.75rem;
+			height: 1.75rem;
+		}
+	}
+
+	mat-dialog-content {
+		padding: 0;
+		margin: 0;
+		max-height: 70vh;
+		overflow-y: auto;
+	}
+
+	mat-dialog-actions {
+		padding: 1rem 1.5rem;
+		background-color: #f8f9fa;
+		border-top: 1px solid #e9ecef;
+
+		button {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			mat-icon {
+				font-size: 1.25rem;
+				width: 1.25rem;
+				height: 1.25rem;
+			}
+		}
+	}
+}
+
+// Formulario
+.evento-form {
+	padding: 1.5rem;
+}
+
+.form-section {
+	margin-bottom: 1.5rem;
+
+	.section-title {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0 0 1rem 0;
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: #495057;
+
+		mat-icon {
+			font-size: 1.5rem;
+			width: 1.5rem;
+			height: 1.5rem;
+			color: #667eea;
+		}
+	}
+}
+
+.form-row {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 1rem;
+
+	&.full-width {
+		width: 100%;
+	}
+
+	&.two-cols {
+		mat-form-field {
+			flex: 1;
+		}
+	}
+
+	&.three-cols {
+		mat-form-field {
+			flex: 1;
+		}
+	}
+
+	mat-form-field {
+		&.full-width {
+			width: 100%;
+		}
+	}
+
+	mat-checkbox {
+		display: flex;
+		align-items: center;
+		font-size: 0.9375rem;
+	}
+}
+
+// Radio Group
+.radio-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+
+	mat-radio-button {
+		margin: 0;
+	}
+}
+
+// Divider spacing
+mat-divider {
+	margin: 1.5rem 0;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+	.dialog-container {
+		min-width: auto;
+		width: 100vw;
+		max-width: 100vw;
+
+		h2[mat-dialog-title] {
+			font-size: 1.25rem;
+			padding: 1rem;
+
+			mat-icon {
+				font-size: 1.5rem;
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+		}
+
+		mat-dialog-content {
+			max-height: 60vh;
+		}
+	}
+
+	.evento-form {
+		padding: 1rem;
+	}
+
+	.form-row {
+		&.two-cols,
+		&.three-cols {
+			flex-direction: column;
+
+			mat-form-field {
+				width: 100%;
+			}
+		}
+	}
+
+	.radio-group {
+		gap: 0.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.dialog-container {
+		h2[mat-dialog-title] {
+			font-size: 1.125rem;
+		}
+	}
+
+	.form-section {
+		.section-title {
+			font-size: 1rem;
+
+			mat-icon {
+				font-size: 1.25rem;
+				width: 1.25rem;
+				height: 1.25rem;
+			}
+		}
+	}
+}
