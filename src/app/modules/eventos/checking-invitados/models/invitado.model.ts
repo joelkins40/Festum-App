@@ -23,6 +23,11 @@ export interface Evento {
 	date: string;
 	folio: string;
 	totalGuests: number;
+	cliente: string;
+	tipoEvento: string;
+	lugar: string;
+	montoTotal: number;
+	fechaEvento: string;
 }
 
 /**

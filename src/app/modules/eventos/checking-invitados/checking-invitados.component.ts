@@ -49,17 +49,33 @@ export class CheckingInvitadosComponent implements OnInit {
 	private readonly snackBar = inject(MatSnackBar);
 
 	// Referencias a paginador y ordenamiento
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
-	@ViewChild(MatSort) sort!: MatSort;
+	@ViewChild('invitadosPaginator') invitadosPaginator!: MatPaginator;
+	@ViewChild('invitadosSort') invitadosSort!: MatSort;
 
 	// Data sources
-	eventos: Evento[] = [];
-	dataSource = new MatTableDataSource<Invitado>([]);
+	eventosDataSource = new MatTableDataSource<Evento>([]);
+	invitadosDataSource = new MatTableDataSource<Invitado>([]);
 
 	// Estado del componente
-	selectedEventId: number | null = null;
+	selectedEvento: Evento | null = null;
 	searchTerm = '';
 	isLoading = false;
+
+	// Filtros para eventos
+	eventoSearchText = '';
+	tipoEventoFilter = '';
+	fechaFilter = '';
+
+	// Columnas de la tabla de eventos
+	eventosDisplayedColumns: string[] = [
+		'id',
+		'cliente',
+		'tipoEvento',
+		'fechaEvento',
+		'lugar',
+		'montoTotal',
+		'actions',
+	];
 
 	// Estadísticas
 	stats: CheckingStats = {
@@ -83,6 +99,19 @@ export class CheckingInvitadosComponent implements OnInit {
 		this.loadEventos();
 	}
 
+	// Listas únicas para los filtros
+	get tiposEvento(): string[] {
+		return [...new Set(this.eventosDataSource.data.map((e) => e.tipoEvento))];
+	}
+
+	get meses(): string[] {
+		const meses = this.eventosDataSource.data.map((e) => {
+			const fecha = new Date(e.fechaEvento);
+			return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+		});
+		return [...new Set(meses)].sort();
+	}
+
 	/**
 	 * Carga la lista de eventos disponibles
 	 */
@@ -90,7 +119,8 @@ export class CheckingInvitadosComponent implements OnInit {
 		this.isLoading = true;
 		this.checkingService.getEventos().subscribe({
 			next: (eventos) => {
-				this.eventos = eventos;
+				this.eventosDataSource.data = eventos;
+				this.setupEventosFilter();
 				this.isLoading = false;
 			},
 			error: (error) => {
@@ -102,58 +132,109 @@ export class CheckingInvitadosComponent implements OnInit {
 	}
 
 	/**
-	 * Maneja el cambio de evento seleccionado
+	 * Configura el filtro personalizado para la tabla de eventos
 	 */
-	onEventoChange(): void {
-		if (this.selectedEventId) {
-			this.loadInvitados();
-			this.loadStats();
-		} else {
-			this.dataSource.data = [];
-			this.resetStats();
-		}
+	setupEventosFilter(): void {
+		this.eventosDataSource.filterPredicate = (
+			evento: Evento,
+			filter: string,
+		) => {
+			const searchStr = filter.toLowerCase();
+
+			// Filtro por texto de búsqueda
+			const matchesSearch =
+				!this.eventoSearchText ||
+				evento.cliente.toLowerCase().includes(searchStr) ||
+				evento.tipoEvento.toLowerCase().includes(searchStr) ||
+				evento.lugar.toLowerCase().includes(searchStr);
+
+			// Filtro por tipo de evento
+			const matchesTipo =
+				!this.tipoEventoFilter || evento.tipoEvento === this.tipoEventoFilter;
+
+			// Filtro por mes
+			let matchesFecha = true;
+			if (this.fechaFilter) {
+				const fechaEvento = new Date(evento.fechaEvento);
+				const mesFiltro = `${fechaEvento.getFullYear()}-${String(fechaEvento.getMonth() + 1).padStart(2, '0')}`;
+				matchesFecha = mesFiltro === this.fechaFilter;
+			}
+
+			return matchesSearch && matchesTipo && matchesFecha;
+		};
+	}
+
+	/**
+	 * Aplica los filtros a la tabla de eventos
+	 */
+	applyEventosFilter(): void {
+		this.eventosDataSource.filter = this.eventoSearchText.trim().toLowerCase();
+	}
+
+	/**
+	 * Limpia todos los filtros de eventos
+	 */
+	clearEventosFilters(): void {
+		this.eventoSearchText = '';
+		this.tipoEventoFilter = '';
+		this.fechaFilter = '';
+		this.eventosDataSource.filter = '';
+	}
+
+	/**
+	 * Selecciona un evento y carga sus invitados
+	 */
+	selectEvento(evento: Evento): void {
+		this.selectedEvento = evento;
+		this.loadInvitados();
+		this.loadStats();
 	}
 
 	/**
 	 * Carga los invitados del evento seleccionado
 	 */
 	loadInvitados(): void {
-		if (!this.selectedEventId) return;
+		if (!this.selectedEvento) return;
 
 		this.isLoading = true;
-		this.checkingService.getInvitadosByEvento(this.selectedEventId).subscribe({
-			next: (invitados) => {
-				this.dataSource.data = invitados;
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
+		this.checkingService
+			.getInvitadosByEvento(this.selectedEvento.id)
+			.subscribe({
+				next: (invitados) => {
+					this.invitadosDataSource.data = invitados;
+					this.invitadosDataSource.paginator = this.invitadosPaginator;
+					this.invitadosDataSource.sort = this.invitadosSort;
 
-				// Configurar filtro personalizado
-				this.dataSource.filterPredicate = (data: Invitado, filter: string) => {
-					const searchStr = filter.toLowerCase();
-					return (
-						data.fullName.toLowerCase().includes(searchStr) ||
-						data.reservationCode.toLowerCase().includes(searchStr) ||
-						data.contactPhone.includes(searchStr)
-					);
-				};
+					// Configurar filtro personalizado
+					this.invitadosDataSource.filterPredicate = (
+						data: Invitado,
+						filter: string,
+					) => {
+						const searchStr = filter.toLowerCase();
+						return (
+							data.fullName.toLowerCase().includes(searchStr) ||
+							data.reservationCode.toLowerCase().includes(searchStr) ||
+							data.contactPhone.includes(searchStr)
+						);
+					};
 
-				this.isLoading = false;
-			},
-			error: (error) => {
-				console.error('Error al cargar invitados:', error);
-				this.showMessage('Error al cargar invitados', 'error');
-				this.isLoading = false;
-			},
-		});
+					this.isLoading = false;
+				},
+				error: (error) => {
+					console.error('Error al cargar invitados:', error);
+					this.showMessage('Error al cargar invitados', 'error');
+					this.isLoading = false;
+				},
+			});
 	}
 
 	/**
 	 * Carga las estadísticas del evento
 	 */
 	loadStats(): void {
-		if (!this.selectedEventId) return;
+		if (!this.selectedEvento) return;
 
-		this.checkingService.getStats(this.selectedEventId).subscribe({
+		this.checkingService.getStats(this.selectedEvento.id).subscribe({
 			next: (stats) => {
 				this.stats = stats;
 			},
@@ -164,13 +245,13 @@ export class CheckingInvitadosComponent implements OnInit {
 	}
 
 	/**
-	 * Aplica el filtro de búsqueda
+	 * Aplica el filtro de búsqueda de invitados
 	 */
 	applyFilter(): void {
-		this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+		this.invitadosDataSource.filter = this.searchTerm.trim().toLowerCase();
 
-		if (this.dataSource.paginator) {
-			this.dataSource.paginator.firstPage();
+		if (this.invitadosDataSource.paginator) {
+			this.invitadosDataSource.paginator.firstPage();
 		}
 	}
 
@@ -186,10 +267,10 @@ export class CheckingInvitadosComponent implements OnInit {
 	 * Registra el check-in de un invitado
 	 */
 	checkIn(invitado: Invitado): void {
-		if (!this.selectedEventId) return;
+		if (!this.selectedEvento) return;
 
 		this.checkingService
-			.checkInInvitado(this.selectedEventId, invitado.id)
+			.checkInInvitado(this.selectedEvento.id, invitado.id)
 			.subscribe({
 				next: (success) => {
 					if (success) {
@@ -214,7 +295,7 @@ export class CheckingInvitadosComponent implements OnInit {
 	 * Deshace el check-in de un invitado
 	 */
 	undoCheckIn(invitado: Invitado): void {
-		if (!this.selectedEventId) return;
+		if (!this.selectedEvento) return;
 
 		const confirmed = confirm(
 			`¿Desea deshacer el check-in de ${invitado.fullName}?`,
@@ -222,7 +303,7 @@ export class CheckingInvitadosComponent implements OnInit {
 
 		if (confirmed) {
 			this.checkingService
-				.undoCheckIn(this.selectedEventId, invitado.id)
+				.undoCheckIn(this.selectedEvento.id, invitado.id)
 				.subscribe({
 					next: (success) => {
 						if (success) {
@@ -243,23 +324,11 @@ export class CheckingInvitadosComponent implements OnInit {
 	 * Recarga los datos del evento actual
 	 */
 	refreshData(): void {
-		if (this.selectedEventId) {
+		if (this.selectedEvento) {
 			this.loadInvitados();
 			this.loadStats();
 			this.showMessage('Datos actualizados', 'info');
 		}
-	}
-
-	/**
-	 * Resetea las estadísticas
-	 */
-	private resetStats(): void {
-		this.stats = {
-			totalGuests: 0,
-			checkedIn: 0,
-			pending: 0,
-			totalPeople: 0,
-		};
 	}
 
 	/**
@@ -281,8 +350,7 @@ export class CheckingInvitadosComponent implements OnInit {
 	 * Obtiene el nombre del evento seleccionado
 	 */
 	getSelectedEventName(): string {
-		const evento = this.eventos.find((e) => e.id === this.selectedEventId);
-		return evento ? evento.name : '';
+		return this.selectedEvento ? this.selectedEvento.name : '';
 	}
 
 	/**
