@@ -74,6 +74,49 @@
 		padding: 0;
 	}
 
+	// Filtros de eventos
+	.eventos-filters {
+		display: flex;
+		gap: 1rem;
+		padding: 1.5rem;
+		background-color: #f8f9fa;
+		border-bottom: 1px solid #e9ecef;
+		flex-wrap: wrap;
+		align-items: flex-start;
+
+		.filter-field {
+			flex: 1;
+			min-width: 200px;
+
+			&.search-field {
+				flex: 2;
+				min-width: 300px;
+			}
+
+			mat-icon {
+				color: #6c757d;
+			}
+		}
+
+		.clear-filters-button {
+			margin-top: 0.5rem;
+			color: #20b2aa;
+			border-color: #20b2aa;
+
+			mat-icon {
+				margin-right: 0.5rem;
+			}
+
+			&:hover:not([disabled]) {
+				background-color: rgba(32, 178, 170, 0.05);
+			}
+
+			&[disabled] {
+				opacity: 0.5;
+			}
+		}
+	}
+
 	.table-container {
 		overflow-x: auto;
 
@@ -579,6 +622,21 @@
 	.eventos-card {
 		mat-card-content {
 			padding: 1rem;
+		}
+	}
+
+	.eventos-filters {
+		padding: 1rem;
+		flex-direction: column;
+
+		.filter-field,
+		.filter-field.search-field {
+			width: 100%;
+			min-width: unset;
+		}
+
+		.clear-filters-button {
+			width: 100%;
 		}
 	}
 

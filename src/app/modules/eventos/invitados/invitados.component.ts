@@ -1,9 +1,11 @@
 import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -33,10 +35,12 @@ export interface Evento {
 	standalone: true,
 	imports: [
 		CommonModule,
+		FormsModule,
 		MatCardModule,
 		MatTableModule,
 		MatFormFieldModule,
 		MatInputModule,
+		MatSelectModule,
 		MatButtonModule,
 		MatIconModule,
 		MatDialogModule,
@@ -271,11 +275,26 @@ export class InvitadosComponent implements OnInit {
 		totalCompanions: 0,
 	};
 
+	// Filtros para eventos
+	eventoSearchText = '';
+	tipoEventoFilter = '';
+	lugarFilter = '';
+
+	// Listas únicas para los filtros
+	get tiposEvento(): string[] {
+		return [...new Set(this.eventos.map((e) => e.tipoEvento))];
+	}
+
+	get lugares(): string[] {
+		return [...new Set(this.eventos.map((e) => e.lugar))];
+	}
+
 	/**
 	 * Inicialización del componente
 	 */
 	ngOnInit(): void {
 		this.loadEventos();
+		this.setupEventosFilter();
 	}
 
 	/**
@@ -284,6 +303,53 @@ export class InvitadosComponent implements OnInit {
 	loadEventos(): void {
 		// Por ahora usamos datos mock, en el futuro se cargaría desde un servicio
 		this.eventosDataSource.data = this.eventos;
+	}
+
+	/**
+	 * Configura el filtro personalizado para la tabla de eventos
+	 */
+	setupEventosFilter(): void {
+		this.eventosDataSource.filterPredicate = (
+			evento: Evento,
+			filter: string,
+		) => {
+			const searchStr = filter.toLowerCase();
+
+			// Filtro por texto de búsqueda
+			const matchesSearch =
+				!this.eventoSearchText ||
+				evento.cliente.toLowerCase().includes(searchStr) ||
+				evento.tipoEvento.toLowerCase().includes(searchStr) ||
+				evento.lugar.toLowerCase().includes(searchStr);
+
+			// Filtro por tipo de evento
+			const matchesTipo =
+				!this.tipoEventoFilter || evento.tipoEvento === this.tipoEventoFilter;
+
+			// Filtro por lugar
+			const matchesLugar =
+				!this.lugarFilter || evento.lugar === this.lugarFilter;
+
+			return matchesSearch && matchesTipo && matchesLugar;
+		};
+	}
+
+	/**
+	 * Aplica los filtros a la tabla de eventos
+	 */
+	applyEventosFilter(): void {
+		// Usamos el texto de búsqueda como filtro principal
+		this.eventosDataSource.filter = this.eventoSearchText.trim().toLowerCase();
+	}
+
+	/**
+	 * Limpia todos los filtros de eventos
+	 */
+	clearEventosFilters(): void {
+		this.eventoSearchText = '';
+		this.tipoEventoFilter = '';
+		this.lugarFilter = '';
+		this.eventosDataSource.filter = '';
 	}
 
 	/**

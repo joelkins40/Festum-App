@@ -18,6 +18,50 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <!-- Filtros de Eventos -->
+      <div class="eventos-filters">
+        <mat-form-field appearance="outline" class="filter-field search-field">
+          <mat-label>Buscar evento</mat-label>
+          <input matInput [(ngModel)]="eventoSearchText" (input)="applyEventosFilter()"
+            placeholder="Cliente, tipo de evento, lugar..." />
+          <mat-icon matPrefix>search</mat-icon>
+          @if (eventoSearchText) {
+          <button matSuffix mat-icon-button (click)="eventoSearchText = ''; applyEventosFilter()"
+            matTooltip="Limpiar búsqueda">
+            <mat-icon>close</mat-icon>
+          </button>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Tipo de Evento</mat-label>
+          <mat-select [(ngModel)]="tipoEventoFilter" (selectionChange)="applyEventosFilter()">
+            <mat-option value="">Todos</mat-option>
+            @for (tipo of tiposEvento; track tipo) {
+            <mat-option [value]="tipo">{{ tipo }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>event</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Lugar</mat-label>
+          <mat-select [(ngModel)]="lugarFilter" (selectionChange)="applyEventosFilter()">
+            <mat-option value="">Todos</mat-option>
+            @for (lugar of lugares; track lugar) {
+            <mat-option [value]="lugar">{{ lugar }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>location_on</mat-icon>
+        </mat-form-field>
+
+        <button mat-stroked-button color="primary" (click)="clearEventosFilters()" class="clear-filters-button"
+          [disabled]="!eventoSearchText && !tipoEventoFilter && !lugarFilter">
+          <mat-icon>filter_alt_off</mat-icon>
+          Limpiar Filtros
+        </button>
+      </div>
+
       <div class="table-container">
         <table mat-table [dataSource]="eventosDataSource" class="eventos-table">
           <!-- ID Column -->
