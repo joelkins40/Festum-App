@@ -134,6 +134,10 @@
           <mat-icon class="expand-icon" [class.rotated]="eventosExpanded">expand_more</mat-icon>
         </div>
         <div class="sub-menu" *ngIf="eventosExpanded">
+          <a class="nav-sub-item" routerLink="/eventos" (click)="onMenuClick()">
+            <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
+            <span class="nav-sub-label">Lista de eventos nueva vista</span>
+          </a>
           <a class="nav-sub-item" routerLink="/eventos/lista" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
             <span class="nav-sub-label">Lista de eventos</span>
