@@ -23,8 +23,8 @@ import { Evento } from '../lista/lista-eventos.service';
 		MatTooltipModule,
 		MatProgressSpinnerModule,
 	],
-	templateUrl: './eventoDetalle.component.html',
-	styleUrl: './eventoDetalle.component.scss',
+	templateUrl: './evento-page.component.html',
+	styleUrl: './evento-page.component.scss',
 })
 export class EventoDetalleComponent {
 	private route = inject(ActivatedRoute);

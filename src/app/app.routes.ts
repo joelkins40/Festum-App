@@ -131,7 +131,7 @@ export const routes: Routes = [
       // Rutas dinamicas para eventos específicos src/app/modules/eventos/EventoDetalleComponent
       {
         path: 'eventos/:id',
-        loadComponent: () => import('./modules/eventos/eventoDetalleComponent/eventoDetalleComponent.component').then(m => m.EventoDetalleComponent)
+        loadComponent: () => import('./modules/eventos/evento-page/evento-page.component').then(m => m.EventoDetalleComponent)
       },
       
       // Otros módulos
