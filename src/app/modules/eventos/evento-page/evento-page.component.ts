@@ -158,7 +158,7 @@ export class EventoDetalleComponent {
 	 * Navega de regreso a la lista
 	 */
 	goBack(): void {
-		this.router.navigate(['/eventos/lista']);
+		this.router.navigate(['/eventos'], { replaceUrl: true });
 	}
 
 	/**
