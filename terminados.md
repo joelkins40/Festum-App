@@ -39,7 +39,7 @@
 | **Reportes**                 |                                |              |                                       |
 | └── Reportes                 | /reportes                      | ✅ Terminado |                                       |
 | **usuarios y configuracion** |                                |              |                                       |
-| ├── usuarios                 | /usuarios/lista                | ❌ Pendiente |                                       |
+| ├── usuarios                 | /usuarios/lista                | ✅ Terminado |                                       |
 | ├── Roles y permisos         | /usuarios/roles-permisos       | ❌ Pendiente |                                       |
 | ├── perfil                   | /usuarios/perfil               | ❌ Pendiente |                                       |
 | └── configuracion            | /configuracion/general         | ❌ Pendiente |                                       |

@@ -1,1 +1,163 @@
-<p>lista works!</p>
+<!-- ===== LISTA DE USUARIOS COMPONENT ===== -->
+<div class="usuarios-container">
+
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">people</mat-icon>
+        <h1>Gestión de Usuarios</h1>
+      </div>
+      <p class="page-description">
+        Administra el personal administrativo del sistema
+      </p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="agregarUsuario()" class="create-button">
+        <mat-icon>person_add</mat-icon>
+        Agregar Usuario
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-content">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p>Cargando usuarios...</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+
+    <!-- Toolbar de Búsqueda -->
+    <div class="table-toolbar">
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar usuarios</mat-label>
+          <input matInput [(ngModel)]="filtroTexto" (keyup)="aplicarFiltro()"
+            placeholder="Buscar por nombre o correo...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <!-- Botón Refrescar -->
+        <button mat-icon-button (click)="cargarUsuarios()" [disabled]="loading" matTooltip="Refrescar datos">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-divider class="toolbar-divider"></mat-divider>
+
+    <!-- Tabla de Usuarios -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="usuarios-table">
+
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="id-column">ID</th>
+          <td mat-cell *matCellDef="let usuario" class="id-cell">
+            <span class="id-badge">{{ usuario.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let usuario" class="nombre-cell">
+            <div class="usuario-info">
+              <mat-icon class="usuario-icon">account_circle</mat-icon>
+              <span class="nombre-text">{{ usuario.nombre }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Correo -->
+        <ng-container matColumnDef="correo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo Electrónico</th>
+          <td mat-cell *matCellDef="let usuario" class="correo-cell">
+            <div class="correo-info">
+              <mat-icon class="correo-icon">email</mat-icon>
+              <span class="correo-text">{{ usuario.correo }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Rol -->
+        <ng-container matColumnDef="rol">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+          <td mat-cell *matCellDef="let usuario" class="rol-cell">
+            <mat-chip class="rol-chip">
+              <mat-icon class="rol-icon">badge</mat-icon>
+              {{ usuario.rol }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let usuario" class="estado-cell">
+            <mat-chip [class.estado-activo]="usuario.estado === 'Activo'"
+              [class.estado-inactivo]="usuario.estado === 'Inactivo'" class="estado-chip">
+              <mat-icon class="estado-icon">
+                {{ usuario.estado === 'Activo' ? 'check_circle' : 'cancel' }}
+              </mat-icon>
+              {{ usuario.estado }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
+          <td mat-cell *matCellDef="let usuario" class="acciones-cell">
+            <div class="action-buttons-group">
+              <!-- Botón Editar -->
+              <button mat-icon-button color="primary" (click)="editarUsuario(usuario)" matTooltip="Editar usuario"
+                class="action-button edit-button">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <!-- Botón Eliminar -->
+              <button mat-icon-button color="warn" (click)="eliminarUsuario(usuario)" matTooltip="Eliminar usuario"
+                class="action-button delete-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header y Rows -->
+        <tr mat-header-row *matHeaderRowDef="columnasDisplayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDisplayed; trackBy: trackByUsuarioId" class="table-row"></tr>
+
+        <!-- Empty State -->
+        <tr class="mat-row no-data-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="columnasDisplayed.length">
+            <div class="no-data-container">
+              <mat-icon class="no-data-icon">person_off</mat-icon>
+              <p class="no-data-text">
+                {{ filtroTexto ? 'No se encontraron usuarios con ese criterio de búsqueda' : 'No hay usuarios
+                registrados' }}
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons aria-label="Seleccionar página de usuarios"
+      class="usuarios-paginator">
+    </mat-paginator>
+
+  </mat-card>
+
+</div>
