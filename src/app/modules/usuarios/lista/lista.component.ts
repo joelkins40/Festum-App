@@ -1,6 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+	Component,
+	DestroyRef,
+	inject,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -20,6 +27,10 @@ import { MatChipsModule } from '@angular/material/chips';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import {
+	UsuarioDialogComponent,
+	UsuarioDialogData,
+} from './usuario-dialog/usuario-dialog.component';
 
 // Interfaz Usuario
 export interface Usuario {
@@ -74,6 +85,9 @@ export class ListaComponent implements OnInit {
 	// ===== VIEW CHILDREN =====
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
+
+	// ===== INJECT DEPENDENCIES =====
+	private readonly destroyRef = inject(DestroyRef);
 
 	constructor(
 		private snackBar: MatSnackBar,
@@ -211,14 +225,110 @@ export class ListaComponent implements OnInit {
 	 * ➕ Abrir modal para agregar nuevo usuario
 	 */
 	agregarUsuario(): void {
-		this.mostrarMensaje('Función "Agregar Usuario" en desarrollo');
+		const dialogData: UsuarioDialogData = {
+			modo: 'crear',
+		};
+
+		const dialogRef = this.dialog.open(UsuarioDialogComponent, {
+			width: '600px',
+			maxWidth: '95vw',
+			disableClose: false,
+			data: dialogData,
+		});
+
+		dialogRef
+			.afterClosed()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((result) => {
+				if (result) {
+					this.crearNuevoUsuario(result);
+				}
+			});
 	}
 
 	/**
 	 * ✏️ Editar usuario
 	 */
 	editarUsuario(usuario: Usuario): void {
-		this.mostrarMensaje(`Editando usuario: ${usuario.nombre}`);
+		const dialogData: UsuarioDialogData = {
+			modo: 'editar',
+			usuario: usuario,
+		};
+
+		const dialogRef = this.dialog.open(UsuarioDialogComponent, {
+			width: '600px',
+			maxWidth: '95vw',
+			disableClose: false,
+			data: dialogData,
+		});
+
+		dialogRef
+			.afterClosed()
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((result) => {
+				if (result) {
+					this.actualizarUsuarioExistente(result);
+				}
+			});
+	}
+
+	/**
+	 * 💾 Crear nuevo usuario en la tabla
+	 */
+	private crearNuevoUsuario(data: {
+		nombreCompleto: string;
+		email: string;
+		telefono: string;
+		rol: string;
+		activo: boolean;
+	}): void {
+		// Generar nuevo ID
+		const nuevoId =
+			this.usuarios.length > 0
+				? Math.max(...this.usuarios.map((u) => u.id)) + 1
+				: 1;
+
+		const nuevoUsuario: Usuario = {
+			id: nuevoId,
+			nombre: data.nombreCompleto,
+			correo: data.email,
+			rol: data.rol,
+			estado: data.activo ? 'Activo' : 'Inactivo',
+		};
+
+		// Agregar al inicio del array
+		this.usuarios.unshift(nuevoUsuario);
+		this.dataSource.data = this.usuarios;
+
+		this.mostrarMensaje(`Usuario "${data.nombreCompleto}" creado exitosamente`);
+	}
+
+	/**
+	 * 🔄 Actualizar usuario existente
+	 */
+	private actualizarUsuarioExistente(data: {
+		id: number;
+		nombreCompleto: string;
+		email: string;
+		telefono: string;
+		rol: string;
+		activo: boolean;
+	}): void {
+		const index = this.usuarios.findIndex((u) => u.id === data.id);
+		if (index !== -1) {
+			this.usuarios[index] = {
+				...this.usuarios[index],
+				nombre: data.nombreCompleto,
+				correo: data.email,
+				rol: data.rol,
+				estado: data.activo ? 'Activo' : 'Inactivo',
+			};
+
+			this.dataSource.data = this.usuarios;
+			this.mostrarMensaje(
+				`Usuario "${data.nombreCompleto}" actualizado exitosamente`,
+			);
+		}
 	}
 
 	/**

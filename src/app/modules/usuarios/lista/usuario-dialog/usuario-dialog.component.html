@@ -1,0 +1,175 @@
+<!-- 📝 Modal para Crear/Editar Usuarios Administrativos -->
+<div class="usuario-dialog">
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{
+        modo === 'crear' ? 'person_add' : 'edit'
+        }}</mat-icon>
+      <h2 class="header-title">
+        {{ modo === 'crear' ? 'Nuevo Usuario' : 'Editar Usuario' }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <form [formGroup]="usuarioForm" class="usuario-form">
+      <!-- Campo Nombre Completo -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput formControlName="nombreCompleto" placeholder="Ej: Juan Pérez García" maxlength="100"
+            #nombreInput />
+          <mat-icon matPrefix class="input-icon">person</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['nombreCompleto'].hasError('required')">
+            El nombre completo es requerido
+          </mat-error>
+          <mat-error *ngIf="f['nombreCompleto'].hasError('minlength')">
+            El nombre debe tener al menos 3 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['nombreCompleto'].hasError('maxlength')">
+            El nombre no puede exceder 100 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['nombreCompleto'].hasError('pattern')">
+            Solo se permiten letras y espacios
+          </mat-error>
+
+          <!-- Contador de caracteres -->
+          <mat-hint align="end">
+            {{ nombreInput.value.length || 0 }}/100
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Campo Email -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="usuario@festum.com" maxlength="100" />
+          <mat-icon matPrefix class="input-icon">email</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['email'].hasError('required')">
+            El correo electrónico es requerido
+          </mat-error>
+          <mat-error *ngIf="f['email'].hasError('email') || f['email'].hasError('pattern')">
+            Ingresa un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Campo Teléfono -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Teléfono</mat-label>
+          <input matInput type="tel" formControlName="telefono" placeholder="5512345678" maxlength="10" />
+          <mat-icon matPrefix class="input-icon">phone</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['telefono'].hasError('required')">
+            El teléfono es requerido
+          </mat-error>
+          <mat-error *ngIf="f['telefono'].hasError('pattern')">
+            Ingresa un teléfono válido de 10 dígitos
+          </mat-error>
+
+          <mat-hint>10 dígitos sin espacios ni guiones</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Campo Rol -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="rol" placeholder="Selecciona un rol">
+            <mat-option *ngFor="let rol of rolesDisponibles" [value]="rol">
+              <div class="rol-option">
+                <mat-icon class="rol-icon">badge</mat-icon>
+                <span>{{ rol }}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix class="input-icon">admin_panel_settings</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['rol'].hasError('required')">
+            Selecciona un rol
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Campo Estado (Toggle) -->
+      <div class="form-section toggle-section">
+        <div class="toggle-container">
+          <div class="toggle-info">
+            <mat-icon class="toggle-icon">{{
+              usuarioForm.get('activo')?.value ? 'check_circle' : 'cancel'
+              }}</mat-icon>
+            <div class="toggle-labels">
+              <span class="toggle-label">Estado del Usuario</span>
+              <span class="toggle-sublabel">
+                {{
+                usuarioForm.get('activo')?.value
+                ? 'Usuario activo - puede acceder al sistema'
+                : 'Usuario inactivo - sin acceso al sistema'
+                }}
+              </span>
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="activo" color="primary" class="toggle-switch">
+            {{ usuarioForm.get('activo')?.value ? 'Activo' : 'Inactivo' }}
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <!-- Información adicional para edición -->
+      <div *ngIf="modo === 'editar'" class="info-section">
+        <div class="info-header">
+          <mat-icon>info</mat-icon>
+          <span>Información del Usuario</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">tag</mat-icon>
+          <span class="info-label">ID:</span>
+          <span class="info-value">#{{ data.usuario?.id }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">verified_user</mat-icon>
+          <span class="info-label">Estado actual:</span>
+          <span class="info-value" [class.estado-activo]="data.usuario?.estado === 'Activo'"
+            [class.estado-inactivo]="data.usuario?.estado === 'Inactivo'">
+            {{ data.usuario?.estado }}
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Acciones del Modal -->
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!usuarioForm.valid || guardando"
+      class="save-button">
+      <mat-icon>{{
+        guardando ? 'hourglass_empty' : modo === 'crear' ? 'save' : 'update'
+        }}</mat-icon>
+      {{
+      guardando
+      ? 'Guardando...'
+      : modo === 'crear'
+      ? 'Crear Usuario'
+      : 'Actualizar Usuario'
+      }}
+    </button>
+  </div>
+</div>
