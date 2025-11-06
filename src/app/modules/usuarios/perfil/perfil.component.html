@@ -1,1 +1,131 @@
-<p>perfil works!</p>
+<!-- User Profile Page -->
+<div class="profile-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">account_circle</mat-icon>
+        <h1>My Profile</h1>
+      </div>
+      <p class="page-description">Manage your personal information and preferences</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-content">
+    <!-- Profile Information Card -->
+    <mat-card class="profile-card">
+      <div class="profile-header">
+        <div class="profile-picture-section">
+          <img [src]="userProfile.profilePicture" [alt]="userProfile.fullName" class="profile-picture" />
+          <div class="profile-badge">
+            <mat-icon>verified</mat-icon>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <h2 class="profile-name">{{ userProfile.fullName }}</h2>
+          <mat-chip class="role-chip">
+            <mat-icon>shield</mat-icon>
+            {{ userProfile.role }}
+          </mat-chip>
+        </div>
+
+        <div class="profile-actions">
+          <button mat-raised-button color="primary" (click)="openEditDialog()" class="edit-button">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="profile-details">
+        <div class="detail-item">
+          <div class="detail-icon">
+            <mat-icon>email</mat-icon>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ userProfile.email }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-icon">
+            <mat-icon>phone</mat-icon>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">{{ userProfile.phone }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-icon">
+            <mat-icon>event</mat-icon>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Join Date</span>
+            <span class="detail-value">{{
+              userProfile.joinDate | date: 'MMMM d, yyyy'
+              }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-icon">
+            <mat-icon>access_time</mat-icon>
+          </div>
+          <div class="detail-content">
+            <span class="detail-label">Last Login</span>
+            <span class="detail-value">{{ getTimeAgo(userProfile.lastLogin) }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Activity Summary Card -->
+    <mat-card class="activity-card">
+      <div class="card-header">
+        <mat-icon class="header-icon">analytics</mat-icon>
+        <h3 class="card-title">Activity Summary</h3>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-icon events">
+            <mat-icon>event_available</mat-icon>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{ activityStats.totalEventsManaged }}</span>
+            <span class="stat-label">Total Events Managed</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon rentals">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{ activityStats.activeRentals }}</span>
+            <span class="stat-label">Active Rentals</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon tasks">
+            <mat-icon>assignment</mat-icon>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{ activityStats.pendingTasks }}</span>
+            <span class="stat-label">Pending Tasks</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

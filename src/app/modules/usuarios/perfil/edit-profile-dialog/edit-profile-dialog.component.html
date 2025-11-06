@@ -1,0 +1,99 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <mat-icon class="dialog-icon">edit</mat-icon>
+      Editar Perfil
+    </h2>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="profileForm" class="profile-form">
+      <!-- Full Name Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre Completo</mat-label>
+        <input matInput formControlName="fullName" placeholder="Ej: Carlos Mendoza García" maxlength="100" required />
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-hint align="end">{{ fullName?.value?.length || 0 }}/100</mat-hint>
+        @if (fullName?.invalid && fullName?.touched) {
+        @if (fullName?.errors?.['required']) {
+        <mat-error>El nombre completo es obligatorio</mat-error>
+        }
+        @if (fullName?.errors?.['minlength']) {
+        <mat-error>Mínimo 3 caracteres requeridos</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Email Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Ej: carlos.mendoza@festum.com" maxlength="100"
+          required />
+        <mat-icon matPrefix>email</mat-icon>
+        <mat-hint align="end">{{ email?.value?.length || 0 }}/100</mat-hint>
+        @if (email?.invalid && email?.touched) {
+        @if (email?.errors?.['required']) {
+        <mat-error>El correo electrónico es obligatorio</mat-error>
+        }
+        @if (email?.errors?.['email']) {
+        <mat-error>El formato del correo no es válido</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Phone Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Teléfono</mat-label>
+        <input matInput type="tel" formControlName="phone" placeholder="Ej: 5512345678" maxlength="10" required />
+        <mat-icon matPrefix>phone</mat-icon>
+        <mat-hint align="end">{{ phone?.value?.length || 0 }}/10</mat-hint>
+        @if (phone?.invalid && phone?.touched) {
+        @if (phone?.errors?.['required']) {
+        <mat-error>El teléfono es obligatorio</mat-error>
+        }
+        @if (phone?.errors?.['pattern']) {
+        <mat-error>Debe contener 10 dígitos numéricos</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Profile Picture URL Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL de Foto de Perfil</mat-label>
+        <input matInput formControlName="profilePicture" placeholder="Ej: https://example.com/profile.jpg" required />
+        <mat-icon matPrefix>image</mat-icon>
+        @if (profilePicture?.invalid && profilePicture?.touched) {
+        @if (profilePicture?.errors?.['required']) {
+        <mat-error>La URL de la foto es obligatoria</mat-error>
+        }
+        @if (profilePicture?.errors?.['pattern']) {
+        <mat-error>Debe ser una URL válida (http:// o https://)</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Preview Section -->
+      @if (profilePicture?.value && profilePicture?.valid) {
+      <div class="preview-section">
+        <p class="preview-label">Vista previa:</p>
+        <img [src]="profilePicture!.value" alt="Preview" class="profile-preview"
+          (error)="profilePicture!.setErrors({ invalid: true })" />
+      </div>
+      }
+    </form>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="profileForm.invalid" class="save-button">
+      <mat-icon>save</mat-icon>
+      Guardar Cambios
+    </button>
+  </div>
+</div>
