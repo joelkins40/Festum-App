@@ -23,6 +23,8 @@
 | ├── Notas                    | /ventas/notas                  | ✅ Terminado |                                       |
 | └── Facturación              | /ventas/facturacion            | ✅ Terminado |                                       |
 | **Eventos**                  |                                |              |                                       |
+| ├── Tabla lista de Eventos   | /eventos                       | ✅ Terminado |                                       |
+| └── Pagina de un Evento      | /eventos/:folioEvento          | ✅ Terminado |                                       |
 | ├── Lista de Eventos         | /eventos/lista                 | ✅ Terminado |                                       |
 | ├── Nueva Nota               | /eventos/nueva                 | ✅ Terminado |                                       |
 | ├── **Detalle de Evento**    |                                |              |                                       |
@@ -40,11 +42,11 @@
 | └── Reportes                 | /reportes                      | ✅ Terminado |                                       |
 | **usuarios y configuracion** |                                |              |                                       |
 | ├── usuarios                 | /usuarios/lista                | ✅ Terminado |                                       |
-| ├── Roles y permisos         | /usuarios/roles-permisos       | ❌ Pendiente |                                       |
-| ├── perfil                   | /usuarios/perfil               | ❌ Pendiente |                                       |
-| └── configuracion            | /configuracion/general         | ❌ Pendiente |                                       |
+| ├── Roles y permisos         | /usuarios/roles-permisos       | ✅ Terminado |                                       |
+| ├── perfil                   | /usuarios/perfil               | ✅ Terminado |                                       |
+| └── configuracion            | /configuracion/general         | ✅ Terminado |                                       |
 | **Mantenimiento**            |                                |              |                                       |
-| └── Mantenimiento            | /mantenimiento                 | ❌ Pendiente |                                       |
+| └── Mantenimiento            | /mantenimiento                 | ✅ Terminado |                                       |
 
 ---
 
