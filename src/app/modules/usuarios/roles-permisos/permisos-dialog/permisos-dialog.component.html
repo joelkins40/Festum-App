@@ -1,0 +1,92 @@
+<!-- 🧩 Modal para Gestionar Permisos de un Rol -->
+<div class="permisos-dialog">
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">settings</mat-icon>
+      <div class="header-text">
+        <h2 class="header-title">Gestionar Permisos</h2>
+        <p class="header-subtitle">Rol: {{ rol.nombreRol }}</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contador de permisos seleccionados -->
+  <div class="permisos-counter">
+    <mat-icon class="counter-icon">check_circle</mat-icon>
+    <span class="counter-text">
+      <strong>{{ getTotalSeleccionados() }}</strong> permiso(s) seleccionado(s)
+      de <strong>{{ permisos.length }}</strong> disponibles
+    </span>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <!-- Permisos agrupados por categoría -->
+    <div *ngFor="let categoria of categorias" class="categoria-section">
+      <!-- Header de categoría -->
+      <div class="categoria-header">
+        <div class="categoria-info">
+          <mat-icon class="categoria-icon">folder</mat-icon>
+          <h3 class="categoria-nombre">{{ categoria }}</h3>
+          <mat-chip class="categoria-badge">
+            {{ contarSeleccionadosCategoria(categoria) }} /
+            {{ getPermisosPorCategoria(categoria).length }}
+          </mat-chip>
+        </div>
+        <div class="categoria-actions">
+          <button mat-button color="primary" (click)="seleccionarTodosCategoria(categoria)" class="select-all-button">
+            <mat-icon>done_all</mat-icon>
+            Seleccionar todos
+          </button>
+          <button mat-button color="warn" (click)="deseleccionarTodosCategoria(categoria)" class="deselect-all-button">
+            <mat-icon>clear</mat-icon>
+            Deseleccionar
+          </button>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Lista de permisos de la categoría -->
+      <div class="permisos-grid">
+        <div *ngFor="let permiso of getPermisosPorCategoria(categoria)" class="permiso-item"
+          [class.selected]="isPermisoSeleccionado(permiso.id)">
+          <mat-checkbox [checked]="isPermisoSeleccionado(permiso.id)" (change)="togglePermiso(permiso.id)"
+            color="primary" class="permiso-checkbox">
+            <div class="permiso-content">
+              <span class="permiso-nombre">{{ permiso.nombre }}</span>
+              <span class="permiso-descripcion">{{ permiso.descripcion }}</span>
+            </div>
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nota informativa -->
+    <div class="note-section">
+      <mat-icon class="note-icon">info</mat-icon>
+      <div class="note-content">
+        <strong>Nota:</strong> Los permisos controlan qué acciones puede realizar
+        el usuario en el sistema. Asegúrate de asignar solo los permisos
+        necesarios para cada rol.
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones del Modal -->
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="guardando" class="save-button">
+      <mat-icon>{{ guardando ? 'hourglass_empty' : 'save' }}</mat-icon>
+      {{ guardando ? 'Guardando...' : 'Guardar Permisos' }}
+    </button>
+  </div>
+</div>

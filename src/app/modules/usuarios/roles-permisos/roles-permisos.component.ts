@@ -54,6 +54,8 @@ export interface Permiso {
 	activo: boolean;
 }
 
+// Copilot me creo dos dialogs, revisar el ¿por que?
+
 @Component({
 	selector: 'app-roles-permisos',
 	standalone: true,
