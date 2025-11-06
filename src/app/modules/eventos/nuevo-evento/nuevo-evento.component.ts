@@ -49,7 +49,7 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 	templateUrl: './nuevo-evento.component.html',
 	styleUrl: './nuevo-evento.component.scss',
 })
-export class NuevaNotaComponent implements OnInit {
+export class NuevoEventoComponent implements OnInit {
 	private fb = inject(FormBuilder);
 	private nuevaNotaService = inject(NuevaNotaService);
 	private clientesService = inject(ClientesService);
