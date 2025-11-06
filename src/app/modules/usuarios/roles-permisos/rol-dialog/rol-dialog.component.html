@@ -1,0 +1,127 @@
+<!-- 📝 Modal para Crear/Editar Roles -->
+<div class="rol-dialog">
+  <!-- Header del Modal -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">{{
+        modo === 'crear' ? 'add_circle' : 'edit'
+        }}</mat-icon>
+      <h2 class="header-title">
+        {{ modo === 'crear' ? 'Nuevo Rol' : 'Editar Rol' }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="onCancel()" class="close-button" matTooltip="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contenido del Modal -->
+  <div class="dialog-content">
+    <form [formGroup]="rolForm" class="rol-form">
+      <!-- Campo Nombre del Rol -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre del Rol</mat-label>
+          <input matInput formControlName="nombreRol" placeholder="Ej: Administrador, Supervisor, Invitado"
+            maxlength="50" #nombreInput />
+          <mat-icon matPrefix class="input-icon">shield</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['nombreRol'].hasError('required')">
+            El nombre del rol es requerido
+          </mat-error>
+          <mat-error *ngIf="f['nombreRol'].hasError('minlength')">
+            El nombre debe tener al menos 3 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['nombreRol'].hasError('maxlength')">
+            El nombre no puede exceder 50 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['nombreRol'].hasError('pattern')">
+            Solo se permiten letras y espacios
+          </mat-error>
+
+          <!-- Contador de caracteres -->
+          <mat-hint align="end"> {{ nombreInput.value.length || 0 }}/50 </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Campo Descripción -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción del Rol</mat-label>
+          <textarea matInput formControlName="descripcion"
+            placeholder="Describe las responsabilidades y alcance de este rol..." maxlength="200" rows="4"
+            #descripcionInput></textarea>
+          <mat-icon matPrefix class="input-icon">description</mat-icon>
+
+          <!-- Mensajes de Error -->
+          <mat-error *ngIf="f['descripcion'].hasError('required')">
+            La descripción es requerida
+          </mat-error>
+          <mat-error *ngIf="f['descripcion'].hasError('minlength')">
+            La descripción debe tener al menos 10 caracteres
+          </mat-error>
+          <mat-error *ngIf="f['descripcion'].hasError('maxlength')">
+            La descripción no puede exceder 200 caracteres
+          </mat-error>
+
+          <!-- Contador de caracteres -->
+          <mat-hint align="end">
+            {{ descripcionInput.value.length || 0 }}/200
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Información adicional para edición -->
+      <div *ngIf="modo === 'editar'" class="info-section">
+        <div class="info-header">
+          <mat-icon>info</mat-icon>
+          <span>Información del Rol</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">tag</mat-icon>
+          <span class="info-label">ID:</span>
+          <span class="info-value">#{{ data.rol?.id }}</span>
+        </div>
+        <div class="info-item">
+          <mat-icon class="info-icon">people</mat-icon>
+          <span class="info-label">Usuarios asignados:</span>
+          <span class="info-value">
+            {{ data.rol?.numeroDeUsuariosAsignados || 0 }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Nota informativa -->
+      <div class="note-section">
+        <mat-icon class="note-icon">lightbulb</mat-icon>
+        <div class="note-content">
+          <strong>Nota:</strong> Los permisos específicos de este rol se pueden
+          gestionar desde el botón "Gestionar permisos" en la tabla principal.
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Acciones del Modal -->
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!rolForm.valid || guardando"
+      class="save-button">
+      <mat-icon>{{
+        guardando ? 'hourglass_empty' : modo === 'crear' ? 'save' : 'update'
+        }}</mat-icon>
+      {{
+      guardando
+      ? 'Guardando...'
+      : modo === 'crear'
+      ? 'Crear Rol'
+      : 'Actualizar Rol'
+      }}
+    </button>
+  </div>
+</div>

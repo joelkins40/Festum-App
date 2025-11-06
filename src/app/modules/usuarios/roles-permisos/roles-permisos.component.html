@@ -1,1 +1,163 @@
-<p>roles-permisos works!</p>
+<!-- ===== ROLES Y PERMISOS COMPONENT ===== -->
+<div class="roles-permisos-container">
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">admin_panel_settings</mat-icon>
+        <h1>Gestión de Roles y Permisos</h1>
+      </div>
+      <p class="page-description">
+        Administra los roles de usuario y sus permisos de acceso al sistema
+      </p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="agregarRol()" class="create-button">
+        <mat-icon>add_circle</mat-icon>
+        Agregar Rol
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-content">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p>Cargando roles...</p>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+    <!-- Toolbar de Búsqueda -->
+    <div class="table-toolbar">
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar roles</mat-label>
+          <input matInput [(ngModel)]="filtroTexto" (keyup)="aplicarFiltro()"
+            placeholder="Buscar por nombre o descripción..." />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <!-- Botón Refrescar -->
+        <button mat-icon-button (click)="cargarRoles()" [disabled]="loading" matTooltip="Refrescar datos">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-divider class="toolbar-divider"></mat-divider>
+
+    <!-- Tabla de Roles -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="roles-table">
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="id-column">
+            ID
+          </th>
+          <td mat-cell *matCellDef="let rol" class="id-cell">
+            <span class="id-badge">{{ rol.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre del Rol -->
+        <ng-container matColumnDef="nombreRol">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre del Rol</th>
+          <td mat-cell *matCellDef="let rol" class="nombre-rol-cell">
+            <div class="rol-info">
+              <mat-icon class="rol-icon">shield</mat-icon>
+              <span class="rol-nombre">{{ rol.nombreRol }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Descripción -->
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+          <td mat-cell *matCellDef="let rol" class="descripcion-cell">
+            <span class="descripcion-text">{{ rol.descripcion }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Número de Usuarios Asignados -->
+        <ng-container matColumnDef="numeroDeUsuariosAsignados">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Usuarios Asignados
+          </th>
+          <td mat-cell *matCellDef="let rol" class="usuarios-cell">
+            <div class="usuarios-badge-container">
+              <mat-icon class="usuarios-icon" [matBadge]="rol.numeroDeUsuariosAsignados" [matBadgeColor]="
+									rol.numeroDeUsuariosAsignados > 0 ? 'primary' : 'warn'
+								" matBadgeSize="small">
+                people
+              </mat-icon>
+              <span class="usuarios-count">
+                {{ rol.numeroDeUsuariosAsignados }}
+                {{ rol.numeroDeUsuariosAsignados === 1 ? 'usuario' : 'usuarios' }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-column">
+            Acciones
+          </th>
+          <td mat-cell *matCellDef="let rol" class="acciones-cell">
+            <div class="action-buttons-group">
+              <!-- Botón Editar -->
+              <button mat-icon-button color="primary" (click)="editarRol(rol)" matTooltip="Editar rol"
+                class="action-button edit-button">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <!-- Botón Gestionar Permisos -->
+              <button mat-icon-button color="accent" (click)="gestionarPermisos(rol)" matTooltip="Gestionar permisos"
+                class="action-button permisos-button">
+                <mat-icon>settings</mat-icon>
+              </button>
+
+              <!-- Botón Eliminar -->
+              <button mat-icon-button color="warn" (click)="eliminarRol(rol)" matTooltip="Eliminar rol"
+                [disabled]="rol.numeroDeUsuariosAsignados > 0" class="action-button delete-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header y Rows -->
+        <tr mat-header-row *matHeaderRowDef="columnasDisplayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDisplayed; trackBy: trackByRolId" class="table-row"></tr>
+
+        <!-- Empty State -->
+        <tr class="mat-row no-data-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="columnasDisplayed.length">
+            <div class="no-data-container">
+              <mat-icon class="no-data-icon">security</mat-icon>
+              <p class="no-data-text">
+                {{
+                filtroTexto
+                ? 'No se encontraron roles con ese criterio de búsqueda'
+                : 'No hay roles registrados'
+                }}
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons aria-label="Seleccionar página de roles"
+      class="roles-paginator">
+    </mat-paginator>
+  </mat-card>
+</div>
