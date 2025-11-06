@@ -1,1 +1,147 @@
-<p>general works!</p>
+<div class="config-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">settings</mat-icon>
+        <h1>Configuración General</h1>
+      </div>
+      <p class="page-description">
+        Administra la información de la empresa y las configuraciones
+        básicas del sistema
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="config-content">
+    <!-- Company Information Card -->
+    <mat-card class="info-card">
+      <div class="card-header">
+        <mat-icon class="header-icon">business</mat-icon>
+        <h2 class="card-title">Información de la Empresa</h2>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon-wrapper">
+              <mat-icon class="info-icon">corporate_fare</mat-icon>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Razón Social</span>
+              <span class="info-value">{{
+                companyConfig.companyName
+                }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon-wrapper">
+              <mat-icon class="info-icon">store</mat-icon>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Nombre Comercial</span>
+              <span class="info-value">{{
+                companyConfig.commercialName
+                }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon-wrapper">
+              <mat-icon class="info-icon">badge</mat-icon>
+            </div>
+            <div class="info-content">
+              <span class="info-label">RFC</span>
+              <span class="info-value">{{
+                companyConfig.rfc
+                }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon-wrapper">
+              <mat-icon class="info-icon">email</mat-icon>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Correo Electrónico</span>
+              <span class="info-value">{{
+                companyConfig.email
+                }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon-wrapper">
+              <mat-icon class="info-icon">phone</mat-icon>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Teléfono</span>
+              <span class="info-value">{{
+                companyConfig.phone
+                }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Basic Settings Card -->
+    <mat-card class="settings-card">
+      <div class="card-header">
+        <mat-icon class="header-icon">tune</mat-icon>
+        <h2 class="card-title">Configuraciones Básicas</h2>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="card-body">
+        <form [formGroup]="configForm" class="settings-form">
+          <div class="settings-group">
+            <div class="setting-item">
+              <mat-checkbox formControlName="enableSystemNotifications" color="primary" class="setting-checkbox">
+                <div class="checkbox-content">
+                  <span class="checkbox-label">Habilitar notificaciones del
+                    sistema</span>
+                  <span class="checkbox-description">Recibe alertas y notificaciones sobre
+                    eventos importantes del sistema</span>
+                </div>
+              </mat-checkbox>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="setting-item">
+              <mat-checkbox formControlName="allowNewUserRegistration" color="primary" class="setting-checkbox">
+                <div class="checkbox-content">
+                  <span class="checkbox-label">Permitir registro de nuevos
+                    usuarios</span>
+                  <span class="checkbox-description">Permite que nuevos usuarios se
+                    registren en el sistema sin
+                    invitación</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="card-actions">
+        <button mat-button (click)="onResetForm()" class="reset-button">
+          <mat-icon>refresh</mat-icon>
+          Restablecer
+        </button>
+        <button mat-raised-button color="primary" (click)="onUpdateConfiguration()" [disabled]="configForm.pristine"
+          class="save-button">
+          <mat-icon>save</mat-icon>
+          Actualizar Configuración
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>
