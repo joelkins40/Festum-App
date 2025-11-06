@@ -1,0 +1,124 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <mat-icon class="dialog-icon">{{
+        isEditMode ? 'edit' : 'add_circle'
+        }}</mat-icon>
+      {{ isEditMode ? 'Editar' : 'Nuevo' }} Mantenimiento
+    </h2>
+    <button mat-icon-button (click)="onCancel()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="mantenimientoForm" class="mantenimiento-form">
+      <!-- Equipo Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Equipo o Mobiliario</mat-label>
+        <input matInput formControlName="equipo" placeholder="Ej: Sistema de Audio JBL PRX815" maxlength="200"
+          required />
+        <mat-icon matPrefix>settings</mat-icon>
+        <mat-hint align="end">{{ equipo?.value?.length || 0 }}/200</mat-hint>
+        @if (equipo?.invalid && equipo?.touched) {
+        @if (equipo?.errors?.['required']) {
+        <mat-error>El equipo es obligatorio</mat-error>
+        }
+        @if (equipo?.errors?.['minlength']) {
+        <mat-error>Mínimo 3 caracteres requeridos</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Descripción Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción del Problema</mat-label>
+        <textarea matInput formControlName="descripcion"
+          placeholder="Describe el problema o necesidad de mantenimiento..." rows="4" maxlength="500"
+          required></textarea>
+        <mat-icon matPrefix>description</mat-icon>
+        <mat-hint align="end">{{ descripcion?.value?.length || 0 }}/500</mat-hint>
+        @if (descripcion?.invalid && descripcion?.touched) {
+        @if (descripcion?.errors?.['required']) {
+        <mat-error>La descripción es obligatoria</mat-error>
+        }
+        @if (descripcion?.errors?.['minlength']) {
+        <mat-error>Mínimo 10 caracteres requeridos</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Fecha Reporte Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de Reporte</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fechaReporte" required />
+        <mat-icon matPrefix>calendar_today</mat-icon>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (fechaReporte?.invalid && fechaReporte?.touched) {
+        @if (fechaReporte?.errors?.['required']) {
+        <mat-error>La fecha de reporte es obligatoria</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Técnico Asignado Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Técnico Asignado</mat-label>
+        <mat-select formControlName="tecnicoAsignado" required>
+          <mat-option value="">Seleccionar técnico</mat-option>
+          @for (tecnico of tecnicosDisponibles; track tecnico) {
+          <mat-option [value]="tecnico">{{
+            tecnico
+            }}</mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>person</mat-icon>
+        @if (tecnicoAsignado?.invalid && tecnicoAsignado?.touched) {
+        @if (tecnicoAsignado?.errors?.['required']) {
+        <mat-error>Debe asignar un técnico</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      <!-- Estatus Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estatus</mat-label>
+        <mat-select formControlName="estatus" required>
+          @for (estatus of estatusOptions; track estatus) {
+          <mat-option [value]="estatus">{{
+            estatus
+            }}</mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>flag</mat-icon>
+        @if (estatus?.invalid && estatus?.touched) {
+        @if (estatus?.errors?.['required']) {
+        <mat-error>El estatus es obligatorio</mat-error>
+        }
+        }
+      </mat-form-field>
+
+      @if (isEditMode) {
+      <div class="info-section">
+        <mat-icon class="info-icon">info</mat-icon>
+        <p class="info-text">
+          Editando el registro de mantenimiento #{{ data?.id }}
+        </p>
+      </div>
+      }
+    </form>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="mantenimientoForm.invalid"
+      class="save-button">
+      <mat-icon>save</mat-icon>
+      {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</div>
