@@ -16,7 +16,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 import { Observable, map, startWith } from 'rxjs';
-import { NuevaNotaService } from './nueva-nota.service';
+
+import { NuevaNotaService } from './nuevo-evento.service';
+
 import { ProductoNota, TipoLugar, CreateNotaDto } from './models/nota.model';
 import { Cliente } from '../../clientes/lista/cliente.model';
 import { ClientesService } from '../../clientes/lista/clientes.service';
@@ -44,10 +46,10 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 		MatTooltipModule,
 		MatRadioModule,
 	],
-	templateUrl: './nueva-nota.component.html',
-	styleUrl: './nueva-nota.component.scss',
+	templateUrl: './nuevo-evento.component.html',
+	styleUrl: './nuevo-evento.component.scss',
 })
-export class NuevoEventoComponent implements OnInit {
+export class NuevaNotaComponent implements OnInit {
 	private fb = inject(FormBuilder);
 	private nuevaNotaService = inject(NuevaNotaService);
 	private clientesService = inject(ClientesService);
