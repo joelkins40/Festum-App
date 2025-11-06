@@ -87,6 +87,7 @@ export const routes: Routes = [
         path: 'eventos/lista',
         loadComponent: () => import('./modules/eventos/lista/lista.component').then(m => m.ListaComponent)
       },
+      // Nueva vista de eventos con rutas dinámicas para cada evento
       {
         path: 'eventos',
         loadComponent: () => import('./modules/eventos/lista-tabla/lista-tabla.component').then(m => m.ListaTablaComponent)
@@ -132,6 +133,11 @@ export const routes: Routes = [
       {
         path: 'eventos/:id',
         loadComponent: () => import('./modules/eventos/evento-page/evento-page.component').then(m => m.EventoDetalleComponent)
+      },
+      // Ruta para crear un nuevo evento
+      {
+        path: 'evento/nuevo-evento',
+        loadComponent: () => import('./modules/eventos/nuevo-evento/nuevo-evento.component').then(m => m.NuevoEventoComponent)
       },
       
       // Otros módulos
