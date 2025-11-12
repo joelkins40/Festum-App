@@ -108,9 +108,9 @@
             <div *ngFor="let elemento of elementosEnCanvas; trackBy: trackByElementId" class="elemento-canvas"
               [class.elemento-seleccionado]="elementoSeleccionado === elemento"
               [class.elemento-fijo]="isElementoFijo(elemento)" [ngStyle]="getElementoStyle(elemento)" cdkDrag
-              [cdkDragData]="elemento" [cdkDragDisabled]="isElementoFijo(elemento)"
-              [cdkDragFreeDragPosition]="{x: 0, y: 0}" [cdkDragPreviewClass]="'cdk-drag-preview'"
-              (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
+              [cdkDragData]="elemento" [cdkDragDisabled]="isElementoFijo(elemento)" cdkDragBoundary=".canvas"
+              [cdkDragPreviewClass]="'cdk-drag-preview'" (click)="seleccionarElemento(elemento, $event)"
+              (cdkDragEnded)="onElementDragEnd($event, elemento)"
               (cdkDragStarted)="onElementDragStart($event, elemento)">
               <div class="elemento-contenido">
                 <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">

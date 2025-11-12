@@ -307,76 +307,52 @@ export class PlanoComponent implements OnInit {
 		}
 	}
 
-	private originalPosition: { x: number; y: number } | null = null;
-
-	onElementDragStart(_event: CdkDragStart, elemento: ElementoEnCanvas) {
-		// Guardar la posición original antes del drag
-		this.originalPosition = {
-			x: elemento.posicion.x,
-			y: elemento.posicion.y,
-		};
+	onElementDragStart(_event: CdkDragStart, _elemento: ElementoEnCanvas) {
+		// El drag start se maneja automáticamente por el CDK
+		// No necesitamos guardar posición original ya que usamos event.distance
 	}
 
 	onElementDragEnd(event: CdkDragEnd, elemento: ElementoEnCanvas) {
-		if (!this.originalPosition || !event?.source) {
+		if (!event?.source) {
 			return;
 		}
 
-		// Obtener el desplazamiento del drag (en píxeles de pantalla)
-		const transform = event.source.getFreeDragPosition();
-		if (!transform) {
-			// Si no hay transform, resetear y salir
+		// Obtener la distancia movida por el drag
+		const distance = event.distance;
+
+		if (!distance || (!distance.x && !distance.y)) {
+			// No hubo movimiento, solo limpiar
 			event.source.reset();
-			this.originalPosition = null;
 			return;
 		}
 
-		// Convertir el desplazamiento a coordenadas lógicas del canvas
+		// Obtener dimensiones del canvas
 		const canvasElement = this.canvasRef?.nativeElement;
 		if (!canvasElement) {
 			event.source.reset();
-			this.originalPosition = null;
 			return;
 		}
 
-		const canvasRect = canvasElement.getBoundingClientRect();
 		const canvasLogicalWidth =
 			this.plantillaSeleccionada?.dimensiones?.ancho || 800;
 		const canvasLogicalHeight =
 			this.plantillaSeleccionada?.dimensiones?.alto || 600;
 
-		// Calcular la escala del canvas
+		// La distancia ya viene en píxeles de pantalla, necesitamos convertirla
+		// a coordenadas lógicas del canvas si hay escalado
+		const canvasRect = canvasElement.getBoundingClientRect();
 		const scaleX = canvasRect.width / canvasLogicalWidth;
 		const scaleY = canvasRect.height / canvasLogicalHeight;
 
-		// Verificar que las escalas sean válidas
-		if (
-			scaleX <= 0 ||
-			scaleY <= 0 ||
-			!Number.isFinite(scaleX) ||
-			!Number.isFinite(scaleY)
-		) {
-			event.source.reset();
-			this.originalPosition = null;
-			return;
-		}
+		// Convertir el movimiento a coordenadas lógicas
+		const deltaX = distance.x / scaleX;
+		const deltaY = distance.y / scaleY;
 
-		// Convertir el desplazamiento de píxeles a coordenadas lógicas
-		const deltaX = transform.x / scaleX;
-		const deltaY = transform.y / scaleY;
+		// Calcular nueva posición basada en la posición actual
+		const nuevaX = elemento.posicion.x + deltaX;
+		const nuevaY = elemento.posicion.y + deltaY;
 
-		// Verificar que los deltas sean válidos
-		if (!Number.isFinite(deltaX) || !Number.isFinite(deltaY)) {
-			event.source.reset();
-			this.originalPosition = null;
-			return;
-		}
-
-		// Calcular nueva posición
-		const nuevaX = this.originalPosition.x + deltaX;
-		const nuevaY = this.originalPosition.y + deltaY;
-
-		// Aplicar límites
+		// Aplicar límites para mantener el elemento dentro del canvas
 		const maxX = Math.max(
 			0,
 			canvasLogicalWidth - (elemento.tamano?.ancho || 50),
@@ -386,16 +362,12 @@ export class PlanoComponent implements OnInit {
 			canvasLogicalHeight - (elemento.tamano?.alto || 50),
 		);
 
-		// Actualizar posición del elemento
+		// Actualizar posición del elemento con límites
 		elemento.posicion.x = Math.max(0, Math.min(Math.round(nuevaX), maxX));
 		elemento.posicion.y = Math.max(0, Math.min(Math.round(nuevaY), maxY));
 
-		// IMPORTANTE: Resetear el transform del CDK INMEDIATAMENTE
-		// Esto previene la animación de retorno que causa el bug visual
+		// Resetear el transform del CDK para que use la nueva posición CSS
 		event.source.reset();
-
-		// Limpiar posición original
-		this.originalPosition = null;
 
 		// Guardar cambios
 		this.guardarAutomaticamente();
