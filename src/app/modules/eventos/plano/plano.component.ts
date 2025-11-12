@@ -605,6 +605,11 @@ export class PlanoComponent implements OnInit {
 				this.redimensionarElemento(this.elementoSeleccionado, 'menos');
 				event.preventDefault();
 				break;
+			case 'r':
+			case 'R':
+				this.rotarElemento(this.elementoSeleccionado);
+				event.preventDefault();
+				break;
 		}
 	}
 

@@ -253,9 +253,12 @@
 		}
 
 		button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			color: white !important;
-			width: 32px;
-			height: 32px;
+			width: auto;
+			height: auto;
 
       mat-icon {
         font-size: 18px;
