@@ -108,7 +108,7 @@
           gap: 8px;
         }
 
-        .elemento-arrastrable {
+          .elemento-arrastrable {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -122,6 +122,8 @@
           border: 2px solid transparent;
           user-select: none;
           text-align: center;
+          /* Importante para evitar clones visuales */
+          touch-action: none;
 
           &:hover {
             background: rgba(32, 178, 170, 0.05);
@@ -144,7 +146,12 @@
             transform: scale(0.95);
           }
 
-          mat-icon {
+          /* Elemento siendo arrastrado desde la lista */
+          &.cdk-drag-dragging {
+            opacity: 0.3 !important;
+            cursor: grabbing;
+            transition: none !important;
+          }          mat-icon {
             font-size: 36px;
             width: 36px;
             height: 36px;
@@ -274,10 +281,15 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 800px;
   min-height: 600px;
+  /* Importante para mejorar el rendering durante drag */
+  will-change: contents;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   &.cdk-drop-list-dragging {
     border-color: #20b2aa;
     background: #f8fff8;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
   }
 
   .canvas-placeholder {
@@ -310,7 +322,8 @@
   border: 1px solid transparent;
   border-radius: 4px;
   cursor: move;
-  transition: all 0.2s ease;
+  /* Eliminamos transition para evitar conflictos con el drag */
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,15 +333,17 @@
   backdrop-filter: blur(1px);
   min-width: 40px;
   min-height: 40px;
+  /* Importante: desactivar animación de transform durante drag */
+  will-change: transform;
 
-  &:hover {
+  &:hover:not(.cdk-drag-dragging) {
     background: rgba(32, 178, 170, 0.08);
     border-color: rgba(32, 178, 170, 0.4);
     box-shadow: 0 2px 8px rgba(32, 178, 170, 0.15);
     z-index: 10;
   }
 
-  &.elemento-seleccionado {
+  &.elemento-seleccionado:not(.cdk-drag-dragging) {
     border-color: #20b2aa;
     background: rgba(32, 178, 170, 0.15);
     box-shadow: 0 0 0 2px rgba(32, 178, 170, 0.4);
@@ -360,8 +375,9 @@
 
   &.cdk-drag-dragging {
     z-index: 20;
-    opacity: 0.8;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0.5;
+    /* Ocultar el original mientras se arrastra */
+    transition: none !important;
   }
 
   .elemento-contenido {
@@ -451,23 +467,40 @@
 }
 
 /* ===== ESTADOS DE DRAG & DROP ===== */
+/* Preview del elemento mientras se arrastra */
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 6px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  opacity: 0.9;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  opacity: 0.9 !important;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #20b2aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Desactivar transiciones en el preview */
+  transition: none !important;
+  /* Mejorar rendering del preview */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
+/* Placeholder donde estaba el elemento original */
 .cdk-drag-placeholder {
-  opacity: 0.3;
+  opacity: 0 !important;
+  border: 2px dashed #20b2aa;
+  background: rgba(32, 178, 170, 0.05);
 }
 
+/* Desactivar animación de retorno - CLAVE para evitar el bug visual */
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: none !important;
 }
 
+/* Elementos en el canvas durante drag - sin transiciones */
 .cdk-drop-list-dragging .elemento-canvas:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: none !important;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -520,6 +553,7 @@
 }
 
 /* ===== ANIMACIONES PERSONALIZADAS ===== */
+/* Animación desactivada para evitar conflictos con CDK Drag
 @keyframes elementoAgregado {
   0% {
     transform: scale(0);
@@ -537,6 +571,7 @@
 .elemento-canvas.elemento-nuevo {
   animation: elementoAgregado 0.4s ease-in-out;
 }
+*/
 
 /* ===== MEJORAS DE ACCESIBILIDAD ===== */
 .elemento-canvas:focus {
@@ -555,6 +590,13 @@
   background: rgba(32, 178, 170, 0.02);
 }
 
-.elemento-arrastrable.cdk-drag-dragging {
-  opacity: 0.5;
+/* Elemento de la lista siendo arrastrado */
+.elementos-drop-list .cdk-drag-dragging {
+  opacity: 0.3 !important;
+  cursor: grabbing;
+}
+
+/* Placeholder en la lista de elementos */
+.elementos-drop-list .cdk-drag-placeholder {
+  opacity: 0;
 }

@@ -49,20 +49,10 @@
         <div class="elementos-lista">
           <div class="elemento-categoria">
             <h4>Mobiliario y Decoración</h4>
-            <div
-              cdkDropList
-              cdkDropListSortingDisabled="true"
-              [cdkDropListData]="elementosArrastrables"
-              [cdkDropListConnectedTo]="['canvas-drop-list']"
-              class="elementos-drop-list"
-            >
-              <div
-                *ngFor="let elemento of elementosArrastrables"
-                class="elemento-arrastrable"
-                cdkDrag
-                [cdkDragData]="elemento"
-                matTooltip="{{ elemento.nombre }}"
-              >
+            <div cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="elementosArrastrables"
+              [cdkDropListConnectedTo]="['canvas-drop-list']" class="elementos-drop-list">
+              <div *ngFor="let elemento of elementosArrastrables" class="elemento-arrastrable" cdkDrag
+                [cdkDragData]="elemento" [cdkDragPreviewClass]="'cdk-drag-preview'" matTooltip="{{ elemento.nombre }}">
                 <mat-icon [style.color]="elemento.color">{{ elemento.icono }}</mat-icon>
                 <span>{{ elemento.nombre }}</span>
               </div>
@@ -87,16 +77,20 @@
 
           <div class="elemento-controls" *ngIf="elementoSeleccionado">
             <span class="elemento-info">{{ elementoSeleccionado.nombre }}</span>
-            <button mat-icon-button (click)="rotarElemento(elementoSeleccionado)" matTooltip="Rotar elemento (R)" [disabled]="isElementoFijo(elementoSeleccionado)">
+            <button mat-icon-button (click)="rotarElemento(elementoSeleccionado)" matTooltip="Rotar elemento (R)"
+              [disabled]="isElementoFijo(elementoSeleccionado)">
               <mat-icon>rotate_right</mat-icon>
             </button>
-            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'mas')" matTooltip="Aumentar tamaño (+)" [disabled]="isElementoFijo(elementoSeleccionado)">
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'mas')"
+              matTooltip="Aumentar tamaño (+)" [disabled]="isElementoFijo(elementoSeleccionado)">
               <mat-icon>zoom_in</mat-icon>
             </button>
-            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'menos')" matTooltip="Reducir tamaño (-)" [disabled]="isElementoFijo(elementoSeleccionado)">
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'menos')"
+              matTooltip="Reducir tamaño (-)" [disabled]="isElementoFijo(elementoSeleccionado)">
               <mat-icon>zoom_out</mat-icon>
             </button>
-            <button mat-icon-button (click)="eliminarElemento(elementoSeleccionado)" matTooltip="Eliminar elemento (Delete)" color="warn" [disabled]="isElementoFijo(elementoSeleccionado)">
+            <button mat-icon-button (click)="eliminarElemento(elementoSeleccionado)"
+              matTooltip="Eliminar elemento (Delete)" color="warn" [disabled]="isElementoFijo(elementoSeleccionado)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -107,48 +101,29 @@
         </div>
 
         <div class="canvas-wrapper">
-          <div
-            #canvas
-            class="canvas"
-            [ngStyle]="getCanvasStyle()"
-            cdkDropList
-            id="canvas-drop-list"
-            [cdkDropListData]="elementosEnCanvas"
-            (cdkDropListDropped)="onDrop($event)"
-            (click)="elementoSeleccionado = null"
-          >
+          <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
+            [cdkDropListData]="elementosEnCanvas" (cdkDropListDropped)="onDrop($event)"
+            (click)="elementoSeleccionado = null">
             <!-- Elementos en el canvas -->
-            <div
-              *ngFor="let elemento of elementosEnCanvas; trackBy: trackByElementId"
-              class="elemento-canvas"
+            <div *ngFor="let elemento of elementosEnCanvas; trackBy: trackByElementId" class="elemento-canvas"
               [class.elemento-seleccionado]="elementoSeleccionado === elemento"
-              [class.elemento-fijo]="isElementoFijo(elemento)"
-              [ngStyle]="getElementoStyle(elemento)"
-              cdkDrag
-              [cdkDragData]="elemento"
-              [cdkDragDisabled]="isElementoFijo(elemento)"
-              (click)="seleccionarElemento(elemento, $event)"
-              (cdkDragEnded)="onElementDragEnd($event, elemento)"
-              (cdkDragStarted)="onElementDragStart($event, elemento)"
-            >
+              [class.elemento-fijo]="isElementoFijo(elemento)" [ngStyle]="getElementoStyle(elemento)" cdkDrag
+              [cdkDragData]="elemento" [cdkDragDisabled]="isElementoFijo(elemento)"
+              [cdkDragFreeDragPosition]="{x: 0, y: 0}" [cdkDragPreviewClass]="'cdk-drag-preview'"
+              (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
+              (cdkDragStarted)="onElementDragStart($event, elemento)">
               <div class="elemento-contenido">
-              <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
-                {{ elemento.icono }}
-              </mat-icon>
-                <span
-                  class="elemento-label"
-                  *ngIf="shouldShowLabel(elemento)"
+                <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
+                  {{ elemento.icono }}
+                </mat-icon>
+                <span class="elemento-label" *ngIf="shouldShowLabel(elemento)"
                   [style.font-size.px]="getLabelFontSize(elemento)">
                   {{ elemento.nombre }}
                 </span>
               </div>
 
               <!-- Indicador de que es elemento fijo -->
-              <mat-icon
-                *ngIf="isElementoFijo(elemento)"
-                class="icono-fijo"
-                matTooltip="Elemento fijo de la plantilla"
-              >
+              <mat-icon *ngIf="isElementoFijo(elemento)" class="icono-fijo" matTooltip="Elemento fijo de la plantilla">
                 push_pin
               </mat-icon>
             </div>
@@ -171,11 +146,8 @@
       'width.px': plantillaSeleccionada.dimensiones.ancho / 10,
       'height.px': plantillaSeleccionada.dimensiones.alto / 10
     }">
-      <div
-        *ngFor="let elemento of elementosEnCanvas"
-        class="mini-elemento"
-        [ngStyle]="getMiniElementoStyle(elemento)"
-      ></div>
+      <div *ngFor="let elemento of elementosEnCanvas" class="mini-elemento" [ngStyle]="getMiniElementoStyle(elemento)">
+      </div>
     </div>
   </div>
 </div>
