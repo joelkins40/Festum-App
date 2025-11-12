@@ -524,15 +524,15 @@ export class PlanoComponent implements OnInit {
 	getIconSize(elemento: ElementoEnCanvas): number {
 		if (!elemento?.tamano) return 24;
 
-		// Usar una fórmula más simple y efectiva
-		const averageSize = (elemento.tamano.ancho + elemento.tamano.alto) / 2;
+		// Usar el tamaño más pequeño entre ancho y alto como referencia
+		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
 
-		// El ícono será proporcional al tamaño promedio
-		const iconSize = averageSize * 0.4;
+		// El ícono será proporcional al 60% de la dimensión más pequeña
+		const iconSize = minDimension * 0.6;
 
-		// Límites más conservadores para mejor visualización
-		const minSize = 20;
-		const maxSize = 64;
+		// Límites para asegurar legibilidad
+		const minSize = 24; // Tamaño mínimo aumentado para evitar cortes
+		const maxSize = 80; // Tamaño máximo más grande para elementos grandes
 
 		const result = Math.max(minSize, Math.min(maxSize, Math.round(iconSize)));
 		return Number.isFinite(result) ? result : 24;
@@ -541,16 +541,20 @@ export class PlanoComponent implements OnInit {
 	shouldShowLabel(elemento: ElementoEnCanvas): boolean {
 		if (!elemento?.tamano) return false;
 
-		// Mostrar etiqueta si el elemento es lo suficientemente grande
-		const area = elemento.tamano.ancho * elemento.tamano.alto;
-		return area > 4000; // Aproximadamente 60x60 o mayor
+		// Ocultar etiqueta si el elemento es muy pequeño (menos de 70px de ancho o alto)
+		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
+		return minDimension >= 70;
 	}
 
 	getLabelFontSize(elemento: ElementoEnCanvas): number {
 		if (!elemento?.tamano) return 10;
 
-		const baseSize = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
-		const result = Math.max(8, Math.min(12, baseSize * 0.15));
+		// Usar dimensión más pequeña como base para el tamaño de fuente
+		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
+		const fontSize = minDimension * 0.12;
+
+		// Límites para buena legibilidad
+		const result = Math.max(9, Math.min(14, fontSize));
 		return Number.isFinite(result) ? result : 10;
 	}
 
