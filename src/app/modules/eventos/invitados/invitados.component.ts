@@ -741,7 +741,7 @@ export class InvitadosComponent implements OnInit {
 	}
 
 	/**
-	 * Exporta la lista de invitados a CSV
+	 * Exporta la lista de invitados a CSV en el mismo formato que se usa para importar
 	 */
 	exportarCSV(): void {
 		if (!this.selectedEvento) {
@@ -758,9 +758,8 @@ export class InvitadosComponent implements OnInit {
 				return;
 			}
 
-			// Definir los encabezados del CSV
+			// Definir los encabezados del CSV (mismo formato que importación)
 			const headers = [
-				'ID',
 				'Nombre Completo',
 				'Teléfono Principal',
 				'Teléfono Secundario',
@@ -771,13 +770,12 @@ export class InvitadosComponent implements OnInit {
 
 			// Construir las filas del CSV
 			const rows = invitados.map((invitado) => [
-				invitado.id.toString(),
-				`"${invitado.fullName}"`, // Comillas para nombres con comas
+				`"${invitado.fullName}"`,
 				`"${invitado.contactPhone}"`,
 				`"${invitado.secondaryContactPhone || ''}"`,
 				`"${invitado.email || ''}"`,
 				invitado.numberOfCompanions.toString(),
-				invitado.willAttend ? 'Sí' : 'No',
+				invitado.willAttend ? 'S' : 'N', // S para confirmado, N para no confirmado
 			]);
 
 			// Combinar encabezados y filas
