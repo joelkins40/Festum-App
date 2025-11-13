@@ -218,17 +218,17 @@
               Agregar Invitado
             </button>
             <button mat-stroked-button color="primary" (click)="importarCSV()" class="csv-button">
-              <mat-icon>upload</mat-icon>
+              <mat-icon>download</mat-icon>
               Importar CSV
             </button>
             <button mat-stroked-button color="primary" (click)="exportarCSV()" class="csv-button">
-              <mat-icon>download</mat-icon>
+              <mat-icon>upload</mat-icon>
               Exportar CSV
             </button>
           </div>
         </div>
 
-        <!-- Tabla -->
+        <!-- Tabla de invitados -->
         <div class="table-container">
           <table mat-table [dataSource]="invitadosDataSource" matSort class="invitados-table">
             <!-- ID Column -->
