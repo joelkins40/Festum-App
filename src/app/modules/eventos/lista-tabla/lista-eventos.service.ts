@@ -279,12 +279,12 @@ export class ListaEventosService {
 	getEventos(): Observable<EventoResponse> {
 		const URL_EVENTOS = `${environment.baseMockAPI}/v1/eventos`;
 
-		return this.http.get<EventoResponse>(URL_EVENTOS);
-		// return of({
-		// 	success: true,
-		// 	message: 'Eventos obtenidos exitosamente',
-		// 	data: this.eventosSubject.value,
-		// }).pipe(delay(300));
+		// return this.http.get<EventoResponse>(URL_EVENTOS);
+		return of({
+			success: true,
+			message: 'Eventos obtenidos exitosamente',
+			data: this.eventosSubject.value,
+		}).pipe(delay(300));
 	}
 
 	// todo: actualizar para usar la API
