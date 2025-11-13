@@ -451,8 +451,85 @@ export class InvitadosComponent implements OnInit {
 			return;
 		}
 
-		// TODO: Implementar lógica de exportación CSV
-		this.showMessage('Funcionalidad de exportación en desarrollo', 'info');
+		try {
+			// Validar que existan invitados para exportar
+			const invitados = this.selectedEvento.invitados;
+
+			if (!invitados || invitados.length === 0) {
+				this.showMessage('No hay invitados para exportar', 'info');
+				return;
+			}
+
+			// Definir los encabezados del CSV
+			const headers = [
+				'ID',
+				'Nombre Completo',
+				'Teléfono Principal',
+				'Teléfono Secundario',
+				'Email',
+				'Acompañantes',
+				'Confirmado',
+			];
+
+			// Construir las filas del CSV
+			const rows = invitados.map((invitado) => [
+				invitado.id.toString(),
+				`"${invitado.fullName}"`, // Comillas para nombres con comas
+				`"${invitado.contactPhone}"`,
+				`"${invitado.secondaryContactPhone || ''}"`,
+				`"${invitado.email || ''}"`,
+				invitado.numberOfCompanions.toString(),
+				invitado.willAttend ? 'Sí' : 'No',
+			]);
+
+			// Combinar encabezados y filas
+			const csvContent = [
+				headers.join(','),
+				...rows.map((row) => row.join(',')),
+			].join('\n');
+
+			// Agregar BOM para compatibilidad con Excel y caracteres especiales
+			const BOM = '\uFEFF';
+			const csvWithBOM = BOM + csvContent;
+
+			// Crear el Blob con el contenido CSV
+			const blob = new Blob([csvWithBOM], { type: 'text/csv;charset=utf-8;' });
+
+			// Generar nombre del archivo con fecha actual
+			const fecha = new Date().toISOString().split('T')[0];
+			const eventoNombre = this.selectedEvento.tipoEvento.replace(/\s+/g, '_');
+			const clienteNombre = this.selectedEvento.cliente.replace(/\s+/g, '_');
+			const fileName = `invitados_${eventoNombre}_${clienteNombre}_${fecha}.csv`;
+
+			// Crear un enlace temporal para la descarga
+			const link = document.createElement('a');
+			const url = URL.createObjectURL(blob);
+
+			link.setAttribute('href', url);
+			link.setAttribute('download', fileName);
+			link.style.visibility = 'hidden';
+
+			// Agregar al documento, hacer clic y remover
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+
+			// Liberar recursos
+			setTimeout(() => {
+				URL.revokeObjectURL(url);
+			}, 100);
+
+			this.showMessage(
+				`CSV exportado exitosamente: ${invitados.length} invitado(s)`,
+				'success',
+			);
+		} catch (error) {
+			console.error('Error al exportar CSV:', error);
+			this.showMessage(
+				'Error al exportar el archivo CSV. Por favor, intente nuevamente.',
+				'error',
+			);
+		}
 	}
 
 	/**
