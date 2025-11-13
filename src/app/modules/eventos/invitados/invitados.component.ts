@@ -438,8 +438,306 @@ export class InvitadosComponent implements OnInit {
 			return;
 		}
 
-		// TODO: Implementar lógica de importación CSV
-		this.showMessage('Funcionalidad de importación en desarrollo', 'info');
+		// Crear input file dinámicamente
+		const fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.accept = '.csv';
+		fileInput.style.display = 'none';
+
+		// Manejar la selección del archivo
+		fileInput.addEventListener('change', (event: Event) => {
+			const target = event.target as HTMLInputElement;
+			const file = target.files?.[0];
+
+			if (!file) {
+				return;
+			}
+
+			// Validar tipo de archivo
+			if (!file.name.endsWith('.csv')) {
+				this.showMessage('Por favor seleccione un archivo CSV válido', 'error');
+				return;
+			}
+
+			// Leer el archivo
+			const reader = new FileReader();
+
+			reader.onload = (e: ProgressEvent<FileReader>) => {
+				try {
+					const contenido = e.target?.result as string;
+					this.procesarCSV(contenido);
+				} catch (error) {
+					console.error('Error al procesar CSV:', error);
+					this.showMessage(
+						'Error al procesar el archivo CSV. Verifique el formato.',
+						'error',
+					);
+				}
+			};
+
+			reader.onerror = () => {
+				this.showMessage('Error al leer el archivo', 'error');
+			};
+
+			reader.readAsText(file, 'UTF-8');
+		});
+
+		// Limpiar el input después de usarlo
+		fileInput.addEventListener('change', () => {
+			setTimeout(() => {
+				document.body.removeChild(fileInput);
+			}, 100);
+		});
+
+		// Agregar al DOM y hacer clic
+		document.body.appendChild(fileInput);
+		fileInput.click();
+	}
+
+	/**
+	 * Procesa el contenido del archivo CSV y actualiza la lista de invitados
+	 */
+	private procesarCSV(contenido: string): void {
+		if (!this.selectedEvento) {
+			return;
+		}
+
+		// Validar que el archivo no esté vacío
+		if (!contenido || contenido.trim().length === 0) {
+			this.showMessage('El archivo CSV está vacío', 'error');
+			return;
+		}
+
+		// Dividir en líneas y limpiar
+		const lineas = contenido
+			.split('\n')
+			.map((linea) => linea.trim())
+			.filter((linea) => linea.length > 0);
+
+		if (lineas.length < 2) {
+			this.showMessage(
+				'El archivo CSV debe contener encabezados y al menos una fila de datos',
+				'error',
+			);
+			return;
+		}
+
+		// Obtener y validar encabezados
+		const encabezados = this.parsearLineaCSV(lineas[0]);
+		const encabezadosEsperados = [
+			'Nombre Completo',
+			'Teléfono Principal',
+			'Teléfono Secundario',
+			'Email',
+			'Acompañantes',
+			'Confirmado',
+		];
+
+		// Validar que los encabezados coincidan
+		if (!this.validarEncabezados(encabezados, encabezadosEsperados)) {
+			this.showMessage(
+				`Los encabezados del CSV no coinciden. Se esperan: ${encabezadosEsperados.join(', ')}`,
+				'error',
+			);
+			return;
+		}
+
+		// Procesar las filas de datos
+		const invitadosImportados: Invitado[] = [];
+		const errores: string[] = [];
+
+		for (let i = 1; i < lineas.length; i++) {
+			const lineaActual = lineas[i];
+			const campos = this.parsearLineaCSV(lineaActual);
+
+			if (campos.length !== encabezadosEsperados.length) {
+				errores.push(`Fila ${i + 1}: número incorrecto de columnas`);
+				continue;
+			}
+
+			try {
+				const invitado = this.crearInvitadoDesdeCSV(campos);
+				if (invitado) {
+					invitadosImportados.push(invitado);
+				}
+			} catch (error) {
+				errores.push(
+					`Fila ${i + 1}: ${error instanceof Error ? error.message : 'error desconocido'}`,
+				);
+			}
+		}
+
+		// Mostrar errores si los hay
+		if (errores.length > 0) {
+			const mensajeError =
+				errores.length > 3
+					? `Se encontraron ${errores.length} errores en el archivo. Primeros 3:\n${errores.slice(0, 3).join('\n')}`
+					: `Errores encontrados:\n${errores.join('\n')}`;
+
+			this.showMessage(mensajeError, 'error');
+			return;
+		}
+
+		// Validar que se importó al menos un invitado
+		if (invitadosImportados.length === 0) {
+			this.showMessage(
+				'No se pudo importar ningún invitado del archivo',
+				'error',
+			);
+			return;
+		}
+
+		// Obtener el siguiente ID disponible
+		const maxId =
+			this.selectedEvento.invitados.length > 0
+				? Math.max(...this.selectedEvento.invitados.map((inv) => inv.id))
+				: 0;
+
+		// Asignar IDs únicos a los invitados importados
+		invitadosImportados.forEach((invitado, index) => {
+			invitado.id = maxId + index + 1;
+		});
+
+		// Combinar con la lista actual
+		this.selectedEvento.invitados = [
+			...this.selectedEvento.invitados,
+			...invitadosImportados,
+		];
+
+		// Actualizar el DataSource
+		this.invitadosDataSource.data = this.selectedEvento.invitados;
+
+		// Actualizar estadísticas
+		this.calculateStats(this.selectedEvento.invitados);
+
+		// Mensaje de éxito
+		this.showMessage(
+			`Se importaron exitosamente ${invitadosImportados.length} invitado(s)`,
+			'success',
+		);
+
+		// TODO: Cuando exista el backend, enviar los datos al servidor
+		// this.http.post('/api/eventos/' + this.selectedEvento.id + '/invitados/import', invitadosImportados)
+		//   .subscribe({
+		//     next: (response) => {
+		//       this.showMessage('Invitados importados y guardados en el servidor', 'success');
+		//       this.cargarInvitados(); // Recargar desde el servidor
+		//     },
+		//     error: (error) => {
+		//       this.showMessage('Error al guardar en el servidor', 'error');
+		//     }
+		//   });
+	}
+
+	/**
+	 * Parsea una línea CSV respetando campos entre comillas
+	 */
+	private parsearLineaCSV(linea: string): string[] {
+		const campos: string[] = [];
+		let campoActual = '';
+		let dentroDeComillas = false;
+
+		for (let i = 0; i < linea.length; i++) {
+			const char = linea[i];
+
+			if (char === '"') {
+				dentroDeComillas = !dentroDeComillas;
+			} else if (char === ',' && !dentroDeComillas) {
+				campos.push(campoActual.trim());
+				campoActual = '';
+			} else {
+				campoActual += char;
+			}
+		}
+
+		// Agregar el último campo
+		campos.push(campoActual.trim());
+
+		return campos;
+	}
+
+	/**
+	 * Valida que los encabezados del CSV coincidan con los esperados
+	 */
+	private validarEncabezados(actuales: string[], esperados: string[]): boolean {
+		if (actuales.length !== esperados.length) {
+			return false;
+		}
+
+		for (let i = 0; i < esperados.length; i++) {
+			// Normalizar: quitar comillas y espacios extra
+			const actual = actuales[i].replace(/"/g, '').trim();
+			const esperado = esperados[i];
+
+			if (actual !== esperado) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Crea un objeto Invitado desde una fila CSV
+	 */
+	private crearInvitadoDesdeCSV(campos: string[]): Invitado {
+		// Limpiar comillas de los campos
+		const limpiarCampo = (campo: string): string => {
+			return campo.replace(/^"|"$/g, '').trim();
+		};
+
+		const nombreCompleto = limpiarCampo(campos[0]);
+		const telefonoPrincipal = limpiarCampo(campos[1]);
+		const telefonoSecundario = limpiarCampo(campos[2]);
+		const email = limpiarCampo(campos[3]);
+		const acompanantesStr = limpiarCampo(campos[4]);
+		const confirmadoStr = limpiarCampo(campos[5]);
+
+		// Validaciones
+		if (!nombreCompleto) {
+			throw new Error('El nombre completo es obligatorio');
+		}
+
+		if (!telefonoPrincipal) {
+			throw new Error('El teléfono principal es obligatorio');
+		}
+
+		// Validar y convertir acompañantes
+		const acompanantes = parseInt(acompanantesStr, 10);
+		if (Number.isNaN(acompanantes) || acompanantes < 0) {
+			throw new Error(
+				`Acompañantes debe ser un número válido (≥0), se recibió: "${acompanantesStr}"`,
+			);
+		}
+
+		// Validar y convertir confirmado
+		const confirmadoUpper = confirmadoStr.toUpperCase();
+		if (confirmadoUpper !== 'S' && confirmadoUpper !== 'N') {
+			throw new Error(
+				`Confirmado debe ser "S" o "N", se recibió: "${confirmadoStr}"`,
+			);
+		}
+		const confirmado = confirmadoUpper === 'S';
+
+		// Crear el objeto invitado
+		const invitado: Invitado = {
+			id: 0, // Se asignará después
+			fullName: nombreCompleto,
+			contactPhone: telefonoPrincipal,
+			numberOfCompanions: acompanantes,
+			willAttend: confirmado,
+		};
+
+		// Agregar campos opcionales solo si tienen valor
+		if (telefonoSecundario) {
+			invitado.secondaryContactPhone = telefonoSecundario;
+		}
+
+		if (email) {
+			invitado.email = email;
+		}
+
+		return invitado;
 	}
 
 	/**

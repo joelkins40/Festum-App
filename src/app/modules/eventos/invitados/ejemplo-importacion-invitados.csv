@@ -1,0 +1,6 @@
+Nombre Completo,Teléfono Principal,Teléfono Secundario,Email,Acompañantes,Confirmado
+"Juan Pérez García","+52 55 1234 5678","+52 55 8765 4321","juan.perez@email.com",2,S
+"María López Hernández","+52 33 2345 6789","","maria.lopez@email.com",1,S
+"Carlos Rodríguez","+52 81 3456 7890","+52 81 9876 5432","",3,N
+"Ana Martínez","+52 55 4567 8901","","ana.martinez@email.com",0,S
+"Luis Fernando González","+52 33 5678 9012","+52 33 1234 5678","",1,N
