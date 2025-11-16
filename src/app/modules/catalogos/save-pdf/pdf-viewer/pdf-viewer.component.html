@@ -1,0 +1,89 @@
+<!-- 👁️ Visor de PDF -->
+<div class="pdf-viewer-dialog">
+
+  <!-- Header del Visor -->
+  <div class="viewer-header">
+    <div class="header-info">
+      <mat-icon class="header-icon">picture_as_pdf</mat-icon>
+      <div class="header-text">
+        <h2 class="document-name">{{ data.documento.nombre }}</h2>
+        <div class="document-meta">
+          <span class="meta-item">
+            <mat-icon>category</mat-icon>
+            {{ TipoDocumentoLabels[data.documento.tipoDocumento] }}
+          </span>
+          <span class="meta-separator">•</span>
+          <span class="meta-item">
+            <mat-icon>insert_drive_file</mat-icon>
+            {{ data.documento.nombreArchivo }}
+          </span>
+          <span class="meta-separator">•</span>
+          <span class="meta-item">
+            <mat-icon>storage</mat-icon>
+            {{ formatearTamano(data.documento.tamanoBytes) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="descargar()" class="download-btn">
+        <mat-icon>download</mat-icon>
+        Descargar
+      </button>
+
+      <button mat-icon-button (click)="cerrar()" class="close-btn" matTooltip="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido del Visor -->
+  <div class="viewer-content">
+
+    <!-- Loading -->
+    @if (loading()) {
+    <div class="loading-container">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p class="loading-text">Cargando documento...</p>
+    </div>
+    }
+
+    <!-- Error -->
+    @if (error()) {
+    <div class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h3 class="error-title">Error al cargar el documento</h3>
+      <p class="error-message">
+        No se pudo cargar el archivo PDF. Por favor, intenta descargarlo directamente.
+      </p>
+      <button mat-raised-button color="primary" (click)="descargar()">
+        <mat-icon>download</mat-icon>
+        Descargar documento
+      </button>
+    </div>
+    }
+
+    <!-- PDF Viewer -->
+    @if (!loading() && !error() && pdfUrl()) {
+    <iframe [src]="pdfUrl()" class="pdf-iframe" title="Visor de PDF">
+    </iframe>
+    }
+
+  </div>
+
+  <!-- Footer (opcional, información adicional) -->
+  @if (data.documento.descripcion && !loading() && !error()) {
+  <div class="viewer-footer">
+    <div class="description-section">
+      <mat-icon class="description-icon">info</mat-icon>
+      <div class="description-text">
+        <strong>Descripción:</strong>
+        <p>{{ data.documento.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+  }
+
+</div>

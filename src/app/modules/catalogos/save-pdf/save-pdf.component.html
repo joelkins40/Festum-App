@@ -1,0 +1,243 @@
+<!-- ===== DOCUMENTOS PDF COMPONENT ===== -->
+<div class="documentos-container">
+
+  <!-- Header Principal -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">picture_as_pdf</mat-icon>
+        <h1>Gestión de Documentos PDF</h1>
+      </div>
+      <p class="page-description">
+        Administra, almacena y organiza documentos PDF del sistema
+      </p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="abrirModalCrear()" class="create-button">
+        <mat-icon>add_circle</mat-icon>
+        Nuevo Documento
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Global -->
+  @if (loading()) {
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <mat-progress-spinner diameter="60" mode="indeterminate" color="primary">
+      </mat-progress-spinner>
+      <p>Cargando documentos...</p>
+    </div>
+  </div>
+  }
+
+  <!-- Main Content Card -->
+  <mat-card class="main-card">
+
+    <!-- Toolbar de Acciones -->
+    <div class="table-toolbar">
+      <div class="filters-container">
+        <!-- Búsqueda de texto -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar documentos</mat-label>
+          <input matInput [(ngModel)]="filtroTexto" [ngModelOptions]="{standalone: true}" (keyup)="aplicarFiltroTexto()"
+            placeholder="Buscar por nombre, archivo o descripción...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtro por tipo -->
+        <mat-form-field appearance="outline" class="tipo-field">
+          <mat-label>Tipo de documento</mat-label>
+          <mat-select [(ngModel)]="tipoFiltro" [ngModelOptions]="{standalone: true}"
+            (selectionChange)="aplicarFiltros()">
+            <mat-option value="TODOS">Todos los tipos</mat-option>
+            @for (tipo of tiposDocumento; track tipo) {
+            <mat-option [value]="tipo">
+              <mat-icon>{{ TipoDocumentoIcons[tipo] }}</mat-icon>
+              {{ TipoDocumentoLabels[tipo] }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Botón limpiar filtros -->
+        <button mat-icon-button (click)="limpiarFiltros()" [disabled]="loading()" matTooltip="Limpiar filtros"
+          class="clear-filters-btn">
+          <mat-icon>filter_alt_off</mat-icon>
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <!-- Botón Refrescar -->
+        <button mat-icon-button (click)="cargarDocumentos()" [disabled]="loading()" matTooltip="Refrescar datos">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-divider class="toolbar-divider"></mat-divider>
+
+    <!-- Tabla de Documentos -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="documentos-table">
+
+        <!-- Columna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="id-column">ID</th>
+          <td mat-cell *matCellDef="let doc" class="id-cell">
+            <span class="id-badge">{{ doc.id }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="nombre-column">Nombre</th>
+          <td mat-cell *matCellDef="let doc" class="nombre-cell">
+            <div class="documento-info">
+              <mat-icon class="documento-icon">description</mat-icon>
+              <div class="documento-texto">
+                <span class="nombre-principal">{{ doc.nombre }}</span>
+                @if (doc.descripcion) {
+                <span class="descripcion">{{ doc.descripcion }}</span>
+                }
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Tipo -->
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="tipo-column">Tipo</th>
+          <td mat-cell *matCellDef="let doc" class="tipo-cell">
+            <mat-chip class="tipo-chip" [class]="'tipo-' + doc.tipoDocumento">
+              <mat-icon class="tipo-icon">{{ getTipoIcon(doc.tipoDocumento) }}</mat-icon>
+              {{ getTipoLabel(doc.tipoDocumento) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Nombre Archivo -->
+        <ng-container matColumnDef="nombreArchivo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="archivo-column">Archivo</th>
+          <td mat-cell *matCellDef="let doc" class="archivo-cell">
+            <div class="archivo-info">
+              <mat-icon class="archivo-icon">insert_drive_file</mat-icon>
+              <span class="archivo-nombre">{{ doc.nombreArchivo }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Tamaño -->
+        <ng-container matColumnDef="tamano">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="tamano-column">Tamaño</th>
+          <td mat-cell *matCellDef="let doc" class="tamano-cell">
+            <span class="tamano-badge">{{ formatearTamano(doc.tamanoBytes) }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Fecha Creación -->
+        <ng-container matColumnDef="fechaCreacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="fecha-column">Fecha</th>
+          <td mat-cell *matCellDef="let doc" class="fecha-cell">
+            <div class="fecha-info">
+              <mat-icon class="fecha-icon">schedule</mat-icon>
+              <span>{{ doc.fechaCreacion | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Columna Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="estado-column">Estado</th>
+          <td mat-cell *matCellDef="let doc" class="estado-cell">
+            <mat-chip class="estado-chip" [ngClass]="doc.activo ? 'activo' : 'inactivo'">
+              <mat-icon class="estado-icon">
+                {{ doc.activo ? 'check_circle' : 'cancel' }}
+              </mat-icon>
+              {{ doc.activo ? 'Activo' : 'Inactivo' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
+          <td mat-cell *matCellDef="let doc" class="acciones-cell">
+            <div class="acciones-container">
+              <!-- Ver PDF -->
+              <button mat-icon-button class="view-button" (click)="verPdf(doc)" matTooltip="Ver documento"
+                [disabled]="loading()">
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <!-- Descargar PDF -->
+              <button mat-icon-button class="download-button" (click)="descargarPdf(doc)"
+                matTooltip="Descargar documento" [disabled]="loading()">
+                <mat-icon>download</mat-icon>
+              </button>
+
+              <!-- Menú de más opciones -->
+              <button mat-icon-button [matMenuTriggerFor]="menu" class="more-button" matTooltip="Más opciones"
+                [disabled]="loading()">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                <!-- Editar -->
+                <button mat-menu-item (click)="abrirModalEditar(doc)">
+                  <mat-icon class="edit-icon">edit</mat-icon>
+                  <span>Editar</span>
+                </button>
+
+                <!-- Toggle Estado -->
+                <button mat-menu-item (click)="toggleEstado(doc)">
+                  <mat-icon [class]="doc.activo ? 'disable-icon' : 'enable-icon'">
+                    {{ doc.activo ? 'block' : 'check_circle' }}
+                  </mat-icon>
+                  <span>{{ doc.activo ? 'Desactivar' : 'Activar' }}</span>
+                </button>
+
+                <mat-divider></mat-divider>
+
+                <!-- Eliminar -->
+                <button mat-menu-item (click)="eliminarDocumento(doc)" class="delete-menu-item">
+                  <mat-icon class="delete-icon">delete</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header y Rows -->
+        <tr mat-header-row *matHeaderRowDef="columnasDisplayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDisplayed;"></tr>
+
+        <!-- Row cuando no hay datos -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="columnasDisplayed.length">
+            <div class="no-data-container">
+              <mat-icon class="no-data-icon">folder_open</mat-icon>
+              <p class="no-data-title">No se encontraron documentos</p>
+              <p class="no-data-subtitle">
+                @if (filtroTexto() || tipoFiltro() !== 'TODOS') {
+                Intenta cambiar los filtros de búsqueda
+                } @else {
+                Comienza creando tu primer documento PDF
+                }
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons
+      class="table-paginator">
+    </mat-paginator>
+
+  </mat-card>
+</div>

@@ -39,6 +39,11 @@ export const routes: Routes = [
         path: 'catalogos/tipos-mobiliario',
         loadComponent: () => import('./modules/catalogos/tipos-mobiliario/tipos-mobiliario.component').then(m => m.TiposMobiliarioComponent)
       },
+      {
+        path: 'catalogos/save-pdf',
+        loadComponent: () => import('./modules/catalogos/save-pdf/save-pdf.component').then(m => m.SavePdfComponent)
+      },
+      // src/app/modules/catalogos/save-pdf/save-pdf.component.ts
       
       // Clientes
       {
