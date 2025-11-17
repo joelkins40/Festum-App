@@ -29,7 +29,7 @@ import {
 	CotizacionEstado,
 	CotizacionStats,
 } from '../../../core/models/cotizacion.model';
-import { CotizacionesMockService } from './cotizaciones-mock.service';
+import { CotizacionesMockService } from '../../../core/mocks/cotizaciones-mock.service';
 import { CotizacionesListadoDialogComponent } from './cotizaciones-listado-dialog/cotizaciones-listado-dialog.component';
 import { CotizacionDetalleDialogComponent } from './cotizacion-detalle-dialog/cotizacion-detalle-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';

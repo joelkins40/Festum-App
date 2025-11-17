@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { Invitado, Evento, CheckingStats } from './models/invitado.model';
+import { Invitado, Evento, CheckingStats } from '../models/invitado.model';
 
 /**
  * Servicio mock para gestión de checking de invitados

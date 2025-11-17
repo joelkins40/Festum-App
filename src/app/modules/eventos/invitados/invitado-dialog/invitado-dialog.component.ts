@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { Invitado } from './invitados-mock.service';
+import { Invitado } from '../../../../core/mocks/invitados-mock.service';
 
 /**
  * Interface para los datos del diálogo

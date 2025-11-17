@@ -15,7 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { Invitado } from './invitado-dialog/invitados-mock.service';
+import { Invitado } from '../../../core/mocks/invitados-mock.service';
 import { InvitadoDialogComponent } from './invitado-dialog/invitado-dialog.component';
 
 export interface Evento {

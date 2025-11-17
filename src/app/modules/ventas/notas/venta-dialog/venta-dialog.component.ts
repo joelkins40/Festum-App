@@ -10,7 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Nota, TipoNota, EstadoNota, Cliente, Evento } from '../notas.models';
-import { NotasService } from '../notas.service';
+import { NotasService } from '../../../../core/services/notas.service';
 
 export interface VentaDialogData {
   nota?: Nota;
@@ -59,7 +59,7 @@ export class VentaDialogComponent implements OnInit {
   ngOnInit(): void {
     this.inicializarFormulario();
     this.cargarCatalogos();
-    
+
     if (this.modoEdicion && this.data.nota) {
       this.cargarDatosNota();
     }
@@ -106,7 +106,7 @@ export class VentaDialogComponent implements OnInit {
   onGuardar(): void {
     if (this.ventaForm.valid) {
       const formData = this.ventaForm.value;
-      
+
       if (this.modoEdicion && this.data.nota) {
         // Modo edición
         this.dialogRef.close({

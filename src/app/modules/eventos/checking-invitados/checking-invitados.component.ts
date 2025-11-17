@@ -14,8 +14,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CheckingInvitadosService } from './checking-invitados.service';
-import { Invitado, Evento, CheckingStats } from './models/invitado.model';
+import { CheckingInvitadosService } from '../../../core/services/checking-invitados.service';
+import {
+	Invitado,
+	Evento,
+	CheckingStats,
+} from '../../../core/models/invitado.model';
 
 /**
  * Componente para realizar el checking de invitados en eventos

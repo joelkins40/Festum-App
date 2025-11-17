@@ -15,8 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DireccionCliente } from './direccion.model';
-import { DireccionesService } from './direcciones.service';
+import { DireccionCliente } from '../../../core/models/direccion.model';
+import { DireccionesService } from '../../../core/services/direcciones.service';
 import { DireccionDialogComponent } from './direccion-dialog/direccion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 

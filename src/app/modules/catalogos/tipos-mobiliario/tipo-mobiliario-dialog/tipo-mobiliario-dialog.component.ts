@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 
-import { TipoMobiliario } from '../tipo-mobiliario.model';
+import { TipoMobiliario } from '../../../../core/models/tipo-mobiliario.model';
 
 export interface TipoMobiliarioDialogData {
   tipoMobiliario?: TipoMobiliario;

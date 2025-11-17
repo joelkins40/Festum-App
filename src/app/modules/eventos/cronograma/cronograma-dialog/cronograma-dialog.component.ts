@@ -25,9 +25,9 @@ import {
 	EventStatus,
 	LocationType,
 	TimelineClient,
-} from '../models/event-timeline.model';
+} from '../../../../core/models/event-timeline.model';
 
-import { TimelineEvent } from '../models/event-timeline.model';
+import { TimelineEvent } from '../../../../core/models/event-timeline.model';
 
 export interface CronogramaDialogData {
 	mode: 'create' | 'edit';

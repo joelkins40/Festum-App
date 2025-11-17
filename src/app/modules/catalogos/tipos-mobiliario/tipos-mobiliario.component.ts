@@ -25,8 +25,8 @@ import {
 	TipoMobiliario,
 	CrearTipoMobiliarioDto,
 	ActualizarTipoMobiliarioDto,
-} from './tipo-mobiliario.model';
-import { TiposMobiliarioService } from './tipos-mobiliario.service';
+} from '../../../core/models/tipo-mobiliario.model';
+import { TiposMobiliarioService } from '../../../core/services/tipos-mobiliario.service';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -89,11 +89,12 @@ export class TiposMobiliarioComponent implements OnInit {
 	@ViewChild(MatSort) sort!: MatSort;
 	@ViewChild('fileInput') fileInput!: ElementRef;
 
-  constructor(
-    private tiposMobiliarioService: TiposMobiliarioService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {}	ngOnInit(): void {
+	constructor(
+		private tiposMobiliarioService: TiposMobiliarioService,
+		private snackBar: MatSnackBar,
+		private dialog: MatDialog,
+	) {}
+	ngOnInit(): void {
 		this.cargarTiposMobiliario();
 		this.configurarFiltros();
 	}

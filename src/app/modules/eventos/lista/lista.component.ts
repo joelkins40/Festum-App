@@ -12,7 +12,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ListaEventosService, Evento } from './lista-eventos.service';
+import {
+	ListaEventosService,
+	Evento,
+} from '../../../core/services/lista-eventos.service';
 import { EventoListaDialogComponent } from './evento-lista-dialog/evento-lista-dialog.component';
 
 @Component({

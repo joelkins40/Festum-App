@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 
-import { Salon, CrearSalonDto, ActualizarSalonDto } from '../salon.model';
+import { Salon, CrearSalonDto, ActualizarSalonDto } from '../../../../core/models/salon.model';
 import { TipoEvento } from '../../../../core/models/tipo-evento.model';
 
 export interface SalonDialogData {

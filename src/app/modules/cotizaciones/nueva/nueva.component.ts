@@ -18,15 +18,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { Observable, map, startWith } from 'rxjs';
 
 // todo: quitar esta coda fea cuando ya esté el servicio
-import { NuevaNotaService } from '../../eventos/nueva-nota/nueva-nota.service';
+import { NuevaNotaService } from '../../../core/services/nueva-nota.service';
 import {
 	ProductoNota,
 	TipoLugar,
 	CreateNotaDto,
-} from '../../eventos/nueva-nota/models/nota.model';
+} from '../../../core/models/nota.model';
 
-import { Cliente } from '../../clientes/lista/cliente.model';
-import { ClientesService } from '../../clientes/lista/clientes.service';
+import { Cliente } from '../../../core/models/cliente.model';
+import { ClientesService } from '../../../core/services/clientes.service';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../core/models/productos-servicios.model';
 
@@ -338,7 +338,7 @@ export class NuevaComponent implements OnInit {
 			lugar: this.construirLugar(
 				tipoLugar,
 				formValue,
-			) as import('../../eventos/nueva-nota/models/nota.model').Lugar,
+			) as import('../../../core/models/nota.model').Lugar,
 			productos: this.productosEnNota,
 			subtotal: this.subtotal,
 			iva: this.iva,

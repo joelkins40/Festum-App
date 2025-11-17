@@ -21,7 +21,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { Evento, Direccion, Lugar } from '../lista-eventos.service';
+import {
+	Evento,
+	Direccion,
+	Lugar,
+} from '../../../../core/services/lista-eventos-tabla.service';
 
 /**
  * Interface para los datos del diálogo

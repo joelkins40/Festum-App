@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ConfigService } from '../../../core/services/config.service';
+import { ConfigService } from './config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { TipoEventoService } from '../../../core/services/tipos-evento.service';
+import { TipoEventoService } from './tipos-evento.service';
 import {
 	Salon,
 	CrearSalonDto,
 	ActualizarSalonDto,
 	SalonResponse,
 	SalonFiltros,
-} from './salon.model';
+} from '../models/salon.model';
 
 @Injectable({
 	providedIn: 'root',

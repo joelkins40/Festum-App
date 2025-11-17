@@ -18,8 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { Nota, TipoLugar } from '../nueva-nota/models/nota.model';
-import { Cliente } from '../../clientes/lista/cliente.model';
+import { Nota, TipoLugar } from '../../../core/models/nota.model';
+import { Cliente } from '../../../core/models/cliente.model';
 
 @Component({
 	selector: 'app-informacion-general',

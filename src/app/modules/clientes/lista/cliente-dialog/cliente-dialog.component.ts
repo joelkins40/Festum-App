@@ -31,9 +31,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
-import { Cliente, Direccion, GeoapifyFeature } from '../cliente.model';
+import {
+	Cliente,
+	Direccion,
+	GeoapifyFeature,
+} from '../../../../core/models/cliente.model';
 import { LoggerService } from '../../../../core/services/logger.service';
-import { GeoapifyService } from '../geoapify.service';
+import { GeoapifyService } from '../../../../core/services/geoapify.service';
 
 export interface ClienteDialogData {
 	cliente?: Cliente;

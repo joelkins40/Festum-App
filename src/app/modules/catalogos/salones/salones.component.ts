@@ -27,9 +27,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 
 // Models y Services
-import { Salon, CrearSalonDto, ActualizarSalonDto } from './salon.model';
+import {
+	Salon,
+	CrearSalonDto,
+	ActualizarSalonDto,
+} from '../../../core/models/salon.model';
 import { TipoEvento } from '../../../core/models/tipo-evento.model';
-import { SalonesService } from './salones.service';
+import { SalonesService } from '../../../core/services/salones.service';
 import { TipoEventoService } from '../../../core/services/tipos-evento.service';
 
 // Dialog Components

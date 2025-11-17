@@ -11,7 +11,7 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventoHistorial } from '../../../core/models/evento-historial.model';
-import { HistorialEventosService } from './historial-eventos.service';
+import { HistorialEventosService } from '../../../core/services/historial-eventos.service';
 import { HistorialEventosDialogComponent } from './historial-eventos-dialog/historial-eventos-dialog.component';
 
 @Component({

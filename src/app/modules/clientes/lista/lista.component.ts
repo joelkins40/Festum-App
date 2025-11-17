@@ -25,8 +25,8 @@ import {
 	Cliente,
 	CrearClienteDto,
 	ActualizarClienteDto,
-} from './cliente.model';
-import { ClientesService } from './clientes.service';
+} from '../../../core/models/cliente.model';
+import { ClientesService } from '../../../core/services/clientes.service';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';

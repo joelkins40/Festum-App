@@ -7,7 +7,7 @@ import {
 	ActualizarTipoMobiliarioDto,
 	TipoMobiliarioResponse,
 	TipoMobiliarioFiltros,
-} from './tipo-mobiliario.model';
+} from '../models/tipo-mobiliario.model';
 
 @Injectable({
 	providedIn: 'root',

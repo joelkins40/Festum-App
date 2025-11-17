@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-import { DireccionCliente } from '../direccion.model';
+import { DireccionCliente } from '../../../../core/models/direccion.model';
 
 export interface DireccionDialogData {
 	mode: 'create' | 'edit';

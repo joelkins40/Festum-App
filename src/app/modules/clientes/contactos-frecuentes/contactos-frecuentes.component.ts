@@ -16,7 +16,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Contacto } from '../../../core/models/contacto.model';
-import { ContactosService } from './contactos.service';
+import { ContactosService } from '../../../core/services/contactos-frecuentes.service';
 import { ContactoDialogComponent } from './contacto-dialog/contacto-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 

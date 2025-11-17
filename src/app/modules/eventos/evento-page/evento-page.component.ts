@@ -1,4 +1,4 @@
-import { ListaEventosService } from './../lista/lista-eventos.service';
+import { ListaEventosService } from '../../../core/services/lista-eventos.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { Evento } from '../lista/lista-eventos.service';
+import { Evento } from '../../../core/services/lista-eventos.service';
 
 @Component({
 	selector: 'app-evento-detalle-component',

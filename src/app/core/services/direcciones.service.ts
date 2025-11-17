@@ -6,7 +6,7 @@ import {
 	CreateDireccionDto,
 	UpdateDireccionDto,
 	DireccionResponse,
-} from './direccion.model';
+} from '../models/direccion.model';
 
 @Injectable({
 	providedIn: 'root',

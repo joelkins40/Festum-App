@@ -19,7 +19,7 @@ import {
 	TimelineClient,
 	LocationType,
 	EventLocation,
-} from './models/event-timeline.model';
+} from '../../../core/models/event-timeline.model';
 import { CronogramaDialogComponent } from './cronograma-dialog/cronograma-dialog.component';
 
 @Component({

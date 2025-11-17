@@ -6,7 +6,7 @@ import {
 	CreateNotaDto,
 	UpdateNotaDto,
 	NotaResponse,
-} from './models/nota.model';
+} from '../models/nota.model';
 
 @Injectable({
 	providedIn: 'root',

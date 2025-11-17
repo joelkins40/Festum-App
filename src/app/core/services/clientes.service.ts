@@ -7,7 +7,7 @@ import {
 	ActualizarClienteDto,
 	ClienteResponse,
 	ClienteFiltros,
-} from './cliente.model';
+} from '../models/cliente.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,23 +18,25 @@ export class ClientesService {
 		{
 			id: 1,
 			nombre: 'María González Rodríguez',
-			direcciones: [{
-				street: 'Av. Revolución',
-				number: '1234',
-				neighborhood: 'Centro',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44100',
-				formatted: {
-					line1: 'Av. Revolución 1234, Col. Centro',
-					line2: 'Guadalajara, Jalisco',
-					line3: 'México 44100'
+			direcciones: [
+				{
+					street: 'Av. Revolución',
+					number: '1234',
+					neighborhood: 'Centro',
+					city: 'Guadalajara',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '44100',
+					formatted: {
+						line1: 'Av. Revolución 1234, Col. Centro',
+						line2: 'Guadalajara, Jalisco',
+						line3: 'México 44100',
+					},
+					geoapifyPlaceId: 'mock-place-id-1',
+					confidence: 0.95,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-1',
-				confidence: 0.95,
-				source: 'Geoapify'
-			}],
+			],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-15'),
 			activo: true,
@@ -42,23 +44,25 @@ export class ClientesService {
 		{
 			id: 2,
 			nombre: 'Carlos Eduardo Martínez',
-			direcciones: [{
-				street: 'Calle Juárez',
-				number: '567',
-				neighborhood: 'Americana',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44160',
-				formatted: {
-					line1: 'Calle Juárez 567, Col. Americana',
-					line2: 'Guadalajara, Jalisco',
-					line3: 'México 44160'
+			direcciones: [
+				{
+					street: 'Calle Juárez',
+					number: '567',
+					neighborhood: 'Americana',
+					city: 'Guadalajara',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '44160',
+					formatted: {
+						line1: 'Calle Juárez 567, Col. Americana',
+						line2: 'Guadalajara, Jalisco',
+						line3: 'México 44160',
+					},
+					geoapifyPlaceId: 'mock-place-id-2',
+					confidence: 0.92,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-2',
-				confidence: 0.92,
-				source: 'Geoapify'
-			}],
+			],
 			clientePreferente: false,
 			fechaCreacion: new Date('2024-01-16'),
 			activo: true,
@@ -66,39 +70,42 @@ export class ClientesService {
 		{
 			id: 3,
 			nombre: 'Ana Lucía Hernández',
-			direcciones: [{
-				street: 'Av. Chapultepec',
-				number: '890',
-				neighborhood: 'Moderna',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44190',
-				formatted: {
-					line1: 'Av. Chapultepec 890, Col. Moderna',
-					line2: 'Guadalajara, Jalisco',
-					line3: 'México 44190'
+			direcciones: [
+				{
+					street: 'Av. Chapultepec',
+					number: '890',
+					neighborhood: 'Moderna',
+					city: 'Guadalajara',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '44190',
+					formatted: {
+						line1: 'Av. Chapultepec 890, Col. Moderna',
+						line2: 'Guadalajara, Jalisco',
+						line3: 'México 44190',
+					},
+					geoapifyPlaceId: 'mock-place-id-3',
+					confidence: 0.89,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-3',
-				confidence: 0.89,
-				source: 'Geoapify'
-			}, {
-				street: 'Calle Secundaria',
-				number: '100',
-				neighborhood: 'Centro',
-				city: 'Zapopan',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '45100',
-				formatted: {
-					line1: 'Calle Secundaria 100, Col. Centro',
-					line2: 'Zapopan, Jalisco',
-					line3: 'México 45100'
+				{
+					street: 'Calle Secundaria',
+					number: '100',
+					neighborhood: 'Centro',
+					city: 'Zapopan',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '45100',
+					formatted: {
+						line1: 'Calle Secundaria 100, Col. Centro',
+						line2: 'Zapopan, Jalisco',
+						line3: 'México 45100',
+					},
+					geoapifyPlaceId: 'mock-place-id-3b',
+					confidence: 0.87,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-3b',
-				confidence: 0.87,
-				source: 'Geoapify'
-			}],
+			],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-17'),
 			activo: true,
@@ -106,23 +113,25 @@ export class ClientesService {
 		{
 			id: 4,
 			nombre: 'Roberto Silva Castro',
-			direcciones: [{
-				street: 'Calle Hidalgo',
-				number: '345',
-				neighborhood: 'Tlaquepaque Centro',
-				city: 'Tlaquepaque',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '45500',
-				formatted: {
-					line1: 'Calle Hidalgo 345, Col. Tlaquepaque Centro',
-					line2: 'Tlaquepaque, Jalisco',
-					line3: 'México 45500'
+			direcciones: [
+				{
+					street: 'Calle Hidalgo',
+					number: '345',
+					neighborhood: 'Tlaquepaque Centro',
+					city: 'Tlaquepaque',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '45500',
+					formatted: {
+						line1: 'Calle Hidalgo 345, Col. Tlaquepaque Centro',
+						line2: 'Tlaquepaque, Jalisco',
+						line3: 'México 45500',
+					},
+					geoapifyPlaceId: 'mock-place-id-4',
+					confidence: 0.91,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-4',
-				confidence: 0.91,
-				source: 'Geoapify'
-			}],
+			],
 			clientePreferente: false,
 			fechaCreacion: new Date('2024-01-18'),
 			activo: true,
@@ -130,23 +139,25 @@ export class ClientesService {
 		{
 			id: 5,
 			nombre: 'Patricia Morales López',
-			direcciones: [{
-				street: 'Av. López Mateos',
-				number: '2156',
-				neighborhood: 'Italia Providencia',
-				city: 'Guadalajara',
-				state: 'Jalisco',
-				country: 'México',
-				postalCode: '44648',
-				formatted: {
-					line1: 'Av. López Mateos 2156, Col. Italia Providencia',
-					line2: 'Guadalajara, Jalisco',
-					line3: 'México 44648'
+			direcciones: [
+				{
+					street: 'Av. López Mateos',
+					number: '2156',
+					neighborhood: 'Italia Providencia',
+					city: 'Guadalajara',
+					state: 'Jalisco',
+					country: 'México',
+					postalCode: '44648',
+					formatted: {
+						line1: 'Av. López Mateos 2156, Col. Italia Providencia',
+						line2: 'Guadalajara, Jalisco',
+						line3: 'México 44648',
+					},
+					geoapifyPlaceId: 'mock-place-id-5',
+					confidence: 0.94,
+					source: 'Geoapify',
 				},
-				geoapifyPlaceId: 'mock-place-id-5',
-				confidence: 0.94,
-				source: 'Geoapify'
-			}],
+			],
 			clientePreferente: true,
 			fechaCreacion: new Date('2024-01-19'),
 			activo: true,

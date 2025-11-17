@@ -17,11 +17,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 import { Observable, map, startWith } from 'rxjs';
 
-import { NuevaNotaService } from './nuevo-evento.service';
+import { NuevaNotaService } from '../../../core/services/nuevo-evento.service';
 
-import { ProductoNota, TipoLugar, CreateNotaDto } from './models/nota.model';
-import { Cliente } from '../../clientes/lista/cliente.model';
-import { ClientesService } from '../../clientes/lista/clientes.service';
+import {
+	ProductoNota,
+	TipoLugar,
+	CreateNotaDto,
+} from '../../../core/models/nota.model';
+import { Cliente } from '../../../core/models/cliente.model';
+import { ClientesService } from '../../../core/services/clientes.service';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../core/models/productos-servicios.model';
 
@@ -333,7 +337,7 @@ export class NuevoEventoComponent implements OnInit {
 			lugar: this.construirLugar(
 				tipoLugar,
 				formValue,
-			) as import('./models/nota.model').Lugar,
+			) as import('../../../core/models/nota.model').Lugar,
 			productos: this.productosEnNota,
 			subtotal: this.subtotal,
 			iva: this.iva,

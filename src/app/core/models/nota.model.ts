@@ -1,4 +1,4 @@
-import { Cliente } from '../../../clientes/lista/cliente.model';
+import { Cliente } from './cliente.model';
 
 /**
  * Tipo de lugar para el evento
