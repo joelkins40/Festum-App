@@ -26,7 +26,7 @@ import {
 	EstadoNota,
 	Cliente,
 	Evento,
-} from '../../notas/notas.models';
+} from '../../../../core/models/notas.models';
 
 export interface FacturacionDialogData {
 	nota?: Nota;

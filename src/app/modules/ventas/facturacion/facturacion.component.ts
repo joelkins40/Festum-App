@@ -24,7 +24,7 @@ import {
 	Cliente,
 	Evento,
 	EstadisticasNotas,
-} from '../notas/notas.models';
+} from '../../../core/models/notas.models';
 import { FacturacionDialogComponent } from './facturacion-dialog/facturacion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
