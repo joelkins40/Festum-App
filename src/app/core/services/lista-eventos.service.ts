@@ -1,9 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
-
-import { environment } from '../../../environments/environment';
+import { delay } from 'rxjs/operators';
 
 export interface Cliente {
 	id: number;
@@ -277,17 +275,14 @@ export class ListaEventosService {
 	public eventos$ = this.eventosSubject.asObservable();
 
 	getEventos(): Observable<EventoResponse> {
-		const URL_EVENTOS = `${environment.baseMockAPI}/v1/eventos`;
-
-		return this.http.get<EventoResponse>(URL_EVENTOS);
-		// return of({
-		// 	success: true,
-		// 	message: 'Eventos obtenidos exitosamente',
-		// 	data: this.eventosSubject.value,
-		// }).pipe(delay(300));
+		// Mock data - retornar eventos locales
+		return of({
+			success: true,
+			message: 'Eventos obtenidos exitosamente',
+			data: this.eventosSubject.value,
+		}).pipe(delay(300));
 	}
 
-	// todo: actualizar para usar la API
 	getEventoById(id: number): Observable<EventoResponse> {
 		const evento = this.eventosSubject.value.find((e) => e.id === id);
 		return of({
@@ -297,32 +292,16 @@ export class ListaEventosService {
 		}).pipe(delay(200));
 	}
 
-	getEventoByFolio(folio: string): Observable<any> {
-		// todo: validar folio
-		const URL_EVENTOS = `${environment.baseMockAPI}/v1/eventos`;
-		// const data = this.http.get<EventoResponse>(URL_EVENTOS);
-		// const evento = data.pipe(tap(res => res.data as Evento[]), map(events => events.find(e => e.folio === `NV-${folio.toString().padStart(5, '0')}`)));
+	getEventoByFolio(folio: string): Observable<EventoResponse> {
+		// Mock data - buscar en eventos locales
+		const eventos = this.eventosSubject.value;
+		const evento = eventos.find((e) => e.folio === folio);
 
-		// console.log({ data, folio }, 'lista-eventos.service');
-
-		// const evento = {} as Evento;
-
-		// const folioFormateado = `NV-${folio.toString().padStart(5, '0')}`;
-
-		return this.http.get<EventoResponse>(URL_EVENTOS).pipe(
-			map((res) => {
-				// Aseguramos que res.data sea un array de eventos
-				const eventos = Array.isArray(res.data) ? res.data : [];
-				const evento = eventos.find((e) => e.folio === folio);
-				// console.log({ evento, eventos, folio, res });
-
-				return {
-					success: !!evento,
-					message: evento ? 'Evento encontrado' : 'Evento no encontrado',
-					data: evento || undefined,
-				};
-			}),
-		);
+		return of({
+			success: !!evento,
+			message: evento ? 'Evento encontrado' : 'Evento no encontrado',
+			data: evento || undefined,
+		}).pipe(delay(200));
 	}
 
 	createEvento(evento: Evento): Observable<EventoResponse> {
