@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Nota, TipoNota, EstadoNota, Cliente, Evento } from '../notas.models';
+import { Nota, TipoNota, EstadoNota, Cliente, Evento } from '../../../../core/models/notas.models';
 import { NotasService } from '../../../../core/services/notas.service';
 
 export interface VentaDialogData {

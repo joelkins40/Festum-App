@@ -6,7 +6,7 @@ import {
 	CreateContactoDto,
 	UpdateContactoDto,
 	ContactoResponse,
-} from '../../../core/models/contacto.model';
+} from '../models/contacto-frecuente.model';
 
 @Injectable({
 	providedIn: 'root',

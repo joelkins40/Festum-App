@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 
-import { Nota, EstadisticasNotas } from './notas.models';
+import { Nota, EstadisticasNotas } from '../../../core/models/notas.models';
 import { NotasService } from '../../../core/services/notas.service';
 import { VentaDialogComponent } from './venta-dialog/venta-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';

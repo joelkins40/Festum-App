@@ -6,7 +6,7 @@ import {
 	CreateEventoHistorialDto,
 	UpdateEventoHistorialDto,
 	EventoHistorialResponse,
-} from '../../../core/models/evento-historial.model';
+} from '../models/evento-historial.model';
 
 @Injectable({
 	providedIn: 'root',

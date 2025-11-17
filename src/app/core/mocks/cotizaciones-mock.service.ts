@@ -4,7 +4,7 @@ import {
 	Cotizacion,
 	CotizacionEstado,
 	CotizacionStats,
-} from '../../../core/models/cotizacion.model';
+} from '../models/cotizacion.model';
 
 /**
  * Servicio mock para gestionar cotizaciones
