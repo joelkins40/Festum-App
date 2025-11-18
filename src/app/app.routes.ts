@@ -105,6 +105,7 @@ export const routes: Routes = [
         path: 'eventos/informacion-general',
         loadComponent: () => import('./modules/eventos/informacion-general/informacion-general.component').then(m => m.InformacionGeneralComponent)
       },
+      // Rutas estáticas de eventos (mantener para acceso directo desde sidebar)
       {
         path: 'eventos/cronograma',
         loadComponent: () => import('./modules/eventos/cronograma/cronograma.component').then(m => m.CronogramaComponent)
@@ -134,10 +135,30 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/eventos/observaciones/observaciones.component').then(m => m.ObservacionesComponent)
       },
 
-      // Rutas dinamicas para eventos específicos src/app/modules/eventos/EventoDetalleComponent
+      // Rutas dinámicas para eventos específicos (deben ir después de las rutas estáticas)
       {
         path: 'eventos/:id',
         loadComponent: () => import('./modules/eventos/evento-page/evento-page.component').then(m => m.EventoDetalleComponent)
+      },
+      {
+        path: 'eventos/:id/cronograma',
+        loadComponent: () => import('./modules/eventos/cronograma/cronograma.component').then(m => m.CronogramaComponent)
+      },
+      {
+        path: 'eventos/:id/plano',
+        loadComponent: () => import('./modules/eventos/plano/plano.component').then(m => m.PlanoComponent)
+      },
+      {
+        path: 'eventos/:id/invitados',
+        loadComponent: () => import('./modules/eventos/invitados/invitados.component').then(m => m.InvitadosComponent)
+      },
+      {
+        path: 'eventos/:id/galeria',
+        loadComponent: () => import('./modules/eventos/galeria/galeria.component').then(m => m.GaleriaComponent)
+      },
+      {
+        path: 'eventos/:id/observaciones',
+        loadComponent: () => import('./modules/eventos/observaciones/observaciones.component').then(m => m.ObservacionesComponent)
       },
       // Ruta para crear un nuevo evento
       {

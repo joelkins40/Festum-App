@@ -189,31 +189,37 @@ interface HerramientaAvanzada {
 export class HerramientasAvanzadasSectionComponent {
 	@Input() eventoId?: string;
 
-	herramientas: HerramientaAvanzada[] = [
-		{
-			titulo: 'Cronograma',
-			descripcion: 'Planifica y gestiona el cronograma del evento',
-			icono: 'schedule',
-			ruta: '/eventos/cronograma',
-			color: '#20b2aa',
-		},
-		{
-			titulo: 'Plano',
-			descripcion: 'Visualiza y edita la distribución de mesas y espacios',
-			icono: 'map',
-			ruta: '/eventos/plano',
-			color: '#6c5ce7',
-		},
-		{
-			titulo: 'Invitados',
-			descripcion: 'Administra la lista de invitados y confirmaciones',
-			icono: 'people',
-			ruta: '/eventos/invitados',
-			color: '#00b894',
-		},
-	];
-
 	constructor(private router: Router) {}
+
+	get herramientas(): HerramientaAvanzada[] {
+		const baseEventoPath = this.eventoId
+			? `/eventos/${this.eventoId}`
+			: '/eventos';
+
+		return [
+			{
+				titulo: 'Cronograma',
+				descripcion: 'Planifica y gestiona el cronograma del evento',
+				icono: 'schedule',
+				ruta: `${baseEventoPath}/cronograma`,
+				color: '#20b2aa',
+			},
+			{
+				titulo: 'Plano',
+				descripcion: 'Visualiza y edita la distribución de mesas y espacios',
+				icono: 'map',
+				ruta: `${baseEventoPath}/plano`,
+				color: '#6c5ce7',
+			},
+			{
+				titulo: 'Invitados',
+				descripcion: 'Administra la lista de invitados y confirmaciones',
+				icono: 'people',
+				ruta: `${baseEventoPath}/invitados`,
+				color: '#00b894',
+			},
+		];
+	}
 
 	navegarA(ruta: string): void {
 		this.router.navigate([ruta]);
