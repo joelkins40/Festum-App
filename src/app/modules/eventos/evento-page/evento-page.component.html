@@ -293,6 +293,23 @@
       </div>
     </section>
 
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- ===== NUEVAS SECCIONES ===== -->
+
+    <!-- Sección 6: Multimedia -->
+    <app-multimedia-section [eventoId]="currentEvent()!.folio"></app-multimedia-section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 7: Observaciones -->
+    <app-observaciones-section [eventoId]="currentEvent()!.folio"></app-observaciones-section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 8: Herramientas Avanzadas -->
+    <app-herramientas-avanzadas-section [eventoId]="currentEvent()!.folio"></app-herramientas-avanzadas-section>
+
   </div>
   }
 </div>

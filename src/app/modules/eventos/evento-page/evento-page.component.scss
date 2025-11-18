@@ -587,3 +587,49 @@
 		}
 	}
 }
+
+/* ===== NUEVAS SECCIONES - ESTILOS ADICIONALES ===== */
+
+/* Ajustes para las nuevas secciones integradas */
+app-multimedia-section,
+app-observaciones-section,
+app-herramientas-avanzadas-section {
+	display: block;
+	margin-bottom: 0; // El margen lo maneja el divider
+}
+
+/* Espaciado consistente entre secciones */
+.content-wrapper {
+	.section-divider {
+		margin: 24px 0;
+		border-color: #e9ecef;
+	}
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+	.evento-detalle-container {
+		padding: 16px;
+	}
+
+	.page-header {
+		flex-direction: column;
+		gap: 16px;
+
+		.header-actions {
+			width: 100%;
+
+			button {
+				flex: 1;
+			}
+		}
+	}
+
+	.content-wrapper {
+		padding: 16px;
+	}
+
+	.info-grid {
+		grid-template-columns: 1fr !important;
+	}
+}

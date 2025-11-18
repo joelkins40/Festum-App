@@ -10,6 +10,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Evento } from '../../../core/services/lista-eventos.service';
+import { MultimediaSectionComponent } from './multimedia-section.component';
+import { ObservacionesSectionComponent } from './observaciones-section.component';
+import { HerramientasAvanzadasSectionComponent } from './herramientas-avanzadas-section.component';
 
 @Component({
 	selector: 'app-evento-detalle-component',
@@ -22,6 +25,9 @@ import { Evento } from '../../../core/services/lista-eventos.service';
 		MatDividerModule,
 		MatTooltipModule,
 		MatProgressSpinnerModule,
+		MultimediaSectionComponent,
+		ObservacionesSectionComponent,
+		HerramientasAvanzadasSectionComponent,
 	],
 	templateUrl: './evento-page.component.html',
 	styleUrl: './evento-page.component.scss',
