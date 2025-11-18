@@ -1,0 +1,110 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">shopping_cart</mat-icon>
+      <div>
+        <h2 mat-dialog-title>Seleccionar Productos y Servicios</h2>
+        <p class="subtitle">Seleccione los items que desea agregar a la nota</p>
+      </div>
+    </div>
+    <button mat-icon-button mat-dialog-close class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div mat-dialog-content class="dialog-content">
+    <!-- Buscador -->
+    <div class="search-section">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar productos o servicios</mat-label>
+        <input matInput [(ngModel)]="busqueda" (ngModelChange)="filtrarProductos()"
+          placeholder="Nombre, descripción o tipo..." />
+        <mat-icon matPrefix>search</mat-icon>
+        @if (busqueda) {
+        <button matSuffix mat-icon-button (click)="busqueda = ''; filtrarProductos()">
+          <mat-icon>clear</mat-icon>
+        </button>
+        }
+      </mat-form-field>
+
+      <!-- Contador de seleccionados -->
+      @if (totalSeleccionados > 0) {
+      <div class="chip-seleccionados">
+        <mat-chip-set>
+          <mat-chip highlighted>
+            <mat-icon>check_circle</mat-icon>
+            {{ totalSeleccionados }} seleccionado{{ totalSeleccionados > 1 ? 's' : '' }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+      }
+    </div>
+
+    <!-- Lista de productos -->
+    <div class="productos-list">
+      @if (productosFiltrados.length === 0) {
+      <div class="empty-state">
+        <mat-icon>search_off</mat-icon>
+        <p>No se encontraron productos o servicios</p>
+      </div>
+      } @else {
+      @for (producto of productosFiltrados; track producto.id) {
+      <div class="producto-card" [class.seleccionado]="producto.seleccionado" (click)="toggleSeleccion(producto)">
+        <div class="card-content">
+          <mat-checkbox [checked]="producto.seleccionado" (change)="toggleSeleccion(producto)"
+            (click)="$event.stopPropagation()" color="primary"></mat-checkbox>
+
+          <div class="producto-info">
+            <div class="info-header">
+              <div class="nombre-tipo">
+                <mat-icon class="tipo-icon">
+                  {{ producto.tipo === 'Producto' ? 'inventory_2' : 'handyman' }}
+                </mat-icon>
+                <h3>{{ producto.nombre }}</h3>
+              </div>
+              <span class="tipo-badge" [class.producto]="producto.tipo === 'Producto'">
+                {{ producto.tipo }}
+              </span>
+            </div>
+
+            @if (producto.descripcion) {
+            <p class="descripcion">{{ producto.descripcion }}</p>
+            }
+
+            <div class="info-footer">
+              <div class="precio">
+                <mat-icon>payments</mat-icon>
+                <span>{{ producto.precioPublico | currency:'MXN':'symbol-narrow':'1.2-2' }}</span>
+              </div>
+
+              @if (producto.seleccionado) {
+              <mat-form-field appearance="outline" class="cantidad-field" (click)="$event.stopPropagation()">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" [(ngModel)]="producto.cantidad" min="1" max="999" />
+              </mat-form-field>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      }
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button (click)="onCancelar()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" (click)="onAgregar()" [disabled]="totalSeleccionados === 0">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Agregar ({{ totalSeleccionados }})
+    </button>
+  </div>
+</div>

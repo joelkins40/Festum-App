@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,13 +12,15 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 import { Observable, map, startWith } from 'rxjs';
 
 import { NuevaNotaService } from '../../../core/services/nuevo-evento.service';
+import { ListaEventosService } from '../../../core/services/lista-eventos-tabla.service';
+import { ProductoSelectorDialogComponent } from './producto-selector-dialog/producto-selector-dialog.component';
 
 import {
 	ProductoNota,
@@ -56,9 +59,12 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 export class NuevoEventoComponent implements OnInit {
 	private fb = inject(FormBuilder);
 	private nuevaNotaService = inject(NuevaNotaService);
+	private eventosService = inject(ListaEventosService);
 	private clientesService = inject(ClientesService);
 	private productosService = inject(ProductosServiciosService);
 	private snackBar = inject(MatSnackBar);
+	private dialog = inject(MatDialog);
+	private router = inject(Router);
 
 	// Form principal
 	notaForm = this.fb.group({
@@ -244,15 +250,40 @@ export class NuevoEventoComponent implements OnInit {
 			productoServicioId: producto.id,
 			tipo: producto.tipo,
 			nombre: producto.nombre,
-			descripcion: producto.descripcion,
+			descripcion: producto.descripcion || '',
 			cantidad: 1,
-			precioUnitario: precio,
-			subtotal: precio,
+			precioUnitario: precio || 0,
+			subtotal: precio || 0,
 		};
 
-		this.productosEnNota.push(productoNota);
+		this.productosEnNota = [...this.productosEnNota, productoNota];
 		this.recalcularTotales();
-		this.showMessage('Producto agregado', 'success');
+	}
+
+	abrirSelectorProductos(): void {
+		const dialogRef = this.dialog.open(ProductoSelectorDialogComponent, {
+			width: '800px',
+			maxWidth: '90vw',
+			maxHeight: '90vh',
+			disableClose: false,
+			autoFocus: true,
+		});
+
+		dialogRef
+			.afterClosed()
+			.subscribe((productosSeleccionados: ProductoNota[]) => {
+				if (productosSeleccionados && productosSeleccionados.length > 0) {
+					this.productosEnNota = [
+						...this.productosEnNota,
+						...productosSeleccionados,
+					];
+					this.recalcularTotales();
+					this.showMessage(
+						`Se agregaron ${productosSeleccionados.length} producto(s) correctamente`,
+						'success',
+					);
+				}
+			});
 	}
 
 	editarCantidad(producto: ProductoNota, nuevaCantidad: number): void {
@@ -345,11 +376,78 @@ export class NuevoEventoComponent implements OnInit {
 			observaciones: formValue.observaciones ?? undefined,
 		};
 
+		// Crear evento para la lista-tabla
+		const direccionCliente = this.clienteSeleccionado?.direcciones?.[0];
+		const eventoDto = {
+			folio: formValue.folio ?? '',
+			fechaRecepcion: formValue.fechaRecepcion ?? new Date(),
+			fechaRegreso: formValue.fechaRegreso ?? new Date(),
+			nombreEvento: formValue.nombreEvento ?? '',
+			cliente: {
+				id: this.clienteSeleccionado?.id ?? 0,
+				nombre: this.clienteSeleccionado?.nombre ?? 'Cliente Desconocido',
+				clienteEspecial: this.clienteSeleccionado?.clientePreferente ?? false,
+				activo: this.clienteSeleccionado?.activo ?? true,
+				direcciones: direccionCliente
+					? [
+							{
+								fullAddress: `${direccionCliente.street} ${direccionCliente.number}`,
+								city: direccionCliente.city,
+								state: direccionCliente.state,
+								country: direccionCliente.country,
+								postalCode: direccionCliente.postalCode,
+							},
+						]
+					: undefined,
+			},
+			lugar: {
+				tipo: (tipoLugar === TipoLugar.DIRECCION_CLIENTE
+					? 'direccionCliente'
+					: tipoLugar === TipoLugar.NUEVA_DIRECCION
+						? 'nuevaDireccion'
+						: 'salonExistente') as
+					| 'direccionCliente'
+					| 'nuevaDireccion'
+					| 'salonExistente',
+				direccion: direccionCliente
+					? {
+							fullAddress: `${direccionCliente.street} ${direccionCliente.number}`,
+							city: direccionCliente.city,
+							state: direccionCliente.state,
+							country: direccionCliente.country,
+							postalCode: direccionCliente.postalCode,
+						}
+					: undefined,
+			},
+			productos: this.productosEnNota.map((p) => ({
+				id: typeof p.id === 'string' ? 0 : p.id || 0,
+				nombre: p.nombre,
+				descripcion: p.descripcion,
+				cantidad: p.cantidad,
+				precioUnitario: p.precioUnitario,
+				subtotal: p.subtotal,
+				esServicio: p.tipo === 'Servicio',
+			})),
+			total: this.total,
+		};
+
+		// Guardar en NuevaNotaService (notas)
 		this.nuevaNotaService.createNota(dto).subscribe({
 			next: (response) => {
 				if (response.success) {
-					this.showMessage('Nota guardada exitosamente', 'success');
-					this.resetearFormulario();
+					// Guardar también en ListaEventosService (eventos)
+					this.eventosService.createEvento(eventoDto).subscribe({
+						next: () => {
+							this.showMessage('Evento guardado exitosamente', 'success');
+							this.resetearFormulario();
+
+							// Navegar a la lista de eventos
+							this.router.navigate(['/eventos/lista-tabla']);
+						},
+						error: () => {
+							this.showMessage('Error al guardar en lista de eventos', 'error');
+						},
+					});
 				} else {
 					this.showMessage(
 						response.message ?? 'Error al guardar nota',

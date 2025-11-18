@@ -214,13 +214,11 @@
             <mat-icon matPrefix>search</mat-icon>
           </mat-form-field>
 
-          <button mat-raised-button color="primary" type="button">
+          <button mat-raised-button color="primary" type="button" (click)="abrirSelectorProductos()">
             <mat-icon>add</mat-icon>
             Agregar Producto/Servicio
           </button>
-        </div>
-
-        <!-- Tabla de productos -->
+        </div> <!-- Tabla de productos -->
         <div class="table-container">
           <table mat-table [dataSource]="productosEnNota" class="productos-table">
             <!-- Nombre Column -->
