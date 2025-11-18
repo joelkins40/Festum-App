@@ -1,7 +1,9 @@
 .lista-eventos-container {
 	padding: 2rem;
-	max-width: 1400px;
+	max-width: 100%;
+	width: 100%;
 	margin: 0 auto;
+	box-sizing: border-box;
 }
 
 // Page Header
@@ -92,11 +94,33 @@
 // Table Container
 .table-container {
 	overflow-x: auto;
+	width: 100%;
+	max-width: 100%;
+
+	&::-webkit-scrollbar {
+		height: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 4px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 4px;
+
+		&:hover {
+			background: #555;
+		}
+	}
 }
 
 .eventos-table {
 	width: 100%;
+	min-width: 1200px; // Aumentado para dar más espacio
 	background-color: white;
+	table-layout: auto;
 
 	th {
 		background-color: #f8f9fa;
@@ -105,11 +129,26 @@
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		color: #495057;
+		padding: 1rem 0.75rem;
+		white-space: nowrap;
 	}
 
 	td {
 		padding: 1rem 0.75rem;
 		font-size: 0.875rem;
+		vertical-align: middle;
+
+		&:has(.lugar-cell) {
+			min-width: 180px; // Ancho mínimo para columna lugar
+		}
+
+		&:has(.evento-cell) {
+			min-width: 200px; // Ancho mínimo para nombre evento
+		}
+
+		&:has(.cliente-cell) {
+			min-width: 180px; // Ancho mínimo para cliente
+		}
 	}
 
 	tr:hover {
@@ -136,12 +175,20 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+		min-width: 0;
 
 		.cell-icon {
 			font-size: 1.25rem;
 			width: 1.25rem;
 			height: 1.25rem;
 			color: #6c757d;
+			flex-shrink: 0; // Evita que el icono se comprima
+		}
+
+		span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 
@@ -164,10 +211,39 @@
 	// Action Buttons
 	.action-buttons {
 		display: flex;
-		gap: 0.25rem;
+		align-items: center;
+		gap: 0.5rem;
+		white-space: nowrap;
+
+		a {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 6px 16px;
+			background-color: #20b2aa;
+			color: white;
+			text-decoration: none;
+			border-radius: 6px;
+			font-size: 0.8125rem;
+			font-weight: 500;
+			transition: all 0.2s ease;
+			box-shadow: 0 1px 3px rgba(32, 178, 170, 0.2);
+
+			&:hover {
+				background-color: #1a9b94;
+				box-shadow: 0 2px 6px rgba(32, 178, 170, 0.3);
+				transform: translateY(-1px);
+			}
+
+			&:active {
+				transform: translateY(0);
+				box-shadow: 0 1px 2px rgba(32, 178, 170, 0.2);
+			}
+		}
 
 		button {
-			transition: transform 0.2s ease;
+			transition: all 0.2s ease;
+			flex-shrink: 0;
 
 			&:hover {
 				transform: scale(1.1);
@@ -203,15 +279,33 @@
 }
 
 // Responsive Design
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
 	.lista-eventos-container {
 		padding: 1.5rem;
+	}
+
+	.eventos-table {
+		min-width: 1100px; // Ajustado para mantener espacio
+	}
+}
+
+@media (max-width: 1200px) {
+	.lista-eventos-container {
+		padding: 1rem;
+	}
+
+	.eventos-table {
+		min-width: 1000px; // Ajustado para mantener espacio
+
+		th, td {
+			padding: 0.75rem 0.5rem;
+		}
 	}
 }
 
 @media (max-width: 768px) {
 	.lista-eventos-container {
-		padding: 1rem;
+		padding: 0.75rem;
 	}
 
 	.page-header {
@@ -228,7 +322,7 @@
 			}
 		}
 
-		button {
+		.create-button {
 			width: 100%;
 		}
 	}
@@ -242,15 +336,26 @@
 	}
 
 	.eventos-table {
+		min-width: 700px;
+
 		td,
 		th {
-			padding: 0.5rem;
+			padding: 0.5rem 0.35rem;
 			font-size: 0.8125rem;
 		}
 
 		.folio-badge {
 			font-size: 0.6875rem;
 			padding: 0.2rem 0.5rem;
+		}
+
+		.action-buttons {
+			gap: 0.35rem;
+
+			a {
+				padding: 4px 12px;
+				font-size: 0.75rem;
+			}
 		}
 	}
 }
