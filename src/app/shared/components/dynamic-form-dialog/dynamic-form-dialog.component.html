@@ -1,0 +1,132 @@
+<!-- ===== DYNAMIC FORM DIALOG ===== -->
+<div class="dynamic-form-dialog">
+  <!-- Header del Diálogo -->
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">{{ getTitleIcon() }}</mat-icon>
+    <span>{{ config.title }}</span>
+  </h2>
+
+  <!-- Subtítulo Opcional -->
+  @if (config.subtitle) {
+  <p class="dialog-subtitle">{{ config.subtitle }}</p>
+  }
+
+  <!-- Contenido del Diálogo -->
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" class="dynamic-form">
+      <!-- Iterar sobre cada campo de la configuración -->
+      @for (field of config.fields; track field.key) {
+      <div class="form-field-wrapper">
+        <!-- Campo de tipo TEXT -->
+        @if (field.type === 'text') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [formControlName]="field.key" [placeholder]="field.placeholder || ''"
+            [required]="field.required || false" />
+          @if (field.required) {
+          <mat-icon matSuffix class="required-icon">star</mat-icon>
+          } @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
+          {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Campo de tipo EMAIL -->
+        @if (field.type === 'email') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput type="email" [formControlName]="field.key" [placeholder]="field.placeholder || ''"
+            [required]="field.required || false" />
+          <mat-icon matSuffix>email</mat-icon>
+          @if (getControl(field.key)?.invalid && getControl(field.key)?.touched) {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Campo de tipo NUMBER -->
+        @if (field.type === 'number') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput type="number" [formControlName]="field.key" [placeholder]="field.placeholder || ''"
+            [required]="field.required || false" [min]="field.min ?? null" [max]="field.max ?? null" />
+          @if (field.required) {
+          <mat-icon matSuffix class="required-icon">star</mat-icon>
+          } @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
+          {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Campo de tipo DATE -->
+        @if (field.type === 'date') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput type="date" [formControlName]="field.key" [required]="field.required || false" />
+          <mat-icon matSuffix>calendar_today</mat-icon>
+          @if (getControl(field.key)?.invalid && getControl(field.key)?.touched) {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Campo de tipo SELECT -->
+        @if (field.type === 'select') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <mat-select [formControlName]="field.key" [required]="field.required || false"
+            [placeholder]="field.placeholder || 'Seleccione una opción'">
+            <!-- Opciones simples (array de strings) -->
+            @if (!isComplexOptions(field.options)) { @for (option of field.options;
+            track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+            } }
+            <!-- Opciones complejas (array de objetos {label, value}) -->
+            @if (isComplexOptions(field.options)) { @for (option of field.options;
+            track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            } }
+          </mat-select>
+          @if (field.required) {
+          <mat-icon matSuffix class="required-icon">star</mat-icon>
+          } @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
+          {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Campo de tipo TEXTAREA -->
+        @if (field.type === 'textarea') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ field.label }}</mat-label>
+          <textarea matInput [formControlName]="field.key" [placeholder]="field.placeholder || ''"
+            [required]="field.required || false" [rows]="getTextareaRows(field)" [minlength]="field.minLength ?? null"
+            [maxlength]="field.maxLength ?? null"></textarea>
+          @if (field.required) {
+          <mat-icon matSuffix class="required-icon">star</mat-icon>
+          } @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
+          {
+          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+          }
+        </mat-form-field>
+        }
+      </div>
+      }
+    </form>
+  </mat-dialog-content>
+
+  <!-- Acciones del Diálogo -->
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-button">
+      <mat-icon>close</mat-icon>
+      {{ cancelButtonText }}
+    </button>
+    <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="form.invalid" class="confirm-button">
+      <mat-icon>check</mat-icon>
+      {{ confirmButtonText }}
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,243 @@
+/* ===== DYNAMIC FORM DIALOG STYLES ===== */
+
+.dynamic-form-dialog {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+		sans-serif;
+}
+
+/* ===== HEADER ===== */
+.dialog-title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	padding: 24px 24px 16px 24px;
+	font-size: 22px;
+	font-weight: 600;
+	color: #2d3436;
+	border-bottom: 2px solid #e9ecef;
+
+	.title-icon {
+		font-size: 28px;
+		width: 28px;
+		height: 28px;
+		color: #20b2aa;
+	}
+}
+
+.dialog-subtitle {
+	margin: 0;
+	padding: 8px 24px 16px 24px;
+	font-size: 14px;
+	color: #636e72;
+	line-height: 1.5;
+}
+
+/* ===== CONTENT ===== */
+.dialog-content {
+	padding: 24px;
+	min-width: 300px;
+	max-height: 60vh;
+	overflow-y: auto;
+
+	/* Scrollbar personalizado */
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #f1f3f4;
+		border-radius: 4px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #b2bec3;
+		border-radius: 4px;
+
+		&:hover {
+			background: #636e72;
+		}
+	}
+}
+
+.dynamic-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.form-field-wrapper {
+	width: 100%;
+}
+
+.full-width {
+	width: 100%;
+}
+
+/* ===== FORM FIELDS ===== */
+mat-form-field {
+	&.full-width {
+		width: 100%;
+	}
+
+	::ng-deep {
+		.mat-mdc-form-field-subscript-wrapper {
+			margin-top: 4px;
+		}
+
+		.mat-mdc-form-field-error {
+			font-size: 12px;
+		}
+
+		// Icono de requerido
+		.required-icon {
+			color: #e74c3c;
+			font-size: 12px;
+			width: 12px;
+			height: 12px;
+		}
+	}
+}
+
+/* ===== ACTIONS ===== */
+.dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 12px;
+	padding: 16px 24px;
+	border-top: 1px solid #e9ecef;
+	background-color: #f8f9fa;
+
+	button {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-width: 120px;
+		font-weight: 500;
+		transition: all 0.2s ease;
+
+		mat-icon {
+			font-size: 18px;
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	.cancel-button {
+		color: #636e72;
+
+		&:hover {
+			background-color: #e9ecef;
+		}
+	}
+
+	.confirm-button {
+		&:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+	}
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+	.dialog-title {
+		font-size: 18px;
+		padding: 16px 16px 12px 16px;
+
+		.title-icon {
+			font-size: 24px;
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	.dialog-subtitle {
+		padding: 8px 16px 12px 16px;
+		font-size: 13px;
+	}
+
+	.dialog-content {
+		padding: 16px;
+		min-width: auto;
+	}
+
+	.dialog-actions {
+		flex-direction: column-reverse;
+		padding: 12px 16px;
+
+		button {
+			width: 100%;
+		}
+	}
+}
+
+/* ===== FOCUS STATES ===== */
+mat-form-field {
+	::ng-deep {
+		.mat-mdc-text-field-wrapper {
+			&:hover .mat-mdc-form-field-focus-overlay {
+				opacity: 0.04;
+			}
+		}
+
+		&.mat-focused {
+			.mat-mdc-form-field-focus-overlay {
+				opacity: 0.08;
+			}
+		}
+	}
+}
+
+/* ===== VALIDATION STATES ===== */
+mat-form-field {
+	&.mat-form-field-invalid {
+		::ng-deep {
+			.mat-mdc-text-field-wrapper {
+				.mdc-notched-outline {
+					border-color: #e74c3c !important;
+				}
+			}
+		}
+	}
+}
+
+/* ===== SELECT DROPDOWN ===== */
+::ng-deep {
+	.mat-mdc-select-panel {
+		max-height: 300px;
+	}
+
+	.mat-mdc-option {
+		&:hover {
+			background-color: rgba(32, 178, 170, 0.1);
+		}
+
+		&.mat-mdc-option-active {
+			background-color: rgba(32, 178, 170, 0.15);
+		}
+	}
+}
+
+/* ===== TEXTAREA ===== */
+textarea {
+	resize: vertical;
+	min-height: 80px;
+	max-height: 300px;
+	font-family: inherit;
+	line-height: 1.5;
+}
+
+/* ===== LOADING STATE (opcional para futuras mejoras) ===== */
+.loading-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
