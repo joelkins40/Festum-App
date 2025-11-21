@@ -142,23 +142,25 @@
             <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
             <span class="nav-sub-label">Lista de eventos nueva vista</span>
           </a>
-          <a class="nav-sub-item" routerLink="/eventos/lista" (click)="onMenuClick()">
+          <!-- Todo: eliminar este modulo y renombrar el de arriba como el definitivo y con nombre mas claro -->
+          <!-- <a class="nav-sub-item" routerLink="/eventos/lista" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon events-list">event_available</mat-icon>
             <span class="nav-sub-label">Lista de eventos</span>
-          </a>
-          <a class="nav-sub-item" routerLink="/eventos/nueva-nota" (click)="onMenuClick()">
+          </a> -->
+          <!-- Todo: elimiar modulos y paginas que ya no estamos ocupando -->
+          <!-- <a class="nav-sub-item" routerLink="/eventos/nueva-nota" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon orders">receipt</mat-icon>
             <span class="nav-sub-label">Nueva nota</span>
-          </a>
+          </a> -->
           <div class="nav-sub-group">
             <span class="nav-sub-group-title">
               <mat-icon class="group-icon">event_seat</mat-icon>
               Detalle del evento
             </span>
-            <a class="nav-sub-item nested" routerLink="/eventos/informacion-general" (click)="onMenuClick()">
+            <!-- <a class="nav-sub-item nested" routerLink="/eventos/informacion-general" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon info">info</mat-icon>
               <span class="nav-sub-label">Información general</span>
-            </a>
+            </a> -->
             <!-- Comentado: Ahora se accede vía eventos/:id/cronograma -->
             <!-- <a class="nav-sub-item nested" routerLink="/eventos/cronograma" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon schedule">schedule</mat-icon>
@@ -169,10 +171,10 @@
               <mat-icon class="nav-sub-icon guests">group_add</mat-icon>
               <span class="nav-sub-label">Invitados</span>
             </a> -->
-            <a class="nav-sub-item nested" routerLink="/eventos/confirmaciones" (click)="onMenuClick()">
+            <!-- <a class="nav-sub-item nested" routerLink="/eventos/confirmaciones" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon confirmations">check_circle</mat-icon>
               <span class="nav-sub-label">Confirmaciones</span>
-            </a>
+            </a> -->
             <a class="nav-sub-item nested" routerLink="/eventos/mobiliario-servicios" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon furniture-services">weekend</mat-icon>
               <span class="nav-sub-label">Mobiliario / Servicios</span>
@@ -182,14 +184,14 @@
               <mat-icon class="nav-sub-icon floor-plan">architecture</mat-icon>
               <span class="nav-sub-label">Plano (drag & drop)</span>
             </a> -->
-            <a class="nav-sub-item nested" routerLink="/eventos/galeria" (click)="onMenuClick()">
+            <!-- <a class="nav-sub-item nested" routerLink="/eventos/galeria" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon gallery">photo_library</mat-icon>
               <span class="nav-sub-label">Galería</span>
-            </a>
-            <a class="nav-sub-item nested" routerLink="/eventos/observaciones" (click)="onMenuClick()">
+            </a> -->
+            <!-- <a class="nav-sub-item nested" routerLink="/eventos/observaciones" (click)="onMenuClick()">
               <mat-icon class="nav-sub-icon notes">sticky_note_2</mat-icon>
               <span class="nav-sub-label">Observaciones</span>
-            </a>
+            </a> -->
           </div>
         </div>
       </div>
