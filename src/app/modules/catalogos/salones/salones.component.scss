@@ -407,6 +407,15 @@
   justify-content: center;
   gap: 8px;
 
+  .view-button {
+    color: #6c5ce7;
+    background-color: rgba(108, 92, 231, 0.1);
+
+    &:hover:not(:disabled) {
+      background-color: rgba(108, 92, 231, 0.2);
+    }
+  }
+
   .edit-button {
     color: #20b2aa;
     background-color: rgba(32, 178, 170, 0.1);

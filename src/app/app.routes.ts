@@ -58,6 +58,13 @@ export const routes: Routes = [
 					),
 			},
 			{
+				path: 'catalogos/salones/:id',
+				loadComponent: () =>
+					import(
+						'./modules/catalogos/salones/plano-salones/plano-salones.component'
+					).then((m) => m.PlanoSalonesComponent),
+			},
+			{
 				path: 'catalogos/tipos-mobiliario',
 				loadComponent: () =>
 					import(

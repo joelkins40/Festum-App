@@ -31,6 +31,24 @@ export class SalonesService {
 			telefonoContacto: '55-1234-5678',
 			fechaCreacion: new Date('2024-01-15'),
 			activo: true,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:34:49.211Z',
+				version: '1.0',
+			},
 		},
 		{
 			id: 2,
@@ -42,6 +60,84 @@ export class SalonesService {
 			telefonoContacto: '55-2345-6789',
 			fechaCreacion: new Date('2024-01-16'),
 			activo: true,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_csei555ix_1763958998664',
+						tipo: 'escenario',
+						nombre: 'Escenario',
+						posicion: { x: 252, y: 162 },
+						tamano: { ancho: 300, alto: 150 },
+						color: '#9c27b0',
+						icono: 'theater_comedy',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_w9hbydd7g_1763959003386',
+						tipo: 'entrada',
+						nombre: 'Entrada',
+						posicion: { x: 701, y: 439 },
+						tamano: { ancho: 90, alto: 150 },
+						color: '#607d8b',
+						icono: 'meeting_room',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wh56fv2j8_1763959008874',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 250, y: 348 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_no7eml9yh_1763959010824',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 416, y: 338 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wx4lgonxl_1763959012785',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 348, y: 450 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_0a5ri20ta_1763959016182',
+						tipo: 'mesa-regalos',
+						nombre: 'Mesa de Regalos',
+						posicion: { x: 638, y: 4 },
+						tamano: { ancho: 150, alto: 90 },
+						color: '#e91e63',
+						icono: 'card_giftcard',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:37:07.093Z',
+				version: '1.0',
+			},
 		},
 		{
 			id: 3,
@@ -53,6 +149,24 @@ export class SalonesService {
 			telefonoContacto: '55-3456-7890',
 			fechaCreacion: new Date('2024-01-17'),
 			activo: true,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:34:49.211Z',
+				version: '1.0',
+			},
 		},
 		{
 			id: 4,
@@ -64,6 +178,84 @@ export class SalonesService {
 			telefonoContacto: '55-4567-8901',
 			fechaCreacion: new Date('2024-01-18'),
 			activo: true,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_csei555ix_1763958998664',
+						tipo: 'escenario',
+						nombre: 'Escenario',
+						posicion: { x: 252, y: 162 },
+						tamano: { ancho: 300, alto: 150 },
+						color: '#9c27b0',
+						icono: 'theater_comedy',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_w9hbydd7g_1763959003386',
+						tipo: 'entrada',
+						nombre: 'Entrada',
+						posicion: { x: 701, y: 439 },
+						tamano: { ancho: 90, alto: 150 },
+						color: '#607d8b',
+						icono: 'meeting_room',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wh56fv2j8_1763959008874',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 250, y: 348 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_no7eml9yh_1763959010824',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 416, y: 338 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wx4lgonxl_1763959012785',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 348, y: 450 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_0a5ri20ta_1763959016182',
+						tipo: 'mesa-regalos',
+						nombre: 'Mesa de Regalos',
+						posicion: { x: 638, y: 4 },
+						tamano: { ancho: 150, alto: 90 },
+						color: '#e91e63',
+						icono: 'card_giftcard',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:37:07.093Z',
+				version: '1.0',
+			},
 		},
 		{
 			id: 5,
@@ -75,6 +267,24 @@ export class SalonesService {
 			telefonoContacto: '55-5678-9012',
 			fechaCreacion: new Date('2024-01-19'),
 			activo: true,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:34:49.211Z',
+				version: '1.0',
+			},
 		},
 		{
 			id: 6,
@@ -86,6 +296,84 @@ export class SalonesService {
 			telefonoContacto: '55-6789-0123',
 			fechaCreacion: new Date('2024-01-20'),
 			activo: false,
+			planoTemplate: {
+				plantillaId: 'clasico-rectangular',
+				plantillaNombre: 'Salón Clásico Rectangular',
+				elementos: [
+					{
+						id: 'elemento_bvdbo8nnq_1763958886676',
+						tipo: 'mesa-redonda',
+						nombre: 'Mesa Redonda',
+						posicion: { x: 7, y: 6 },
+						tamano: { ancho: 120, alto: 120 },
+						color: '#8b4513',
+						icono: 'table_restaurant',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_csei555ix_1763958998664',
+						tipo: 'escenario',
+						nombre: 'Escenario',
+						posicion: { x: 252, y: 162 },
+						tamano: { ancho: 300, alto: 150 },
+						color: '#9c27b0',
+						icono: 'theater_comedy',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_w9hbydd7g_1763959003386',
+						tipo: 'entrada',
+						nombre: 'Entrada',
+						posicion: { x: 701, y: 439 },
+						tamano: { ancho: 90, alto: 150 },
+						color: '#607d8b',
+						icono: 'meeting_room',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wh56fv2j8_1763959008874',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 250, y: 348 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_no7eml9yh_1763959010824',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 416, y: 338 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_wx4lgonxl_1763959012785',
+						tipo: 'planta',
+						nombre: 'Planta/Decoración',
+						posicion: { x: 348, y: 450 },
+						tamano: { ancho: 60, alto: 60 },
+						color: '#4caf50',
+						icono: 'local_florist',
+						rotacion: 0,
+					},
+					{
+						id: 'elemento_0a5ri20ta_1763959016182',
+						tipo: 'mesa-regalos',
+						nombre: 'Mesa de Regalos',
+						posicion: { x: 638, y: 4 },
+						tamano: { ancho: 150, alto: 90 },
+						color: '#e91e63',
+						icono: 'card_giftcard',
+						rotacion: 0,
+					},
+				],
+				fechaGuardado: '2025-11-24T04:37:07.093Z',
+				version: '1.0',
+			},
 		},
 	];
 
@@ -198,6 +486,32 @@ export class SalonesService {
 			map((response) => {
 				this.loadingSubject.next(false);
 				this.salonesSubject.next(salonesFiltrados);
+				return response;
+			}),
+		);
+	}
+
+	/**
+	 * 🔍 Obtener salón por ID
+	 */
+	getSalonById(id: number): Observable<SalonResponse> {
+		this.loadingSubject.next(true);
+
+		// 🔗 Implementación para API real:
+		// return this.http.get<SalonResponse>(`${this.API_URL}/${id}`)
+		//   .pipe(tap(() => this.loadingSubject.next(false)));
+
+		// 🎭 Mock implementation
+		const salon = this.mockSalones.find((s) => s.id === id);
+
+		return of({
+			success: !!salon,
+			message: salon ? 'Salón encontrado' : 'Salón no encontrado',
+			data: salon || undefined,
+		}).pipe(
+			delay(300),
+			map((response) => {
+				this.loadingSubject.next(false);
 				return response;
 			}),
 		);

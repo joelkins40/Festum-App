@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {
 	FormBuilder,
 	FormGroup,
@@ -44,6 +45,7 @@ import { SalonDialogComponent } from './salon-dialog/salon-dialog.component';
 	selector: 'app-salones',
 	imports: [
 		CommonModule,
+		RouterModule,
 		ReactiveFormsModule,
 		FormsModule,
 		MatCardModule,

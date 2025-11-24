@@ -15,6 +15,32 @@ export interface Salon {
 	fechaCreacion?: Date;
 	fechaActualizacion?: Date;
 	activo?: boolean;
+	planoTemplate?: PlanoTemplate;
+}
+
+/**
+ * Estructura de plantilla de plano para salones
+ */
+export interface PlanoTemplate {
+	plantillaId: string;
+	plantillaNombre: string;
+	elementos: PlanoElemento[];
+	fechaGuardado: string;
+	version: string;
+}
+
+/**
+ * Elemento individual del plano
+ */
+export interface PlanoElemento {
+	id: string;
+	tipo: string;
+	nombre: string;
+	posicion: { x: number; y: number };
+	tamano: { ancho: number; alto: number };
+	color: string;
+	icono: string;
+	rotacion?: number;
 }
 
 /**
