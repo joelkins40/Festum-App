@@ -168,6 +168,58 @@ export class EventoDetalleComponent {
 	}
 
 	/**
+	 * Obtiene la dirección cruda del evento para usar en mapas
+	 */
+	private getRawAddress(): string {
+		const evento = this.currentEvent();
+		if (!evento?.lugar) return '';
+
+		const { lugar } = evento;
+
+		if (lugar.tipo === 'salonExistente' && lugar.nombreSalon) {
+			return lugar.nombreSalon;
+		}
+
+		if (lugar.direccion) {
+			const d = lugar.direccion;
+			return `${d.fullAddress}, ${d.city}, ${d.state}, C.P. ${d.postalCode}`;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Genera URL de Google Maps con la dirección del evento
+	 */
+	getPreciseGoogleMapsUrl(): string {
+		const rawAddress = this.getRawAddress();
+		return this.buildGoogleMapsUrl(rawAddress);
+	}
+
+	/**
+	 * Construye URL válida de Google Maps
+	 * @param address - Dirección a convertir en URL
+	 * @returns URL completa de Google Maps
+	 */
+	private buildGoogleMapsUrl(address: string): string {
+		if (!address || address.trim() === '') {
+			return '#';
+		}
+
+		// Limpiar la dirección: eliminar saltos de línea y espacios múltiples
+		const cleanAddress = address
+			.replace(/\n/g, ' ') // Eliminar saltos de línea
+			.replace(/\s+/g, ' ') // Espacios múltiples a uno solo
+			.trim(); // Eliminar espacios al inicio y final
+
+		// Aplicar URL encoding
+		const encodedAddress = encodeURIComponent(cleanAddress);
+
+		// Construir URL de Google Maps
+		return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+	}
+
+	/**
 	 * TrackBy para optimizar renderizado de listas
 	 */
 	trackByProductId(_index: number, item: { id: number }): number {

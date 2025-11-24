@@ -196,9 +196,10 @@
           </label>
           <div class="info-value address-block">
             <pre>{{ getFormattedAddress() }}</pre>
-            <button mat-icon-button color="primary" matTooltip="Ver en mapa">
+            <a mat-icon-button color="primary" [href]="getPreciseGoogleMapsUrl()" target="_blank"
+              rel="noopener noreferrer" matTooltip="Ver en mapa">
               <mat-icon>map</mat-icon>
-            </button>
+            </a>
           </div>
         </div>
       </div>
