@@ -25,10 +25,18 @@
         Nuevo Diseño
       </button>
 
+      <button mat-raised-button color="accent" (click)="abrirSelectorArchivo()" matTooltip="Importar diseño desde JSON">
+        <mat-icon>upload_file</mat-icon>
+        Cargar Plano
+      </button>
+
       <button mat-raised-button color="primary" (click)="guardarDiseno()" matTooltip="Exportar diseño en JSON">
         <mat-icon>save</mat-icon>
         Guardar Diseño
       </button>
+
+      <!-- Input file oculto para cargar JSON -->
+      <input #fileInput type="file" accept=".json" (change)="cargarPlanoDesdeArchivo($event)" style="display: none;">
     </div>
   </div>
 

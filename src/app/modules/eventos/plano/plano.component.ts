@@ -54,6 +54,14 @@ export interface PlantillaSalon {
 	elementosFijos: ElementoEnCanvas[];
 }
 
+export interface DisenoGuardado {
+	plantillaId: string;
+	plantillaNombre: string;
+	elementos: ElementoEnCanvas[];
+	fechaGuardado: string;
+	version: string;
+}
+
 @Component({
 	selector: 'app-plano',
 	standalone: true,
@@ -80,6 +88,8 @@ export interface PlantillaSalon {
 export class PlanoComponent implements OnInit {
 	@ViewChild('canvas', { static: false })
 	canvasRef!: ElementRef<HTMLDivElement>;
+	@ViewChild('fileInput', { static: false })
+	fileInputRef!: ElementRef<HTMLInputElement>;
 
 	private snackBar = inject(MatSnackBar);
 
@@ -459,15 +469,27 @@ export class PlanoComponent implements OnInit {
 			version: '1.0',
 		};
 
-		console.log('Diseño exportado:', JSON.stringify(diseno, null, 2));
+		// Generar nombre de archivo con fecha
+		const fecha = new Date().toISOString().split('T')[0];
+		const nombreArchivo = `plano-evento-${fecha}.json`;
 
-		// Simular envío a API
-		setTimeout(() => {
-			this.mostrarMensaje('Diseño guardado exitosamente');
-			if (typeof window !== 'undefined' && localStorage) {
-				localStorage.setItem('festum_ultimo_diseno', JSON.stringify(diseno));
-			}
-		}, 500);
+		// Crear Blob y descargar archivo
+		const blob = new Blob([JSON.stringify(diseno, null, 2)], {
+			type: 'application/json',
+		});
+		const url = window.URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = nombreArchivo;
+		link.click();
+		window.URL.revokeObjectURL(url);
+
+		// Guardar también en localStorage como respaldo
+		if (typeof window !== 'undefined' && localStorage) {
+			localStorage.setItem('festum_ultimo_diseno', JSON.stringify(diseno));
+		}
+
+		this.mostrarMensaje(`Diseño descargado: ${nombreArchivo}`);
 	}
 
 	private guardarAutomaticamente() {
@@ -515,6 +537,150 @@ export class PlanoComponent implements OnInit {
 
 	private mostrarMensaje(mensaje: string) {
 		this.snackBar.open(mensaje, 'Cerrar', { duration: 3000 });
+	}
+
+	private mostrarError(mensaje: string) {
+		this.snackBar.open(mensaje, 'Cerrar', {
+			duration: 5000,
+			panelClass: ['snackbar-error'],
+		});
+	}
+
+	/**
+	 * Abre el selector de archivos para cargar un plano
+	 */
+	abrirSelectorArchivo() {
+		if (this.fileInputRef) {
+			this.fileInputRef.nativeElement.click();
+		}
+	}
+
+	/**
+	 * Procesa el archivo JSON seleccionado y carga el plano
+	 */
+	cargarPlanoDesdeArchivo(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const file = input.files?.[0];
+
+		if (!file) {
+			return;
+		}
+
+		// Validar que sea un archivo JSON
+		if (!file.name.toLowerCase().endsWith('.json')) {
+			this.mostrarError('Por favor selecciona un archivo JSON válido');
+			input.value = '';
+			return;
+		}
+
+		const reader = new FileReader();
+
+		reader.onload = (e: ProgressEvent<FileReader>) => {
+			try {
+				const contenido = e.target?.result as string;
+				const diseno = JSON.parse(contenido);
+
+				// Validar estructura del JSON
+				if (!this.validarEstructuraPlano(diseno)) {
+					this.mostrarError(
+						'El plano no contiene la estructura necesaria. Verifica que sea un archivo válido.',
+					);
+					return;
+				}
+
+				// Cargar el diseño
+				this.aplicarDisenoImportado(diseno);
+				this.mostrarMensaje(
+					`Plano "${diseno.plantillaNombre || 'Sin nombre'}" cargado exitosamente`,
+				);
+			} catch (error) {
+				console.error('Error al leer archivo:', error);
+				this.mostrarError(
+					'El archivo no es un JSON válido o está corrupto. Por favor verifica el archivo.',
+				);
+			} finally {
+				// Limpiar input para permitir cargar el mismo archivo nuevamente
+				input.value = '';
+			}
+		};
+
+		reader.onerror = () => {
+			this.mostrarError('No fue posible leer el archivo. Intenta nuevamente.');
+			input.value = '';
+		};
+
+		reader.readAsText(file);
+	}
+
+	/**
+	 * Valida que el JSON tenga la estructura mínima requerida
+	 */
+	private validarEstructuraPlano(diseno: unknown): diseno is DisenoGuardado {
+		if (!diseno || typeof diseno !== 'object') {
+			return false;
+		}
+
+		const obj = diseno as Record<string, unknown>;
+
+		// Validar propiedades básicas
+		if (!obj['plantillaId'] || !Array.isArray(obj['elementos'])) {
+			return false;
+		}
+
+		// Validar estructura de elementos
+		for (const elemento of obj['elementos']) {
+			if (
+				!elemento.id ||
+				!elemento.tipo ||
+				!elemento.posicion ||
+				!elemento.tamano ||
+				typeof elemento.posicion.x !== 'number' ||
+				typeof elemento.posicion.y !== 'number' ||
+				typeof elemento.tamano.ancho !== 'number' ||
+				typeof elemento.tamano.alto !== 'number'
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Aplica el diseño importado al canvas
+	 */
+	private aplicarDisenoImportado(diseno: DisenoGuardado) {
+		// Buscar la plantilla correspondiente
+		const plantilla = this.plantillasDisponibles.find(
+			(p) => p.id === diseno.plantillaId,
+		);
+
+		if (!plantilla) {
+			this.mostrarError(
+				`No se encontró la plantilla "${diseno.plantillaNombre || diseno.plantillaId}". Se usará la plantilla actual.`,
+			);
+			// Usar la plantilla actual pero cargar los elementos
+			if (this.plantillaSeleccionada) {
+				this.elementosEnCanvas = [
+					...this.plantillaSeleccionada.elementosFijos,
+					...diseno.elementos,
+				];
+			}
+		} else {
+			// Seleccionar la plantilla correcta
+			this.plantillaSeleccionada = plantilla;
+			// Combinar elementos fijos de la plantilla con los importados
+			this.elementosEnCanvas = [
+				...plantilla.elementosFijos,
+				...diseno.elementos,
+			];
+		}
+
+		// Deseleccionar elemento actual
+		this.elementoSeleccionado = null;
+
+		// Guardar en autosave
+		this.guardarAutomaticamente();
 	}
 
 	trackByElementId(index: number, elemento: ElementoEnCanvas): string {
