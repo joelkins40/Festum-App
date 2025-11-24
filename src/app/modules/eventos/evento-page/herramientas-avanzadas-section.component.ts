@@ -218,6 +218,13 @@ export class HerramientasAvanzadasSectionComponent {
 				ruta: `${baseEventoPath}/invitados`,
 				color: '#00b894',
 			},
+			{
+				titulo: 'Productos y Servicios',
+				descripcion: 'Gestiona el catálogo de productos y servicios del evento',
+				icono: 'inventory_2',
+				ruta: `${baseEventoPath}/productos-servicios`,
+				color: '#fd79a8',
+			},
 		];
 	}
 

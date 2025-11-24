@@ -206,55 +206,6 @@
 
     <mat-divider class="section-divider"></mat-divider>
 
-    <!-- Sección 4: Productos y Servicios -->
-    <section class="info-section">
-      <div class="section-header">
-        <mat-icon class="section-icon">inventory_2</mat-icon>
-        <h2>Productos y Servicios</h2>
-      </div>
-
-      @if (currentEvent()!.productos && currentEvent()!.productos.length > 0) {
-      <div class="products-table">
-        <div class="product-header">
-          <span class="col-tipo">Tipo</span>
-          <span class="col-nombre">Descripción</span>
-          <span class="col-cantidad">Cantidad</span>
-          <span class="col-precio">P. Unitario</span>
-          <span class="col-subtotal">Subtotal</span>
-        </div>
-
-        @for (producto of currentEvent()!.productos; track trackByProductId($index, producto)) {
-        <div class="product-row">
-          <span class="col-tipo">
-            <mat-chip [class]="producto.esServicio ? 'chip-servicio' : 'chip-producto'">
-              <mat-icon class="chip-icon">
-                {{ producto.esServicio ? 'room_service' : 'inventory' }}
-              </mat-icon>
-              {{ producto.esServicio ? 'Servicio' : 'Producto' }}
-            </mat-chip>
-          </span>
-          <span class="col-nombre">
-            <strong>{{ producto.nombre }}</strong>
-            @if (producto.descripcion) {
-            <small>{{ producto.descripcion }}</small>
-            }
-          </span>
-          <span class="col-cantidad">{{ producto.cantidad }}</span>
-          <span class="col-precio">{{ formatPrice(producto.precioUnitario) }}</span>
-          <span class="col-subtotal">{{ formatPrice(producto.subtotal) }}</span>
-        </div>
-        }
-      </div>
-      } @else {
-      <div class="empty-products">
-        <mat-icon>inventory_2</mat-icon>
-        <p>No hay productos o servicios registrados</p>
-      </div>
-      }
-    </section>
-
-    <mat-divider class="section-divider"></mat-divider>
-
     <!-- Sección 5: Resumen Financiero -->
     <section class="info-section">
       <div class="section-header">

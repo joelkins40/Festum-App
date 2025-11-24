@@ -160,6 +160,10 @@ export const routes: Routes = [
         path: 'eventos/:id/observaciones',
         loadComponent: () => import('./modules/eventos/observaciones/observaciones.component').then(m => m.ObservacionesComponent)
       },
+      {
+        path: 'eventos/:id/productos-servicios',
+        loadComponent: () => import('./modules/catalogos/productos-servicios/productos-servicios.component').then(m => m.ProductosServiciosComponent)
+      },
       // Ruta para crear un nuevo evento
       {
         path: 'evento/nuevo-evento',
