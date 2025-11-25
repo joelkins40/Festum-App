@@ -1,0 +1,32 @@
+<div class="plano-view-container">
+  <div class="canvas-wrapper">
+    <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
+      [cdkDropListData]="elements" (click)="elementoSeleccionado = null">
+
+      <!-- Elementos en el canvas -->
+      <div *ngFor="let elemento of elements; trackBy: trackByElementId" class="elemento-canvas"
+        [class.elemento-seleccionado]="elementoSeleccionado === elemento" [ngStyle]="getElementoStyle(elemento)" cdkDrag
+        [cdkDragData]="elemento" cdkDragBoundary=".canvas" [cdkDragPreviewClass]="'cdk-drag-preview'"
+        (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
+        (cdkDragStarted)="onElementDragStart($event, elemento)">
+
+        <div class="elemento-contenido">
+          <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
+            {{ elemento.icono }}
+          </mat-icon>
+          <span class="elemento-label" *ngIf="shouldShowLabel(elemento)"
+            [style.font-size.px]="getLabelFontSize(elemento)">
+            {{ elemento.nombre }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Indicador de área vacía -->
+      <div class="canvas-placeholder" *ngIf="elements.length === 0">
+        <mat-icon>map</mat-icon>
+        <p>Vista del plano del evento</p>
+        <p class="placeholder-hint">Los elementos del plano se mostrarán aquí</p>
+      </div>
+    </div>
+  </div>
+</div>

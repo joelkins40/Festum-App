@@ -321,6 +321,25 @@
       </mat-card-content>
     </mat-card>
 
+    <!-- Sección 4.1: Vista del Plano del Evento -->
+    @if (productosEnNota.length > 0) {
+    <mat-card class="form-card plano-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>map</mat-icon>
+          Vista del Plano del Evento
+        </mat-card-title>
+        <mat-card-subtitle>
+          Visualización de los elementos del evento
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano">
+        </app-plano-view>
+      </mat-card-content>
+    </mat-card>
+    }
+
     <!-- Sección 5: Observaciones -->
     <mat-card class="form-card">
       <mat-card-header>

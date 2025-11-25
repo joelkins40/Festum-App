@@ -599,3 +599,16 @@
 		}
 	}
 }
+
+/* ===== PLANO CARD (SECTION 4.1) ===== */
+.plano-card {
+	mat-card-subtitle {
+		color: #6c757d;
+		font-size: 14px;
+		margin-top: 4px;
+	}
+
+	mat-card-content {
+		padding: 0 !important;
+	}
+}

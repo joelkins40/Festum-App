@@ -31,6 +31,11 @@ import { Cliente } from '../../../core/models/cliente.model';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../core/models/productos-servicios.model';
+import { PlanoViewComponent } from '../../../shared/components/plano-view/plano-view.component';
+import type {
+	ElementItem,
+	Product,
+} from '../../../shared/components/plano-view/types';
 
 @Component({
 	selector: 'app-nueva-nota',
@@ -52,6 +57,7 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 		MatSnackBarModule,
 		MatTooltipModule,
 		MatRadioModule,
+		PlanoViewComponent,
 	],
 	templateUrl: './nuevo-evento.component.html',
 	styleUrl: './nuevo-evento.component.scss',
@@ -110,6 +116,10 @@ export class NuevoEventoComponent implements OnInit {
 	// Estado
 	clienteSeleccionado: Cliente | null = null;
 	esClienteEspecial = false;
+
+	// Plano view
+	planoElements: ElementItem[] = [];
+	selectedProductForPlano?: Product;
 
 	ngOnInit(): void {
 		this.initializeFolio();
@@ -258,6 +268,9 @@ export class NuevoEventoComponent implements OnInit {
 
 		this.productosEnNota = [...this.productosEnNota, productoNota];
 		this.recalcularTotales();
+
+		// Actualizar producto seleccionado para plano
+		this.actualizarProductoParaPlano(productoNota);
 	}
 
 	abrirSelectorProductos(): void {
@@ -559,5 +572,21 @@ export class NuevoEventoComponent implements OnInit {
 			style: 'currency',
 			currency: 'MXN',
 		}).format(value);
+	}
+
+	/**
+	 * Actualiza el producto seleccionado para mostrarlo en el plano
+	 */
+	private actualizarProductoParaPlano(productoNota: ProductoNota): void {
+		this.selectedProductForPlano = {
+			id: productoNota.id,
+			productoServicioId: productoNota.productoServicioId,
+			tipo: productoNota.tipo,
+			nombre: productoNota.nombre,
+			descripcion: productoNota.descripcion,
+			cantidad: productoNota.cantidad,
+			precioUnitario: productoNota.precioUnitario,
+			subtotal: productoNota.subtotal,
+		};
 	}
 }
