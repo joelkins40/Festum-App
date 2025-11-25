@@ -210,7 +210,7 @@
         <div class="toolbar-productos">
           <mat-form-field appearance="outline" class="search-producto">
             <mat-label>Buscar producto/servicio</mat-label>
-            <input matInput placeholder="Buscar..." />
+            <input matInput placeholder="Buscar..." (input)="onSearchProducto($event)" />
             <mat-icon matPrefix>search</mat-icon>
           </mat-form-field>
 
@@ -220,7 +220,7 @@
           </button>
         </div> <!-- Tabla de productos -->
         <div class="table-container">
-          <table mat-table [dataSource]="productosEnNota" class="productos-table">
+          <table mat-table [dataSource]="filteredProductosEnNota" class="productos-table">
             <!-- Nombre Column -->
             <ng-container matColumnDef="nombre">
               <th mat-header-cell *matHeaderCellDef>Producto / Servicio</th>

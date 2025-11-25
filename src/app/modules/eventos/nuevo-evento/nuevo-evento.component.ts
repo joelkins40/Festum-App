@@ -97,6 +97,8 @@ export class NuevoEventoComponent implements OnInit {
 	clientesFiltrados$!: Observable<Cliente[]>;
 	productosDisponibles: ProductoServicio[] = [];
 	productosEnNota: ProductoNota[] = [];
+	filteredProductosEnNota: ProductoNota[] = [];
+	searchQuery = '';
 
 	// Columnas de la tabla
 	displayedColumns: string[] = [
@@ -127,6 +129,7 @@ export class NuevoEventoComponent implements OnInit {
 		this.loadProductos();
 		this.setupClienteAutocomplete();
 		this.setupLugarValidation();
+		this.filteredProductosEnNota = this.productosEnNota;
 	}
 
 	initializeFolio(): void {
@@ -267,6 +270,7 @@ export class NuevoEventoComponent implements OnInit {
 		};
 
 		this.productosEnNota = [...this.productosEnNota, productoNota];
+		this.actualizarListaFiltrada();
 		this.recalcularTotales();
 
 		// Actualizar producto seleccionado para plano
@@ -290,6 +294,7 @@ export class NuevoEventoComponent implements OnInit {
 						...this.productosEnNota,
 						...productosSeleccionados,
 					];
+					this.actualizarListaFiltrada();
 					this.recalcularTotales();
 					this.showMessage(
 						`Se agregaron ${productosSeleccionados.length} producto(s) correctamente`,
@@ -304,6 +309,7 @@ export class NuevoEventoComponent implements OnInit {
 
 		producto.cantidad = nuevaCantidad;
 		producto.subtotal = producto.cantidad * producto.precioUnitario;
+		this.actualizarListaFiltrada();
 		this.recalcularTotales();
 	}
 
@@ -312,16 +318,17 @@ export class NuevoEventoComponent implements OnInit {
 
 		producto.precioUnitario = nuevoPrecio;
 		producto.subtotal = producto.cantidad * producto.precioUnitario;
+		this.actualizarListaFiltrada();
 		this.recalcularTotales();
 	}
 
 	eliminarProducto(producto: ProductoNota): void {
-		const index = this.productosEnNota.findIndex((p) => p.id === producto.id);
-		if (index > -1) {
-			this.productosEnNota.splice(index, 1);
-			this.recalcularTotales();
-			this.showMessage('Producto eliminado', 'success');
-		}
+		this.productosEnNota = this.productosEnNota.filter(
+			(p) => p.id !== producto.id,
+		);
+		this.actualizarListaFiltrada();
+		this.recalcularTotales();
+		this.showMessage('Producto eliminado', 'success');
 	}
 
 	recalcularTotales(): void {
@@ -536,6 +543,8 @@ export class NuevoEventoComponent implements OnInit {
 			fechaRegreso: new Date(),
 		});
 		this.productosEnNota = [];
+		this.filteredProductosEnNota = [];
+		this.searchQuery = '';
 		this.clienteSeleccionado = null;
 		this.esClienteEspecial = false;
 		this.recalcularTotales();
@@ -572,6 +581,22 @@ export class NuevoEventoComponent implements OnInit {
 			style: 'currency',
 			currency: 'MXN',
 		}).format(value);
+	}
+
+	onSearchProducto(event: Event): void {
+		const input = event.target as HTMLInputElement;
+		this.searchQuery = input.value.toLowerCase().trim();
+		this.actualizarListaFiltrada();
+	}
+
+	private actualizarListaFiltrada(): void {
+		if (!this.searchQuery) {
+			this.filteredProductosEnNota = [...this.productosEnNota];
+		} else {
+			this.filteredProductosEnNota = this.productosEnNota.filter((producto) =>
+				producto.nombre.toLowerCase().includes(this.searchQuery),
+			);
+		}
 	}
 
 	/**
