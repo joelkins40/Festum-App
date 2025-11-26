@@ -122,6 +122,7 @@ export class NuevoEventoComponent implements OnInit {
 	// Plano view
 	planoElements: ElementItem[] = [];
 	selectedProductForPlano?: Product;
+	selectedProductsOnly: ProductoNota[] = [];
 
 	ngOnInit(): void {
 		this.initializeFolio();
@@ -271,6 +272,7 @@ export class NuevoEventoComponent implements OnInit {
 
 		this.productosEnNota = [...this.productosEnNota, productoNota];
 		this.actualizarListaFiltrada();
+		this.actualizarProductosSeleccionados();
 		this.recalcularTotales();
 
 		// Actualizar producto seleccionado para plano
@@ -295,6 +297,7 @@ export class NuevoEventoComponent implements OnInit {
 						...productosSeleccionados,
 					];
 					this.actualizarListaFiltrada();
+					this.actualizarProductosSeleccionados();
 					this.recalcularTotales();
 					this.showMessage(
 						`Se agregaron ${productosSeleccionados.length} producto(s) correctamente`,
@@ -327,6 +330,7 @@ export class NuevoEventoComponent implements OnInit {
 			(p) => p.id !== producto.id,
 		);
 		this.actualizarListaFiltrada();
+		this.actualizarProductosSeleccionados();
 		this.recalcularTotales();
 		this.showMessage('Producto eliminado', 'success');
 	}
@@ -544,6 +548,7 @@ export class NuevoEventoComponent implements OnInit {
 		});
 		this.productosEnNota = [];
 		this.filteredProductosEnNota = [];
+		this.selectedProductsOnly = [];
 		this.searchQuery = '';
 		this.clienteSeleccionado = null;
 		this.esClienteEspecial = false;
@@ -597,6 +602,36 @@ export class NuevoEventoComponent implements OnInit {
 				producto.nombre.toLowerCase().includes(this.searchQuery),
 			);
 		}
+	}
+
+	private actualizarProductosSeleccionados(): void {
+		this.selectedProductsOnly = this.productosEnNota.filter(
+			(item) => item.tipo === 'Producto',
+		);
+		this.actualizarPlanoElements();
+	}
+
+	private actualizarPlanoElements(): void {
+		this.planoElements = this.selectedProductsOnly.map((producto) => {
+			// Buscar el producto original en productosDisponibles para obtener icono, color y tamaño
+			const productoOriginal = this.productosDisponibles.find(
+				(p) => p.id === producto.productoServicioId,
+			);
+
+			return {
+				id: `producto_${producto.productoServicioId || producto.id}`,
+				tipo: producto.tipo.toLowerCase(),
+				nombre: producto.nombre,
+				posicion: {
+					x: 100 + Math.random() * 200,
+					y: 100 + Math.random() * 200,
+				},
+				tamano: productoOriginal?.tamano || { ancho: 120, alto: 120 },
+				color: productoOriginal?.color || '#20b2aa',
+				icono: productoOriginal?.icono || 'inventory_2',
+				rotacion: 0,
+			};
+		});
 	}
 
 	/**

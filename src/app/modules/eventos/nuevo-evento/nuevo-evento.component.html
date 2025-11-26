@@ -322,7 +322,7 @@
     </mat-card>
 
     <!-- Sección 4.1: Vista del Plano del Evento -->
-    @if (productosEnNota.length > 0) {
+    @if (selectedProductsOnly.length > 0) {
     <mat-card class="form-card plano-card">
       <mat-card-header>
         <mat-card-title>
@@ -330,7 +330,7 @@
           Vista del Plano del Evento
         </mat-card-title>
         <mat-card-subtitle>
-          Visualización de los elementos del evento
+          Visualización de los productos seleccionados ({{ selectedProductsOnly.length }} producto(s))
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
