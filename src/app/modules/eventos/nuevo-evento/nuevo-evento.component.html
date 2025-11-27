@@ -372,7 +372,8 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano">
+        <!-- todo: quitar esta cosa fea de [showSidebar]="true" por algo como showSidebar -->
+        <app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano" [showSidebar]="true">
         </app-plano-view>
       </mat-card-content>
     </mat-card>

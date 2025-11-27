@@ -42,6 +42,25 @@ interface ElementItem {
 @Input() set diseno(value: { elementos: ElementoEnCanvas[] } | null)
 ```
 
+### Input: `showSidebar` (opcional, default: `false`)
+
+```typescript
+@Input() showSidebar?: boolean = false;
+```
+
+**Propósito**: Controla la visibilidad del sidebar lateral con elementos arrastrables.
+
+**Comportamiento**:
+
+- Por defecto, el componente **no muestra el sidebar** (`showSidebar = false`)
+- Cuando `showSidebar = true`, se renderiza un panel lateral con:
+  - Header con icono "Elementos"
+  - Lista de elementos arrastrables basada en `elements`
+  - Drag & drop integrado hacia el canvas
+  - Actualización reactiva cuando cambia `elements`
+
+**Nota importante**: El sidebar se actualiza automáticamente cada vez que el `@Input() elements` cambia, sin necesidad de refresh manual.
+
 ## Compatibilidad con `DisenoGuardado`
 
 El componente acepta la estructura `DisenoGuardado` de `plano.component.ts`:
@@ -60,11 +79,38 @@ Pasar solo la propiedad `elementos` al input `[elements]` o usar el setter `[dis
 
 ## Uso
 
-### Básico
+### Básico (sin sidebar)
 
 ```html
 <app-plano-view [elements]="planoElements"></app-plano-view>
 ```
+
+### Con sidebar visible
+
+```html
+<app-plano-view [elements]="planoElements" [showSidebar]="true"></app-plano-view>
+```
+
+```typescript
+// En el componente padre
+export class MiComponente {
+  planoElements: ElementItem[] = [
+    {
+      id: "mesa-1",
+      tipo: "mesa-redonda",
+      nombre: "Mesa Redonda",
+      posicion: { x: 100, y: 100 },
+      tamano: { ancho: 120, alto: 120 },
+      color: "#20b2aa",
+      icono: "table_restaurant",
+      rotacion: 0,
+      productoServicioId: 4,
+    },
+  ];
+}
+```
+
+**Importante**: Cuando `elements` cambia (por ejemplo, al aplicar una plantilla o agregar/eliminar elementos), el sidebar se actualiza automáticamente sin necesidad de acciones adicionales.
 
 ### Con producto seleccionado
 

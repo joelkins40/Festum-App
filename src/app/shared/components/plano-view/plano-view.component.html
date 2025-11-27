@@ -1,32 +1,70 @@
 <div class="plano-view-container">
-  <div class="canvas-wrapper">
-    <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
-      [cdkDropListData]="elements" (click)="elementoSeleccionado = null">
 
-      <!-- Elementos en el canvas -->
-      <div *ngFor="let elemento of elements; trackBy: trackByElementId" class="elemento-canvas"
-        [class.elemento-seleccionado]="elementoSeleccionado === elemento" [ngStyle]="getElementoStyle(elemento)" cdkDrag
-        [cdkDragData]="elemento" cdkDragBoundary=".canvas" [cdkDragPreviewClass]="'cdk-drag-preview'"
-        (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
-        (cdkDragStarted)="onElementDragStart($event, elemento)">
+  <!-- Contenedor principal con sidebar y canvas -->
+  <mat-drawer-container class="drawer-container" [hasBackdrop]="false">
 
-        <div class="elemento-contenido">
-          <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
-            {{ elemento.icono }}
-          </mat-icon>
-          <span class="elemento-label" *ngIf="shouldShowLabel(elemento)"
-            [style.font-size.px]="getLabelFontSize(elemento)">
-            {{ elemento.nombre }}
-          </span>
+    <!-- Sidebar con elementos arrastrables (condicional) -->
+    @if (showSidebar) {
+    <mat-drawer [opened]="true" mode="side" position="start" class="sidebar">
+      <div class="sidebar-header">
+        <h3>
+          <mat-icon>drag_indicator</mat-icon>
+          Elementos
+        </h3>
+      </div>
+      <mat-divider></mat-divider>
+
+      <div class="elementos-lista">
+        <div class="elemento-categoria">
+          <h4>Mobiliario y Decoración</h4>
+          <div cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="elementosArrastrables"
+            [cdkDropListConnectedTo]="['canvas-drop-list']" class="elementos-drop-list">
+            @for (elemento of elementosArrastrables; track trackByElementId($index, elemento)) {
+            <div class="elemento-arrastrable" cdkDrag [cdkDragData]="elemento"
+              [cdkDragPreviewClass]="'cdk-drag-preview'" [matTooltip]="elemento.nombre">
+              <mat-icon [style.color]="elemento.color">{{ elemento.icono }}</mat-icon>
+              <span>{{ elemento.nombre }}</span>
+            </div>
+            }
+          </div>
         </div>
       </div>
+    </mat-drawer>
+    }
 
-      <!-- Indicador de área vacía -->
-      <div class="canvas-placeholder" *ngIf="elements.length === 0">
-        <mat-icon>map</mat-icon>
-        <p>Vista del plano del evento</p>
-        <p class="placeholder-hint">Los elementos del plano se mostrarán aquí</p>
+    <!-- Área de trabajo (Canvas) -->
+    <mat-drawer-content class="canvas-container">
+      <div class="canvas-wrapper">
+        <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
+          [cdkDropListData]="elements" (click)="elementoSeleccionado = null">
+
+          <!-- Elementos en el canvas -->
+          <div *ngFor="let elemento of elements; trackBy: trackByElementId" class="elemento-canvas"
+            [class.elemento-seleccionado]="elementoSeleccionado === elemento" [ngStyle]="getElementoStyle(elemento)"
+            cdkDrag [cdkDragData]="elemento" cdkDragBoundary=".canvas" [cdkDragPreviewClass]="'cdk-drag-preview'"
+            (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
+            (cdkDragStarted)="onElementDragStart($event, elemento)">
+
+            <div class="elemento-contenido">
+              <mat-icon [style.color]="elemento.color" [style.font-size.px]="getIconSize(elemento)">
+                {{ elemento.icono }}
+              </mat-icon>
+              <span class="elemento-label" *ngIf="shouldShowLabel(elemento)"
+                [style.font-size.px]="getLabelFontSize(elemento)">
+                {{ elemento.nombre }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Indicador de área vacía -->
+          <div class="canvas-placeholder" *ngIf="elements.length === 0">
+            <mat-icon>map</mat-icon>
+            <p>Vista del plano del evento</p>
+            <p class="placeholder-hint">Los elementos del plano se mostrarán aquí</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </mat-drawer-content>
+
+  </mat-drawer-container>
 </div>

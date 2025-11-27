@@ -9,6 +9,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 import {
 	CdkDrag,
 	CdkDropList,
@@ -21,7 +24,16 @@ import { ElementItem, Product, ElementoEnCanvas } from './types';
 @Component({
 	selector: 'app-plano-view',
 	standalone: true,
-	imports: [CommonModule, MatIconModule, MatCardModule, CdkDropList, CdkDrag],
+	imports: [
+		CommonModule,
+		MatIconModule,
+		MatCardModule,
+		MatSidenavModule,
+		MatTooltipModule,
+		MatDividerModule,
+		CdkDropList,
+		CdkDrag,
+	],
 	templateUrl: './plano-view.component.html',
 	styleUrl: './plano-view.component.scss',
 })
@@ -31,6 +43,7 @@ export class PlanoViewComponent implements OnChanges {
 
 	@Input() elements: ElementItem[] = [];
 	@Input() selectedProduct?: Product;
+	@Input() showSidebar?: boolean = false;
 
 	@Input() set diseno(value: { elementos: ElementoEnCanvas[] } | null) {
 		if (value?.elementos) {
@@ -44,7 +57,15 @@ export class PlanoViewComponent implements OnChanges {
 	// Elemento seleccionado (solo visual)
 	elementoSeleccionado: ElementItem | null = null;
 
+	// Lista de elementos arrastrables para el sidebar (se actualiza reactivamente)
+	elementosArrastrables: ElementItem[] = [];
+
 	ngOnChanges(changes: SimpleChanges): void {
+		// Actualizar lista de elementos arrastrables cuando cambia elements
+		if (changes['elements'] && this.elements) {
+			this.elementosArrastrables = [...this.elements];
+		}
+
 		// Reaccionar a cambios en selectedProduct si es necesario
 		if (changes['selectedProduct'] && this.selectedProduct) {
 			// Lógica futura: agregar elemento al canvas basado en producto
