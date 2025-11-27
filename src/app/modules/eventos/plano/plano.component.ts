@@ -456,9 +456,9 @@ export class PlanoComponent implements OnInit {
 	}
 
 	guardarDiseno() {
-		const diseno = {
-			plantillaId: this.plantillaSeleccionada?.id,
-			plantillaNombre: this.plantillaSeleccionada?.nombre,
+		const diseno: DisenoGuardado = {
+			plantillaId: this.plantillaSeleccionada?.id || '',
+			plantillaNombre: this.plantillaSeleccionada?.nombre || '',
 			elementos: this.elementosEnCanvas.filter(
 				(e) =>
 					!this.plantillaSeleccionada?.elementosFijos.find(
