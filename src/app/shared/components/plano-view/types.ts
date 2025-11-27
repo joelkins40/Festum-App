@@ -10,7 +10,11 @@ export interface ElementItem {
 	color: string;
 	rotacion?: number;
 	icono: string;
+	productoServicioId?: number;
 }
+
+// Alias para compatibilidad con plano.component.ts
+export type ElementoEnCanvas = ElementItem;
 
 /**
  * Producto o servicio seleccionado

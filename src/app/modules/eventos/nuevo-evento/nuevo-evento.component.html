@@ -207,6 +207,44 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <!-- Selector de plantillas -->
+        <div class="plantillas-selector-container">
+          <mat-form-field appearance="outline" class="field-full">
+            <mat-label>Escoja una plantilla para su evento</mat-label>
+            <mat-select (selectionChange)="onPlantillaSelected($event.value)" [value]="plantillaSeleccionada?.id || ''">
+              <mat-option value="">Sin plantilla</mat-option>
+              @for (plantilla of plantillasDisponibles; track plantilla.id) {
+              <mat-option [value]="plantilla.id">
+                {{ plantilla.nombre }} - {{ plantilla.descripcion }}
+              </mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>collections_bookmark</mat-icon>
+          </mat-form-field>
+
+          @if (showTemplatePreview && plantillaSeleccionada) {
+          <div class="template-preview">
+            <div class="preview-info">
+              <mat-icon>info</mat-icon>
+              <span>
+                <strong>{{ plantillaSeleccionada.nombre }}</strong> -
+                {{ plantillaSeleccionada.diseno.elementos.length }} elemento(s) en el plano
+              </span>
+            </div>
+            <div class="preview-actions">
+              <button mat-stroked-button type="button" (click)="cancelarPlantilla()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+              </button>
+              <button mat-raised-button color="primary" type="button" (click)="confirmarAplicarPlantilla()">
+                <mat-icon>check</mat-icon>
+                Aplicar Plantilla
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+
         <div class="toolbar-productos">
           <mat-form-field appearance="outline" class="search-producto">
             <mat-label>Buscar producto/servicio</mat-label>

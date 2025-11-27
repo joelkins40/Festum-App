@@ -36,6 +36,10 @@ import type {
 	ElementItem,
 	Product,
 } from '../../../shared/components/plano-view/types';
+import {
+	PlantillasService,
+	PlantillaEvento,
+} from '../../../core/services/plantillas.service';
 
 @Component({
 	selector: 'app-nueva-nota',
@@ -68,6 +72,7 @@ export class NuevoEventoComponent implements OnInit {
 	private eventosService = inject(ListaEventosService);
 	private clientesService = inject(ClientesService);
 	private productosService = inject(ProductosServiciosService);
+	private plantillasService = inject(PlantillasService);
 	private snackBar = inject(MatSnackBar);
 	private dialog = inject(MatDialog);
 	private router = inject(Router);
@@ -124,10 +129,16 @@ export class NuevoEventoComponent implements OnInit {
 	selectedProductForPlano?: Product;
 	selectedProductsOnly: ProductoNota[] = [];
 
+	// Plantillas
+	plantillasDisponibles: PlantillaEvento[] = [];
+	plantillaSeleccionada: PlantillaEvento | null = null;
+	showTemplatePreview = false;
+
 	ngOnInit(): void {
 		this.initializeFolio();
 		this.loadClientes();
 		this.loadProductos();
+		this.loadPlantillas();
 		this.setupClienteAutocomplete();
 		this.setupLugarValidation();
 		this.filteredProductosEnNota = this.productosEnNota;
@@ -648,5 +659,124 @@ export class NuevoEventoComponent implements OnInit {
 			precioUnitario: productoNota.precioUnitario,
 			subtotal: productoNota.subtotal,
 		};
+	}
+
+	loadPlantillas(): void {
+		this.plantillasService.getPlantillas().subscribe({
+			next: (plantillas) => {
+				this.plantillasDisponibles = plantillas;
+			},
+			error: () => {
+				this.showMessage('Error al cargar plantillas', 'error');
+			},
+		});
+	}
+
+	onPlantillaSelected(plantillaId: string): void {
+		if (!plantillaId) {
+			this.plantillaSeleccionada = null;
+			this.showTemplatePreview = false;
+			return;
+		}
+
+		this.plantillasService.getPlantillaById(plantillaId).subscribe({
+			next: (plantilla) => {
+				this.plantillaSeleccionada = plantilla || null;
+				this.showTemplatePreview = !!plantilla;
+			},
+		});
+	}
+
+	confirmarAplicarPlantilla(): void {
+		if (!this.plantillaSeleccionada) return;
+
+		const confirmacion = confirm(
+			`La plantilla "${this.plantillaSeleccionada.nombre}" reemplazará los productos actuales.\nLos servicios se conservarán intactos.\n¿Desea continuar?`,
+		);
+
+		if (confirmacion) {
+			this.aplicarPlantilla(this.plantillaSeleccionada);
+		}
+	}
+
+	cancelarPlantilla(): void {
+		this.plantillaSeleccionada = null;
+		this.showTemplatePreview = false;
+	}
+
+	private aplicarPlantilla(plantilla: PlantillaEvento): void {
+		// Preservar servicios existentes
+		const serviciosExistentes = this.productosEnNota.filter(
+			(item) => item.tipo === 'Servicio',
+		);
+
+		// Convertir elementos de plantilla a productos
+		const productosDesdePlantilla = this.mapTemplateToProducts(plantilla);
+
+		// Reemplazar productos manteniendo servicios
+		this.productosEnNota = [...serviciosExistentes, ...productosDesdePlantilla];
+
+		// Actualizar UI
+		this.actualizarListaFiltrada();
+		this.actualizarProductosSeleccionados();
+		this.recalcularTotales();
+
+		// Actualizar plano con elementos de la plantilla
+		this.planoElements = plantilla.diseno.elementos.map((elem) => ({
+			id: elem.id,
+			tipo: elem.tipo,
+			nombre: elem.nombre,
+			posicion: elem.posicion,
+			tamano: elem.tamano,
+			color: elem.color,
+			icono: elem.icono,
+			rotacion: elem.rotacion || 0,
+		}));
+
+		this.showMessage(
+			`Plantilla "${plantilla.nombre}" aplicada exitosamente`,
+			'success',
+		);
+		this.plantillaSeleccionada = null;
+		this.showTemplatePreview = false;
+	}
+
+	private mapTemplateToProducts(plantilla: PlantillaEvento): ProductoNota[] {
+		const productosMap = new Map<number, number>();
+
+		// Contar ocurrencias de cada producto en la plantilla
+		plantilla.diseno.elementos.forEach((elem) => {
+			if (elem.productoServicioId) {
+				const count = productosMap.get(elem.productoServicioId) || 0;
+				productosMap.set(elem.productoServicioId, count + 1);
+			}
+		});
+
+		// Convertir a ProductoNota[]
+		const productos: ProductoNota[] = [];
+
+		productosMap.forEach((cantidad, productoId) => {
+			const producto = this.productosDisponibles.find(
+				(p) => p.id === productoId,
+			);
+			if (producto) {
+				const precio = this.esClienteEspecial
+					? producto.precioEspecial
+					: producto.precioPublico;
+
+				productos.push({
+					id: `temp-${Date.now()}-${productoId}`,
+					productoServicioId: producto.id,
+					tipo: producto.tipo,
+					nombre: producto.nombre,
+					descripcion: producto.descripcion || '',
+					cantidad,
+					precioUnitario: precio || 0,
+					subtotal: (precio || 0) * cantidad,
+				});
+			}
+		});
+
+		return productos;
 	}
 }

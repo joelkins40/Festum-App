@@ -612,3 +612,57 @@
 		padding: 0 !important;
 	}
 }
+
+/* ===== PLANTILLAS SELECTOR ===== */
+.plantillas-selector-container {
+	margin-bottom: 20px;
+	padding: 16px;
+	background: #f8f9fa;
+	border-radius: 8px;
+	border-left: 4px solid #20b2aa;
+
+	.field-full {
+		width: 100%;
+	}
+
+	.template-preview {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 12px;
+		padding: 12px;
+		background: white;
+		border-radius: 8px;
+		border: 1px solid #dee2e6;
+
+		.preview-info {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			flex: 1;
+
+			mat-icon {
+				color: #20b2aa;
+				font-size: 24px;
+				width: 24px;
+				height: 24px;
+			}
+
+			span {
+				font-size: 14px;
+				color: #495057;
+			}
+		}
+
+		.preview-actions {
+			display: flex;
+			gap: 12px;
+
+			button {
+				mat-icon {
+					margin-right: 4px;
+				}
+			}
+		}
+	}
+}

@@ -16,7 +16,7 @@ import {
 	CdkDragStart,
 } from '@angular/cdk/drag-drop';
 
-import { ElementItem, Product } from './types';
+import { ElementItem, Product, ElementoEnCanvas } from './types';
 
 @Component({
 	selector: 'app-plano-view',
@@ -31,6 +31,12 @@ export class PlanoViewComponent implements OnChanges {
 
 	@Input() elements: ElementItem[] = [];
 	@Input() selectedProduct?: Product;
+
+	@Input() set diseno(value: { elementos: ElementoEnCanvas[] } | null) {
+		if (value?.elementos) {
+			this.elements = value.elementos;
+		}
+	}
 
 	// Canvas dimensions
 	canvasDimensions = { ancho: 800, alto: 600 };
