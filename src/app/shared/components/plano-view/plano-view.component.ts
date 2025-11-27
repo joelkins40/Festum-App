@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
@@ -28,6 +29,7 @@ import { ElementItem, Product, ElementoEnCanvas } from './types';
 		CommonModule,
 		MatIconModule,
 		MatCardModule,
+		MatButtonModule,
 		MatSidenavModule,
 		MatTooltipModule,
 		MatDividerModule,
@@ -44,6 +46,7 @@ export class PlanoViewComponent implements OnChanges {
 	@Input() elements: ElementItem[] = [];
 	@Input() selectedProduct?: Product;
 	@Input() showSidebar?: boolean = false;
+	@Input() plantillaNombre?: string; // Nombre de la plantilla seleccionada
 
 	@Input() set diseno(value: { elementos: ElementoEnCanvas[] } | null) {
 		if (value?.elementos) {
@@ -59,6 +62,9 @@ export class PlanoViewComponent implements OnChanges {
 
 	// Lista de elementos arrastrables para el sidebar (se actualiza reactivamente)
 	elementosArrastrables: ElementItem[] = [];
+
+	// Control de apertura del sidebar
+	sidebarAbierto = true;
 
 	ngOnChanges(changes: SimpleChanges): void {
 		// Actualizar lista de elementos arrastrables cuando cambia elements
@@ -197,5 +203,64 @@ export class PlanoViewComponent implements OnChanges {
 		const fontSize = minDimension * 0.12;
 		const result = Math.max(9, Math.min(14, fontSize));
 		return Number.isFinite(result) ? result : 10;
+	}
+
+	// ===== MÉTODOS PARA CONTROLES DE ELEMENTOS =====
+
+	/**
+	 * Elimina el elemento seleccionado del canvas
+	 */
+	eliminarElemento(): void {
+		if (this.elementoSeleccionado) {
+			const index = this.elements.indexOf(this.elementoSeleccionado);
+			if (index > -1) {
+				this.elements.splice(index, 1);
+				this.elementoSeleccionado = null;
+				// Actualizar lista de elementos arrastrables
+				this.elementosArrastrables = [...this.elements];
+			}
+		}
+	}
+
+	/**
+	 * Rota el elemento seleccionado 45 grados
+	 */
+	rotateElemento(): void {
+		if (this.elementoSeleccionado) {
+			this.elementoSeleccionado.rotacion = (this.elementoSeleccionado.rotacion || 0) + 45;
+			if (this.elementoSeleccionado.rotacion >= 360) {
+				this.elementoSeleccionado.rotacion = 0;
+			}
+		}
+	}
+
+	/**
+	 * Redimensiona el elemento en la dirección especificada
+	 */
+	redimensionarElemento(elemento: ElementItem, direccion: 'mas' | 'menos'): void {
+		if (!elemento) return;
+
+		const factor = direccion === 'mas' ? 1.2 : 0.8;
+		const nuevoAncho = Math.max(40, Math.min(500, elemento.tamano.ancho * factor));
+		const nuevoAlto = Math.max(40, Math.min(500, elemento.tamano.alto * factor));
+
+		elemento.tamano.ancho = Math.round(nuevoAncho);
+		elemento.tamano.alto = Math.round(nuevoAlto);
+	}
+
+	/**
+	 * Alterna la visibilidad del sidebar
+	 */
+	toggleSidebar(): void {
+		this.sidebarAbierto = !this.sidebarAbierto;
+	}
+
+	/**
+	 * Obtiene el nombre de la plantilla sin el sufijo después del guión
+	 */
+	getPlantillaNombreDisplay(): string {
+		if (!this.plantillaNombre) return '';
+		const parts = this.plantillaNombre.split(' - ');
+		return parts[0];
 	}
 }

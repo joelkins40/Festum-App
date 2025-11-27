@@ -24,16 +24,22 @@ export class NuevoEventoComponent {
 }
 ```
 
-## 2. Con sidebar visible
+## 2. Con sidebar visible y controles completos
 
 ```html
 <!-- ejemplo: editor-plano.component.html -->
-<app-plano-view [elements]="planoElements" [showSidebar]="true"> </app-plano-view>
+<app-plano-view 
+  [elements]="planoElements" 
+  [showSidebar]="true"
+  [plantillaNombre]="plantillaActual">
+</app-plano-view>
 ```
 
 ```typescript
 // ejemplo: editor-plano.component.ts
 export class EditorPlanoComponent {
+  plantillaActual = "Boda Clásica Elegante - Salón Principal";
+  
   planoElements: ElementItem[] = [
     {
       id: "mesa-1",
@@ -151,6 +157,57 @@ aplicarPlantilla(plantilla: PlantillaEvento): void {
 limpiarPlano(): void {
   this.planoElements = []; // ✅ Sidebar actualizado (vacío)
 }
+```
+
+## 6. Uso de controles interactivos
+
+Los controles de elementos están integrados automáticamente en la toolbar:
+
+```html
+<app-plano-view 
+  [elements]="planoElements" 
+  [showSidebar]="true"
+  [plantillaNombre]="'Mi Evento - Salón A'">
+</app-plano-view>
+```
+
+**Flujo de interacción del usuario:**
+
+1. **Sin elemento seleccionado**: 
+   - La toolbar muestra: "Arrastra elementos desde el panel lateral o selecciona uno para editarlo"
+
+2. **Con elemento seleccionado** (click en elemento del canvas):
+   - La toolbar muestra el nombre del elemento
+   - Aparecen 4 botones:
+     - 🔄 **Rotar**: Gira 45° cada vez (cicla en 360°)
+     - ➕ **Aumentar**: Escala x1.2 (máximo 500px)
+     - ➖ **Reducir**: Escala x0.8 (mínimo 40px)
+     - 🗑️ **Eliminar**: Remueve del canvas y actualiza sidebar
+
+3. **Botón de sidebar** (solo si `showSidebar = true`):
+   - Click para abrir/cerrar el panel lateral
+   - Icono cambia según estado: `chevron_left` ⟵ abierto, `chevron_right` ⟶ cerrado
+
+**Atajos de teclado** (implementados en componentes consumidores):
+- `Delete`: Eliminar elemento seleccionado
+- `R`: Rotar elemento seleccionado
+- `+`: Aumentar tamaño
+- `-`: Reducir tamaño
+
+## 7. Dimensiones del canvas
+
+Las dimensiones se muestran automáticamente si `plantillaNombre` está definido:
+
+```typescript
+// En plano-view.component.ts
+canvasDimensions = { ancho: 800, alto: 600 }; // Default
+
+// La toolbar muestra: "800 x 600 px"
+```
+
+Para cambiar las dimensiones (futuro):
+```typescript
+@Input() canvasDimensions?: { ancho: number; alto: number };
 ```
 
 ## Notas importantes

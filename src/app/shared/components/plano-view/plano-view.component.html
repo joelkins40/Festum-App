@@ -5,7 +5,7 @@
 
     <!-- Sidebar con elementos arrastrables (condicional) -->
     @if (showSidebar) {
-    <mat-drawer [opened]="true" mode="side" position="start" class="sidebar">
+    <mat-drawer [opened]="sidebarAbierto" mode="side" position="start" class="sidebar">
       <div class="sidebar-header">
         <h3>
           <mat-icon>drag_indicator</mat-icon>
@@ -34,6 +34,49 @@
 
     <!-- Área de trabajo (Canvas) -->
     <mat-drawer-content class="canvas-container">
+      
+      <!-- Toolbar con controles -->
+      <div class="plano-view-toolbar">
+        @if (showSidebar) {
+          <button mat-icon-button (click)="toggleSidebar()" matTooltip="Mostrar/Ocultar panel">
+            <mat-icon>{{ sidebarAbierto ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+          </button>
+        }
+
+        @if (plantillaNombre) {
+          <div class="canvas-info">
+            <span class="plantilla-nombre">{{ getPlantillaNombreDisplay() }}</span>
+            <span class="dimensiones">
+              {{ canvasDimensions.ancho }} x {{ canvasDimensions.alto }} px
+            </span>
+          </div>
+        }
+
+        @if (elementoSeleccionado) {
+          <div class="elemento-controls">
+            <span class="elemento-info">{{ elementoSeleccionado.nombre }}</span>
+            <button mat-icon-button (click)="rotateElemento()" matTooltip="Rotar elemento (R)">
+              <mat-icon>rotate_right</mat-icon>
+            </button>
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'mas')"
+              matTooltip="Aumentar tamaño (+)">
+              <mat-icon>zoom_in</mat-icon>
+            </button>
+            <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'menos')"
+              matTooltip="Reducir tamaño (-)">
+              <mat-icon>zoom_out</mat-icon>
+            </button>
+            <button mat-icon-button (click)="eliminarElemento()" matTooltip="Eliminar elemento (Delete)" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <div class="ayuda-controles">
+            <span class="ayuda-texto">Arrastra elementos desde el panel lateral o selecciona uno para editarlo</span>
+          </div>
+        }
+      </div>
+
       <div class="canvas-wrapper">
         <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
           [cdkDropListData]="elements" (click)="elementoSeleccionado = null">

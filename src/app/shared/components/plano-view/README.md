@@ -58,8 +58,62 @@ interface ElementItem {
   - Lista de elementos arrastrables basada en `elements`
   - Drag & drop integrado hacia el canvas
   - Actualización reactiva cuando cambia `elements`
+  - Botón en la toolbar para abrir/cerrar el sidebar
 
 **Nota importante**: El sidebar se actualiza automáticamente cada vez que el `@Input() elements` cambia, sin necesidad de refresh manual.
+
+### Input: `plantillaNombre` (opcional)
+
+```typescript
+@Input() plantillaNombre?: string;
+```
+
+**Propósito**: Muestra el nombre de la plantilla seleccionada en la toolbar del canvas.
+
+**Comportamiento**:
+- Si se proporciona, se muestra en la sección `.canvas-info` de la toolbar
+- El nombre se procesa para mostrar solo la parte antes del " - " (si existe)
+- Junto al nombre se muestran las dimensiones del canvas
+
+## Toolbar y Controles
+
+### Toolbar del Canvas
+
+La toolbar se muestra automáticamente en la parte superior del área de trabajo y contiene:
+
+1. **Botón de toggle del sidebar** (solo visible si `showSidebar = true`):
+   - Icono: `chevron_left` cuando está abierto, `chevron_right` cuando está cerrado
+   - Tooltip: "Mostrar/Ocultar panel"
+
+2. **Información de la plantilla** (solo visible si `plantillaNombre` está definido):
+   - Nombre de la plantilla (procesado)
+   - Dimensiones del canvas (ej: "800 x 600 px")
+
+3. **Controles del elemento seleccionado** (solo visible cuando hay un elemento seleccionado):
+   - Nombre del elemento
+   - Botón de rotación (45° por vez, cicla en 360°)
+   - Botón de aumentar tamaño (factor 1.2x)
+   - Botón de reducir tamaño (factor 0.8x)
+   - Botón de eliminar (color warn)
+
+4. **Mensaje de ayuda** (visible cuando NO hay elemento seleccionado):
+   - Texto: "Arrastra elementos desde el panel lateral o selecciona uno para editarlo"
+
+### Métodos de Control
+
+```typescript
+// Rotar elemento seleccionado 45 grados
+rotateElemento(): void
+
+// Redimensionar elemento (factor 1.2x o 0.8x)
+redimensionarElemento(elemento: ElementItem, direccion: 'mas' | 'menos'): void
+
+// Eliminar elemento del canvas
+eliminarElemento(): void
+
+// Alternar visibilidad del sidebar
+toggleSidebar(): void
+```
 
 ## Compatibilidad con `DisenoGuardado`
 
@@ -88,8 +142,25 @@ Pasar solo la propiedad `elementos` al input `[elements]` o usar el setter `[dis
 ### Con sidebar visible
 
 ```html
-<app-plano-view [elements]="planoElements" [showSidebar]="true"></app-plano-view>
+<app-plano-view 
+  [elements]="planoElements" 
+  [showSidebar]="true">
+</app-plano-view>
 ```
+
+### Con sidebar y nombre de plantilla
+
+```html
+<app-plano-view 
+  [elements]="planoElements" 
+  [showSidebar]="true"
+  [plantillaNombre]="'Boda Clásica Elegante - Salón Principal'">
+</app-plano-view>
+```
+
+**Resultado**: La toolbar mostrará "Boda Clásica Elegante" y "800 x 600 px"
+
+### Ejemplo completo con todas las funcionalidades
 
 ```typescript
 // En el componente padre
