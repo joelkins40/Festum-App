@@ -6,10 +6,7 @@
 
 ```html
 <!-- Mantener implementación actual -->
-<app-plano-view 
-  [elements]="planoElements" 
-  [selectedProduct]="selectedProductForPlano">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano"> </app-plano-view>
 ```
 
 **Resultado**: Canvas simple sin toolbar ni sidebar (comportamiento actual).
@@ -17,14 +14,11 @@
 ### Opción 2: Con toolbar y nombre de plantilla
 
 ```html
-<app-plano-view 
-  [elements]="planoElements" 
-  [selectedProduct]="selectedProductForPlano"
-  [plantillaNombre]="plantillaSeleccionada?.nombre">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano" [plantillaNombre]="plantillaSeleccionada?.nombre"> </app-plano-view>
 ```
 
-**Resultado**: 
+**Resultado**:
+
 - Muestra toolbar con información de la plantilla
 - Muestra dimensiones del canvas (800 x 600 px)
 - Controles de elementos al seleccionar
@@ -33,15 +27,11 @@
 ### Opción 3: Editor completo con sidebar
 
 ```html
-<app-plano-view 
-  [elements]="planoElements" 
-  [selectedProduct]="selectedProductForPlano"
-  [showSidebar]="true"
-  [plantillaNombre]="plantillaSeleccionada?.nombre">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano" [showSidebar]="true" [plantillaNombre]="plantillaSeleccionada?.nombre"> </app-plano-view>
 ```
 
 **Resultado**:
+
 - Sidebar lateral con elementos arrastrables
 - Toolbar con botón de toggle del sidebar
 - Información de plantilla y dimensiones
@@ -50,10 +40,12 @@
 ## Cambios necesarios en nuevo-evento.component.ts
 
 Ninguno. Las propiedades ya existen:
+
 - ✅ `planoElements: ElementItem[]`
 - ✅ `plantillaSeleccionada: PlantillaEvento | null`
 
 El componente `plano-view` maneja internamente:
+
 - Selección de elementos
 - Rotación
 - Redimensionamiento
@@ -84,12 +76,7 @@ eliminarElemento(): void {
 
 ```html
 <!-- nuevo-evento.component.html -->
-<app-plano-view 
-  [elements]="planoElements" 
-  (elementsChange)="onPlanoElementsChange($event)"
-  [showSidebar]="true"
-  [plantillaNombre]="plantillaSeleccionada?.nombre">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" (elementsChange)="onPlanoElementsChange($event)" [showSidebar]="true" [plantillaNombre]="plantillaSeleccionada?.nombre"> </app-plano-view>
 ```
 
 ```typescript
@@ -103,18 +90,20 @@ onPlanoElementsChange(elements: ElementItem[]): void {
 
 ## Comparación de configuraciones
 
-| Configuración | Toolbar | Sidebar | Controles | Dimensiones | Nombre Plantilla |
-|---------------|---------|---------|-----------|-------------|------------------|
-| Básico (actual) | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Con plantillaNombre | ✅ | ❌ | ✅ | ✅ | ✅ |
-| Editor completo | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Configuración       | Toolbar | Sidebar | Controles | Dimensiones | Nombre Plantilla |
+| ------------------- | ------- | ------- | --------- | ----------- | ---------------- |
+| Básico (actual)     | ❌      | ❌      | ❌        | ❌          | ❌               |
+| Con plantillaNombre | ✅      | ❌      | ✅        | ✅          | ✅               |
+| Editor completo     | ✅      | ✅      | ✅        | ✅          | ✅               |
 
 ## Recomendación
 
 Para `nuevo-evento`:
+
 - **Usar Opción 2** (con plantillaNombre): Permite a los usuarios ver información contextual y editar elementos sin saturar la UI con el sidebar.
 
 Para un futuro componente de editor de planos:
+
 - **Usar Opción 3** (editor completo): Interfaz completa para diseño de planos con sidebar y todas las herramientas.
 
 ## Testing rápido
@@ -123,19 +112,14 @@ Cambiar temporalmente la línea 375 de `nuevo-evento.component.html`:
 
 ```html
 <!-- Antes -->
-<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano"> </app-plano-view>
 
 <!-- Después (testing) -->
-<app-plano-view 
-  [elements]="planoElements" 
-  [selectedProduct]="selectedProductForPlano"
-  [showSidebar]="true"
-  [plantillaNombre]="plantillaSeleccionada?.nombre">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [selectedProduct]="selectedProductForPlano" [showSidebar]="true" [plantillaNombre]="plantillaSeleccionada?.nombre"> </app-plano-view>
 ```
 
 **Pasos de prueba:**
+
 1. Ir a "Nuevo Evento"
 2. Agregar productos
 3. Seleccionar plantilla del dropdown

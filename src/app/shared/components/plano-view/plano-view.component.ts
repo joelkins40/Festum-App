@@ -227,7 +227,8 @@ export class PlanoViewComponent implements OnChanges {
 	 */
 	rotateElemento(): void {
 		if (this.elementoSeleccionado) {
-			this.elementoSeleccionado.rotacion = (this.elementoSeleccionado.rotacion || 0) + 45;
+			this.elementoSeleccionado.rotacion =
+				(this.elementoSeleccionado.rotacion || 0) + 45;
 			if (this.elementoSeleccionado.rotacion >= 360) {
 				this.elementoSeleccionado.rotacion = 0;
 			}
@@ -237,12 +238,21 @@ export class PlanoViewComponent implements OnChanges {
 	/**
 	 * Redimensiona el elemento en la dirección especificada
 	 */
-	redimensionarElemento(elemento: ElementItem, direccion: 'mas' | 'menos'): void {
+	redimensionarElemento(
+		elemento: ElementItem,
+		direccion: 'mas' | 'menos',
+	): void {
 		if (!elemento) return;
 
 		const factor = direccion === 'mas' ? 1.2 : 0.8;
-		const nuevoAncho = Math.max(40, Math.min(500, elemento.tamano.ancho * factor));
-		const nuevoAlto = Math.max(40, Math.min(500, elemento.tamano.alto * factor));
+		const nuevoAncho = Math.max(
+			40,
+			Math.min(500, elemento.tamano.ancho * factor),
+		);
+		const nuevoAlto = Math.max(
+			40,
+			Math.min(500, elemento.tamano.alto * factor),
+		);
 
 		elemento.tamano.ancho = Math.round(nuevoAncho);
 		elemento.tamano.alto = Math.round(nuevoAlto);

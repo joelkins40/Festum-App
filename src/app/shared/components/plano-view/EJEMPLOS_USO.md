@@ -28,18 +28,14 @@ export class NuevoEventoComponent {
 
 ```html
 <!-- ejemplo: editor-plano.component.html -->
-<app-plano-view 
-  [elements]="planoElements" 
-  [showSidebar]="true"
-  [plantillaNombre]="plantillaActual">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [showSidebar]="true" [plantillaNombre]="plantillaActual"> </app-plano-view>
 ```
 
 ```typescript
 // ejemplo: editor-plano.component.ts
 export class EditorPlanoComponent {
   plantillaActual = "Boda Clásica Elegante - Salón Principal";
-  
+
   planoElements: ElementItem[] = [
     {
       id: "mesa-1",
@@ -164,19 +160,17 @@ limpiarPlano(): void {
 Los controles de elementos están integrados automáticamente en la toolbar:
 
 ```html
-<app-plano-view 
-  [elements]="planoElements" 
-  [showSidebar]="true"
-  [plantillaNombre]="'Mi Evento - Salón A'">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [showSidebar]="true" [plantillaNombre]="'Mi Evento - Salón A'"> </app-plano-view>
 ```
 
 **Flujo de interacción del usuario:**
 
-1. **Sin elemento seleccionado**: 
+1. **Sin elemento seleccionado**:
+
    - La toolbar muestra: "Arrastra elementos desde el panel lateral o selecciona uno para editarlo"
 
 2. **Con elemento seleccionado** (click en elemento del canvas):
+
    - La toolbar muestra el nombre del elemento
    - Aparecen 4 botones:
      - 🔄 **Rotar**: Gira 45° cada vez (cicla en 360°)
@@ -189,6 +183,7 @@ Los controles de elementos están integrados automáticamente en la toolbar:
    - Icono cambia según estado: `chevron_left` ⟵ abierto, `chevron_right` ⟶ cerrado
 
 **Atajos de teclado** (implementados en componentes consumidores):
+
 - `Delete`: Eliminar elemento seleccionado
 - `R`: Rotar elemento seleccionado
 - `+`: Aumentar tamaño
@@ -206,6 +201,7 @@ canvasDimensions = { ancho: 800, alto: 600 }; // Default
 ```
 
 Para cambiar las dimensiones (futuro):
+
 ```typescript
 @Input() canvasDimensions?: { ancho: number; alto: number };
 ```

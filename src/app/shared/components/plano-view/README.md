@@ -71,6 +71,7 @@ interface ElementItem {
 **Propósito**: Muestra el nombre de la plantilla seleccionada en la toolbar del canvas.
 
 **Comportamiento**:
+
 - Si se proporciona, se muestra en la sección `.canvas-info` de la toolbar
 - El nombre se procesa para mostrar solo la parte antes del " - " (si existe)
 - Junto al nombre se muestran las dimensiones del canvas
@@ -82,14 +83,17 @@ interface ElementItem {
 La toolbar se muestra automáticamente en la parte superior del área de trabajo y contiene:
 
 1. **Botón de toggle del sidebar** (solo visible si `showSidebar = true`):
+
    - Icono: `chevron_left` cuando está abierto, `chevron_right` cuando está cerrado
    - Tooltip: "Mostrar/Ocultar panel"
 
 2. **Información de la plantilla** (solo visible si `plantillaNombre` está definido):
+
    - Nombre de la plantilla (procesado)
    - Dimensiones del canvas (ej: "800 x 600 px")
 
 3. **Controles del elemento seleccionado** (solo visible cuando hay un elemento seleccionado):
+
    - Nombre del elemento
    - Botón de rotación (45° por vez, cicla en 360°)
    - Botón de aumentar tamaño (factor 1.2x)
@@ -142,20 +146,13 @@ Pasar solo la propiedad `elementos` al input `[elements]` o usar el setter `[dis
 ### Con sidebar visible
 
 ```html
-<app-plano-view 
-  [elements]="planoElements" 
-  [showSidebar]="true">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [showSidebar]="true"> </app-plano-view>
 ```
 
 ### Con sidebar y nombre de plantilla
 
 ```html
-<app-plano-view 
-  [elements]="planoElements" 
-  [showSidebar]="true"
-  [plantillaNombre]="'Boda Clásica Elegante - Salón Principal'">
-</app-plano-view>
+<app-plano-view [elements]="planoElements" [showSidebar]="true" [plantillaNombre]="'Boda Clásica Elegante - Salón Principal'"> </app-plano-view>
 ```
 
 **Resultado**: La toolbar mostrará "Boda Clásica Elegante" y "800 x 600 px"
