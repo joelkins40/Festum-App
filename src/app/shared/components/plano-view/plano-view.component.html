@@ -58,12 +58,10 @@
           <button mat-icon-button (click)="rotateElemento()" matTooltip="Rotar elemento (R)">
             <mat-icon>rotate_right</mat-icon>
           </button>
-          <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'mas')"
-            matTooltip="Aumentar tamaño (+)">
+          <button mat-icon-button (click)="redimensionarElemento('mas')" matTooltip="Aumentar tamaño (+)">
             <mat-icon>zoom_in</mat-icon>
           </button>
-          <button mat-icon-button (click)="redimensionarElemento(elementoSeleccionado, 'menos')"
-            matTooltip="Reducir tamaño (-)">
+          <button mat-icon-button (click)="redimensionarElemento('menos')" matTooltip="Reducir tamaño (-)">
             <mat-icon>zoom_out</mat-icon>
           </button>
           <button mat-icon-button (click)="eliminarElemento()" matTooltip="Eliminar elemento (Delete)" color="warn">

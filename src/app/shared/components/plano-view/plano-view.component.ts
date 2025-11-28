@@ -74,7 +74,12 @@ export class PlanoViewComponent implements OnChanges {
 	ngOnChanges(changes: SimpleChanges): void {
 		// Actualizar estado interno del canvas cuando cambia elements
 		if (changes['elements'] && this.elements) {
-			this.canvasElements = [...this.elements];
+			// Deep copy para evitar referencias compartidas
+			this.canvasElements = this.elements.map((elem) => ({
+				...elem,
+				posicion: { ...elem.posicion },
+				tamano: { ...elem.tamano },
+			}));
 			this.generarElementosUnicos();
 		}
 
@@ -94,7 +99,12 @@ export class PlanoViewComponent implements OnChanges {
 		for (const elem of this.elements) {
 			const key = `${elem.tipo}-${elem.nombre}`;
 			if (!mapa.has(key)) {
-				mapa.set(key, { ...elem });
+				// Deep copy para evitar referencias compartidas
+				mapa.set(key, {
+					...elem,
+					posicion: { ...elem.posicion },
+					tamano: { ...elem.tamano },
+				});
 			}
 		}
 
@@ -143,7 +153,7 @@ export class PlanoViewComponent implements OnChanges {
 				const x = dropPoint.x - canvasRect.left - elementoBase.tamano.ancho / 2;
 				const y = dropPoint.y - canvasRect.top - elementoBase.tamano.alto / 2;
 
-				// Crear nueva instancia del elemento en el canvas
+				// Crear nueva instancia con deep copy de objetos anidados
 				const nuevoElemento: ElementItem = {
 					...elementoBase,
 					id: `elemento-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -163,9 +173,9 @@ export class PlanoViewComponent implements OnChanges {
 							),
 						),
 					},
+					tamano: { ...elementoBase.tamano }, // Deep copy
 					rotacion: 0,
 				};
-
 				this.canvasElements.push(nuevoElemento);
 			}
 		}
@@ -298,26 +308,27 @@ export class PlanoViewComponent implements OnChanges {
 	}
 
 	/**
-	 * Redimensiona el elemento en la dirección especificada
+	 * Redimensiona solo el elemento seleccionado actualmente
+	 * Opera sobre la instancia específica en canvasElements (por referencia)
+	 *
+	 * QA: Seleccionar elem A → pulsar + → solo A crece
+	 *     Seleccionar elem B (mismo icono) → pulsar - → solo B cambia
 	 */
-	redimensionarElemento(
-		elemento: ElementItem,
-		direccion: 'mas' | 'menos',
-	): void {
-		if (!elemento) return;
+	redimensionarElemento(direccion: 'mas' | 'menos'): void {
+		if (!this.elementoSeleccionado) return;
 
 		const factor = direccion === 'mas' ? 1.2 : 0.8;
 		const nuevoAncho = Math.max(
 			40,
-			Math.min(500, elemento.tamano.ancho * factor),
+			Math.min(500, this.elementoSeleccionado.tamano.ancho * factor),
 		);
 		const nuevoAlto = Math.max(
 			40,
-			Math.min(500, elemento.tamano.alto * factor),
+			Math.min(500, this.elementoSeleccionado.tamano.alto * factor),
 		);
 
-		elemento.tamano.ancho = Math.round(nuevoAncho);
-		elemento.tamano.alto = Math.round(nuevoAlto);
+		this.elementoSeleccionado.tamano.ancho = Math.round(nuevoAncho);
+		this.elementoSeleccionado.tamano.alto = Math.round(nuevoAlto);
 	}
 
 	/**
@@ -351,11 +362,11 @@ export class PlanoViewComponent implements OnChanges {
 				break;
 			case '+':
 			case '=':
-				this.redimensionarElemento(this.elementoSeleccionado, 'mas');
+				this.redimensionarElemento('mas');
 				event.preventDefault();
 				break;
 			case '-':
-				this.redimensionarElemento(this.elementoSeleccionado, 'menos');
+				this.redimensionarElemento('menos');
 				event.preventDefault();
 				break;
 			case 'r':
