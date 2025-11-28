@@ -1,22 +1,16 @@
 # Plano View Component
 
-## Responsabilidades
+Componente reutilizable de Angular 19 para visualizar y manipular planos de eventos con drag & drop, controles interactivos y sidebar opcional.
 
-El componente `plano-view` es un **componente reutilizable** para visualizar y manipular elementos de un plano de evento. Se encarga de:
+---
 
-1. **Renderizar elementos visuales** (mesas, sillas, decoración) en un canvas
-2. **Drag & drop** de elementos dentro del canvas con restricciones de área
-3. **Selección visual** de elementos con feedback interactivo
-4. **Mostrar iconos Material** correspondientes a cada tipo de elemento
-5. **Calcular estilos dinámicos** (tamaño, posición, rotación) de elementos
+## Inputs
 
-## Firma Esperada
+### `elements: ElementItem[]`
 
-### Input: `elements`
+Elementos iniciales a mostrar. El componente crea una copia interna para el canvas y **nunca modifica este array**.
 
 ```typescript
-@Input() elements: ElementItem[]
-
 interface ElementItem {
   id: string;
   tipo: string;
@@ -30,241 +24,270 @@ interface ElementItem {
 }
 ```
 
-### Input: `selectedProduct` (opcional)
+### `showSidebar?: boolean` (default: `false`)
+
+Controla la visibilidad del sidebar con elementos arrastrables únicos.
+
+### `plantillaNombre?: string`
+
+Nombre de la plantilla a mostrar en la toolbar. Se procesa para mostrar solo la parte antes de `" - "`.
+
+### `selectedProduct?: Product`
+
+Producto seleccionado (uso futuro para agregar al canvas automáticamente).
+
+### `diseno: { elementos: ElementoEnCanvas[] } | null`
+
+Setter alternativo para cargar elementos desde un diseño guardado.
+
+---
+
+## Estado Interno
+
+### Sin mutaciones al padre
+
+- `canvasElements`: Copia interna de `elements` donde ocurren todas las modificaciones
+- `elementosUnicos`: Lista derivada para el sidebar (solo un elemento por tipo+nombre)
+- `elementoSeleccionado`: Elemento actualmente seleccionado en el canvas
+
+**Garantía**: Las acciones (eliminar, rotar, redimensionar) solo afectan `canvasElements`, no el array original `elements`.
+
+---
+
+## Sidebar de Elementos Únicos
+
+El sidebar muestra **solo un elemento por cada combinación única de tipo+nombre**, sin importar cuántas instancias existan en `elements`.
+
+**Ejemplo**:
 
 ```typescript
-@Input() selectedProduct?: Product
+// Input: elements
+[
+  { tipo: 'mesa', nombre: 'Mesa Redonda', ... },
+  { tipo: 'mesa', nombre: 'Mesa Redonda', ... }, // duplicado
+  { tipo: 'silla', nombre: 'Silla Tiffany', ... }
+]
+
+// Sidebar muestra solo:
+[
+  { tipo: 'mesa', nombre: 'Mesa Redonda', ... },
+  { tipo: 'silla', nombre: 'Silla Tiffany', ... }
+]
 ```
 
-### Input: `diseno` (opcional)
+Cada elemento único puede arrastrarse infinitas veces al canvas.
 
-```typescript
-@Input() set diseno(value: { elementos: ElementoEnCanvas[] } | null)
-```
+---
 
-### Input: `showSidebar` (opcional, default: `false`)
+## Drag & Drop
 
-```typescript
-@Input() showSidebar?: boolean = false;
-```
+### Desde sidebar → canvas
 
-**Propósito**: Controla la visibilidad del sidebar lateral con elementos arrastrables.
+1. Usuario arrastra elemento del sidebar
+2. Se crea **nueva instancia** con ID único en `canvasElements`
+3. Posición calculada según punto de drop
+4. El elemento original del sidebar permanece disponible
 
-**Comportamiento**:
+### Dentro del canvas
 
-- Por defecto, el componente **no muestra el sidebar** (`showSidebar = false`)
-- Cuando `showSidebar = true`, se renderiza un panel lateral con:
-  - Header con icono "Elementos"
-  - Lista de elementos arrastrables basada en `elements`
-  - Drag & drop integrado hacia el canvas
-  - Actualización reactiva cuando cambia `elements`
-  - Botón en la toolbar para abrir/cerrar el sidebar
+- Movimiento restringido a los límites del canvas (800x600px)
+- Posición se actualiza en `canvasElements`
+- Escalado automático si el canvas está redimensionado visualmente
 
-**Nota importante**: El sidebar se actualiza automáticamente cada vez que el `@Input() elements` cambia, sin necesidad de refresh manual.
+---
 
-### Input: `plantillaNombre` (opcional)
+## Controles de Elementos
 
-```typescript
-@Input() plantillaNombre?: string;
-```
+### Toolbar Interactiva
 
-**Propósito**: Muestra el nombre de la plantilla seleccionada en la toolbar del canvas.
+Aparece automáticamente en la parte superior del canvas:
 
-**Comportamiento**:
+**Con elemento seleccionado**:
 
-- Si se proporciona, se muestra en la sección `.canvas-info` de la toolbar
-- El nombre se procesa para mostrar solo la parte antes del " - " (si existe)
-- Junto al nombre se muestran las dimensiones del canvas
+- 🔄 **Rotar** (R): +45° por iteración
+- ➕ **Aumentar** (+): ×1.2 (máx 500px)
+- ➖ **Reducir** (-): ×0.8 (mín 40px)
+- 🗑️ **Eliminar** (Delete): Remueve del canvas
 
-## Toolbar y Controles
+**Sin elemento seleccionado**:
 
-### Toolbar del Canvas
+- Mensaje: "Arrastra elementos desde el panel lateral o selecciona uno para editarlo"
 
-La toolbar se muestra automáticamente en la parte superior del área de trabajo y contiene:
+**Botón de sidebar** (solo si `showSidebar = true`):
 
-1. **Botón de toggle del sidebar** (solo visible si `showSidebar = true`):
+- Toggle para abrir/cerrar el panel lateral
+- Icono: `chevron_left` (abierto) / `chevron_right` (cerrado)
 
-   - Icono: `chevron_left` cuando está abierto, `chevron_right` cuando está cerrado
-   - Tooltip: "Mostrar/Ocultar panel"
+---
 
-2. **Información de la plantilla** (solo visible si `plantillaNombre` está definido):
+## Mapeo de Teclado
 
-   - Nombre de la plantilla (procesado)
-   - Dimensiones del canvas (ej: "800 x 600 px")
+Atajos idénticos al componente `plano` original:
 
-3. **Controles del elemento seleccionado** (solo visible cuando hay un elemento seleccionado):
+| Tecla                  | Acción              | Requisito             |
+| ---------------------- | ------------------- | --------------------- |
+| `R` / `r`              | Rotar elemento 45°  | Elemento seleccionado |
+| `+` / `=`              | Aumentar tamaño     | Elemento seleccionado |
+| `-`                    | Reducir tamaño      | Elemento seleccionado |
+| `Delete` / `Backspace` | Eliminar del canvas | Elemento seleccionado |
 
-   - Nombre del elemento
-   - Botón de rotación (45° por vez, cicla en 360°)
-   - Botón de aumentar tamaño (factor 1.2x)
-   - Botón de reducir tamaño (factor 0.8x)
-   - Botón de eliminar (color warn)
+**Nota**: Las teclas operan sobre `canvasElements`, no sobre `elements` original.
 
-4. **Mensaje de ayuda** (visible cuando NO hay elemento seleccionado):
-   - Texto: "Arrastra elementos desde el panel lateral o selecciona uno para editarlo"
-
-### Métodos de Control
-
-```typescript
-// Rotar elemento seleccionado 45 grados
-rotateElemento(): void
-
-// Redimensionar elemento (factor 1.2x o 0.8x)
-redimensionarElemento(elemento: ElementItem, direccion: 'mas' | 'menos'): void
-
-// Eliminar elemento del canvas
-eliminarElemento(): void
-
-// Alternar visibilidad del sidebar
-toggleSidebar(): void
-```
-
-## Compatibilidad con `DisenoGuardado`
-
-El componente acepta la estructura `DisenoGuardado` de `plano.component.ts`:
-
-```typescript
-interface DisenoGuardado {
-  plantillaId: string;
-  plantillaNombre: string;
-  elementos: ElementoEnCanvas[];
-  fechaGuardado: string;
-  version: string;
-}
-```
-
-Pasar solo la propiedad `elementos` al input `[elements]` o usar el setter `[diseno]` para pasar el objeto completo.
+---
 
 ## Uso
 
-### Básico (sin sidebar)
+### Básico (solo visualización)
 
 ```html
 <app-plano-view [elements]="planoElements"></app-plano-view>
 ```
 
-### Con sidebar visible
+### Con toolbar y plantilla
 
 ```html
-<app-plano-view [elements]="planoElements" [showSidebar]="true"> </app-plano-view>
+<app-plano-view [elements]="planoElements" [plantillaNombre]="'Boda Clásica - Salón A'"> </app-plano-view>
 ```
 
-### Con sidebar y nombre de plantilla
+Muestra: "Boda Clásica" + dimensiones (800 x 600 px)
+
+### Editor completo con sidebar
 
 ```html
-<app-plano-view [elements]="planoElements" [showSidebar]="true" [plantillaNombre]="'Boda Clásica Elegante - Salón Principal'"> </app-plano-view>
+<app-plano-view [elements]="planoElements" [showSidebar]="true" [plantillaNombre]="plantillaSeleccionada?.nombre"> </app-plano-view>
 ```
 
-**Resultado**: La toolbar mostrará "Boda Clásica Elegante" y "800 x 600 px"
-
-### Ejemplo completo con todas las funcionalidades
-
-```typescript
-// En el componente padre
-export class MiComponente {
-  planoElements: ElementItem[] = [
-    {
-      id: "mesa-1",
-      tipo: "mesa-redonda",
-      nombre: "Mesa Redonda",
-      posicion: { x: 100, y: 100 },
-      tamano: { ancho: 120, alto: 120 },
-      color: "#20b2aa",
-      icono: "table_restaurant",
-      rotacion: 0,
-      productoServicioId: 4,
-    },
-  ];
-}
-```
-
-**Importante**: Cuando `elements` cambia (por ejemplo, al aplicar una plantilla o agregar/eliminar elementos), el sidebar se actualiza automáticamente sin necesidad de acciones adicionales.
-
-### Con producto seleccionado
-
-```html
-<app-plano-view [elements]="planoElements" [selectedProduct]="currentProduct"> </app-plano-view>
-```
-
-### Con diseño completo
+### Desde diseño guardado
 
 ```html
 <app-plano-view [diseno]="plantilla.diseno"></app-plano-view>
 ```
 
-## Render y Performance
+---
 
-- **Change Detection**: OnPush recomendado para optimización
-- **TrackBy**: Usa `trackByElementId` para evitar re-renders innecesarios
-- **CSS Transform**: Animaciones con `transform` para mejor performance
-- **Lazy Loading**: Los iconos Material se cargan bajo demanda
+## Limitaciones y Buenas Prácticas
 
-## TODOs
+### ✅ Lo que hace
 
-### Tipos Compartidos
+- Mantiene estado interno independiente del padre
+- Genera elementos únicos para el sidebar automáticamente
+- Soporta drag & drop ilimitado desde sidebar
+- Controles interactivos (rotar, escalar, eliminar)
+- Atajos de teclado completos
 
-- [ ] Mover `ElementItem` y `ElementoEnCanvas` a `src/app/shared/types/`
-- [ ] Centralizar interfaces entre `plano.component.ts` y `plano-view`
-- [ ] Crear barrel exports para tipos compartidos
+### ❌ Lo que NO hace
 
-### Persistencia
+- No modifica el array `elements` recibido como Input
+- No emite eventos al padre (unidireccional)
+- No persiste cambios automáticamente
+- No valida límites de plantillas (elementos fijos)
+- No implementa undo/redo
 
-- [ ] Las plantillas deben obtenerse desde el backend (API REST)
-- [ ] Implementar guardado de diseños personalizados en servidor
-- [ ] Versionar esquema de `DisenoGuardado` para migraciones
+### Sincronización con el padre
+
+Si necesitas actualizar el padre cuando cambia el canvas:
+
+```typescript
+// TODO: Agregar @Output() para comunicación bidireccional
+@Output() canvasElementsChange = new EventEmitter<ElementItem[]>();
+```
+
+---
+
+## Estilos Clave
+
+### Canvas
+
+- Dimensiones fijas: 800×600px (configurable vía `canvasDimensions`)
+- Borde punteado: `#dee2e6`
+- Background: blanco
+- Drag activo: borde turquesa `#20b2aa`
+
+### Toolbar
+
+- Background: `#f8f9fa`
+- Altura mínima: 56px
+- Controles con background turquesa cuando hay selección
+
+### Sidebar
+
+- Ancho: 300px
+- Header turquesa con sombra
+- Grid responsive para elementos (90px mínimo por celda)
+
+---
+
+## Estructura de Archivos
+
+```
+plano-view/
+├── plano-view.component.ts    # Lógica del componente
+├── plano-view.component.html  # Template
+├── plano-view.component.scss  # Estilos
+├── types.ts                   # Interfaces (ElementItem, ElementoEnCanvas)
+└── README.md                  # Este archivo
+```
+
+---
+
+## TODO / Mejoras Futuras
+
+### Comunicación
+
+- [ ] `@Output() canvasElementsChange` para sincronización bidireccional
+- [ ] `@Output() elementoSeleccionadoChange` para notificar cambios de selección
 
 ### Funcionalidad
 
-- [ ] Agregar zoom in/out en el canvas
-- [ ] Implementar rotación manual de elementos
-- [ ] Snap-to-grid para alineación precisa
-- [ ] Undo/Redo de movimientos
+- [ ] Undo/Redo de acciones
+- [ ] Snap-to-grid para alineación
+- [ ] Zoom in/out del canvas
+- [ ] Validación de elementos fijos (como en plano.component)
+- [ ] Guardado automático con debounce
 
-### Testing
+### Tipos
 
-- [ ] Tests unitarios para cálculos de posición
-- [ ] Tests de integración con drag & drop
-- [ ] Visual regression tests para elementos
+- [ ] Mover `ElementItem` y `ElementoEnCanvas` a `src/app/shared/types/`
+- [ ] Crear barrel exports (`index.ts`)
 
-## Testing Local (DevTools)
+### Accesibilidad
 
-Para probar plantillas desde la consola del navegador:
+- [ ] ARIA labels para controles
+- [ ] Soporte de teclado completo (flechas para mover)
+- [ ] Focus visible en elementos seleccionados
+
+---
+
+## Testing
+
+### Pruebas recomendadas
+
+1. Arrastrar elemento del sidebar → verificar nueva instancia en canvas
+2. Eliminar elemento → verificar que `elements` original no cambia
+3. Rotar/escalar → verificar límites (40-500px, 0-360°)
+4. Atajos de teclado → R, +, -, Delete
+5. Sidebar únicos → duplicados en `elements` muestran solo 1 en sidebar
+
+### Debug en consola
 
 ```javascript
-// Seedear plantilla de prueba
-window.mockTemplate = {
-  plantillaId: "test",
-  plantillaNombre: "Test Template",
-  elementos: [
-    {
-      id: "test-1",
-      tipo: "mesa-redonda",
-      nombre: "Mesa Test",
-      posicion: { x: 200, y: 200 },
-      tamano: { ancho: 120, alto: 120 },
-      color: "#20b2aa",
-      icono: "table_restaurant",
-      productoServicioId: 4,
-    },
-  ],
-  fechaGuardado: new Date().toISOString(),
-  version: "1.0",
-};
-
-// Aplicar en componente (desde consola Angular DevTools)
-ng.getComponent($0).aplicarPlantilla({
-  id: "test",
-  nombre: "Test",
-  descripcion: "Test",
-  tipo: "Test",
-  productosIds: [4],
-  diseno: window.mockTemplate,
-});
+// Acceder al componente en DevTools
+const planoView = ng.getComponent($0);
+console.log("Original:", planoView.elements);
+console.log("Canvas:", planoView.canvasElements);
+console.log("Únicos:", planoView.elementosUnicos);
 ```
 
-## Notas de Desarrollo
+---
 
-- Los elementos con `productoServicioId` se mapean automáticamente a productos del catálogo
-- Solo productos (no servicios) se visualizan en el plano
-- El canvas tiene dimensiones fijas de 800x600px (configurables)
-- Los colores e iconos se obtienen del catálogo de productos cuando está disponible
+## Compatibilidad
+
+- **Angular**: 19+
+- **Sintaxis**: `@if`, `@for`, `@else`, standalone components
+- **Material**: 18+
+- **CDK Drag & Drop**: 18+
+
+---
+
+**Última actualización**: 27 de noviembre de 2025
+**Versión**: 2.0.0 (refactor con estado interno)
