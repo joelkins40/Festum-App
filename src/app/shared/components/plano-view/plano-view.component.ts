@@ -5,6 +5,7 @@ import {
 	ElementRef,
 	OnChanges,
 	SimpleChanges,
+	HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +19,7 @@ import {
 	CdkDropList,
 	CdkDragEnd,
 	CdkDragStart,
+	CdkDragDrop,
 } from '@angular/cdk/drag-drop';
 
 import { ElementItem, Product, ElementoEnCanvas } from './types';
@@ -60,23 +62,43 @@ export class PlanoViewComponent implements OnChanges {
 	// Elemento seleccionado (solo visual)
 	elementoSeleccionado: ElementItem | null = null;
 
-	// Lista de elementos arrastrables para el sidebar (se actualiza reactivamente)
-	elementosArrastrables: ElementItem[] = [];
+	// Estado interno del canvas (copia independiente de elements)
+	canvasElements: ElementItem[] = [];
+
+	// Lista de elementos únicos para el sidebar (solo vista)
+	elementosUnicos: ElementItem[] = [];
 
 	// Control de apertura del sidebar
 	sidebarAbierto = true;
 
 	ngOnChanges(changes: SimpleChanges): void {
-		// Actualizar lista de elementos arrastrables cuando cambia elements
+		// Actualizar estado interno del canvas cuando cambia elements
 		if (changes['elements'] && this.elements) {
-			this.elementosArrastrables = [...this.elements];
+			this.canvasElements = [...this.elements];
+			this.generarElementosUnicos();
 		}
 
 		// Reaccionar a cambios en selectedProduct si es necesario
 		if (changes['selectedProduct'] && this.selectedProduct) {
-			// Lógica futura: agregar elemento al canvas basado en producto
 			this.agregarElementoDesdeProducto(this.selectedProduct);
 		}
+	}
+
+	/**
+	 * Genera lista de elementos únicos para el sidebar basada en tipo+nombre
+	 * No modifica el array original elements
+	 */
+	private generarElementosUnicos(): void {
+		const mapa = new Map<string, ElementItem>();
+
+		for (const elem of this.elements) {
+			const key = `${elem.tipo}-${elem.nombre}`;
+			if (!mapa.has(key)) {
+				mapa.set(key, { ...elem });
+			}
+		}
+
+		this.elementosUnicos = Array.from(mapa.values());
 	}
 
 	/**
@@ -106,6 +128,47 @@ export class PlanoViewComponent implements OnChanges {
 
 	onElementDragStart(_event: CdkDragStart, _elemento: ElementItem): void {
 		// Inicializar drag
+	}
+
+	onDrop(event: CdkDragDrop<ElementItem[]>): void {
+		if (event.previousContainer !== event.container) {
+			// Elemento arrastrado desde sidebar al canvas
+			const elementoBase = event.item.data as ElementItem;
+
+			if (elementoBase && this.canvasRef) {
+				const canvasRect = this.canvasRef.nativeElement.getBoundingClientRect();
+				const dropPoint = event.dropPoint;
+
+				// Calcular posición relativa al canvas
+				const x = dropPoint.x - canvasRect.left - elementoBase.tamano.ancho / 2;
+				const y = dropPoint.y - canvasRect.top - elementoBase.tamano.alto / 2;
+
+				// Crear nueva instancia del elemento en el canvas
+				const nuevoElemento: ElementItem = {
+					...elementoBase,
+					id: `elemento-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+					posicion: {
+						x: Math.max(
+							0,
+							Math.min(
+								x,
+								this.canvasDimensions.ancho - elementoBase.tamano.ancho,
+							),
+						),
+						y: Math.max(
+							0,
+							Math.min(
+								y,
+								this.canvasDimensions.alto - elementoBase.tamano.alto,
+							),
+						),
+					},
+					rotacion: 0,
+				};
+
+				this.canvasElements.push(nuevoElemento);
+			}
+		}
 	}
 
 	onElementDragEnd(event: CdkDragEnd, elemento: ElementItem): void {
@@ -208,16 +271,15 @@ export class PlanoViewComponent implements OnChanges {
 	// ===== MÉTODOS PARA CONTROLES DE ELEMENTOS =====
 
 	/**
-	 * Elimina el elemento seleccionado del canvas
+	 * Elimina el elemento seleccionado solo del canvas interno
+	 * NO modifica el array original elements recibido del padre
 	 */
 	eliminarElemento(): void {
 		if (this.elementoSeleccionado) {
-			const index = this.elements.indexOf(this.elementoSeleccionado);
+			const index = this.canvasElements.indexOf(this.elementoSeleccionado);
 			if (index > -1) {
-				this.elements.splice(index, 1);
+				this.canvasElements.splice(index, 1);
 				this.elementoSeleccionado = null;
-				// Actualizar lista de elementos arrastrables
-				this.elementosArrastrables = [...this.elements];
 			}
 		}
 	}
@@ -272,5 +334,35 @@ export class PlanoViewComponent implements OnChanges {
 		if (!this.plantillaNombre) return '';
 		const parts = this.plantillaNombre.split(' - ');
 		return parts[0];
+	}
+
+	/**
+	 * Manejo de atajos de teclado para el elemento seleccionado
+	 */
+	@HostListener('window:keydown', ['$event'])
+	onKeyDown(event: KeyboardEvent): void {
+		if (!this.elementoSeleccionado) return;
+
+		switch (event.key) {
+			case 'Delete':
+			case 'Backspace':
+				this.eliminarElemento();
+				event.preventDefault();
+				break;
+			case '+':
+			case '=':
+				this.redimensionarElemento(this.elementoSeleccionado, 'mas');
+				event.preventDefault();
+				break;
+			case '-':
+				this.redimensionarElemento(this.elementoSeleccionado, 'menos');
+				event.preventDefault();
+				break;
+			case 'r':
+			case 'R':
+				this.rotateElemento();
+				event.preventDefault();
+				break;
+		}
 	}
 }

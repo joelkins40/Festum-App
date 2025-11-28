@@ -17,9 +17,9 @@
       <div class="elementos-lista">
         <div class="elemento-categoria">
           <h4>Mobiliario y Decoración</h4>
-          <div cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="elementosArrastrables"
+          <div cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="elementosUnicos"
             [cdkDropListConnectedTo]="['canvas-drop-list']" class="elementos-drop-list">
-            @for (elemento of elementosArrastrables; track trackByElementId($index, elemento)) {
+            @for (elemento of elementosUnicos; track trackByElementId($index, elemento)) {
             <div class="elemento-arrastrable" cdkDrag [cdkDragData]="elemento"
               [cdkDragPreviewClass]="'cdk-drag-preview'" [matTooltip]="elemento.nombre">
               <mat-icon [style.color]="elemento.color">{{ elemento.icono }}</mat-icon>
@@ -79,10 +79,11 @@
 
       <div class="canvas-wrapper">
         <div #canvas class="canvas" [ngStyle]="getCanvasStyle()" cdkDropList id="canvas-drop-list"
-          [cdkDropListData]="elements" (click)="elementoSeleccionado = null">
+          [cdkDropListData]="canvasElements" (cdkDropListDropped)="onDrop($event)"
+          (click)="elementoSeleccionado = null">
 
           <!-- Elementos en el canvas -->
-          <div *ngFor="let elemento of elements; trackBy: trackByElementId" class="elemento-canvas"
+          <div *ngFor="let elemento of canvasElements; trackBy: trackByElementId" class="elemento-canvas"
             [class.elemento-seleccionado]="elementoSeleccionado === elemento" [ngStyle]="getElementoStyle(elemento)"
             cdkDrag [cdkDragData]="elemento" cdkDragBoundary=".canvas" [cdkDragPreviewClass]="'cdk-drag-preview'"
             (click)="seleccionarElemento(elemento, $event)" (cdkDragEnded)="onElementDragEnd($event, elemento)"
@@ -100,7 +101,7 @@
           </div>
 
           <!-- Indicador de área vacía -->
-          <div class="canvas-placeholder" *ngIf="elements.length === 0">
+          <div class="canvas-placeholder" *ngIf="canvasElements.length === 0">
             <mat-icon>map</mat-icon>
             <p>Vista del plano del evento</p>
             <p class="placeholder-hint">Los elementos del plano se mostrarán aquí</p>
