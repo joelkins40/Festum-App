@@ -14,27 +14,41 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
-import { CdkDrag, CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop';
+import {
+	CdkDrag,
+	CdkDropList,
+	CdkDragEnd,
+	CdkDragStart,
+	CdkDragDrop,
+	moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 import { ElementItem, Product, ElementoEnCanvas } from './types';
-
+// todo: escribir un tsdoc mas declarativo y con mas concordancia para este componente
 /**
- * 🎯 DRAG & DROP REFACTOR - Sin cdkDropList
- * ==========================================
+ * 🎯 DRAG & DROP REFACTOR - Comportamiento Híbrido
+ * ======================================================
  *
- * Cambios implementados:
- * 1. ❌ Eliminado: cdkDropList y cdkDropListDropped (causaban saltos y comportamiento de lista)
- * 2. ✅ Canvas: ahora es solo cdkDragBoundary (no lista, no reordenamiento)
- * 3. ✅ Selección: doble click (dblclick) para seleccionar, click en canvas para deseleccionar
- * 4. ✅ Drag desde sidebar: detecta origen, crea instancia al soltar usando getBoundingClientRect
- * 5. ✅ Drag en canvas: usa event.distance para calcular posición sin conversión de escala
+ * Arquitectura corregida:
+ * 1. ✅ Sidebar: usa cdkDropList para lista ordenada de elementos únicos
+ *    - Permite reordenamiento interno (drag & drop dentro del sidebar)
+ *    - Los elementos se pueden arrastrar AL canvas
+ * 2. ✅ Canvas: NO es cdkDropList, es cdkDragBoundary para posicionamiento libre
+ *    - Sin comportamiento de lista (sin reordenamiento)
+ *    - Elementos posicionados por coordenadas absolutas
+ * 3. ✅ Transferencia: drag desde sidebar crea nuevas instancias en canvas
+ *    - onElementDragEnd detecta si viene del sidebar (sidebarDragData)
+ *    - Calcula posición usando getBoundingClientRect()
+ *    - Crea instancia nueva con ID único
+ * 4. ✅ Selección: doble click para seleccionar, click en canvas para deseleccionar
+ * 5. ✅ Movimiento: elementos en canvas usan event.distance sin escala
  * 6. ✅ Angular 19: @for en template, sintaxis moderna
  *
- * Comportamiento estable:
+ * Comportamiento final:
+ * - Sidebar mantiene lista ordenada (cdkDropList con sorting)
+ * - Canvas es área libre (sin cdkDropList, solo cdkDragBoundary)
  * - No más saltos al arrastrar
- * - Posiciones calculadas directamente sin conversiones complejas
- * - Estado limpio con sidebarDragData flag
- * - Elementos independientes (no comportamiento de lista)
+ * - Posiciones calculadas directamente
  * - Clamp automático dentro de límites del canvas
  */
 
@@ -49,6 +63,7 @@ import { ElementItem, Product, ElementoEnCanvas } from './types';
 		MatSidenavModule,
 		MatTooltipModule,
 		MatDividerModule,
+		CdkDropList,
 		CdkDrag,
 	],
 	templateUrl: './plano-view.component.html',
@@ -167,6 +182,23 @@ export class PlanoViewComponent implements OnChanges {
 			// Viene del sidebar
 			this.sidebarDragData = elemento;
 		}
+	}
+
+	/**
+	 * Maneja drops dentro del sidebar (reordenamiento)
+	 * No se usa para transferir al canvas
+	 */
+	onSidebarDrop(event: CdkDragDrop<ElementItem[]>): void {
+		if (event.previousContainer === event.container) {
+			// Reordenar dentro del sidebar
+			moveItemInArray(
+				this.elementosUnicos,
+				event.previousIndex,
+				event.currentIndex,
+			);
+		}
+		// Si previousContainer !== container, no hacer nada
+		// (el canvas maneja la transferencia en onElementDragEnd)
 	}
 
 	/**

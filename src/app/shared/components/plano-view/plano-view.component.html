@@ -20,7 +20,14 @@
       <div class="elementos-lista">
         <div class="elemento-categoria">
           <h4>Mobiliario y Decoración</h4>
-          <div class="elementos-drop-list">
+          <div
+            cdkDropList
+            #sidebarList="cdkDropList"
+            [cdkDropListData]="elementosUnicos"
+            [cdkDropListConnectedTo]="[]"
+            class="elementos-drop-list"
+            (cdkDropListDropped)="onSidebarDrop($event)"
+          >
             @for (elemento of elementosUnicos; track trackByElementId($index,
             elemento)) {
             <div
