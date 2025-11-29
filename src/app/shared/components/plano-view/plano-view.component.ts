@@ -102,6 +102,52 @@ export class PlanoViewComponent implements OnChanges {
 	// Estado de drag desde sidebar
 	private sidebarDragData: ElementItem | null = null;
 
+	// Flag para prevenir inserciones duplicadas
+	private currentlyInserting = false;
+
+	/**
+	 * Verifica si un elemento ya existe en el canvas por ID
+	 */
+	private isExistingElement(id: string): boolean {
+		return this.canvasElements.some((e) => e.id === id);
+	}
+
+	/**
+	 * Obtiene el rect del canvas
+	 */
+	private getCanvasRect(): DOMRect | null {
+		return this.canvasRef?.nativeElement.getBoundingClientRect() || null;
+	}
+
+	/**
+	 * Convierte coordenadas de pointer a coordenadas de canvas
+	 */
+	private convertToCanvasCoords(
+		clientX: number,
+		clientY: number,
+		canvasRect: DOMRect,
+		elementSize: { ancho: number; alto: number },
+	): { x: number; y: number } {
+		// Calcular posición centrada en el cursor
+		const x = clientX - canvasRect.left - elementSize.ancho / 2;
+		const y = clientY - canvasRect.top - elementSize.alto / 2;
+
+		// Aplicar clamp
+		const clampedX = Math.max(
+			0,
+			Math.min(x, this.canvasDimensions.ancho - elementSize.ancho),
+		);
+		const clampedY = Math.max(
+			0,
+			Math.min(y, this.canvasDimensions.alto - elementSize.alto),
+		);
+
+		return {
+			x: Math.round(clampedX),
+			y: Math.round(clampedY),
+		};
+	}
+
 	ngOnChanges(changes: SimpleChanges): void {
 		// Actualizar estado interno del canvas cuando cambia elements
 		if (changes['elements'] && this.elements) {
@@ -174,13 +220,21 @@ export class PlanoViewComponent implements OnChanges {
 	onElementDragStart(_event: CdkDragStart, elemento: ElementItem): void {
 		this.elementoSeleccionado = elemento;
 
-		// Verificar si el elemento está en el canvas
-		const existeEnCanvas = this.canvasElements.some(
+		console.log({ msg: 'onElementDragStart', elemento });
+
+		//? Estas banderas realmente las estamos usando?
+		// Reset flags
+		this.currentlyInserting = false;
+		this.sidebarDragData = null;
+
+		// Verificar si el elemento está en el sidebar (elementosUnicos)
+		const existeEnSidebar = this.elementosUnicos.some(
 			(e) => e.id === elemento.id,
 		);
-		if (!existeEnCanvas) {
+		if (existeEnSidebar) {
 			// Viene del sidebar
 			this.sidebarDragData = elemento;
+			this.currentlyInserting = true;
 		}
 	}
 
@@ -220,65 +274,112 @@ export class PlanoViewComponent implements OnChanges {
 			return;
 		}
 
-		const canvasRect = this.canvasRef.nativeElement.getBoundingClientRect();
+		const canvasRect = this.getCanvasRect();
+		if (!canvasRect) {
+			this.cleanupDragState();
+			return;
+		}
 
-		// Verificar si es drag desde sidebar
-		if (this.sidebarDragData) {
-			// Crear nuevo elemento desde sidebar
+		console.log({
+			msg: 'onElementDragEnd 1',
+			elemento,
+			canvasElements: this.canvasElements,
+		});
+
+		// Verificar si es drag desde sidebar (creación de nueva instancia)
+		if (this.sidebarDragData && this.currentlyInserting) {
+			// Obtener posición del elemento arrastrado
 			const elementRect =
 				event.source.element.nativeElement.getBoundingClientRect();
 
-			// Calcular posición final relativa al canvas
-			const x = elementRect.left - canvasRect.left;
-			const y = elementRect.top - canvasRect.top;
+			// Calcular centro del elemento arrastrado
+			const centerX = elementRect.left + elementRect.width / 2;
+			const centerY = elementRect.top + elementRect.height / 2;
 
-			// Aplicar límites
-			const clampedX = Math.max(
-				0,
-				Math.min(x, this.canvasDimensions.ancho - elemento.tamano.ancho),
-			);
-			const clampedY = Math.max(
-				0,
-				Math.min(y, this.canvasDimensions.alto - elemento.tamano.alto),
+			// Convertir a coordenadas del canvas
+			const posicion = this.convertToCanvasCoords(
+				centerX,
+				centerY,
+				canvasRect,
+				this.sidebarDragData.tamano,
 			);
 
-			// Crear nueva instancia
-			const nuevoElemento: ElementItem = {
-				...this.sidebarDragData,
-				id: `elemento-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-				posicion: { x: Math.round(clampedX), y: Math.round(clampedY) },
-				tamano: { ...this.sidebarDragData.tamano },
-				rotacion: 0,
-			};
+			// Generar ID único
+			const nuevoId = `elemento-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-			this.canvasElements.push(nuevoElemento);
-			this.elementoSeleccionado = nuevoElemento;
+			// Verificar que no exista (prevención de duplicados)
+			if (!this.isExistingElement(nuevoId)) {
+				// Crear nueva instancia
+				const nuevoElemento: ElementItem = {
+					...this.sidebarDragData,
+					id: nuevoId,
+					posicion,
+					tamano: { ...this.sidebarDragData.tamano },
+					rotacion: 0,
+				};
+
+				this.canvasElements.push(nuevoElemento);
+				this.elementoSeleccionado = nuevoElemento;
+
+				console.log({
+					msg: 'onElementDragEnd 2',
+					elemento,
+					canvasElements: this.canvasElements,
+				});
+			}
 		} else {
 			// Mover elemento existente en canvas
 			const distance = event.distance;
 
 			if (distance && (distance.x !== 0 || distance.y !== 0)) {
-				// Calcular nueva posición
-				const nuevaX = elemento.posicion.x + distance.x;
-				const nuevaY = elemento.posicion.y + distance.y;
-
-				// Aplicar límites
-				const maxX = Math.max(
-					0,
-					this.canvasDimensions.ancho - elemento.tamano.ancho,
-				);
-				const maxY = Math.max(
-					0,
-					this.canvasDimensions.alto - elemento.tamano.alto,
+				// Buscar el elemento en canvasElements por ID
+				const elementoEnCanvas = this.canvasElements.find(
+					(e) => e.id === elemento.id,
 				);
 
-				elemento.posicion.x = Math.max(0, Math.min(Math.round(nuevaX), maxX));
-				elemento.posicion.y = Math.max(0, Math.min(Math.round(nuevaY), maxY));
+				if (elementoEnCanvas) {
+					// Actualizar posición del elemento encontrado
+					const nuevaX = elementoEnCanvas.posicion.x + distance.x;
+					const nuevaY = elementoEnCanvas.posicion.y + distance.y;
+
+					// Aplicar límites
+					const maxX = Math.max(
+						0,
+						this.canvasDimensions.ancho - elementoEnCanvas.tamano.ancho,
+					);
+					const maxY = Math.max(
+						0,
+						this.canvasDimensions.alto - elementoEnCanvas.tamano.alto,
+					);
+
+					elementoEnCanvas.posicion.x = Math.max(
+						0,
+						Math.min(Math.round(nuevaX), maxX),
+					);
+					elementoEnCanvas.posicion.y = Math.max(
+						0,
+						Math.min(Math.round(nuevaY), maxY),
+					);
+
+					console.log({
+						msg: 'onElementDragEnd 3',
+						elementoEnCanvas,
+						canvasElements: this.canvasElements,
+					});
+				}
 			}
+
+			console.log({
+				msg: 'onElementDragEnd 4',
+				elemento,
+				canvasElements: this.canvasElements,
+			});
 		}
 
 		event.source.reset();
 		this.cleanupDragState();
+
+		console.log('onElementDragEnd 5');
 	}
 
 	/**
@@ -286,6 +387,7 @@ export class PlanoViewComponent implements OnChanges {
 	 */
 	private cleanupDragState(): void {
 		this.sidebarDragData = null;
+		this.currentlyInserting = false;
 	}
 
 	/**
@@ -318,14 +420,7 @@ export class PlanoViewComponent implements OnChanges {
 
 	getElementoStyle(elemento: ElementItem) {
 		return {
-			position: 'absolute',
-			'left.px': elemento.posicion.x,
-			'top.px': elemento.posicion.y,
-			'width.px': elemento.tamano.ancho,
-			'height.px': elemento.tamano.alto,
-			'background-color': 'transparent',
 			transform: elemento.rotacion ? `rotate(${elemento.rotacion}deg)` : 'none',
-			'z-index': 1,
 		};
 	}
 
@@ -375,11 +470,17 @@ export class PlanoViewComponent implements OnChanges {
 	 * Rota el elemento seleccionado 45 grados
 	 */
 	rotateElemento(): void {
+		console.log('rotateElemento called');
 		if (this.elementoSeleccionado) {
 			this.elementoSeleccionado.rotacion =
 				(this.elementoSeleccionado.rotacion || 0) + 45;
+			console.log({
+				msg: 'rotateElemento called 2',
+				elementoSeleccionado: this.elementoSeleccionado,
+			});
 			if (this.elementoSeleccionado.rotacion >= 360) {
 				this.elementoSeleccionado.rotacion = 0;
+				console.log('rotateElemento called 3');
 			}
 		}
 	}

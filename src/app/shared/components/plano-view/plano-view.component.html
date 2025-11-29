@@ -133,14 +133,16 @@
           <div
             class="elemento-canvas"
             [class.elemento-seleccionado]="elementoSeleccionado === elemento"
+            [style.left.px]="elemento.posicion.x"
+            [style.top.px]="elemento.posicion.y"
+            [style.width.px]="elemento.tamano.ancho"
+            [style.height.px]="elemento.tamano.alto"
             [ngStyle]="getElementoStyle(elemento)"
             cdkDrag
             [cdkDragData]="elemento"
             cdkDragBoundary=".canvas"
             [cdkDragPreviewClass]="'cdk-drag-preview'"
             (dblclick)="seleccionarElemento(elemento, $event)"
-            (cdkDragEnded)="onElementDragEnd($event, elemento)"
-            (cdkDragStarted)="onElementDragStart($event, elemento)"
           >
             <div class="elemento-contenido">
               <mat-icon
