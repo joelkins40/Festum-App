@@ -20,13 +20,7 @@
       <div class="elementos-lista">
         <div class="elemento-categoria">
           <h4>Mobiliario y Decoración</h4>
-          <div
-            cdkDropList
-            cdkDropListSortingDisabled="true"
-            [cdkDropListData]="elementosUnicos"
-            [cdkDropListConnectedTo]="['canvas-drop-list']"
-            class="elementos-drop-list"
-          >
+          <div class="elementos-drop-list">
             @for (elemento of elementosUnicos; track trackByElementId($index,
             elemento)) {
             <div
@@ -35,6 +29,8 @@
               [cdkDragData]="elemento"
               [cdkDragPreviewClass]="'cdk-drag-preview'"
               [matTooltip]="elemento.nombre"
+              (cdkDragStarted)="onElementDragStart($event, elemento)"
+              (cdkDragEnded)="onElementDragEnd($event, elemento)"
             >
               <mat-icon [style.color]="elemento.color">{{
                 elemento.icono
@@ -62,8 +58,8 @@
             sidebarAbierto ? "chevron_left" : "chevron_right"
           }}</mat-icon>
         </button>
-        } 
-        
+        }
+
         @if (plantillaNombre) {
         <div class="canvas-info">
           <span class="plantilla-nombre">{{
@@ -73,8 +69,8 @@
             {{ canvasDimensions.ancho }} x {{ canvasDimensions.alto }} px
           </span>
         </div>
-        } 
-        
+        }
+
         @if (elementoSeleccionado) {
         <div class="elemento-controls">
           <span class="elemento-info">{{ elementoSeleccionado.nombre }}</span>
@@ -123,15 +119,11 @@
           #canvas
           class="canvas"
           [ngStyle]="getCanvasStyle()"
-          cdkDropList
-          id="canvas-drop-list"
-          [cdkDropListData]="canvasElements"
-          (cdkDropListDropped)="onDrop($event)"
-          (click)="elementoSeleccionado = null"
+          (click)="deseleccionarElemento()"
         >
           <!-- Elementos en el canvas -->
+          @for (elemento of canvasElements; track trackByElementId($index, elemento)) {
           <div
-            *ngFor="let elemento of canvasElements; trackBy: trackByElementId"
             class="elemento-canvas"
             [class.elemento-seleccionado]="elementoSeleccionado === elemento"
             [ngStyle]="getElementoStyle(elemento)"
@@ -139,7 +131,7 @@
             [cdkDragData]="elemento"
             cdkDragBoundary=".canvas"
             [cdkDragPreviewClass]="'cdk-drag-preview'"
-            (click)="seleccionarElemento(elemento, $event)"
+            (dblclick)="seleccionarElemento(elemento, $event)"
             (cdkDragEnded)="onElementDragEnd($event, elemento)"
             (cdkDragStarted)="onElementDragStart($event, elemento)"
           >
@@ -159,6 +151,7 @@
               </span>
             </div>
           </div>
+          }
 
           <!-- Indicador de área vacía -->
           <div class="canvas-placeholder" *ngIf="canvasElements.length === 0">
