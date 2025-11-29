@@ -409,10 +409,15 @@ export class PlanoViewComponent implements OnChanges {
 	 */
 	eliminarElemento(): void {
 		if (this.elementoSeleccionado) {
-			const index = this.canvasElements.indexOf(this.elementoSeleccionado);
-			if (index > -1) {
-				this.canvasElements.splice(index, 1);
-				this.elementoSeleccionado = null;
+			const elementoEnCanvas = this.canvasElements.find(
+				(e) => e.id === this.elementoSeleccionado?.id,
+			);
+			if (elementoEnCanvas) {
+				const index = this.canvasElements.indexOf(elementoEnCanvas);
+				if (index > -1) {
+					this.canvasElements.splice(index, 1);
+					this.elementoSeleccionado = null;
+				}
 			}
 		}
 	}
@@ -421,17 +426,15 @@ export class PlanoViewComponent implements OnChanges {
 	 * Rota el elemento seleccionado 45 grados
 	 */
 	rotateElemento(): void {
-		console.log('rotateElemento called');
 		if (this.elementoSeleccionado) {
-			this.elementoSeleccionado.rotacion =
-				(this.elementoSeleccionado.rotacion || 0) + 45;
-			console.log({
-				msg: 'rotateElemento called 2',
-				elementoSeleccionado: this.elementoSeleccionado,
-			});
-			if (this.elementoSeleccionado.rotacion >= 360) {
-				this.elementoSeleccionado.rotacion = 0;
-				console.log('rotateElemento called 3');
+			const elementoEnCanvas = this.canvasElements.find(
+				(e) => e.id === this.elementoSeleccionado?.id,
+			);
+			if (elementoEnCanvas) {
+				elementoEnCanvas.rotacion = (elementoEnCanvas.rotacion || 0) + 45;
+				if (elementoEnCanvas.rotacion >= 360) {
+					elementoEnCanvas.rotacion = 0;
+				}
 			}
 		}
 	}
@@ -446,18 +449,23 @@ export class PlanoViewComponent implements OnChanges {
 	redimensionarElemento(direccion: 'mas' | 'menos'): void {
 		if (!this.elementoSeleccionado) return;
 
+		const elementoEnCanvas = this.canvasElements.find(
+			(e) => e.id === this.elementoSeleccionado?.id,
+		);
+		if (!elementoEnCanvas) return;
+
 		const factor = direccion === 'mas' ? 1.2 : 0.8;
 		const nuevoAncho = Math.max(
 			40,
-			Math.min(500, this.elementoSeleccionado.tamano.ancho * factor),
+			Math.min(500, elementoEnCanvas.tamano.ancho * factor),
 		);
 		const nuevoAlto = Math.max(
 			40,
-			Math.min(500, this.elementoSeleccionado.tamano.alto * factor),
+			Math.min(500, elementoEnCanvas.tamano.alto * factor),
 		);
 
-		this.elementoSeleccionado.tamano.ancho = Math.round(nuevoAncho);
-		this.elementoSeleccionado.tamano.alto = Math.round(nuevoAlto);
+		elementoEnCanvas.tamano.ancho = Math.round(nuevoAncho);
+		elementoEnCanvas.tamano.alto = Math.round(nuevoAlto);
 	}
 
 	/**
