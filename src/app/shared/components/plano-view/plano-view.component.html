@@ -37,7 +37,7 @@
               [cdkDragPreviewClass]="'cdk-drag-preview'"
               [matTooltip]="elemento.nombre"
               (cdkDragStarted)="onElementDragStart($event, elemento)"
-              (cdkDragEnded)="onElementDragEnd($event, elemento)"
+              (cdkDragEnded)="onElementDropped($event, elemento)"
             >
               <mat-icon [style.color]="elemento.color">{{
                 elemento.icono

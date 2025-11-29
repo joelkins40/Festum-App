@@ -99,54 +99,11 @@ export class PlanoViewComponent implements OnChanges {
 	// Control de apertura del sidebar
 	sidebarAbierto = true;
 
-	// Estado de drag desde sidebar
-	private sidebarDragData: ElementItem | null = null;
+	// Contador para generar IDs únicos
+	private canvasElementIdCounter = 1000;
 
-	// Flag para prevenir inserciones duplicadas
-	private currentlyInserting = false;
-
-	/**
-	 * Verifica si un elemento ya existe en el canvas por ID
-	 */
-	private isExistingElement(id: string): boolean {
-		return this.canvasElements.some((e) => e.id === id);
-	}
-
-	/**
-	 * Obtiene el rect del canvas
-	 */
-	private getCanvasRect(): DOMRect | null {
-		return this.canvasRef?.nativeElement.getBoundingClientRect() || null;
-	}
-
-	/**
-	 * Convierte coordenadas de pointer a coordenadas de canvas
-	 */
-	private convertToCanvasCoords(
-		clientX: number,
-		clientY: number,
-		canvasRect: DOMRect,
-		elementSize: { ancho: number; alto: number },
-	): { x: number; y: number } {
-		// Calcular posición centrada en el cursor
-		const x = clientX - canvasRect.left - elementSize.ancho / 2;
-		const y = clientY - canvasRect.top - elementSize.alto / 2;
-
-		// Aplicar clamp
-		const clampedX = Math.max(
-			0,
-			Math.min(x, this.canvasDimensions.ancho - elementSize.ancho),
-		);
-		const clampedY = Math.max(
-			0,
-			Math.min(y, this.canvasDimensions.alto - elementSize.alto),
-		);
-
-		return {
-			x: Math.round(clampedX),
-			y: Math.round(clampedY),
-		};
-	}
+	// Elemento siendo arrastrado desde la lista
+	private draggingElement: ElementItem | null = null;
 
 	ngOnChanges(changes: SimpleChanges): void {
 		// Actualizar estado interno del canvas cuando cambia elements
@@ -222,19 +179,16 @@ export class PlanoViewComponent implements OnChanges {
 
 		console.log({ msg: 'onElementDragStart', elemento });
 
-		//? Estas banderas realmente las estamos usando?
-		// Reset flags
-		this.currentlyInserting = false;
-		this.sidebarDragData = null;
+		// Reset draggingElement
+		this.draggingElement = null;
 
 		// Verificar si el elemento está en el sidebar (elementosUnicos)
 		const existeEnSidebar = this.elementosUnicos.some(
 			(e) => e.id === elemento.id,
 		);
 		if (existeEnSidebar) {
-			// Viene del sidebar
-			this.sidebarDragData = elemento;
-			this.currentlyInserting = true;
+			// Viene del sidebar - marcar para crear nueva instancia
+			this.draggingElement = elemento;
 		}
 	}
 
@@ -256,74 +210,74 @@ export class PlanoViewComponent implements OnChanges {
 	}
 
 	/**
-	 * Fin de drag: calcula posición final y actualiza estado
+	 * Cuando se suelta el elemento (adaptado de repo GitHub)
 	 * Maneja tanto drag desde sidebar como movimiento de elementos existentes
-	 *
-	 * QA CHECKLIST:
-	 * ✓ Arrastrar desde sidebar → elemento aparece en posición correcta sin saltos
-	 * ✓ Mover elemento en canvas → posición actualizada solo al soltar
-	 * ✓ Elementos no se reordenan (sin comportamiento de lista)
-	 * ✓ Doble click selecciona elemento
-	 * ✓ Click en canvas deselecciona
-	 * ✓ Límites del canvas respetados (clamp automático)
-	 * ✓ Elementos independientes (pueden estar encimados)
 	 */
-	onElementDragEnd(event: CdkDragEnd, elemento: ElementItem): void {
-		if (!event?.source || !this.canvasRef) {
-			this.cleanupDragState();
-			return;
-		}
-
-		const canvasRect = this.getCanvasRect();
-		if (!canvasRect) {
+	onElementDropped(event: CdkDragEnd, elemento: ElementItem): void {
+		if (!event?.source) {
 			this.cleanupDragState();
 			return;
 		}
 
 		console.log({
-			msg: 'onElementDragEnd 1',
+			msg: 'onElementDropped 1',
 			elemento,
-			canvasElements: this.canvasElements,
+			draggingElement: this.draggingElement,
 		});
 
-		// Verificar si es drag desde sidebar (creación de nueva instancia)
-		if (this.sidebarDragData && this.currentlyInserting) {
-			// Obtener posición del elemento arrastrado
-			const elementRect =
-				event.source.element.nativeElement.getBoundingClientRect();
+		// Si es drag desde sidebar (creación de nueva instancia)
+		if (this.draggingElement) {
+			// Obtener el canvas
+			const canvasBoundary = this.canvasRef?.nativeElement;
+			if (!canvasBoundary) {
+				this.cleanupDragState();
+				event.source.reset();
+				return;
+			}
 
-			// Calcular centro del elemento arrastrado
-			const centerX = elementRect.left + elementRect.width / 2;
-			const centerY = elementRect.top + elementRect.height / 2;
+			// Obtener el elemento que se está arrastrando
+			const draggedElement = event.source.element.nativeElement;
+			const draggedRect = draggedElement.getBoundingClientRect();
 
-			// Convertir a coordenadas del canvas
-			const posicion = this.convertToCanvasCoords(
-				centerX,
-				centerY,
-				canvasRect,
-				this.sidebarDragData.tamano,
-			);
+			// Obtener las coordenadas del canvas
+			const canvasRect = canvasBoundary.getBoundingClientRect();
+			const dropPoint = event.dropPoint;
 
-			// Generar ID único
-			const nuevoId = `elemento-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+			// Verificar si se soltó dentro del canvas
+			if (
+				dropPoint.x >= canvasRect.left &&
+				dropPoint.x <= canvasRect.right &&
+				dropPoint.y >= canvasRect.top &&
+				dropPoint.y <= canvasRect.bottom
+			) {
+				// Calcular posición relativa al canvas
+				// Restamos la mitad del ancho/alto del elemento para centrarlo en el cursor
+				const positionX = dropPoint.x - canvasRect.left - draggedRect.width / 2;
+				const positionY = dropPoint.y - canvasRect.top - draggedRect.height / 2;
 
-			// Verificar que no exista (prevención de duplicados)
-			if (!this.isExistingElement(nuevoId)) {
-				// Crear nueva instancia
-				const nuevoElemento: ElementItem = {
-					...this.sidebarDragData,
-					id: nuevoId,
-					posicion,
-					tamano: { ...this.sidebarDragData.tamano },
+				// Asegurar que el elemento no se salga del canvas
+				const maxX =
+					this.canvasDimensions.ancho - this.draggingElement.tamano.ancho;
+				const maxY =
+					this.canvasDimensions.alto - this.draggingElement.tamano.alto;
+
+				const finalX = Math.max(0, Math.min(positionX, maxX));
+				const finalY = Math.max(0, Math.min(positionY, maxY));
+
+				// Crear nuevo elemento en el canvas
+				const newElement: ElementItem = {
+					...this.draggingElement,
+					id: `elemento-${this.canvasElementIdCounter++}`,
+					posicion: { x: Math.round(finalX), y: Math.round(finalY) },
+					tamano: { ...this.draggingElement.tamano },
 					rotacion: 0,
 				};
-
-				this.canvasElements.push(nuevoElemento);
-				this.elementoSeleccionado = nuevoElemento;
+				this.canvasElements.push(newElement);
+				this.elementoSeleccionado = newElement;
 
 				console.log({
-					msg: 'onElementDragEnd 2',
-					elemento,
+					msg: 'onElementDropped 2 - Elemento creado',
+					newElement,
 					canvasElements: this.canvasElements,
 				});
 			}
@@ -362,32 +316,29 @@ export class PlanoViewComponent implements OnChanges {
 					);
 
 					console.log({
-						msg: 'onElementDragEnd 3',
+						msg: 'onElementDropped 3 - Elemento movido',
 						elementoEnCanvas,
 						canvasElements: this.canvasElements,
 					});
 				}
 			}
-
-			console.log({
-				msg: 'onElementDragEnd 4',
-				elemento,
-				canvasElements: this.canvasElements,
-			});
 		}
 
+		// Resetear el elemento arrastrado
+		this.draggingElement = null;
+
+		// Resetear la posición del elemento de la lista
 		event.source.reset();
 		this.cleanupDragState();
 
-		console.log('onElementDragEnd 5');
+		console.log('onElementDropped 4 - Finalizado');
 	}
 
 	/**
 	 * Limpia estado de drag
 	 */
 	private cleanupDragState(): void {
-		this.sidebarDragData = null;
-		this.currentlyInserting = false;
+		this.draggingElement = null;
 	}
 
 	/**
