@@ -210,6 +210,68 @@ export class PlanoViewComponent implements OnChanges {
 	}
 
 	/**
+	 * Maneja el drag end de elementos YA en el canvas (solo actualiza posición)
+	 */
+	onCanvasElementDragEnd(event: CdkDragEnd, elemento: ElementItem): void {
+		console.log('🎯 onCanvasElementDragEnd - Inicio', {
+			elemento,
+			distance: event.distance,
+			dropPoint: event.dropPoint,
+		});
+
+		const distance = event.distance;
+
+		if (distance && (distance.x !== 0 || distance.y !== 0)) {
+			// Buscar el elemento en canvasElements por ID
+			const elementoEnCanvas = this.canvasElements.find(
+				(e) => e.id === elemento.id,
+			);
+
+			console.log('🔍 onCanvasElementDragEnd - Elemento encontrado', {
+				encontrado: !!elementoEnCanvas,
+				posicionAntes: elementoEnCanvas?.posicion,
+				distance,
+			});
+
+			if (elementoEnCanvas) {
+				// Actualizar posición del elemento encontrado
+				const nuevaX = elementoEnCanvas.posicion.x + distance.x;
+				const nuevaY = elementoEnCanvas.posicion.y + distance.y;
+
+				// Aplicar límites
+				const maxX = Math.max(
+					0,
+					this.canvasDimensions.ancho - elementoEnCanvas.tamano.ancho,
+				);
+				const maxY = Math.max(
+					0,
+					this.canvasDimensions.alto - elementoEnCanvas.tamano.alto,
+				);
+
+				elementoEnCanvas.posicion.x = Math.max(
+					0,
+					Math.min(Math.round(nuevaX), maxX),
+				);
+				elementoEnCanvas.posicion.y = Math.max(
+					0,
+					Math.min(Math.round(nuevaY), maxY),
+				);
+
+				// Actualizar la referencia de elementoSeleccionado
+				this.elementoSeleccionado = elementoEnCanvas;
+
+				console.log('✅ onCanvasElementDragEnd - Posición actualizada', {
+					posicionDespues: elementoEnCanvas.posicion,
+					elementoSeleccionado: this.elementoSeleccionado === elementoEnCanvas,
+				});
+			}
+		}
+
+		// Resetear la posición visual del drag
+		event.source.reset();
+	}
+
+	/**
 	 * Cuando se suelta el elemento (adaptado de repo GitHub)
 	 * Maneja tanto drag desde sidebar como movimiento de elementos existentes
 	 */
@@ -315,6 +377,9 @@ export class PlanoViewComponent implements OnChanges {
 						Math.min(Math.round(nuevaY), maxY),
 					);
 
+					// Actualizar la referencia de elementoSeleccionado
+					this.elementoSeleccionado = elementoEnCanvas;
+
 					console.log({
 						msg: 'onElementDropped 3 - Elemento movido',
 						elementoEnCanvas,
@@ -343,10 +408,17 @@ export class PlanoViewComponent implements OnChanges {
 
 	/**
 	 * Selecciona elemento al hacer doble click
+	 *
+	 * Busca el elemento en canvasElements para asegurar la referencia correcta
 	 */
 	seleccionarElemento(elemento: ElementItem, event: Event): void {
 		event.stopPropagation();
-		this.elementoSeleccionado = elemento;
+		// Buscar el elemento real en canvasElements
+		const elementoEnCanvas = this.canvasElements.find(
+			(e) => e.id === elemento.id,
+		);
+		this.elementoSeleccionado = elementoEnCanvas || null;
+		console.log({ elemento });
 	}
 
 	/**
@@ -426,15 +498,38 @@ export class PlanoViewComponent implements OnChanges {
 	 * Rota el elemento seleccionado 45 grados
 	 */
 	rotateElemento(): void {
+		console.log('🔄 rotateElemento - Inicio', {
+			elementoSeleccionado: this.elementoSeleccionado,
+			posicionSeleccionado: this.elementoSeleccionado?.posicion,
+			rotacionSeleccionado: this.elementoSeleccionado?.rotacion,
+		});
+
 		if (this.elementoSeleccionado) {
 			const elementoEnCanvas = this.canvasElements.find(
 				(e) => e.id === this.elementoSeleccionado?.id,
 			);
+
+			console.log('🔍 rotateElemento - Elemento encontrado', {
+				encontrado: !!elementoEnCanvas,
+				elementoEnCanvas,
+				posicionEnCanvas: elementoEnCanvas?.posicion,
+				rotacionEnCanvas: elementoEnCanvas?.rotacion,
+				mismaReferencia: elementoEnCanvas === this.elementoSeleccionado,
+			});
+
 			if (elementoEnCanvas) {
-				elementoEnCanvas.rotacion = (elementoEnCanvas.rotacion || 0) + 45;
+				const rotacionAntes = elementoEnCanvas.rotacion || 0;
+				elementoEnCanvas.rotacion = rotacionAntes + 45;
 				if (elementoEnCanvas.rotacion >= 360) {
 					elementoEnCanvas.rotacion = 0;
 				}
+
+				console.log('✅ rotateElemento - Después de rotar', {
+					rotacionAntes,
+					rotacionDespues: elementoEnCanvas.rotacion,
+					posicionDespues: elementoEnCanvas.posicion,
+					elementoSeleccionadoPosicion: this.elementoSeleccionado.posicion,
+				});
 			}
 		}
 	}

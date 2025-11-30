@@ -142,6 +142,7 @@
             [cdkDragData]="elemento"
             cdkDragBoundary=".canvas"
             [cdkDragPreviewClass]="'cdk-drag-preview'"
+            (cdkDragEnded)="onCanvasElementDragEnd($event, elemento)"
             (dblclick)="seleccionarElemento(elemento, $event)"
           >
             <div class="elemento-contenido">
