@@ -8,6 +8,13 @@
         <p class="subtitle">Gestión de eventos y notas de venta</p>
       </div>
     </div>
+
+    <!--
+      Usamos '/evento/nuevo-evento' (singular) en lugar de '/eventos/nuevo-evento'
+      porque en el routing de Angular, 'evento' es el módulo padre independiente
+      que agrupa las rutas de creación/edición, mientras que 'eventos' es para listado
+      y rutas dinámicas con :id
+    -->
     <a mat-raised-button color="primary" href="/evento/nuevo-evento" class="create-button">
       <mat-icon>add_circle</mat-icon>
       Nuevo Evento

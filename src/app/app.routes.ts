@@ -280,7 +280,11 @@ export const routes: Routes = [
 						'./modules/catalogos/productos-servicios/productos-servicios.component'
 					).then((m) => m.ProductosServiciosComponent),
 			},
+
 			// Ruta para crear un nuevo evento
+
+			// 'evento' es módulo standalone para creación/edición, 'eventos' maneja
+			// listado y rutas dinámicas con :id
 			{
 				path: 'evento/nuevo-evento',
 				loadComponent: () =>

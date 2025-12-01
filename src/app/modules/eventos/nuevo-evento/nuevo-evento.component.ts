@@ -477,7 +477,7 @@ export class NuevoEventoComponent implements OnInit {
 							this.resetearFormulario();
 
 							// Navegar a la lista de eventos
-							this.router.navigate(['/eventos/lista-tabla']);
+							this.router.navigate(['/eventos']);
 						},
 						error: () => {
 							this.showMessage('Error al guardar en lista de eventos', 'error');
