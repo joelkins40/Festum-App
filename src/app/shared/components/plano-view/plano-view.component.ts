@@ -42,7 +42,7 @@ import { ElementItem, Product, ElementoEnCanvas } from './types';
  * @example
  * ```html
  * <app-plano-view
- *   [elements]="elementos"
+ *   [elements]="{ElementItem[]}"
  *   [plantillaNombre]="'Salón Principal'"
  *   [showSidebar]="true">
  * </app-plano-view>
