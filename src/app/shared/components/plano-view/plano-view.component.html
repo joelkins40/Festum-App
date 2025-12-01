@@ -137,7 +137,6 @@
             [style.top.px]="elemento.posicion.y"
             [style.width.px]="elemento.tamano.ancho"
             [style.height.px]="elemento.tamano.alto"
-            [ngStyle]="getElementoStyle(elemento)"
             cdkDrag
             [cdkDragData]="elemento"
             cdkDragBoundary=".canvas"
@@ -145,7 +144,7 @@
             (cdkDragEnded)="onCanvasElementDragEnd($event, elemento)"
             (dblclick)="seleccionarElemento(elemento, $event)"
           >
-            <div class="elemento-contenido">
+            <div class="elemento-contenido" [ngStyle]="getElementoStyle(elemento)">
               <mat-icon
                 [style.color]="elemento.color"
                 [style.font-size.px]="getIconSize(elemento)"

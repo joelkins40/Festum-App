@@ -263,6 +263,7 @@ export class PlanoViewComponent implements OnChanges {
 				console.log('✅ onCanvasElementDragEnd - Posición actualizada', {
 					posicionDespues: elementoEnCanvas.posicion,
 					elementoSeleccionado: this.elementoSeleccionado === elementoEnCanvas,
+					rotacionElemento: elementoEnCanvas.rotacion,
 				});
 			}
 		}
