@@ -24,34 +24,30 @@ import {
 } from '@angular/cdk/drag-drop';
 
 import { ElementItem, Product, ElementoEnCanvas } from './types';
-// todo: escribir un tsdoc mas declarativo y con mas concordancia para este componente
-/**
- * 🎯 DRAG & DROP REFACTOR - Comportamiento Híbrido
- * ======================================================
- *
- * Arquitectura corregida:
- * 1. ✅ Sidebar: usa cdkDropList para lista ordenada de elementos únicos
- *    - Permite reordenamiento interno (drag & drop dentro del sidebar)
- *    - Los elementos se pueden arrastrar AL canvas
- * 2. ✅ Canvas: NO es cdkDropList, es cdkDragBoundary para posicionamiento libre
- *    - Sin comportamiento de lista (sin reordenamiento)
- *    - Elementos posicionados por coordenadas absolutas
- * 3. ✅ Transferencia: drag desde sidebar crea nuevas instancias en canvas
- *    - onElementDragEnd detecta si viene del sidebar (sidebarDragData)
- *    - Calcula posición usando getBoundingClientRect()
- *    - Crea instancia nueva con ID único
- * 4. ✅ Selección: doble click para seleccionar, click en canvas para deseleccionar
- * 5. ✅ Movimiento: elementos en canvas usan event.distance sin escala
- * 6. ✅ Angular 19: @for en template, sintaxis moderna
- *
- * Comportamiento final:
- * - Sidebar mantiene lista ordenada (cdkDropList con sorting)
- * - Canvas es área libre (sin cdkDropList, solo cdkDragBoundary)
- * - No más saltos al arrastrar
- * - Posiciones calculadas directamente
- * - Clamp automático dentro de límites del canvas
- */
 
+/**
+ * Componente de vista de plano interactivo para diseño de eventos.
+ *
+ * **Arquitectura:**
+ * - **Sidebar**: Lista ordenable (cdkDropList) de elementos únicos reutilizables
+ * - **Canvas**: Área de posicionamiento libre (cdkDragBoundary) sin lista, coordenadas absolutas
+ *
+ * **Funcionalidad:**
+ * - Arrastra elementos del sidebar al canvas para crear instancias únicas
+ * - Mueve elementos en el canvas con actualización de posición en tiempo real
+ * - Selecciona con doble click, manipula con teclado (R=rotar, +/-=escalar, Del=eliminar)
+ * - Rotación aplicada al contenedor interno para evitar conflictos con transform de CDK Drag
+ * - Referencias sincronizadas: siempre trabaja con el objeto real en canvasElements
+ *
+ * @example
+ * ```html
+ * <app-plano-view
+ *   [elements]="elementos"
+ *   [plantillaNombre]="'Salón Principal'"
+ *   [showSidebar]="true">
+ * </app-plano-view>
+ * ```
+ */
 @Component({
 	selector: 'app-plano-view',
 	standalone: true,
