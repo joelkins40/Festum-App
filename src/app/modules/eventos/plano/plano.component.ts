@@ -17,14 +17,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
-import {
-	CdkDragDrop,
-	CdkDrag,
-	CdkDropList,
-	CdkDragEnd,
-	CdkDragStart,
-} from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
+import { PlanoViewComponent } from '../../../shared/components/plano-view/plano-view.component';
 
 export interface ElementoArrastrable {
 	id: string;
@@ -79,8 +73,7 @@ export interface DisenoGuardado {
 		MatSnackBarModule,
 		MatTooltipModule,
 		MatDividerModule,
-		CdkDropList,
-		CdkDrag,
+		PlanoViewComponent,
 	],
 	templateUrl: './plano.component.html',
 	styleUrl: './plano.component.scss',
@@ -90,6 +83,7 @@ export class PlanoComponent implements OnInit {
 	canvasRef!: ElementRef<HTMLDivElement>;
 	@ViewChild('fileInput', { static: false })
 	fileInputRef!: ElementRef<HTMLInputElement>;
+	@ViewChild(PlanoViewComponent) planoView!: PlanoViewComponent;
 
 	private snackBar = inject(MatSnackBar);
 
@@ -98,101 +92,8 @@ export class PlanoComponent implements OnInit {
 	plantillaSeleccionada: PlantillaSalon | null = null;
 	elementosEnCanvas: ElementoEnCanvas[] = [];
 
-	// Elementos arrastrables del sidebar
-	elementosArrastrables: ElementoArrastrable[] = [
-		{
-			id: 'mesa-redonda',
-			tipo: 'mesa-redonda',
-			nombre: 'Mesa Redonda',
-			icono: 'table_restaurant',
-			color: '#8b4513',
-			tamano: { ancho: 120, alto: 120 },
-		},
-		{
-			id: 'mesa-rectangular',
-			tipo: 'mesa-rectangular',
-			nombre: 'Mesa Rectangular',
-			icono: 'table_bar',
-			color: '#8b4513',
-			tamano: { ancho: 180, alto: 90 },
-		},
-		{
-			id: 'silla',
-			tipo: 'silla',
-			nombre: 'Silla',
-			icono: 'event_seat',
-			color: '#654321',
-			tamano: { ancho: 50, alto: 50 },
-		},
-		{
-			id: 'escenario',
-			tipo: 'escenario',
-			nombre: 'Escenario',
-			icono: 'theater_comedy',
-			color: '#9c27b0',
-			tamano: { ancho: 300, alto: 150 },
-		},
-		{
-			id: 'barra',
-			tipo: 'barra',
-			nombre: 'Barra',
-			icono: 'local_bar',
-			color: '#20b2aa',
-			tamano: { ancho: 220, alto: 80 },
-		},
-		{
-			id: 'cabina-dj',
-			tipo: 'cabina-dj',
-			nombre: 'Cabina DJ/Sonido',
-			icono: 'library_music',
-			color: '#4a4a4a',
-			tamano: { ancho: 150, alto: 120 },
-		},
-		{
-			id: 'zona-comida',
-			tipo: 'zona-comida',
-			nombre: 'Zona de Comida',
-			icono: 'restaurant_menu',
-			color: '#ff6b35',
-			tamano: { ancho: 250, alto: 180 },
-		},
-		{
-			id: 'entrada',
-			tipo: 'entrada',
-			nombre: 'Entrada',
-			icono: 'meeting_room',
-			color: '#607d8b',
-			tamano: { ancho: 90, alto: 150 },
-		},
-		{
-			id: 'baños',
-			tipo: 'baños',
-			nombre: 'Baños',
-			icono: 'wc',
-			color: '#795548',
-			tamano: { ancho: 120, alto: 120 },
-		},
-		{
-			id: 'planta',
-			tipo: 'planta',
-			nombre: 'Planta/Decoración',
-			icono: 'local_florist',
-			color: '#4caf50',
-			tamano: { ancho: 60, alto: 60 },
-		},
-		{
-			id: 'mesa-regalos',
-			tipo: 'mesa-regalos',
-			nombre: 'Mesa de Regalos',
-			icono: 'card_giftcard',
-			color: '#e91e63',
-			tamano: { ancho: 150, alto: 90 },
-		},
-	];
-
 	// Control de UI
-	sidebarAbierto = true;
-	elementoSeleccionado: ElementoEnCanvas | null = null;
+	// sidebarAbierto y elementoSeleccionado ahora son manejados por PlanoViewComponent
 
 	ngOnInit() {
 		this.cargarPlantillas();
@@ -264,202 +165,25 @@ export class PlanoComponent implements OnInit {
 		this.mostrarMensaje(`Plantilla "${plantilla.nombre}" cargada`);
 	}
 
-	onDrop(
-		event: CdkDragDrop<ElementoArrastrable[]> | CdkDragDrop<ElementoEnCanvas[]>,
-	) {
-		if (event.previousContainer !== event.container) {
-			// Elemento arrastrado desde sidebar al canvas
-			const elementoArrastrable = event.item.data as ElementoArrastrable;
-
-			if (elementoArrastrable && this.plantillaSeleccionada) {
-				// Calcular posición basada en donde se soltó el elemento
-				const canvasRect = this.canvasRef.nativeElement.getBoundingClientRect();
-				const dropPoint = event.dropPoint;
-
-				// Calcular posición relativa al canvas
-				const x =
-					dropPoint.x - canvasRect.left - elementoArrastrable.tamano.ancho / 2;
-				const y =
-					dropPoint.y - canvasRect.top - elementoArrastrable.tamano.alto / 2;
-
-				const nuevoElemento: ElementoEnCanvas = {
-					id: this.generarIdUnico(),
-					tipo: elementoArrastrable.tipo,
-					nombre: elementoArrastrable.nombre,
-					posicion: {
-						x: Math.max(
-							0,
-							Math.min(
-								x,
-								this.plantillaSeleccionada.dimensiones.ancho -
-									elementoArrastrable.tamano.ancho,
-							),
-						),
-						y: Math.max(
-							0,
-							Math.min(
-								y,
-								this.plantillaSeleccionada.dimensiones.alto -
-									elementoArrastrable.tamano.alto,
-							),
-						),
-					},
-					tamano: { ...elementoArrastrable.tamano },
-					color: elementoArrastrable.color,
-					icono: elementoArrastrable.icono,
-					rotacion: 0,
-				};
-
-				this.elementosEnCanvas.push(nuevoElemento);
-				this.guardarAutomaticamente();
-				this.mostrarMensaje(`${elementoArrastrable.nombre} agregado`);
-			}
-		}
-	}
-
-	onElementDragStart(_event: CdkDragStart, _elemento: ElementoEnCanvas) {
-		// El drag start se maneja automáticamente por el CDK
-		// No necesitamos guardar posición original ya que usamos event.distance
-	}
-
-	onElementDragEnd(event: CdkDragEnd, elemento: ElementoEnCanvas) {
-		if (!event?.source) {
-			return;
-		}
-
-		// Obtener la distancia movida por el drag
-		const distance = event.distance;
-
-		if (!distance || (!distance.x && !distance.y)) {
-			// No hubo movimiento, solo limpiar
-			event.source.reset();
-			return;
-		}
-
-		// Obtener dimensiones del canvas
-		const canvasElement = this.canvasRef?.nativeElement;
-		if (!canvasElement) {
-			event.source.reset();
-			return;
-		}
-
-		const canvasLogicalWidth =
-			this.plantillaSeleccionada?.dimensiones?.ancho || 800;
-		const canvasLogicalHeight =
-			this.plantillaSeleccionada?.dimensiones?.alto || 600;
-
-		// La distancia ya viene en píxeles de pantalla, necesitamos convertirla
-		// a coordenadas lógicas del canvas si hay escalado
-		const canvasRect = canvasElement.getBoundingClientRect();
-		const scaleX = canvasRect.width / canvasLogicalWidth;
-		const scaleY = canvasRect.height / canvasLogicalHeight;
-
-		// Convertir el movimiento a coordenadas lógicas
-		const deltaX = distance.x / scaleX;
-		const deltaY = distance.y / scaleY;
-
-		// Calcular nueva posición basada en la posición actual
-		const nuevaX = elemento.posicion.x + deltaX;
-		const nuevaY = elemento.posicion.y + deltaY;
-
-		// Aplicar límites para mantener el elemento dentro del canvas
-		const maxX = Math.max(
-			0,
-			canvasLogicalWidth - (elemento.tamano?.ancho || 50),
-		);
-		const maxY = Math.max(
-			0,
-			canvasLogicalHeight - (elemento.tamano?.alto || 50),
-		);
-
-		// Actualizar posición del elemento con límites
-		elemento.posicion.x = Math.max(0, Math.min(Math.round(nuevaX), maxX));
-		elemento.posicion.y = Math.max(0, Math.min(Math.round(nuevaY), maxY));
-
-		// Resetear el transform del CDK para que use la nueva posición CSS
-		event.source.reset();
-
-		// Guardar cambios
-		this.guardarAutomaticamente();
-	}
-
-	seleccionarElemento(elemento: ElementoEnCanvas, event: Event) {
-		event.stopPropagation();
-		this.elementoSeleccionado = elemento;
-	}
-
-	eliminarElemento(elemento: ElementoEnCanvas) {
-		// Solo permitir eliminar elementos que no sean fijos de la plantilla
-		if (
-			!this.plantillaSeleccionada?.elementosFijos.find(
-				(e) => e.id === elemento.id,
-			)
-		) {
-			const index = this.elementosEnCanvas.indexOf(elemento);
-			if (index > -1) {
-				this.elementosEnCanvas.splice(index, 1);
-				this.elementoSeleccionado = null;
-				this.guardarAutomaticamente();
-				this.mostrarMensaje('Elemento eliminado');
-			}
-		} else {
-			this.mostrarMensaje(
-				'No se pueden eliminar elementos fijos de la plantilla',
-			);
-		}
-	}
-
-	rotarElemento(elemento: ElementoEnCanvas) {
-		elemento.rotacion = (elemento.rotacion || 0) + 45;
-		if (elemento.rotacion >= 360) {
-			elemento.rotacion = 0;
-		}
-		this.guardarAutomaticamente();
-	}
-
-	redimensionarElemento(
-		elemento: ElementoEnCanvas,
-		direccion: 'mas' | 'menos',
-	) {
-		if (this.isElementoFijo(elemento)) {
-			this.mostrarMensaje(
-				'No se puede redimensionar elementos fijos de la plantilla',
-			);
-			return;
-		}
-
-		const factor = direccion === 'mas' ? 1.2 : 0.8;
-		const nuevoAncho = Math.max(
-			40,
-			Math.min(500, elemento.tamano.ancho * factor),
-		);
-		const nuevoAlto = Math.max(
-			40,
-			Math.min(500, elemento.tamano.alto * factor),
-		);
-
-		elemento.tamano.ancho = nuevoAncho;
-		elemento.tamano.alto = nuevoAlto;
-		this.guardarAutomaticamente();
-		this.mostrarMensaje(
-			`Elemento ${direccion === 'mas' ? 'ampliado' : 'reducido'}`,
-		);
-	}
-
 	nuevoDiseno() {
 		if (this.plantillaSeleccionada) {
 			this.elementosEnCanvas = [...this.plantillaSeleccionada.elementosFijos];
-			this.elementoSeleccionado = null;
+			// this.elementoSeleccionado = null; // Ya no se usa
 			this.limpiarAutosave();
 			this.mostrarMensaje('Nuevo diseño iniciado');
 		}
 	}
 
 	guardarDiseno() {
+		// Obtener elementos actuales del componente hijo si está disponible
+		const elementosActuales = this.planoView
+			? this.planoView.canvasElements
+			: this.elementosEnCanvas;
+
 		const diseno: DisenoGuardado = {
 			plantillaId: this.plantillaSeleccionada?.id || '',
 			plantillaNombre: this.plantillaSeleccionada?.nombre || '',
-			elementos: this.elementosEnCanvas.filter(
+			elementos: elementosActuales.filter(
 				(e) =>
 					!this.plantillaSeleccionada?.elementosFijos.find(
 						(f) => f.id === e.id,
@@ -493,9 +217,14 @@ export class PlanoComponent implements OnInit {
 	}
 
 	private guardarAutomaticamente() {
+		// Obtener elementos actuales del componente hijo si está disponible
+		const elementosActuales = this.planoView
+			? this.planoView.canvasElements
+			: this.elementosEnCanvas;
+
 		const diseno = {
 			plantillaId: this.plantillaSeleccionada?.id,
-			elementos: this.elementosEnCanvas.filter(
+			elementos: elementosActuales.filter(
 				(e) =>
 					!this.plantillaSeleccionada?.elementosFijos.find(
 						(f) => f.id === e.id,
@@ -527,12 +256,6 @@ export class PlanoComponent implements OnInit {
 		if (typeof window !== 'undefined' && localStorage) {
 			localStorage.removeItem('festum_autosave_diseno');
 		}
-	}
-
-	private generarIdUnico(): string {
-		return (
-			'elemento_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now()
-		);
 	}
 
 	private mostrarMensaje(mensaje: string) {
@@ -676,183 +399,7 @@ export class PlanoComponent implements OnInit {
 			];
 		}
 
-		// Deseleccionar elemento actual
-		this.elementoSeleccionado = null;
-
 		// Guardar en autosave
 		this.guardarAutomaticamente();
-	}
-
-	trackByElementId(index: number, elemento: ElementoEnCanvas): string {
-		return elemento.id || `elemento-${index}`;
-	}
-
-	getIconSize(elemento: ElementoEnCanvas): number {
-		if (!elemento?.tamano) return 24;
-
-		// Usar el tamaño más pequeño entre ancho y alto como referencia
-		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
-
-		// El ícono será proporcional al 60% de la dimensión más pequeña
-		const iconSize = minDimension * 0.6;
-
-		// Límites para asegurar legibilidad
-		const minSize = 24; // Tamaño mínimo aumentado para evitar cortes
-		const maxSize = 80; // Tamaño máximo más grande para elementos grandes
-
-		const result = Math.max(minSize, Math.min(maxSize, Math.round(iconSize)));
-		return Number.isFinite(result) ? result : 24;
-	}
-
-	shouldShowLabel(elemento: ElementoEnCanvas): boolean {
-		if (!elemento?.tamano) return false;
-
-		// Ocultar etiqueta si el elemento es muy pequeño (menos de 70px de ancho o alto)
-		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
-		return minDimension >= 70;
-	}
-
-	getLabelFontSize(elemento: ElementoEnCanvas): number {
-		if (!elemento?.tamano) return 10;
-
-		// Usar dimensión más pequeña como base para el tamaño de fuente
-		const minDimension = Math.min(elemento.tamano.ancho, elemento.tamano.alto);
-		const fontSize = minDimension * 0.12;
-
-		// Límites para buena legibilidad
-		const result = Math.max(9, Math.min(14, fontSize));
-		return Number.isFinite(result) ? result : 10;
-	}
-
-	isElementoFijo(elemento: ElementoEnCanvas): boolean {
-		return !!this.plantillaSeleccionada?.elementosFijos.find(
-			(e) => e.id === elemento.id,
-		);
-	}
-
-	getMiniElementoStyle(elemento: ElementoEnCanvas) {
-		return {
-			position: 'absolute',
-			'left.px': elemento.posicion.x / 10,
-			'top.px': elemento.posicion.y / 10,
-			'width.px': elemento.tamano.ancho / 10,
-			'height.px': elemento.tamano.alto / 10,
-			'background-color': elemento.color,
-		};
-	}
-
-	// Métodos de teclado
-	onKeyDown(event: KeyboardEvent) {
-		if (!this.elementoSeleccionado) return;
-
-		switch (event.key) {
-			case 'Delete':
-			case 'Backspace':
-				this.eliminarElemento(this.elementoSeleccionado);
-				break;
-			case 'ArrowUp':
-				this.moverElemento(this.elementoSeleccionado, 'arriba');
-				event.preventDefault();
-				break;
-			case 'ArrowDown':
-				this.moverElemento(this.elementoSeleccionado, 'abajo');
-				event.preventDefault();
-				break;
-			case 'ArrowLeft':
-				this.moverElemento(this.elementoSeleccionado, 'izquierda');
-				event.preventDefault();
-				break;
-			case 'ArrowRight':
-				this.moverElemento(this.elementoSeleccionado, 'derecha');
-				event.preventDefault();
-				break;
-			case '+':
-			case '=':
-				this.redimensionarElemento(this.elementoSeleccionado, 'mas');
-				event.preventDefault();
-				break;
-			case '-':
-				this.redimensionarElemento(this.elementoSeleccionado, 'menos');
-				event.preventDefault();
-				break;
-			case 'r':
-			case 'R':
-				this.rotarElemento(this.elementoSeleccionado);
-				event.preventDefault();
-				break;
-		}
-	}
-
-	moverElemento(
-		elemento: ElementoEnCanvas,
-		direccion: 'arriba' | 'abajo' | 'izquierda' | 'derecha',
-	) {
-		if (this.isElementoFijo(elemento)) {
-			this.mostrarMensaje('No se puede mover elementos fijos de la plantilla');
-			return;
-		}
-
-		const incremento = 5;
-		const maxX =
-			(this.plantillaSeleccionada?.dimensiones.ancho || 800) -
-			elemento.tamano.ancho;
-		const maxY =
-			(this.plantillaSeleccionada?.dimensiones.alto || 600) -
-			elemento.tamano.alto;
-
-		switch (direccion) {
-			case 'arriba':
-				elemento.posicion.y = Math.max(0, elemento.posicion.y - incremento);
-				break;
-			case 'abajo':
-				elemento.posicion.y = Math.min(maxY, elemento.posicion.y + incremento);
-				break;
-			case 'izquierda':
-				elemento.posicion.x = Math.max(0, elemento.posicion.x - incremento);
-				break;
-			case 'derecha':
-				elemento.posicion.x = Math.min(maxX, elemento.posicion.x + incremento);
-				break;
-		}
-		this.guardarAutomaticamente();
-	}
-
-	toggleSidebar() {
-		this.sidebarAbierto = !this.sidebarAbierto;
-	}
-
-	getCanvasStyle() {
-		if (!this.plantillaSeleccionada) {
-			return {
-				'width.px': 800,
-				'height.px': 600,
-				'min-width.px': 800,
-				'min-height.px': 600,
-			};
-		}
-
-		const style = {
-			'width.px': this.plantillaSeleccionada.dimensiones.ancho,
-			'height.px': this.plantillaSeleccionada.dimensiones.alto,
-			'min-width.px': this.plantillaSeleccionada.dimensiones.ancho,
-			'min-height.px': this.plantillaSeleccionada.dimensiones.alto,
-		};
-
-		return style;
-	}
-
-	getElementoStyle(elemento: ElementoEnCanvas) {
-		const style = {
-			position: 'absolute',
-			'left.px': elemento.posicion.x,
-			'top.px': elemento.posicion.y,
-			'width.px': elemento.tamano.ancho,
-			'height.px': elemento.tamano.alto,
-			'background-color': 'transparent',
-			transform: elemento.rotacion ? `rotate(${elemento.rotacion}deg)` : 'none',
-			'z-index': 1,
-		};
-
-		return style;
 	}
 }
