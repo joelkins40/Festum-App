@@ -32,7 +32,7 @@ import { HerramientasAvanzadasSectionComponent } from './herramientas-avanzadas-
 	templateUrl: './evento-page.component.html',
 	styleUrl: './evento-page.component.scss',
 })
-export class EventoDetalleComponent {
+export class EventoPageComponent {
 	private route = inject(ActivatedRoute);
 	private router = inject(Router);
 	private eventosService = inject(ListaEventosService);

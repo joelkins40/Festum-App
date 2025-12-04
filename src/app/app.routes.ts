@@ -235,7 +235,7 @@ export const routes: Routes = [
 				path: 'eventos/:id',
 				loadComponent: () =>
 					import('./modules/eventos/evento-page/evento-page.component').then(
-						(m) => m.EventoDetalleComponent,
+						(m) => m.EventoPageComponent,
 					),
 			},
 			{
