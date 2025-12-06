@@ -226,6 +226,7 @@ export class TipoEventosComponent implements OnInit {
           key: 'descripcion',
           label: 'Descripción',
           placeholder: 'Ej: Boda, XV Años, Cumpleaños',
+          icon: 'event',
           required: true,
           minLength: 3,
           maxLength: 100
@@ -261,6 +262,7 @@ export class TipoEventosComponent implements OnInit {
           key: 'descripcion',
           label: 'Descripción',
           placeholder: 'Ej: Boda, XV Años, Cumpleaños',
+          icon: 'event',
           required: true,
           minLength: 3,
           maxLength: 100,
@@ -268,7 +270,7 @@ export class TipoEventosComponent implements OnInit {
         }
       ],
       confirmButtonText: 'Guardar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     };
 
     const dialogRef = this.dialog.open(DynamicFormDialogComponent, {

@@ -15,9 +15,9 @@
  *   title: 'Crear Cliente',
  *   subtitle: 'Complete la información del cliente',
  *   fields: [
- *     { type: 'text', key: 'nombre', label: 'Nombre', required: true },
- *     { type: 'email', key: 'email', label: 'Email', required: true },
- *     { type: 'select', key: 'ciudad', label: 'Ciudad', options: ['CDMX', 'Puebla'] }
+ *     { type: 'text', key: 'nombre', label: 'Nombre', icon: 'person', required: true },
+ *     { type: 'email', key: 'email', label: 'Email', icon: 'email', required: true },
+ *     { type: 'select', key: 'ciudad', label: 'Ciudad', icon: 'location_city', options: ['CDMX', 'Puebla'] }
  *   ],
  *   confirmButtonText: 'Guardar',
  *   cancelButtonText: 'Cancelar'
@@ -43,6 +43,7 @@
  *     type: 'select',
  *     key: 'userId',
  *     label: 'Usuario',
+ *     icon: 'person',
  *     options: [
  *       { label: 'Juan Pérez', value: 1 },
  *       { label: 'María García', value: 2 }

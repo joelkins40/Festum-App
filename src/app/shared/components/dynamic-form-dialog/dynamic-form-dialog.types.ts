@@ -89,6 +89,12 @@ export interface DynamicFormField {
 	 * @default false
 	 */
 	disabled?: boolean;
+
+	/**
+	 * Icono de Material Icons a mostrar dentro del input (lado izquierdo)
+	 * @example 'person', 'email', 'phone', 'event'
+	 */
+	icon?: string;
 }
 
 /**
