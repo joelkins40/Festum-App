@@ -1,6 +1,6 @@
 <!-- ===== CATEGORÍAS COMPONENT ===== -->
 <div class="categorias-container">
-  
+
   <!-- Header Principal -->
   <div class="page-header">
     <div class="header-content">
@@ -12,11 +12,11 @@
         Administra las categorías de eventos disponibles en el sistema
       </p>
     </div>
-    
+
     <!-- Action Button -->
     <div class="header-actions">
-      <button mat-raised-button 
-              color="primary" 
+      <button mat-raised-button
+              color="primary"
               (click)="abrirModalCrear()"
               class="create-button">
         <mat-icon>add_circle</mat-icon>
@@ -28,8 +28,8 @@
   <!-- Loading Global -->
   <div class="loading-overlay" *ngIf="loading">
     <div class="loading-content">
-      <mat-progress-spinner 
-        diameter="60" 
+      <mat-progress-spinner
+        diameter="60"
         mode="indeterminate"
         color="primary">
       </mat-progress-spinner>
@@ -39,13 +39,13 @@
 
   <!-- Main Content Card -->
   <mat-card class="main-card">
-    
+
     <!-- Toolbar de Acciones -->
     <div class="table-toolbar">
       <div class="search-container">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Buscar categorías</mat-label>
-          <input matInput 
+          <input matInput
                  [(ngModel)]="filtroTexto"
                  (keyup)="aplicarFiltro()"
                  placeholder="Buscar por descripción...">
@@ -55,8 +55,8 @@
 
       <div class="action-buttons">
         <!-- Botón Importar -->
-        <button mat-raised-button 
-                color="accent" 
+        <button mat-raised-button
+                color="accent"
                 (click)="abrirImportador()"
                 [disabled]="loading"
                 class="toolbar-button">
@@ -65,7 +65,7 @@
         </button>
 
         <!-- Botón Exportar -->
-        <button mat-raised-button 
+        <button mat-raised-button
                 color="primary"
                 (click)="exportarCSV()"
                 [disabled]="loading || dataSource.data.length === 0"
@@ -75,7 +75,7 @@
         </button>
 
         <!-- Botón Refrescar -->
-        <button mat-icon-button 
+        <button mat-icon-button
                 (click)="cargarCategorias()"
                 [disabled]="loading"
                 matTooltip="Refrescar datos">
@@ -88,9 +88,9 @@
 
     <!-- Tabla de Categorías -->
     <div class="table-container">
-      <table mat-table 
-             [dataSource]="dataSource" 
-             matSort 
+      <table mat-table
+             [dataSource]="dataSource"
+             matSort
              class="categorias-table">
 
         <!-- Columna ID -->
@@ -127,7 +127,7 @@
         <ng-container matColumnDef="activo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="estado-column">Estado</th>
           <td mat-cell *matCellDef="let categoria" class="estado-cell">
-            <mat-chip class="estado-chip" 
+            <mat-chip class="estado-chip"
                      [ngClass]="categoria.activo ? 'activo' : 'inactivo'">
               <mat-icon class="estado-icon">
                 {{ categoria.activo ? 'check_circle' : 'cancel' }}
@@ -142,15 +142,15 @@
           <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
           <td mat-cell *matCellDef="let categoria" class="acciones-cell">
             <div class="acciones-container">
-              <button mat-icon-button 
+              <button mat-icon-button
                       class="edit-button"
                       (click)="abrirModalEditar(categoria)"
                       matTooltip="Editar categoría"
                       [disabled]="loading">
                 <mat-icon>edit</mat-icon>
               </button>
-              
-              <button mat-icon-button 
+
+              <button mat-icon-button
                       class="delete-button"
                       (click)="confirmarEliminacion(categoria)"
                       matTooltip="Eliminar categoría"
@@ -181,8 +181,8 @@
 
       <!-- Loading Overlay dentro de la tabla -->
       <div *ngIf="loading" class="table-loading-overlay">
-        <mat-progress-spinner 
-          color="primary" 
+        <mat-progress-spinner
+          color="primary"
           mode="indeterminate"
           diameter="60">
         </mat-progress-spinner>
