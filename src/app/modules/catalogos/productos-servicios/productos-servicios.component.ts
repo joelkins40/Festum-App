@@ -28,7 +28,10 @@ import { CategoriasService } from '../../../core/services/categorias.service';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ProductosServiciosDialogComponent } from './productos-servicios-dialog/productos-servicios-dialog.component';
+import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
+import { calculateDialogWidth,
+DynamicFormConfig, DynamicFormResult } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-productos-servicios',
@@ -51,36 +54,37 @@ import { ProductosServiciosDialogComponent } from './productos-servicios-dialog/
     MatDialogModule,
     MatChipsModule,
     MatTooltipModule,
-    MatDividerModule
+    MatDividerModule,
+    ButtonComponent
   ],
   templateUrl: './productos-servicios.component.html',
   styleUrl: './productos-servicios.component.scss'
 })
 export class ProductosServiciosComponent implements OnInit {
-  
+
   // ===== FORM Y VALIDACIONES =====
   filtroForm!: FormGroup;
   productoServicioSeleccionado: ProductoServicio | null = null;
-  
+
   // ===== TABLA Y DATOS =====
   dataSource = new MatTableDataSource<ProductoServicio>([]);
   columnasDisplayed: string[] = ['id', 'tipo', 'categoria', 'clave', 'nombre', 'stock', 'precioPublico', 'precioEspecial', 'activo', 'acciones'];
   filtroTexto = '';
   filtroTipo = '';
   filtroCategoria = '';
-  
+
   // ===== ESTADOS =====
   loading = false;
   productosServicios: ProductoServicio[] = [];
   categorias: Categoria[] = [];
-  
+
   // Opciones para filtros
   tiposDisponibles = [
     { value: '', label: 'Todos' },
     { value: 'Producto', label: 'Productos' },
     { value: 'Servicio', label: 'Servicios' }
   ];
-  
+
   // ===== VIEW CHILDREN =====
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -103,7 +107,7 @@ export class ProductosServiciosComponent implements OnInit {
   }
 
   // ===== INICIALIZACIÓN =====
-  
+
   /**
    * 🔧 Inicializar formulario de filtros
    */
@@ -127,13 +131,13 @@ export class ProductosServiciosComponent implements OnInit {
       if (this.sort) {
         this.dataSource.sort = this.sort;
       }
-      
+
       // Configurar filtro personalizado
       this.dataSource.filterPredicate = (data: ProductoServicio, filter: string) => {
         const filterObj = JSON.parse(filter);
-        
+
         let matches = true;
-        
+
         // Filtro por texto
         if (filterObj.texto) {
           const searchText = filterObj.texto.toLowerCase();
@@ -144,17 +148,17 @@ export class ProductosServiciosComponent implements OnInit {
             (data.categoria?.descripcion?.toLowerCase().includes(searchText) || false)
           );
         }
-        
+
         // Filtro por tipo
         if (filterObj.tipo) {
           matches = matches && data.tipo === filterObj.tipo;
         }
-        
+
         // Filtro por categoría
         if (filterObj.categoria) {
           matches = matches && data.categoriaId === parseInt(filterObj.categoria, 10);
         }
-        
+
         return matches;
       };
     });
@@ -218,18 +222,101 @@ export class ProductosServiciosComponent implements OnInit {
    * ➕ Abrir modal para crear nuevo producto/servicio
    */
   abrirModalCrear(): void {
-    const dialogRef = this.dialog.open(ProductosServiciosDialogComponent, {
-      width: '800px',
+    const config: DynamicFormConfig = {
+      title: 'Crear Producto/Servicio',
+      subtitle: 'Complete la información del nuevo producto o servicio',
+      fields: [
+        {
+          type: 'select',
+          key: 'tipo',
+          label: 'Tipo',
+          icon: 'category',
+          required: true,
+          options: [
+            { label: 'Producto', value: 'Producto' },
+            { label: 'Servicio', value: 'Servicio' }
+          ]
+        },
+        {
+          type: 'select',
+          key: 'categoriaId',
+          label: 'Categoría',
+          icon: 'label',
+          required: true,
+          options: this.categorias.map(cat => ({ label: cat.descripcion, value: cat.id }))
+        },
+        {
+          type: 'text',
+          key: 'clave',
+          label: 'Clave',
+          icon: 'tag',
+          placeholder: 'Ej: PROD001',
+          required: true,
+          minLength: 3,
+          maxLength: 20
+        },
+        {
+          type: 'text',
+          key: 'nombre',
+          label: 'Nombre',
+          icon: 'inventory_2',
+          placeholder: 'Nombre del producto o servicio',
+          required: true,
+          minLength: 3,
+          maxLength: 150
+        },
+        {
+          type: 'number',
+          key: 'cantidadStock',
+          label: 'Cantidad en Stock',
+          icon: 'inventory',
+          placeholder: '0',
+          required: true,
+          min: 0
+        },
+        {
+          type: 'number',
+          key: 'precioPublico',
+          label: 'Precio Público',
+          icon: 'attach_money',
+          placeholder: '0.00',
+          required: true,
+          min: 0.01
+        },
+        {
+          type: 'number',
+          key: 'precioEspecial',
+          label: 'Precio Especial',
+          icon: 'star',
+          placeholder: '0.00',
+          required: true,
+          min: 0.01
+        },
+        {
+          type: 'textarea',
+          key: 'descripcion',
+          label: 'Descripción',
+          icon: 'description',
+          placeholder: 'Descripción detallada (opcional)',
+          required: false,
+          maxLength: 500,
+          rows: 3
+        }
+      ],
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar'
+    };
+
+    const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
+      width: calculateDialogWidth(config.fields.length),
       maxWidth: '95vw',
       disableClose: true,
-      data: {
-        modo: 'crear'
-      }
+      data: config
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.crearProductoServicio(result);
+    dialogRef.afterClosed().subscribe((result: DynamicFormResult) => {
+      if (result.confirmed && result.data) {
+        this.crearProductoServicio(result.data);
       }
     });
   }
@@ -238,19 +325,112 @@ export class ProductosServiciosComponent implements OnInit {
    * ✏️ Abrir modal para editar producto/servicio
    */
   abrirModalEditar(item: ProductoServicio): void {
-    const dialogRef = this.dialog.open(ProductosServiciosDialogComponent, {
-      width: '800px',
+    const config: DynamicFormConfig = {
+      title: `Editar ${item.tipo}`,
+      subtitle: `Modifique la información de: ${item.nombre}`,
+      fields: [
+        {
+          type: 'select',
+          key: 'tipo',
+          label: 'Tipo',
+          icon: 'category',
+          required: true,
+          value: item.tipo,
+          options: [
+            { label: 'Producto', value: 'Producto' },
+            { label: 'Servicio', value: 'Servicio' }
+          ]
+        },
+        {
+          type: 'select',
+          key: 'categoriaId',
+          label: 'Categoría',
+          icon: 'label',
+          required: true,
+          value: item.categoriaId,
+          options: this.categorias.map(cat => ({ label: cat.descripcion, value: cat.id }))
+        },
+        {
+          type: 'text',
+          key: 'clave',
+          label: 'Clave',
+          icon: 'tag',
+          placeholder: 'Ej: PROD001',
+          required: true,
+          minLength: 3,
+          maxLength: 20,
+          value: item.clave
+        },
+        {
+          type: 'text',
+          key: 'nombre',
+          label: 'Nombre',
+          icon: 'inventory_2',
+          placeholder: 'Nombre del producto o servicio',
+          required: true,
+          minLength: 3,
+          maxLength: 150,
+          value: item.nombre
+        },
+        {
+          type: 'number',
+          key: 'cantidadStock',
+          label: 'Cantidad en Stock',
+          icon: 'inventory',
+          placeholder: '0',
+          required: true,
+          min: 0,
+          value: item.cantidadStock
+        },
+        {
+          type: 'number',
+          key: 'precioPublico',
+          label: 'Precio Público',
+          icon: 'attach_money',
+          placeholder: '0.00',
+          required: true,
+          min: 0.01,
+          value: item.precioPublico
+        },
+        {
+          type: 'number',
+          key: 'precioEspecial',
+          label: 'Precio Especial',
+          icon: 'star',
+          placeholder: '0.00',
+          required: true,
+          min: 0.01,
+          value: item.precioEspecial
+        },
+        {
+          type: 'textarea',
+          key: 'descripcion',
+          label: 'Descripción',
+          icon: 'description',
+          placeholder: 'Descripción detallada (opcional)',
+          required: false,
+          maxLength: 500,
+          rows: 3,
+          value: item.descripcion
+        }
+      ],
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar'
+    };
+
+    const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
+      width: '700px',
       maxWidth: '95vw',
       disableClose: true,
-      data: {
-        productoServicio: item,
-        modo: 'editar'
-      }
+      data: config
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.actualizarProductoServicio(result);
+    dialogRef.afterClosed().subscribe((result: DynamicFormResult) => {
+      if (result.confirmed && result.data) {
+        this.actualizarProductoServicio({
+          ...result.data,
+          id: item.id
+        });
       }
     });
   }
@@ -269,7 +449,7 @@ export class ProductosServiciosComponent implements OnInit {
       precioPublico: itemData.precioPublico,
       precioEspecial: itemData.precioEspecial
     };
-    
+
     this.productosServiciosService.crearProductoServicio(nuevoItem).subscribe({
       next: (response) => {
         if (response.success) {
@@ -300,7 +480,7 @@ export class ProductosServiciosComponent implements OnInit {
       precioPublico: itemData.precioPublico,
       precioEspecial: itemData.precioEspecial
     };
-    
+
     this.productosServiciosService.actualizarProductoServicio(itemActualizado).subscribe({
       next: (response) => {
         if (response.success) {
@@ -347,7 +527,7 @@ export class ProductosServiciosComponent implements OnInit {
       next: (response) => {
         if (response.success) {
           this.mostrarMensaje('Elemento eliminado exitosamente', 'success');
-          
+
           // Si estaba seleccionado, limpiar selección
           if (this.productoServicioSeleccionado?.id === id) {
             this.productoServicioSeleccionado = null;
@@ -374,9 +554,9 @@ export class ProductosServiciosComponent implements OnInit {
       tipo: this.filtroTipo,
       categoria: this.filtroCategoria
     };
-    
+
     this.dataSource.filter = JSON.stringify(filtros);
-    
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -407,7 +587,7 @@ export class ProductosServiciosComponent implements OnInit {
   procesarArchivoCSV(event: any): void {
     const archivo = event.target.files[0];
     if (archivo && archivo.type === 'text/csv') {
-      
+
       this.productosServiciosService.importarDesdeCSV(archivo).subscribe({
         next: (response) => {
           if (response.success) {
@@ -440,7 +620,7 @@ export class ProductosServiciosComponent implements OnInit {
         link.href = url;
         link.download = `productos-servicios_${new Date().toISOString().split('T')[0]}.csv`;
         link.click();
-        
+
         // Limpiar
         window.URL.revokeObjectURL(url);
         this.mostrarMensaje('Archivo CSV descargado exitosamente', 'success');
