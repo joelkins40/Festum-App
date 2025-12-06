@@ -101,7 +101,7 @@
           <mat-icon>info</mat-icon>
           <span>
             <strong>{{ clienteSeleccionado.nombre }}</strong>
-            @if (clienteSeleccionado.direcciones?.length! > 0) { -
+            @if (clienteSeleccionado.direcciones.length > 0) { -
             {{ clienteSeleccionado.direcciones[0].formatted.line1 }} }
           </span>
         </div>
