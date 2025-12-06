@@ -25,7 +25,8 @@ import { TipoEventoService } from '../../../core/services/tipos-evento.service';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { TipoEventoDialogComponent } from './tipo-eventos-dialog/tipo-eventos-dialog.component';
+import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
+import { DynamicFormConfig, DynamicFormResult } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
 
 @Component({
   selector: 'app-tipo-eventos',
@@ -53,21 +54,21 @@ import { TipoEventoDialogComponent } from './tipo-eventos-dialog/tipo-eventos-di
   styleUrl: './tipo-eventos.component.scss'
 })
 export class TipoEventosComponent implements OnInit {
-  
+
   // ===== FORM Y VALIDACIONES =====
   tipoEventoForm!: FormGroup;
   esEdicion = false;
   tipoEventoSeleccionado: TipoEvento | null = null;
-  
+
   // ===== TABLA Y DATOS =====
   dataSource = new MatTableDataSource<TipoEvento>([]);
   columnasDisplayed: string[] = ['id', 'descripcion', 'fechaCreacion', 'activo', 'acciones'];
   filtroTexto = '';
-  
+
   // ===== ESTADOS =====
   loading = false;
   tiposEvento: TipoEvento[] = [];
-  
+
   // ===== VIEW CHILDREN =====
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -89,7 +90,7 @@ export class TipoEventosComponent implements OnInit {
   }
 
   // ===== INICIALIZACIÓN =====
-  
+
   /**
    * 🔧 Inicializar formulario reactivo
    */
@@ -115,7 +116,7 @@ export class TipoEventosComponent implements OnInit {
       if (this.sort) {
         this.dataSource.sort = this.sort;
       }
-      
+
       // Configurar filtro personalizado
       this.dataSource.filterPredicate = (data: TipoEvento, filter: string) => {
         return data.descripcion.toLowerCase().includes(filter.toLowerCase());
@@ -164,14 +165,14 @@ export class TipoEventosComponent implements OnInit {
   guardarTipoEvento(): void {
     if (this.tipoEventoForm.valid) {
       const descripcion = this.tipoEventoForm.get('descripcion')?.value;
-      
+
       if (this.esEdicion && this.tipoEventoSeleccionado) {
         // Actualizar tipo de evento existente
         const tipoEventoActualizado: ActualizarTipoEventoDto = {
           id: this.tipoEventoSeleccionado.id,
           descripcion: descripcion
         };
-        
+
         this.tipoEventoService.actualizarTipoEvento(tipoEventoActualizado).subscribe({
           next: (response) => {
             if (response.success) {
@@ -191,7 +192,7 @@ export class TipoEventosComponent implements OnInit {
         const nuevoTipoEvento: CrearTipoEventoDto = {
           descripcion: descripcion
         };
-        
+
         this.tipoEventoService.crearTipoEvento(nuevoTipoEvento).subscribe({
           next: (response) => {
             if (response.success) {
@@ -216,17 +217,33 @@ export class TipoEventosComponent implements OnInit {
    * ➕ Abrir modal para crear nuevo tipo de evento
    */
   abrirModalCrear(): void {
-    const dialogRef = this.dialog.open(TipoEventoDialogComponent, {
+    const config: DynamicFormConfig = {
+      title: 'Crear Tipo de Evento',
+      subtitle: 'Ingrese la descripción del nuevo tipo de evento',
+      fields: [
+        {
+          type: 'text',
+          key: 'descripcion',
+          label: 'Descripción',
+          placeholder: 'Ej: Boda, XV Años, Cumpleaños',
+          required: true,
+          minLength: 3,
+          maxLength: 100
+        }
+      ],
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar'
+    };
+
+    const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
       width: '500px',
       disableClose: true,
-      data: {
-        modo: 'crear'
-      }
+      data: config
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.crearTipoEvento(result);
+    dialogRef.afterClosed().subscribe((result: DynamicFormResult) => {
+      if (result.confirmed && result.data) {
+        this.crearTipoEvento(result.data);
       }
     });
   }
@@ -235,18 +252,37 @@ export class TipoEventosComponent implements OnInit {
    * ✏️ Abrir modal para editar tipo de evento
    */
   abrirModalEditar(tipoEvento: TipoEvento): void {
-    const dialogRef = this.dialog.open(TipoEventoDialogComponent, {
+    const config: DynamicFormConfig = {
+      title: 'Editar Tipo de Evento',
+      subtitle: 'Modifique la descripción del tipo de evento',
+      fields: [
+        {
+          type: 'text',
+          key: 'descripcion',
+          label: 'Descripción',
+          placeholder: 'Ej: Boda, XV Años, Cumpleaños',
+          required: true,
+          minLength: 3,
+          maxLength: 100,
+          value: tipoEvento.descripcion
+        }
+      ],
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar'
+    };
+
+    const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
       width: '500px',
       disableClose: true,
-      data: {
-        tipoEvento: tipoEvento,
-        modo: 'editar'
-      }
+      data: config
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.actualizarTipoEvento(result);
+    dialogRef.afterClosed().subscribe((result: DynamicFormResult) => {
+      if (result.confirmed && result.data) {
+        this.actualizarTipoEvento({
+          ...result.data,
+          id: tipoEvento.id
+        });
       }
     });
   }
@@ -258,7 +294,7 @@ export class TipoEventosComponent implements OnInit {
     const nuevoTipoEvento = {
       descripcion: tipoEventoData.descripcion
     };
-    
+
     this.tipoEventoService.crearTipoEvento(nuevoTipoEvento).subscribe({
       next: (response) => {
         if (response.success) {
@@ -282,7 +318,7 @@ export class TipoEventosComponent implements OnInit {
       id: tipoEventoData.id,
       descripcion: tipoEventoData.descripcion
     };
-    
+
     this.tipoEventoService.actualizarTipoEvento(tipoEventoActualizado).subscribe({
       next: (response) => {
         if (response.success) {
@@ -329,7 +365,7 @@ export class TipoEventosComponent implements OnInit {
       next: (response) => {
         if (response.success) {
           this.mostrarMensaje('Tipo de evento eliminado exitosamente', 'success');
-          
+
           // Si estaba editando este tipo de evento, cancelar edición
           if (this.tipoEventoSeleccionado?.id === id) {
             this.cancelarEdicion();
@@ -372,7 +408,7 @@ export class TipoEventosComponent implements OnInit {
    */
   aplicarFiltro(): void {
     this.dataSource.filter = this.filtroTexto.trim().toLowerCase();
-    
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -393,7 +429,7 @@ export class TipoEventosComponent implements OnInit {
   procesarArchivoCSV(event: any): void {
     const archivo = event.target.files[0];
     if (archivo && archivo.type === 'text/csv') {
-      
+
       this.tipoEventoService.importarDesdeCSV(archivo).subscribe({
         next: (response) => {
           if (response.success) {
@@ -426,7 +462,7 @@ export class TipoEventosComponent implements OnInit {
         link.href = url;
         link.download = `tipos_evento_${new Date().toISOString().split('T')[0]}.csv`;
         link.click();
-        
+
         // Limpiar
         window.URL.revokeObjectURL(url);
         this.mostrarMensaje('Archivo CSV descargado exitosamente', 'success');
