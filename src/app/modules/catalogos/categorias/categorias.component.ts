@@ -1,3 +1,4 @@
+import { ButtonComponent } from './../../../shared/components/button/button.component';
 import { DynamicFormDialogComponent } from './../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
 import {
 	DynamicFormConfig,
@@ -71,6 +72,7 @@ import { CategoriaDialogComponent } from './categoria-dialog/categoria-dialog.co
 		MatChipsModule,
 		MatTooltipModule,
 		MatDividerModule,
+    ButtonComponent,
 	],
 	templateUrl: './categorias.component.html',
 	styleUrl: './categorias.component.scss',

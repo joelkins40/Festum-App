@@ -15,13 +15,20 @@
 
     <!-- Action Button -->
     <div class="header-actions">
-      <button mat-raised-button
+      <!-- <button mat-raised-button
               color="primary"
               (click)="abrirModalCrear()"
               class="create-button">
         <mat-icon>add_circle</mat-icon>
         Nueva Categoría
-      </button>
+      </button> -->
+      <app-button
+        variant="primary"
+        (click)="abrirModalCrear()"
+        [disabled]="loading"
+        icon="add_circle" [fullWidth]="true">
+        Nueva Categoría
+      </app-button>`
     </div>
   </div>
 
