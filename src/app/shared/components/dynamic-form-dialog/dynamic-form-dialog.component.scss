@@ -26,7 +26,7 @@
 
 .dialog-subtitle {
   margin: 0;
-  padding: var(--spacing-sm) var(--spacing-xl) var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-xl) 0 var(--spacing-xl);
   font-size: var(--font-size-base);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
@@ -34,7 +34,7 @@
 
 /* ===== CONTENT ===== */
 .dialog-content {
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg) var(--spacing-xl) !important;
   min-width: 300px;
   max-height: 60vh;
   overflow-y: auto;

@@ -21,13 +21,18 @@
         @if (field.type === 'text') {
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>{{ field.label }}</mat-label>
-          <input matInput [formControlName]="field.key" [placeholder]="field.placeholder || ''"
-            [required]="field.required || false" />
+          <input
+            matInput
+            [formControlName]="field.key"
+            [placeholder]="field.placeholder || ''"
+            [required]="field.required || false"
+          />
           @if (field.required) {
-          <mat-icon matSuffix class="required-icon">star</mat-icon>
-          } @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
+            <mat-icon matSuffix class="required-icon">star</mat-icon>
+          }
+          @if (getControl(field.key)?.invalid && getControl(field.key)?.touched)
           {
-          <mat-error>{{ getErrorMessage(field) }}</mat-error>
+            <mat-error>{{ getErrorMessage(field) }}</mat-error>
           }
         </mat-form-field>
         }
