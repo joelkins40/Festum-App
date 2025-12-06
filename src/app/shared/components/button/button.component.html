@@ -1,0 +1,11 @@
+<button
+mat-raised-button
+  class="app-button"
+  [disabled]="disabled"
+  [ngClass]="[size, variant, fullWidth ? 'full-width' : '']">
+
+  <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+  <span class="label">
+    <ng-content></ng-content>
+  </span>
+</button>
