@@ -1,12 +1,19 @@
 <!-- ===== DYNAMIC FORM DIALOG ===== -->
 <div class="dynamic-form-dialog">
   <!-- Header del Diálogo -->
-  <h2 mat-dialog-title class="dialog-title">
-    <mat-icon class="title-icon">{{ getTitleIcon() }}</mat-icon>
-    <span>{{ config.title }}</span>
-  </h2>
-
-  <!-- Subtítulo Opcional -->
+<h2 mat-dialog-title class="dialog-title">
+	<mat-icon class="title-icon">{{ getTitleIcon() }}</mat-icon>
+	<span>{{ config.title }}</span>
+	<button
+		mat-icon-button
+		class="close-button"
+		type="button"
+		(click)="onCancel()"
+		aria-label="Cerrar"
+	>
+		<mat-icon>close</mat-icon>
+	</button>
+</h2>  <!-- Subtítulo Opcional -->
   @if (config.subtitle) {
   <p class="dialog-subtitle">{{ config.subtitle }}</p>
   }

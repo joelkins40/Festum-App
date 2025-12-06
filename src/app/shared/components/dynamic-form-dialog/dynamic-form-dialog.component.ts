@@ -1,26 +1,57 @@
 /**
- * DynamicFormDialogComponent
+ * Componente de diálogo dinámico para formularios
  *
- * Componente reutilizable para crear formularios dinámicos dentro de un MatDialog.
- * Permite construir formularios complejos basados en una configuración JSON,
- * eliminando la necesidad de crear múltiples diálogos repetitivos.
+ * Permite crear formularios complejos mediante configuración JSON sin necesidad
+ * de crear múltiples componentes de diálogo repetitivos. Soporta múltiples tipos
+ * de campos con validaciones automáticas.
  *
- * @example
+ * @remarks
+ * Este componente es standalone y puede ser usado directamente sin módulos.
+ * Utiliza Angular Material para la UI y Reactive Forms para la validación.
+ *
+ * @example Uso básico
  * ```typescript
  * const config: DynamicFormConfig = {
  *   title: 'Crear Cliente',
+ *   subtitle: 'Complete la información del cliente',
  *   fields: [
  *     { type: 'text', key: 'nombre', label: 'Nombre', required: true },
- *     { type: 'number', key: 'edad', label: 'Edad' },
+ *     { type: 'email', key: 'email', label: 'Email', required: true },
  *     { type: 'select', key: 'ciudad', label: 'Ciudad', options: ['CDMX', 'Puebla'] }
- *   ]
+ *   ],
+ *   confirmButtonText: 'Guardar',
+ *   cancelButtonText: 'Cancelar'
  * };
  *
- * this.dialog.open(DynamicFormDialogComponent, {
+ * const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
  *   data: config,
  *   width: calculateDialogWidth(config.fields.length)
  * });
+ *
+ * dialogRef.afterClosed().subscribe((result: DynamicFormResult) => {
+ *   if (result.confirmed) {
+ *     console.log('Datos:', result.data);
+ *   }
+ * });
  * ```
+ *
+ * @example Con opciones complejas en select
+ * ```typescript
+ * const config: DynamicFormConfig = {
+ *   title: 'Seleccionar Usuario',
+ *   fields: [{
+ *     type: 'select',
+ *     key: 'userId',
+ *     label: 'Usuario',
+ *     options: [
+ *       { label: 'Juan Pérez', value: 1 },
+ *       { label: 'María García', value: 2 }
+ *     ]
+ *   }]
+ * };
+ * ```
+ *
+ * @public
  */
 
 import { Component, Inject, OnInit } from '@angular/core';
@@ -107,10 +138,19 @@ export class DynamicFormDialogComponent implements OnInit {
 	/**
 	 * Construye el FormGroup dinámicamente basado en la configuración de campos
 	 *
-	 * Para cada campo en la configuración:
+	 * @remarks
+	 * Este método itera sobre todos los campos de la configuración y:
 	 * 1. Crea un FormControl con su valor inicial (o null)
-	 * 2. Aplica validadores si el campo es requerido
-	 * 3. Deshabilita el control si está marcado como disabled
+	 * 2. Aplica validadores según el tipo de campo y propiedades (required, min, max, email, etc.)
+	 * 3. Deshabilita el control si está marcado como disabled en la configuración
+	 *
+	 * Los validadores se aplican dinámicamente según el tipo de campo:
+	 * - text/textarea: required, minLength, maxLength
+	 * - number: required, min, max
+	 * - email: required, email pattern
+	 * - select/date: required
+	 *
+	 * @private
 	 */
 	private buildForm(): void {
 		const group: Record<string, unknown> = {};
@@ -216,11 +256,16 @@ export class DynamicFormDialogComponent implements OnInit {
 	}
 
 	/**
-	 * Verifica si las opciones de un select son objetos con {label, value}
-	 * o son strings simples
+	 * Type guard para determinar el tipo de opciones en un campo select
 	 *
-	 * @param options Opciones del campo select
-	 * @returns true si son objetos, false si son strings
+	 * @param options - Array de opciones que puede ser strings o objetos
+	 * @returns true si las opciones son objetos con {label, value}, false si son strings
+	 *
+	 * @remarks
+	 * Este type guard permite a TypeScript inferir el tipo correcto de las opciones
+	 * en el template, evitando errores de compilación al acceder a properties.
+	 *
+	 * @public
 	 */
 	isComplexOptions(
 		options: string[] | { label: string; value: string | number }[] | undefined,
