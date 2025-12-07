@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Festum-App": "node dist/festum-app/server/server.mjs"
+    "serve:ssr:Festum-App": "node dist/festum-app/server/server.mjs",
+    "sync:an": "git push origin 22102025-FESTUM-Angel && git push mine 22102025-FESTUM-Angel"
   },
   "private": true,
   "dependencies": {
