@@ -5,7 +5,7 @@
     <div class="shape shape-2"></div>
     <div class="shape shape-3"></div>
   </div>
-  
+
   <!-- Welcome Section -->
   <div class="welcome-section">
     <div class="welcome-content">
@@ -13,7 +13,7 @@
       <p class="welcome-subtitle">Gestiona tus eventos de manera profesional</p>
     </div>
   </div>
-  
+
   <!-- Login Form Section -->
   <div class="login-section">
     <mat-card class="login-card">
@@ -24,13 +24,13 @@
 
       <mat-card-content class="login-content">
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-          
+
           <!-- Email Field -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Correo Electrónico</mat-label>
-            <input 
-              matInput 
-              formControlName="email" 
+            <input
+              matInput
+              formControlName="email"
               type="email"
               placeholder="tu@email.com"
               autocomplete="email">
@@ -46,15 +46,15 @@
           <!-- Password Field -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Contraseña</mat-label>
-            <input 
-              matInput 
-              formControlName="password" 
+            <input
+              matInput
+              formControlName="password"
               [type]="hide ? 'password' : 'text'"
               placeholder="Tu contraseña"
               autocomplete="current-password">
-            <button 
-              mat-icon-button 
-              matSuffix 
+            <button
+              mat-icon-button
+              matSuffix
               type="button"
               (click)="togglePasswordVisibility()"
               [attr.aria-label]="'Hide password'"
@@ -78,16 +78,16 @@
           </div>
 
           <!-- Login Button -->
-          <button 
-            mat-raised-button 
-            color="primary" 
+          <button
+            mat-raised-button
+            color="primary"
             type="submit"
             class="login-button"
             [disabled]="loginForm.invalid || loading">
             <div class="button-content">
-              <mat-spinner 
-                *ngIf="loading" 
-                diameter="18" 
+              <mat-spinner
+                *ngIf="loading"
+                diameter="18"
                 strokeWidth="2"
                 class="login-spinner">
               </mat-spinner>
@@ -100,8 +100,8 @@
 
           <!-- Demo Login -->
           <div class="demo-section">
-            <button 
-              mat-button 
+            <button
+              mat-button
               type="button"
               class="demo-button"
               (click)="loginDemo()"
@@ -117,7 +117,7 @@
         </form>
       </mat-card-content>
     </mat-card>
-    
+
     <!-- Help link -->
     <div class="help-section">
       <p>¿No tienes una cuenta? <a href="#" class="help-link">Crea una aquí</a></p>
