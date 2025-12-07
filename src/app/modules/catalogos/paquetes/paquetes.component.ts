@@ -21,6 +21,7 @@ import { PaquetesService } from '../../../core/services/paquetes.service';
 import type { Paquete } from '../../../core/models/paquete.model';
 import { PaqueteDialogComponent } from './paquete-dialog/paquete-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-paquetes',
@@ -42,6 +43,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 		MatTooltipModule,
 		MatDialogModule,
 		MatSnackBarModule,
+		ButtonComponent,
 	],
 	templateUrl: './paquetes.component.html',
 	styleUrl: './paquetes.component.scss',

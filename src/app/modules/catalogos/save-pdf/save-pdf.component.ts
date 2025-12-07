@@ -35,6 +35,7 @@ import { DocumentoPdfService } from '../../../core/services/documento-pdf.servic
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DocumentoDialogComponent } from './documento-dialog/documento-dialog.component';
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-save-pdf',
@@ -58,6 +59,7 @@ import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 		MatDividerModule,
 		MatSelectModule,
 		MatMenuModule,
+		ButtonComponent,
 	],
 	templateUrl: './save-pdf.component.html',
 	styleUrl: './save-pdf.component.scss',

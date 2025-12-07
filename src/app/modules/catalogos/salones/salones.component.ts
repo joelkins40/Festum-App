@@ -40,6 +40,7 @@ import { TipoEventoService } from '../../../core/services/tipos-evento.service';
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SalonDialogComponent } from './salon-dialog/salon-dialog.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-salones',
@@ -64,6 +65,7 @@ import { SalonDialogComponent } from './salon-dialog/salon-dialog.component';
 		MatChipsModule,
 		MatTooltipModule,
 		MatDividerModule,
+		ButtonComponent,
 	],
 	templateUrl: './salones.component.html',
 	styleUrl: './salones.component.scss',

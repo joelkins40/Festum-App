@@ -31,6 +31,7 @@ import { TiposMobiliarioService } from '../../../core/services/tipos-mobiliario.
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { TipoMobiliarioDialogComponent } from './tipo-mobiliario-dialog/tipo-mobiliario-dialog.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
 	selector: 'app-tipos-mobiliario',
@@ -54,6 +55,7 @@ import { TipoMobiliarioDialogComponent } from './tipo-mobiliario-dialog/tipo-mob
 		MatChipsModule,
 		MatTooltipModule,
 		MatDividerModule,
+		ButtonComponent,
 	],
 	templateUrl: './tipos-mobiliario.component.html',
 	styleUrl: './tipos-mobiliario.component.scss',
