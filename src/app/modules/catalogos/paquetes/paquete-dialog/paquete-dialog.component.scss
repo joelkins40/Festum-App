@@ -15,8 +15,8 @@
   --text-primary: #212121;
   --text-secondary: #757575;
   --border-color: #e0e0e0;
-  --shadow: 0 2px 8px rgba(0,0,0,0.12);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.16);
   --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
 }
 
@@ -43,8 +43,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 24px 32px 20px 32px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: white;
+  background: transparent;
+  color: black;
   position: relative;
 
   .header-content {
@@ -59,6 +59,7 @@
     width: 32px;
     height: 32px;
     opacity: 0.9;
+    color: var(--primary-color);
   }
 
   .header-title {
@@ -69,7 +70,7 @@
   }
 
   .close-button {
-    color: white;
+    color: black;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
 
@@ -177,7 +178,8 @@
 }
 
 /* Estilos de campos de formulario */
-.form-field, .full-width {
+.form-field,
+.full-width {
   ::ng-deep {
     .mat-mdc-form-field {
       .mat-mdc-form-field-outline {
@@ -556,6 +558,7 @@
     font-size: 14px;
 
     ::ng-deep {
+
       .mat-mdc-header-cell,
       .mat-mdc-cell {
         padding: 8px 6px;
