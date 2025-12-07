@@ -30,7 +30,8 @@ import { TiposMobiliarioService } from '../../../core/services/tipos-mobiliario.
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { TipoMobiliarioDialogComponent } from './tipo-mobiliario-dialog/tipo-mobiliario-dialog.component';
+import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
+import { DynamicFormConfig } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
@@ -188,21 +189,37 @@ export class TiposMobiliarioComponent implements OnInit {
 	 * 🆕 Abrir diálogo para crear nuevo tipo de mobiliario
 	 */
 	crearTipoMobiliario(): void {
-		const dialogRef = this.dialog.open(TipoMobiliarioDialogComponent, {
+		const config: DynamicFormConfig = {
+			title: 'Nuevo Tipo de Mobiliario',
+			subtitle: 'Complete la información del tipo de mobiliario',
+			fields: [
+				{
+					type: 'text',
+					key: 'descripcion',
+					label: 'Descripción',
+					placeholder: 'Ej: Sillas, Mesas, Manteles, etc.',
+					icon: 'chair',
+					required: true,
+					minLength: 2,
+					maxLength: 100,
+				},
+			],
+			confirmButtonText: 'Crear',
+			cancelButtonText: 'Cancelar',
+		};
+
+		const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
 			width: '500px',
 			disableClose: true,
-			data: {
-				modo: 'crear',
-				titulo: 'Nuevo Tipo de Mobiliario',
-			},
+			data: config,
 		});
 
 		dialogRef.afterClosed().subscribe((resultado) => {
-			if (resultado) {
+			if (resultado?.confirmed) {
 				this.loading = true;
 
 				const dto: CrearTipoMobiliarioDto = {
-					descripcion: resultado.descripcion,
+					descripcion: resultado.data.descripcion,
 				};
 
 				this.tiposMobiliarioService.crearTipoMobiliario(dto).subscribe({
@@ -229,23 +246,39 @@ export class TiposMobiliarioComponent implements OnInit {
 	 * ✏️ Abrir diálogo para editar tipo de mobiliario
 	 */
 	editarTipoMobiliario(tipoMobiliario: TipoMobiliario): void {
-		const dialogRef = this.dialog.open(TipoMobiliarioDialogComponent, {
+		const config: DynamicFormConfig = {
+			title: 'Editar Tipo de Mobiliario',
+			subtitle: 'Modifique la información del tipo de mobiliario',
+			fields: [
+				{
+					type: 'text',
+					key: 'descripcion',
+					label: 'Descripción',
+					placeholder: 'Ej: Sillas, Mesas, Manteles, etc.',
+					icon: 'chair',
+					required: true,
+					minLength: 2,
+					maxLength: 100,
+					value: tipoMobiliario.descripcion,
+				},
+			],
+			confirmButtonText: 'Actualizar',
+			cancelButtonText: 'Cancelar',
+		};
+
+		const dialogRef = this.dialog.open(DynamicFormDialogComponent, {
 			width: '500px',
 			disableClose: true,
-			data: {
-				modo: 'editar',
-				tipoMobiliario: { ...tipoMobiliario },
-				titulo: 'Editar Tipo de Mobiliario',
-			},
+			data: config,
 		});
 
 		dialogRef.afterClosed().subscribe((resultado) => {
-			if (resultado) {
+			if (resultado?.confirmed) {
 				this.loading = true;
 
 				const dto: ActualizarTipoMobiliarioDto = {
 					id: tipoMobiliario.id,
-					descripcion: resultado.descripcion,
+					descripcion: resultado.data.descripcion,
 				};
 
 				this.tiposMobiliarioService.actualizarTipoMobiliario(dto).subscribe({
