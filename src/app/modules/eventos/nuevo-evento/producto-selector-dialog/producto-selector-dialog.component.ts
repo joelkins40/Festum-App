@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { ProductosServiciosService } from '../../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../../core/models/productos-servicios.model';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 interface ProductoSeleccionado extends ProductoServicio {
 	seleccionado?: boolean;
@@ -21,17 +22,18 @@ interface ProductoSeleccionado extends ProductoServicio {
 	selector: 'app-producto-selector-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatDialogModule,
-		MatButtonModule,
-		MatIconModule,
-		MatCheckboxModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatChipsModule,
-		MatDividerModule,
-	],
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatChipsModule,
+    MatDividerModule,
+    ButtonComponent
+],
 	templateUrl: './producto-selector-dialog.component.html',
 	styleUrl: './producto-selector-dialog.component.scss',
 })

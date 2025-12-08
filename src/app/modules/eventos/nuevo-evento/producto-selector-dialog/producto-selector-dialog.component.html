@@ -7,6 +7,19 @@
         <p class="subtitle">Seleccione los items que desea agregar a la nota</p>
       </div>
     </div>
+
+    <!-- Contador de seleccionados -->
+    @if (totalSeleccionados > 0) {
+    <div class="chip-seleccionados">
+      <mat-chip-set>
+        <mat-chip highlighted>
+          <mat-icon>check_circle</mat-icon>
+          {{ totalSeleccionados }} seleccionado{{ totalSeleccionados > 1 ? 's' : '' }}
+        </mat-chip>
+      </mat-chip-set>
+    </div>
+    }
+
     <button mat-icon-button mat-dialog-close class="close-btn">
       <mat-icon>close</mat-icon>
     </button>
@@ -28,18 +41,6 @@
         </button>
         }
       </mat-form-field>
-
-      <!-- Contador de seleccionados -->
-      @if (totalSeleccionados > 0) {
-      <div class="chip-seleccionados">
-        <mat-chip-set>
-          <mat-chip highlighted>
-            <mat-icon>check_circle</mat-icon>
-            {{ totalSeleccionados }} seleccionado{{ totalSeleccionados > 1 ? 's' : '' }}
-          </mat-chip>
-        </mat-chip-set>
-      </div>
-      }
     </div>
 
     <!-- Lista de productos -->
@@ -96,15 +97,30 @@
 
   <mat-divider></mat-divider>
 
-  <div mat-dialog-actions class="dialog-actions">
-    <button mat-stroked-button (click)="onCancelar()">
+  <div class="dialog-actions">
+    <!-- <button mat-stroked-button (click)="onCancelar()">
       <mat-icon>cancel</mat-icon>
       Cancelar
-    </button>
+    </button> -->
+    <app-button
+      variant="ghost"
+      (click)="onCancelar()"
+      icon="cancel"
+    >
+      Cancelar
+    </app-button>
 
-    <button mat-raised-button color="primary" (click)="onAgregar()" [disabled]="totalSeleccionados === 0">
+    <!-- <button mat-raised-button color="primary" (click)="onAgregar()" [disabled]="totalSeleccionados === 0">
       <mat-icon>add_shopping_cart</mat-icon>
       Agregar ({{ totalSeleccionados }})
-    </button>
+    </button> -->
+    <app-button
+      variant="primary"
+      (click)="onAgregar()"
+      [disabled]="totalSeleccionados === 0"
+      icon="add_shopping_cart"
+    >
+      Agregar ({{ totalSeleccionados }})
+    </app-button>
   </div>
 </div>

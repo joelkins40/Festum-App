@@ -40,29 +40,31 @@ import {
 	PlantillasService,
 	PlantillaEvento,
 } from '../../../core/services/plantillas.service';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-nueva-nota',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatDatepickerModule,
-		MatNativeDateModule,
-		MatAutocompleteModule,
-		MatSelectModule,
-		MatTableModule,
-		MatDialogModule,
-		MatSnackBarModule,
-		MatTooltipModule,
-		MatRadioModule,
-		PlanoViewComponent,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatRadioModule,
+    PlanoViewComponent,
+    ButtonComponent
+],
 	templateUrl: './nuevo-evento.component.html',
 	styleUrl: './nuevo-evento.component.scss',
 })
@@ -690,13 +692,13 @@ export class NuevoEventoComponent implements OnInit {
 	confirmarAplicarPlantilla(): void {
 		if (!this.plantillaSeleccionada) return;
 
-		const confirmacion = confirm(
-			`La plantilla "${this.plantillaSeleccionada.nombre}" reemplazará los productos actuales.\nLos servicios se conservarán intactos.\n¿Desea continuar?`,
-		);
+		// const confirmacion = confirm(
+		// 	`La plantilla "${this.plantillaSeleccionada.nombre}" reemplazará los productos actuales.\nLos servicios se conservarán intactos.\n¿Desea continuar?`,
+		// );
 
-		if (confirmacion) {
-			this.aplicarPlantilla(this.plantillaSeleccionada);
-		}
+    this.aplicarPlantilla(this.plantillaSeleccionada);
+		// if (confirmacion) {
+		// }
 	}
 
 	cancelarPlantilla(): void {
@@ -779,4 +781,9 @@ export class NuevoEventoComponent implements OnInit {
 
 		return productos;
 	}
+
+  public abrirDialogoNuevoCliente() {
+    this.showMessage('Funcionalidad de agregar nuevo cliente no implementada aún', 'success');
+  }
+
 }

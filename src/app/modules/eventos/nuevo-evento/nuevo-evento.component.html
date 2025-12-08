@@ -90,10 +90,17 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <button mat-raised-button color="primary" type="button" class="btn-nuevo-cliente">
+          <!-- <button mat-raised-button color="primary" type="button" class="btn-nuevo-cliente">
             <mat-icon>person_add</mat-icon>
             Nuevo Cliente
-          </button>
+          </button> -->
+          <app-button
+            variant="primary"
+            (click)="abrirDialogoNuevoCliente()"
+            icon="person_add"
+          >
+            Nuevo Cliente
+          </app-button>
         </div>
 
         @if (clienteSeleccionado) {
@@ -232,14 +239,28 @@
               </span>
             </div>
             <div class="preview-actions">
-              <button mat-stroked-button type="button" (click)="cancelarPlantilla()">
+              <!-- <button mat-stroked-button type="button" (click)="cancelarPlantilla()">
                 <mat-icon>close</mat-icon>
                 Cancelar
               </button>
               <button mat-raised-button color="primary" type="button" (click)="confirmarAplicarPlantilla()">
                 <mat-icon>check</mat-icon>
                 Aplicar Plantilla
-              </button>
+              </button> -->
+              <app-button
+                variant="ghost"
+                (click)="cancelarPlantilla()"
+                icon="close"
+              >
+                Cancelar
+              </app-button>
+              <app-button
+                variant="secondary"
+                (click)="confirmarAplicarPlantilla()"
+                icon="check"
+              >
+                Aplicar Plantilla
+              </app-button>
             </div>
           </div>
           }
@@ -252,10 +273,17 @@
             <mat-icon matPrefix>search</mat-icon>
           </mat-form-field>
 
-          <button mat-raised-button color="primary" type="button" (click)="abrirSelectorProductos()">
+          <!-- <button mat-raised-button color="primary" type="button" (click)="abrirSelectorProductos()">
             <mat-icon>add</mat-icon>
             Agregar Producto/Servicio
-          </button>
+          </button> -->
+          <app-button
+            variant="primary"
+            (click)="abrirSelectorProductos()"
+            icon="add"
+          >
+            Agregar Producto/Servicio
+          </app-button>
         </div> <!-- Tabla de productos -->
         <div class="table-container">
           <table mat-table [dataSource]="filteredProductosEnNota" class="productos-table">
