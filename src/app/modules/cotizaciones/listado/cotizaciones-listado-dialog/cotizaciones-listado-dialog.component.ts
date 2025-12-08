@@ -23,6 +23,7 @@ import {
 	Cotizacion,
 	CotizacionEstado,
 } from '../../../../core/models/cotizacion.model';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 export interface CotizacionDialogData {
 	cotizacion?: Cotizacion;
@@ -33,17 +34,18 @@ export interface CotizacionDialogData {
 	selector: 'app-cotizaciones-listado-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatSelectModule,
-		MatDatepickerModule,
-		MatNativeDateModule,
-		MatIconModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    ButtonComponent
+],
 	templateUrl: './cotizaciones-listado-dialog.component.html',
 	styleUrl: './cotizaciones-listado-dialog.component.scss',
 })

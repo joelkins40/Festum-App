@@ -11,18 +11,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { Cotizacion } from '../../../../core/models/cotizacion.model';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 @Component({
 	selector: 'app-cotizacion-detalle-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatDialogModule,
-		MatButtonModule,
-		MatIconModule,
-		MatDividerModule,
-		MatChipsModule,
-	],
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatChipsModule,
+    ButtonComponent
+],
 	templateUrl: './cotizacion-detalle-dialog.component.html',
 	styleUrl: './cotizacion-detalle-dialog.component.scss',
 })

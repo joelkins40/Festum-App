@@ -117,13 +117,27 @@
   <mat-divider></mat-divider>
 
   <div class="dialog-actions">
-    <button mat-button (click)="close()">
+    <!-- <button mat-button (click)="close()">
       <mat-icon>close</mat-icon>
       Cerrar
     </button>
     <button mat-raised-button color="primary" (click)="edit()">
       <mat-icon>edit</mat-icon>
       Editar Cotización
-    </button>
+    </button> -->
+    <app-button
+      variant="ghost"
+      (click)="close()"
+      icon="close"
+    >
+    Cerrar
+    </app-button>
+    <app-button
+      variant="primary"
+      (click)="edit()"
+      icon="edit"
+    >
+      Editar Cotización
+    </app-button>
   </div>
 </div>

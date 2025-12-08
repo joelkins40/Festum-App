@@ -64,13 +64,30 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()" type="button">
+    <!-- <button mat-button (click)="onCancel()" type="button">
       <mat-icon>close</mat-icon>
       Cancelar
-    </button>
-    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="cotizacionForm.invalid" type="button">
+    </button> -->
+    <app-button
+      variant="ghost"
+      size="md"
+      icon="close"
+      (click)="onCancel()"
+    >
+      Cancelar
+    </app-button>
+    <!-- <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="cotizacionForm.invalid" type="button">
       <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
       {{ buttonText }}
-    </button>
+    </button> -->
+    <app-button
+      variant="primary"
+      size="md"
+      [icon]="isEditMode ? 'save' : 'add_circle'"
+      (click)="onSubmit()"
+      [disabled]="cotizacionForm.invalid"
+    >
+      {{ buttonText }}
+    </app-button>
   </mat-dialog-actions>
 </div>
