@@ -29,28 +29,30 @@ import { Cliente } from '../../../core/models/cliente.model';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../core/models/productos-servicios.model';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-nueva-nota',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatDatepickerModule,
-		MatNativeDateModule,
-		MatAutocompleteModule,
-		MatSelectModule,
-		MatTableModule,
-		MatDialogModule,
-		MatSnackBarModule,
-		MatTooltipModule,
-		MatRadioModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatRadioModule,
+    ButtonComponent
+],
 	templateUrl: './nueva.component.html',
 	styleUrl: './nueva.component.scss',
 })
@@ -463,4 +465,12 @@ export class NuevaComponent implements OnInit {
 			currency: 'MXN',
 		}).format(value);
 	}
+
+  abrirModalNuevoCliente() {
+    this.showMessage('Se abrió el modal de nuevo cliente', 'success');
+  }
+
+  abrirModalAgregarProducto() {
+    this.showMessage('Se abrió el modal de agregar productos', 'success');
+  }
 }

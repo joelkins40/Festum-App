@@ -90,10 +90,18 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <button mat-raised-button color="accent" type="button" class="btn-nuevo-cliente">
+          <!-- <button mat-raised-button color="accent" type="button" class="btn-nuevo-cliente">
             <mat-icon>person_add</mat-icon>
             Nuevo Cliente
-          </button>
+          </button> -->
+          <app-button
+            variant="primary"
+            size="md"
+            icon="person_add"
+            (click)="abrirModalNuevoCliente()"
+          >
+            Nuevo Cliente
+          </app-button>
         </div>
 
         @if (clienteSeleccionado) {
@@ -214,10 +222,14 @@
             <mat-icon matPrefix>search</mat-icon>
           </mat-form-field>
 
-          <button mat-raised-button color="primary" type="button">
-            <mat-icon>add</mat-icon>
+          <app-button
+            variant="secondary"
+            size="md"
+            icon="add"
+            (click)="abrirModalAgregarProducto()"
+          >
             Agregar Producto/Servicio
-          </button>
+          </app-button>
         </div>
 
         <!-- Tabla de productos -->
@@ -315,7 +327,7 @@
             <span class="total-label">IVA (16%):</span>
             <span class="total-value">{{ formatCurrency(iva) }}</span>
           </div>
-          <div class="total-row total-final">
+          <div class="total-row">
             <span class="total-label">Total:</span>
             <span class="total-value">{{ formatCurrency(total) }}</span>
           </div>
@@ -382,7 +394,7 @@
             </div>
           </div>
 
-          <div class="resumen-item total-resumen">
+          <div class="resumen-item">
             <mat-icon>payments</mat-icon>
             <div>
               <strong>Total:</strong>
