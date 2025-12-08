@@ -33,6 +33,7 @@ import { CotizacionesMockService } from '../../../core/mocks/cotizaciones-mock.s
 import { CotizacionesListadoDialogComponent } from './cotizaciones-listado-dialog/cotizaciones-listado-dialog.component';
 import { CotizacionDetalleDialogComponent } from './cotizacion-detalle-dialog/cotizacion-detalle-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 /**
  * Componente para mostrar el listado de cotizaciones
@@ -42,25 +43,26 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 	selector: 'app-listado',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatCardModule,
-		MatChipsModule,
-		MatProgressSpinnerModule,
-		MatTooltipModule,
-		MatSnackBarModule,
-		MatSelectModule,
-		MatDatepickerModule,
-		MatNativeDateModule,
-		MatDialogModule,
-	],
+    CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    ButtonComponent
+],
 	templateUrl: './listado.component.html',
 	styleUrl: './listado.component.scss',
 })
@@ -203,7 +205,6 @@ export class ListadoComponent implements OnInit, AfterViewInit {
 
 	viewDetail(cotizacion: Cotizacion): void {
 		const dialogRef = this.dialog.open(CotizacionDetalleDialogComponent, {
-			width: '800px',
 			maxWidth: '95vw',
 			data: cotizacion,
 			panelClass: 'detalle-dialog-panel',

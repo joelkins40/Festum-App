@@ -10,8 +10,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    // background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    // color: white;
 
     .header-content {
       display: flex;
@@ -22,6 +22,7 @@
         font-size: 2.5rem;
         width: 2.5rem;
         height: 2.5rem;
+        color: var(--color-primary);
       }
 
       .header-text {
@@ -40,7 +41,7 @@
     }
 
     .close-button {
-      color: white;
+      // color: white;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
@@ -79,12 +80,12 @@
         align-items: center;
         gap: 0.75rem;
         margin-bottom: 1rem;
-        color: #667eea;
 
         mat-icon {
           font-size: 1.75rem;
           width: 1.75rem;
           height: 1.75rem;
+          color: var(--color-accent);
         }
 
         h3 {
@@ -149,7 +150,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
             mat-icon {
-              color: #667eea;
+              color: var(--accent-color);
               font-size: 2rem;
               width: 2rem;
               height: 2rem;
@@ -207,7 +208,7 @@
     color: #155724;
 
     mat-icon {
-      color: #28a745;
+      color: var(--color-success);
     }
   }
 
@@ -216,7 +217,7 @@
     color: #856404;
 
     mat-icon {
-      color: #ffc107;
+      color: var(--color-warning);
     }
   }
 
@@ -225,7 +226,7 @@
     color: #721c24;
 
     mat-icon {
-      color: #dc3545;
+      color: var(--color-error);
     }
   }
 }

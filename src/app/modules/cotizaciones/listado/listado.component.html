@@ -6,6 +6,18 @@
       <h1>Listado de Cotizaciones</h1>
     </div>
     <p class="header-subtitle">Gestiona y consulta todas las cotizaciones del sistema</p>
+
+  </div>
+
+  <div class="header-actions">
+    <app-button
+      variant="primary"
+      size="md"
+      icon="add_circle"
+      (click)="openCreateDialog()"
+    >
+      Nueva Cotización
+    </app-button>
   </div>
 </div>
 
@@ -64,18 +76,23 @@
       Cotizaciones
     </h2>
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="openCreateDialog()">
-        <mat-icon>add_circle</mat-icon>
-        Nueva Cotización
-      </button>
-      <button mat-stroked-button (click)="exportToCSV()">
-        <mat-icon>file_download</mat-icon>
+      <app-button
+        variant="primary"
+        size="md"
+        icon="file_download"
+        (click)="exportToCSV()"
+      >
         Exportar CSV
-      </button>
-      <button mat-stroked-button (click)="importFromCSV()">
-        <mat-icon>file_upload</mat-icon>
+      </app-button>
+
+      <app-button
+        variant="secondary"
+        size="md"
+        icon="file_upload"
+        (click)="importFromCSV()"
+      >
         Importar CSV
-      </button>
+      </app-button>
     </div>
   </div>
 
@@ -182,13 +199,13 @@
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let cotizacion">
           <div class="action-buttons">
-            <button mat-icon-button color="primary" (click)="viewDetail(cotizacion)" matTooltip="Ver detalle">
+            <button mat-icon-button class="action-visibility" (click)="viewDetail(cotizacion)" matTooltip="Ver detalle">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" (click)="editCotizacion(cotizacion)" matTooltip="Editar">
+            <button mat-icon-button class="action-edit" (click)="editCotizacion(cotizacion)" matTooltip="Editar">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteCotizacion(cotizacion)" matTooltip="Eliminar">
+            <button mat-icon-button class="action-delete" (click)="deleteCotizacion(cotizacion)" matTooltip="Eliminar">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
