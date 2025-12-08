@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MobiliarioServiciosDialogComponent } from './mobiliario-servicios-dialog/mobiliario-servicios-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 export interface MobiliarioServicio {
 	id: number;
@@ -29,20 +30,21 @@ export interface MobiliarioServicio {
 	selector: 'app-mobiliario-servicios',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatTableModule,
-		MatIconModule,
-		MatButtonModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatSelectModule,
-		MatChipsModule,
-		MatTooltipModule,
-		MatCardModule,
-		MatDialogModule,
-		MatSnackBarModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    ButtonComponent
+],
 	templateUrl: './mobiliario-servicios.component.html',
 	styleUrl: './mobiliario-servicios.component.scss',
 })

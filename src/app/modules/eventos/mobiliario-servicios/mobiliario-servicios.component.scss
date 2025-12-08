@@ -217,6 +217,11 @@
     }
   }
 
+  .items-tipo {
+    background-color: transparent !important;
+    color: black;
+  }
+
   // Chips styling
   mat-chip {
     font-size: 12px;
@@ -371,7 +376,8 @@
   .items-table {
     font-size: 13px;
 
-    th, td {
+    th,
+    td {
       padding: 12px 8px;
     }
   }
