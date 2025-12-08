@@ -27,7 +27,7 @@
         font-size: 32px;
         width: 32px;
         height: 32px;
-        color: #3f51b5;
+        color: var(--color-primary);
       }
 
       h1 {
@@ -118,24 +118,24 @@
           font-size: 28px;
           width: 28px;
           height: 28px;
-          color: white;
+          // color: white;
         }
 
-        &.ventas-icon {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+        // &.ventas-icon {
+        //   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        // }
 
-        &.ingresos-icon {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+        // &.ingresos-icon {
+        //   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        // }
 
-        &.promedio-icon {
-          background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
+        // &.promedio-icon {
+        //   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        // }
 
-        &.cantidad-icon {
-          background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
+        // &.cantidad-icon {
+        //   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        // }
       }
 
       .stat-info {
@@ -292,7 +292,7 @@
 
   // Folio
   .folio-text {
-    color: #3f51b5;
+    // color: #3f51b5;
     font-family: 'Courier New', monospace;
     font-size: 13px;
   }

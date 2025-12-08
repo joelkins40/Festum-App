@@ -27,6 +27,7 @@ import {
 } from '../../../core/models/notas.models';
 import { FacturacionDialogComponent } from './facturacion-dialog/facturacion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 interface InvoiceFormData {
 	id?: number;
@@ -43,24 +44,25 @@ interface InvoiceFormData {
 	selector: 'app-facturacion',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatProgressSpinnerModule,
-		MatSnackBarModule,
-		MatDialogModule,
-		MatTooltipModule,
-		MatDividerModule,
-		MatChipsModule,
-		MatSelectModule,
-	],
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatSelectModule,
+    ButtonComponent
+],
 	templateUrl: './facturacion.component.html',
 	styleUrl: './facturacion.component.scss',
 })
