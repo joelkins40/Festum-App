@@ -13,23 +13,25 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventoHistorial } from '../../../core/models/evento-historial.model';
 import { HistorialEventosService } from '../../../core/services/historial-eventos.service';
 import { HistorialEventosDialogComponent } from './historial-eventos-dialog/historial-eventos-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-historial-eventos',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatTableModule,
-		MatButtonModule,
-		MatIconModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatCardModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatDialogModule,
-		MatSnackBarModule,
-	],
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    ButtonComponent
+],
 	templateUrl: './historial-eventos.component.html',
 	styleUrl: './historial-eventos.component.scss',
 })

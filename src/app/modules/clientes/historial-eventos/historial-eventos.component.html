@@ -7,10 +7,14 @@
         <p class="subtitle">Gestión de eventos realizados por clientes</p>
       </div>
     </div>
-    <button mat-raised-button color="primary" (click)="openCreateDialog()">
-      <mat-icon>add</mat-icon>
-      Nuevo Evento
-    </button>
+      <app-button
+        variant="primary"
+        size="md"
+        icon="add_circle"
+        (click)="openCreateDialog()"
+      >
+        Nuevo Evento
+      </app-button>
   </div>
 
   <mat-card class="main-card">
