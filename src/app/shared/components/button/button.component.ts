@@ -10,6 +10,15 @@ export const BUTTON_SIZES = ['sm', 'md', 'lg'] as const;
 export type ButtonVariant = typeof BUTTON_VARIANTS[number];
 export type ButtonSize = typeof BUTTON_SIZES[number];
 
+/**
+ * Returns a button component with customizable variant, size, and icon.
+ *
+ * @param variant - The visual style of the button (primary, secondary, danger, ghost).
+ * @param size - The size of the button (sm, md, lg). Default is 'md'.
+ * @param disabled - Whether the button is disabled.
+ * @param icon - Optional icon name to display inside the button.
+ * @param fullWidth - Whether the button should take the full width of its container.
+ */
 @Component({
   selector: 'app-button',
   standalone: true,
