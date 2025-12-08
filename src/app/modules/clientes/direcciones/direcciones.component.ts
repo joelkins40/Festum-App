@@ -19,27 +19,29 @@ import { DireccionCliente } from '../../../core/models/direccion.model';
 import { DireccionesService } from '../../../core/services/direcciones.service';
 import { DireccionDialogComponent } from './direccion-dialog/direccion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-direcciones',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatProgressSpinnerModule,
-		MatSnackBarModule,
-		MatDialogModule,
-		MatChipsModule,
-		MatTooltipModule,
-	],
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatTooltipModule,
+    ButtonComponent
+],
 	templateUrl: './direcciones.component.html',
 	styleUrl: './direcciones.component.scss',
 })

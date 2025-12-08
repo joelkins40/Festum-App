@@ -10,10 +10,18 @@
     </div>
 
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="createDireccion()">
+      <!-- <button mat-raised-button color="primary" (click)="createDireccion()">
         <mat-icon>add_location</mat-icon>
         Nueva Dirección
-      </button>
+      </button> -->
+      <app-button
+        variant="primary"
+        size="md"
+        icon="add_location"
+        (click)="createDireccion()"
+      >
+        Nueva Dirección
+      </app-button>
     </div>
   </div>
 
