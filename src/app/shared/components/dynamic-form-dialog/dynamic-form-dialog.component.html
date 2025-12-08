@@ -154,13 +154,28 @@
 
   <!-- Acciones del Diálogo -->
   <mat-dialog-actions align="end" class="dialog-actions">
-    <button mat-button (click)="onCancel()" class="cancel-button">
+    <!-- <button mat-button (click)="onCancel()" class="cancel-button">
       <mat-icon>close</mat-icon>
       {{ cancelButtonText }}
-    </button>
-    <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="form.invalid" class="confirm-button">
+    </button> -->
+    <app-button
+      variant="ghost"
+      (click)="onCancel()"
+      icon="close"
+    >
+      {{ cancelButtonText }}
+    </app-button>
+    <!-- <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="form.invalid" class="confirm-button">
       <mat-icon>check</mat-icon>
       {{ confirmButtonText }}
-    </button>
+    </button> -->
+    <app-button
+      variant="primary"
+      (click)="onConfirm()"
+      [disabled]="form.invalid"
+      icon="check"
+    >
+      {{ confirmButtonText }}
+    </app-button>
   </mat-dialog-actions>
 </div>

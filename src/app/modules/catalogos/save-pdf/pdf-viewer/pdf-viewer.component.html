@@ -27,10 +27,17 @@
     </div>
 
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="descargar()" class="download-btn">
+      <!-- <button mat-raised-button color="primary" (click)="descargar()" class="download-btn">
         <mat-icon>download</mat-icon>
         Descargar
-      </button>
+      </button> -->
+      <app-button
+        variant="primary"
+        (click)="descargar()"
+        icon="download"
+      >
+        Descargar
+      </app-button>
 
       <button mat-icon-button (click)="cerrar()" class="close-btn" matTooltip="Cerrar">
         <mat-icon>close</mat-icon>

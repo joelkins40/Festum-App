@@ -13,8 +13,8 @@
   align-items: center;
   padding: 24px 24px 16px;
   border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #20b2aa 0%, #1a9b94 100%);
-  color: white;
+  // background: linear-gradient(135deg, #20b2aa 0%, #1a9b94 100%);
+  // color: white;
 
   .header-content {
     display: flex;
@@ -25,6 +25,7 @@
       font-size: 28px;
       width: 28px;
       height: 28px;
+      color: var(--color-primary);
     }
 
     .header-title {
@@ -36,7 +37,7 @@
   }
 
   .close-button {
-    color: white;
+    // color: white;
 
     mat-icon {
       font-size: 24px;
@@ -310,6 +311,7 @@
     }
 
     .mat-mdc-outlined.mat-focused {
+
       .mdc-notched-outline__leading,
       .mdc-notched-outline__notch,
       .mdc-notched-outline__trailing {
@@ -327,8 +329,13 @@
 
 /* ===== ANIMATIONS ===== */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ===== RESPONSIVE ===== */

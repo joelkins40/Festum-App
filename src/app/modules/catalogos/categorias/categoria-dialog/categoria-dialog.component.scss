@@ -13,8 +13,8 @@
   --text-primary: #212121;
   --text-secondary: #757575;
   --border-color: #e0e0e0;
-  --shadow: 0 2px 8px rgba(0,0,0,0.12);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.16);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.16);
 }
 
 /* Contenedor principal del modal */
@@ -33,36 +33,37 @@
   align-items: center;
   justify-content: space-between;
   padding: 24px 32px 20px 32px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: white;
+  // background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  // color: white;
   position: relative;
-  
+
   .header-content {
     display: flex;
     align-items: center;
     gap: 16px;
     flex: 1;
   }
-  
+
   .header-icon {
     font-size: 32px;
     width: 32px;
     height: 32px;
     opacity: 0.9;
+    color: var(--color-primary)
   }
-  
+
   .header-title {
     margin: 0;
     font-size: 22px;
     font-weight: 600;
     letter-spacing: 0.5px;
   }
-  
+
   .close-button {
-    color: white;
+    // color: white;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
       transform: scale(1.1);
@@ -87,38 +88,38 @@
 .form-section {
   .full-width {
     width: 100%;
-    
+
     ::ng-deep {
       .mat-form-field-outline {
         color: var(--border-color);
         border-radius: 8px;
       }
-      
+
       .mat-form-field-label {
         color: var(--text-secondary);
         font-weight: 500;
       }
-      
+
       .mat-input-element {
         color: var(--text-primary);
         font-size: 16px;
       }
-      
+
       .mat-form-field-outline-thick {
         color: var(--primary-color);
         border-width: 2px;
       }
-      
+
       .mat-form-field-prefix .input-icon {
         color: var(--primary-color);
         margin-right: 8px;
       }
-      
+
       .mat-hint {
         color: var(--text-secondary);
         font-size: 12px;
       }
-      
+
       .mat-error {
         font-size: 12px;
         font-weight: 500;
@@ -133,30 +134,30 @@
   border-radius: 12px;
   padding: 20px;
   border: 1px solid var(--border-color);
-  
+
   .info-item {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
-    
+
     .info-icon {
       color: var(--primary-color);
       font-size: 20px;
       width: 20px;
       height: 20px;
     }
-    
+
     .info-label {
       color: var(--text-secondary);
       font-weight: 500;
       min-width: 120px;
     }
-    
+
     .info-value {
       color: var(--text-primary);
       font-weight: 600;
@@ -177,42 +178,42 @@
   padding: 20px 32px 32px 32px;
   background-color: var(--surface-color);
   border-top: 1px solid var(--border-color);
-  
+
   .cancel-button {
     color: var(--text-secondary);
     border-color: var(--border-color);
     min-width: 120px;
-    
+
     &:hover {
       background-color: rgba(117, 117, 117, 0.1);
       border-color: var(--text-secondary);
     }
-    
+
     ::ng-deep .mat-button-wrapper {
       display: flex;
       align-items: center;
       gap: 8px;
     }
   }
-  
+
   .save-button {
     background-color: var(--primary-color);
     color: white;
     min-width: 160px;
     font-weight: 600;
-    
+
     &:hover:not([disabled]) {
       background-color: var(--primary-dark);
       transform: translateY(-1px);
       box-shadow: var(--shadow-hover);
     }
-    
+
     &[disabled] {
       background-color: #cccccc;
       color: #666666;
       cursor: not-allowed;
     }
-    
+
     ::ng-deep .mat-button-wrapper {
       display: flex;
       align-items: center;
@@ -231,6 +232,7 @@
     transform: translateY(-30px) scale(0.95);
     opacity: 0;
   }
+
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
@@ -244,7 +246,7 @@
       color: var(--primary-color);
     }
   }
-  
+
   .mat-form-field-invalid {
     .mat-form-field-outline-thick {
       color: var(--error-color);
@@ -259,30 +261,30 @@
     max-width: 95vw;
     margin: 20px auto;
   }
-  
+
   .dialog-header {
     padding: 20px 16px 16px 16px;
-    
+
     .header-icon {
       font-size: 28px;
       width: 28px;
       height: 28px;
     }
-    
+
     .header-title {
       font-size: 18px;
     }
   }
-  
+
   .dialog-content {
     padding: 20px 16px;
   }
-  
+
   .dialog-actions {
     padding: 16px;
     flex-direction: column-reverse;
     gap: 12px;
-    
+
     .cancel-button,
     .save-button {
       width: 100%;
@@ -296,7 +298,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    
+
     .info-label {
       min-width: unset;
       font-size: 14px;

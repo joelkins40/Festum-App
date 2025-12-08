@@ -80,20 +80,22 @@ import {
 	DynamicFormField,
 	DynamicFormResult,
 } from './dynamic-form-dialog.types';
+import { ButtonComponent } from "../button";
 
 @Component({
 	selector: 'app-dynamic-form-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatSelectModule,
-		MatButtonModule,
-		MatIconModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    ButtonComponent
+],
 	templateUrl: './dynamic-form-dialog.component.html',
 	styleUrl: './dynamic-form-dialog.component.scss',
 })

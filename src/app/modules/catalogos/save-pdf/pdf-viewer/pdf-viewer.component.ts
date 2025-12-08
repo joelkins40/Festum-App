@@ -13,6 +13,7 @@ import {
   formatearTamano,
   descargarPDF
 } from '../../../../core/models/documento-pdf.model';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 export interface PdfViewerData {
   documento: DocumentoPdf;
@@ -30,8 +31,9 @@ export interface PdfViewerData {
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
-  ],
+    MatProgressSpinnerModule,
+    ButtonComponent
+],
   templateUrl: './pdf-viewer.component.html',
   styleUrl: './pdf-viewer.component.scss'
 })
