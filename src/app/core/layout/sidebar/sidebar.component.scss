@@ -15,19 +15,19 @@
 .brand-section {
   padding: 20px 24px;
   border-bottom: 1px solid #f1f3f4;
-  
+
   .brand-logo {
     display: flex;
     align-items: center;
     gap: 12px;
-    
+
     .brand-icon {
       font-size: 24px;
       color: #20b2aa;
       width: 24px;
       height: 24px;
     }
-    
+
     .brand-text {
       font-size: 20px;
       font-weight: 600;
@@ -45,7 +45,7 @@
 
 .nav-section {
   margin-bottom: 32px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -68,19 +68,19 @@
   justify-content: space-between;
   padding: 0 24px 12px;
   margin-bottom: 8px;
-  
+
   .nav-title {
     padding: 0;
     margin: 0;
   }
-  
+
   .add-icon {
     font-size: 16px;
     width: 16px;
     height: 16px;
     color: #9ca3af;
     cursor: pointer;
-    
+
     &:hover {
       color: #20b2aa;
     }
@@ -98,32 +98,32 @@
   position: relative;
   margin: 0 12px;
   border-radius: 8px;
-  
+
   &:hover {
     background-color: #f8f9fa;
     color: #374151;
   }
-  
+
   &.active {
     background: linear-gradient(135deg, #20b2aa 0%, #17a2b8 100%);
     color: white;
     box-shadow: 0 2px 8px rgba(32, 178, 170, 0.3);
-    
+
     .nav-icon {
       color: white;
     }
-    
+
     .nav-label {
       color: white;
       font-weight: 500;
     }
-    
+
     .nav-badge {
       color: white;
       font-size: 14px;
     }
   }
-  
+
   .nav-icon {
     font-size: 18px;
     width: 18px;
@@ -131,52 +131,52 @@
     margin-right: 12px;
     color: #9ca3af;
     transition: color 0.2s ease;
-    
+
     // Colored icons for main navigation
     &.home-icon {
       color: #4CAF50 !important; // Green for dashboard/home
     }
-    
+
     &.catalog-icon {
       color: #2196F3 !important; // Blue for catalogs
     }
-    
+
     &.clients-icon {
       color: #FF9800 !important; // Orange for clients
     }
-    
+
     &.sales-icon {
       color: #9C27B0 !important; // Purple for sales/quotations
     }
-    
+
     &.events-icon {
       color: #F44336 !important; // Red for events
     }
-    
+
     &.calendar-icon {
       color: #607D8B !important; // Blue-gray for calendar
     }
-    
+
     &.reports-icon {
       color: #795548 !important; // Brown for reports
     }
-    
+
     &.users-icon {
       color: #3F51B5 !important; // Indigo for users
     }
-    
+
     &.maintenance-icon {
       color: #FF5722 !important; // Deep orange for maintenance
     }
   }
-  
+
   .nav-label {
     font-size: 14px;
     font-weight: 400;
     flex: 1;
     transition: all 0.2s ease;
   }
-  
+
   .nav-badge {
     background: #fbbf24;
     color: white;
@@ -194,7 +194,7 @@
 .nav-expandable {
   .expandable-header {
     cursor: pointer;
-    
+
     .expand-icon {
       font-size: 18px;
       width: 18px;
@@ -202,28 +202,28 @@
       color: #9ca3af;
       margin-left: auto;
       transition: transform 0.3s ease;
-      
+
       &.rotated {
         transform: rotate(180deg);
       }
     }
-    
+
     &:hover .expand-icon {
       color: #20b2aa;
     }
   }
-  
+
   &.expanded {
     .expandable-header {
       background-color: #f1f5f9;
       color: #374151;
-      
+
       .nav-icon {
         color: #20b2aa;
       }
     }
   }
-  
+
   .badge {
     background: #fbbf24;
     color: white;
@@ -253,24 +253,24 @@
   border-radius: 6px;
   margin: 2px 0;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background-color: #f1f5f9;
     color: #374151;
   }
-  
+
   &.nested {
     padding-left: 32px;
     font-size: 12px;
     color: #9ca3af;
   }
-  
+
   &.optional {
     .nav-sub-label {
       color: #9ca3af;
     }
   }
-  
+
   .nav-sub-label {
     flex: 1;
   }
@@ -283,128 +283,128 @@
   height: 16px;
   margin-right: 8px;
   transition: color 0.2s ease;
-  
+
   // Catalog submenu icons
   &.category {
     color: #2196F3; // Blue for categories
   }
-  
+
   &.event-type {
     color: #4CAF50; // Green for event types
   }
-  
+
   &.products {
     color: #FF9800; // Orange for products
   }
-  
+
   &.venues {
     color: #9C27B0; // Purple for venues
   }
-  
+
   &.furniture {
     color: #795548; // Brown for furniture
   }
-  
+
   &.packages {
     color: #E91E63; // Pink for packages
   }
-  
+
   // Client submenu icons
   &.clients {
     color: #FF9800; // Orange for clients
   }
-  
+
   &.addresses {
     color: #607D8B; // Blue-gray for addresses
   }
-  
+
   &.contacts {
     color: #4CAF50; // Green for contacts
   }
-  
+
   &.history {
     color: #9E9E9E; // Gray for history
   }
-  
+
   // Sales submenu icons
   &.quotations {
     color: #9C27B0; // Purple for quotations
   }
-  
+
   &.new-quote {
     color: #4CAF50; // Green for new quotes
   }
-  
+
   &.list-quotes {
     color: #2196F3; // Blue for quote lists
   }
-  
+
   &.tracking {
     color: #FF9800; // Orange for tracking
   }
-  
+
   &.orders {
     color: #2196F3; // Blue for orders
   }
-  
+
   &.billing {
     color: #4CAF50; // Green for billing
   }
-  
+
   // Events submenu icons
   &.events-list {
     color: #F44336; // Red for events list
   }
-  
+
   &.event-details {
     color: #F44336; // Red for event details
   }
-  
+
   &.info {
     color: #2196F3; // Blue for info
   }
-  
+
   &.schedule {
     color: #9C27B0; // Purple for schedule
   }
-  
+
   &.guests {
     color: #FF9800; // Orange for guests
   }
-  
+
   &.confirmations {
     color: #4CAF50; // Green for confirmations
   }
-  
+
   &.furniture-services {
     color: #795548; // Brown for furniture services
   }
-  
+
   &.floor-plan {
     color: #607D8B; // Blue-gray for floor plans
   }
-  
+
   &.gallery {
     color: #E91E63; // Pink for gallery
   }
-  
+
   &.notes {
     color: #FFC107; // Amber for notes
   }
-  
+
   // Users submenu icons
   &.users {
     color: #3F51B5; // Indigo for users
   }
-  
+
   &.roles {
     color: #9C27B0; // Purple for roles
   }
-  
+
   &.profile {
     color: #2196F3; // Blue for profile
   }
-  
+
   &.settings {
     color: #607D8B; // Blue-gray for settings
   }
@@ -412,7 +412,7 @@
 
 .nav-sub-group {
   margin: 8px 0;
-  
+
   .nav-sub-group-title {
     font-size: 10px;
     font-weight: 600;
@@ -440,13 +440,15 @@
   .nav-label {
     color: #9ca3af;
   }
-  
+
   .nav-icon {
     color: #d1d5db;
   }
-  
+
   &:hover {
-    .nav-label, .nav-icon {
+
+    .nav-label,
+    .nav-icon {
       color: #6b7280;
     }
   }
@@ -457,20 +459,20 @@
   .sidebar-wrapper {
     width: 100%;
   }
-  
+
   .brand-section {
     padding: 16px 20px;
   }
-  
+
   .nav-item {
     margin: 0 8px;
     padding: 12px 20px;
   }
-  
+
   .nav-title {
     padding: 0 20px 12px;
   }
-  
+
   .nav-title-with-action {
     padding: 0 20px 12px;
   }
@@ -500,6 +502,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -512,6 +515,7 @@
     transform: translateY(-10px);
     max-height: 0;
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -523,8 +527,22 @@
   animation: fadeInUp 0.3s ease forwards;
 }
 
-.nav-item:nth-child(1) { animation-delay: 0.05s; }
-.nav-item:nth-child(2) { animation-delay: 0.1s; }
-.nav-item:nth-child(3) { animation-delay: 0.15s; }
-.nav-item:nth-child(4) { animation-delay: 0.2s; }
-.nav-item:nth-child(5) { animation-delay: 0.25s; }
+.nav-item:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.nav-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.nav-item:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.nav-item:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.nav-item:nth-child(5) {
+  animation-delay: 0.25s;
+}

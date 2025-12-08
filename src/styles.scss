@@ -1290,3 +1290,7 @@ body {
   --mat-snack-bar-button-color: var(--text-white) !important;
   --mdc-snackbar-supporting-text-color: var(--text-white) !important;
 }
+
+.mat-drawer-inner-container {
+  overflow-x: hidden !important;
+}
