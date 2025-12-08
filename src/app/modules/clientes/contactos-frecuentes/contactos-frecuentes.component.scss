@@ -18,7 +18,7 @@
 
       .page-icon {
         font-size: 32px;
-        color: #28a745;
+        color: var(--color-primary);
       }
 
       h1 {
@@ -46,7 +46,7 @@
 
 .main-card {
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table-toolbar {
@@ -74,7 +74,7 @@
     background: #e3f2fd;
     border-radius: 12px;
     font-weight: 500;
-    color: #1976d2;
+    // color: #1976d2;
   }
 
   .name-info,
@@ -96,8 +96,29 @@
   }
 
   mat-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px 10px;
+    height: 32px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    mat-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      margin: 0;
+    }
+
     &.preferente {
-      background: #fff3cd;
+      // background: #fff3cd;
       color: #856404;
 
       mat-icon {

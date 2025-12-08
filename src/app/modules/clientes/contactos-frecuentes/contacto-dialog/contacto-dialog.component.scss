@@ -11,8 +11,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 24px 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: transparent;
+  color: black;
   border-radius: 4px 4px 0 0;
 
   .header-content {
@@ -24,6 +24,7 @@
       font-size: 32px;
       width: 32px;
       height: 32px;
+      color: var(--color-primary);
     }
 
     h2 {
@@ -34,7 +35,7 @@
   }
 
   .close-button {
-    color: white;
+    color: black;
 
     mat-icon {
       font-size: 24px;

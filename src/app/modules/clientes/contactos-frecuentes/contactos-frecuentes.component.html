@@ -10,10 +10,14 @@
     </div>
 
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="createContacto()">
-        <mat-icon>person_add</mat-icon>
+      <app-button
+        variant="primary"
+        size="md"
+        icon="person_add"
+        (click)="createContacto()"
+      >
         Nuevo Contacto
-      </button>
+      </app-button>
     </div>
   </div>
 

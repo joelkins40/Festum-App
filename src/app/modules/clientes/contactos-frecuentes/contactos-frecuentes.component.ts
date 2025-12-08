@@ -19,27 +19,29 @@ import { Contacto } from '../../../core/models/contacto.model';
 import { ContactosService } from '../../../core/services/contactos-frecuentes.service';
 import { ContactoDialogComponent } from './contacto-dialog/contacto-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-contactos-frecuentes',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatProgressSpinnerModule,
-		MatSnackBarModule,
-		MatDialogModule,
-		MatChipsModule,
-		MatTooltipModule,
-	],
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatTooltipModule,
+    ButtonComponent
+],
 	templateUrl: './contactos-frecuentes.component.html',
 	styleUrl: './contactos-frecuentes.component.scss',
 })
@@ -114,7 +116,6 @@ export class ContactosFrecuentesComponent implements OnInit {
 
 	createContacto(): void {
 		const dialogRef = this.dialog.open(ContactoDialogComponent, {
-			width: '700px',
 			disableClose: true,
 			data: { mode: 'create' },
 		});
@@ -136,7 +137,6 @@ export class ContactosFrecuentesComponent implements OnInit {
 
 	editContacto(contacto: Contacto): void {
 		const dialogRef = this.dialog.open(ContactoDialogComponent, {
-			width: '700px',
 			disableClose: true,
 			data: { mode: 'edit', contacto: { ...contacto } },
 		});
