@@ -11,9 +11,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  margin: -24px -24px 0 -24px;
-  color: white;
+  // background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  // margin: -24px -24px 0 -24px;
+  // color: white;
 
   h2 {
     display: flex;
@@ -27,11 +27,12 @@
       font-size: 28px;
       width: 28px;
       height: 28px;
+      color: var(--color-primary);
     }
   }
 
   .close-button {
-    color: white;
+    color: black;
 
     mat-icon {
       font-size: 24px;
@@ -192,6 +193,7 @@ mat-dialog-actions {
 
     // Prefix styling
     .mat-mdc-input-element {
+
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -257,6 +259,7 @@ mat-dialog-actions {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
