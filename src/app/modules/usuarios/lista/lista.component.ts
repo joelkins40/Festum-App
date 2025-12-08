@@ -32,7 +32,6 @@ import {
 	UsuarioDialogData,
 } from './usuario-dialog/usuario-dialog.component';
 
-// Interfaz Usuario
 export interface Usuario {
 	id: number;
 	nombre: string;

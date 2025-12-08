@@ -31,30 +31,32 @@ import { ClientesService } from '../../../core/services/clientes.service';
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-lista',
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		FormsModule,
-		MatCardModule,
-		MatTabsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatSelectModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatProgressSpinnerModule,
-		MatSnackBarModule,
-		MatDialogModule,
-		MatChipsModule,
-		MatTooltipModule,
-		MatDividerModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatCardModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatDividerModule,
+    ButtonComponent
+],
 	templateUrl: './lista.component.html',
 	styleUrl: './lista.component.scss',
 })

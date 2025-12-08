@@ -15,10 +15,14 @@
 
     <!-- Action Button -->
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="crearCliente()" class="create-button">
-        <mat-icon>person_add</mat-icon>
+      <app-button
+        variant="primary"
+        size="md"
+        icon="person_add"
+        (click)="crearCliente()"
+      >
         Nuevo Cliente
-      </button>
+      </app-button>
     </div>
   </div>
 
@@ -55,19 +59,33 @@
       </div>
 
       <div class="action-buttons">
+
         <!-- Botón Importar -->
-        <button mat-raised-button color="accent" (click)="abrirImportarCSV()" [disabled]="loading"
-          class="toolbar-button">
-          <mat-icon>upload</mat-icon>
+        <app-button
+          variant="primary"
+          size="md"
+          icon="upload"
+          [disabled]="loading"
+          (click)="abrirImportarCSV()"
+        >
           Importar CSV
-        </button>
+        </app-button>
 
         <!-- Botón Exportar -->
-        <button mat-raised-button color="primary" (click)="exportarCSV()"
+        <!-- <button mat-raised-button color="primary" (click)="exportarCSV()"
           [disabled]="loading || dataSource.data.length === 0" class="toolbar-button export-button">
           <mat-icon>download</mat-icon>
           Exportar CSV
-        </button>
+        </button> -->
+        <app-button
+          variant="secondary"
+          size="md"
+          icon="download"
+          [disabled]="loading || dataSource.data.length === 0"
+          (click)="exportarCSV()"
+        >
+          Exportar CSV
+        </app-button>
 
         <!-- Botón Limpiar Filtros -->
         <button mat-icon-button (click)="limpiarFiltros()" [disabled]="loading" matTooltip="Limpiar filtros"
