@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { DireccionCliente } from '../../../../core/models/direccion.model';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 export interface DireccionDialogData {
 	mode: 'create' | 'edit';
@@ -27,14 +28,15 @@ export interface DireccionDialogData {
 	selector: 'app-direccion-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    ButtonComponent
+],
 	templateUrl: './direccion-dialog.component.html',
 	styleUrl: './direccion-dialog.component.scss',
 })

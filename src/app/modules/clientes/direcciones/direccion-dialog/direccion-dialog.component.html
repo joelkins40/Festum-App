@@ -115,14 +115,30 @@
 
   <!-- Footer -->
   <div class="dialog-footer">
-    <button mat-button (click)="cancel()" [disabled]="saving">
+    <!-- <button mat-button (click)="cancel()" [disabled]="saving">
       <mat-icon>cancel</mat-icon>
       Cancelar
-    </button>
+    </button> -->
+    <app-button
+      variant="ghost"
+      (click)="cancel()"
+      [disabled]="saving"
+      icon="cancel"
+    >
+      Cancelar
+    </app-button>
 
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
+    <!-- <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
       <mat-icon>{{ saving ? 'hourglass_empty' : 'save' }}</mat-icon>
       {{ saving ? 'Guardando...' : (mode === 'create' ? 'Crear' : 'Actualizar') }}
-    </button>
+    </button> -->
+    <app-button
+      variant="primary"
+      (click)="save()"
+      [disabled]="form.invalid || saving"
+      [icon]="saving ? 'hourglass_empty' : 'save'"
+    >
+      {{ saving ? 'Guardando...' : (mode === 'create' ? 'Crear' : 'Actualizar') }}
+    </app-button>
   </div>
 </div>

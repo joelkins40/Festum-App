@@ -18,7 +18,7 @@
 
       .page-icon {
         font-size: 32px;
-        color: #28a745;
+        color: var(--primary-color);
       }
 
       h1 {
@@ -46,7 +46,7 @@
 
 .main-card {
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table-toolbar {
@@ -74,7 +74,7 @@
     background: #e3f2fd;
     border-radius: 12px;
     font-weight: 500;
-    color: #1976d2;
+    // color: #1976d2;
   }
 
   .cliente-info,
