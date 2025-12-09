@@ -166,7 +166,7 @@
     }
 
     td {
-      padding: var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-sm);
       border-bottom: 1px solid var(--color-border-light);
     }
   }
@@ -192,7 +192,7 @@
 
   .capacidad-column,
   .capacidad-cell {
-    width: 140px;
+    width: 160px;
     text-align: center;
   }
 
@@ -210,7 +210,7 @@
 
   .telefono-column,
   .telefono-cell {
-    width: 140px;
+    width: fit-content;
     text-align: center;
   }
 
@@ -233,12 +233,12 @@
   align-items: center;
   justify-content: center;
   padding: 4px 8px;
-  background-color: #f8f9fa;
-  color: #636e72;
+  background-color: var(--bg-page);
+  color: var(--text-secondary);
   font-size: 11px;
   font-weight: 700;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-light);
   min-width: 24px;
   height: 24px;
 }
@@ -250,14 +250,15 @@
 .telefono-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-md);
   justify-content: flex-start;
 
   mat-icon {
-    color: #20b2aa;
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    color: var(--color-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
   }
 
   .salon-text,
@@ -266,7 +267,7 @@
   .precio-text,
   .telefono-text {
     font-weight: 500;
-    color: #2d3436;
+    color: var(--text-primary);
   }
 }
 
@@ -279,7 +280,7 @@
 }
 
 .no-telefono {
-  color: #636e72;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -292,13 +293,13 @@
   padding: 6px 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background-color: rgba(32, 178, 170, 0.15);
-  color: #20b2aa;
-  border: 1px solid rgba(32, 178, 170, 0.3);
+  gap: var(--spacing-xs);
+  background-color: var(--color-primary-alpha-15);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-alpha-30);
 
   .tipo-icon {
-    color: #20b2aa;
+    color: var(--color-primary);
     font-size: 14px;
     width: 14px;
     height: 14px;
@@ -314,25 +315,25 @@
   padding: 6px 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-xs);
 
   &.activo {
-    background-color: rgba(32, 178, 170, 0.15);
-    color: #20b2aa;
-    border: 1px solid rgba(32, 178, 170, 0.3);
+    background-color: var(--color-primary-alpha-15);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-alpha-30);
 
     .estado-icon {
-      color: #20b2aa;
+      color: var(--color-primary);
     }
   }
 
   &.inactivo {
-    background-color: rgba(244, 67, 54, 0.15);
-    color: #f44336;
-    border: 1px solid rgba(244, 67, 54, 0.3);
+    background-color: var(--color-error-alpha-15);
+    color: var(--color-error);
+    border: 1px solid var(--color-error-alpha-30);
 
     .estado-icon {
-      color: #f44336;
+      color: var(--color-error);
     }
   }
 
@@ -352,12 +353,12 @@
     transition: var(--transition-base);
 
     &.action-btn-view {
-      color: #6c5ce7;
-      background-color: rgba(108, 92, 231, 0.1);
+      color: var(--color-info);
+      background-color: var(--color-info-alpha-15);
 
       &:hover:not(:disabled) {
-        background-color: #6c5ce7;
-        color: var(--color-bg-card);
+        background-color: var(--color-info);
+        color: var(--bg-surface);
       }
     }
 
