@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { ButtonComponent } from "../../shared/components/button";
 
 @Component({
 	selector: 'app-home',
 	standalone: true,
-	imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule],
+	imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, ButtonComponent],
 	templateUrl: './home.component.html',
 	styleUrl: './home.component.scss',
 })

@@ -24,14 +24,28 @@
       </p>
 
       <div class="hero-actions">
-        <button mat-raised-button color="primary" class="primary-btn" (click)="exploreProperties()">
+        <!-- <button mat-raised-button color="primary" class="primary-btn" (click)="exploreProperties()">
           <mat-icon>explore</mat-icon>
           Explorar inmuebles
         </button>
         <button mat-stroked-button class="secondary-btn" (click)="contactUs()">
           <mat-icon>mail</mat-icon>
           Contactar
-        </button>
+        </button> -->
+        <app-button
+          variant="primary"
+          (click)="exploreProperties()"
+          icon="explore"
+        >
+          Explorar inmuebles
+        </app-button>
+        <app-button
+          variant="ghost"
+          (click)="contactUs()"
+          icon="mail"
+        >
+          Contactar
+        </app-button>
       </div>
 
       <div class="hero-stats">
@@ -149,10 +163,17 @@
       </div>
 
       <div class="cta-actions">
-        <button mat-raised-button color="primary" class="cta-btn" (click)="exploreProperties()">
+        <!-- <button mat-raised-button color="primary" class="cta-btn" (click)="exploreProperties()">
           <mat-icon>explore</mat-icon>
           Ver catálogo completo
-        </button>
+        </button> -->
+        <app-button
+          variant="primary"
+          (click)="exploreProperties()"
+          icon="explore"
+        >
+          Ver catalogo completo
+        </app-button>
       </div>
     </div>
   </section>
