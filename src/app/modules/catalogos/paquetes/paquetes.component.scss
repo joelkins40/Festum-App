@@ -121,6 +121,46 @@
   font-size: var(--font-size-sm);
 }
 
+/* ===== ESTILOS PARA ICONOS EN COLUMNAS ===== */
+.id-info,
+.tipo-info,
+.categoria-info,
+.stock-info,
+.precio-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  justify-content: flex-start;
+
+  mat-icon {
+    color: var(--color-primary);
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .id-text,
+  .tipo-text,
+  .categoria-text,
+  .stock-text,
+  .precio-text {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
+
+// Icono especial para disponibilidad
+.stock-info {
+  mat-icon.stock-icon {
+    color: var(--color-primary);
+
+    &[class*="cancel"] {
+      color: var(--color-error);
+    }
+  }
+}
+
 .acciones-container {
   display: flex;
   gap: var(--spacing-sm);
