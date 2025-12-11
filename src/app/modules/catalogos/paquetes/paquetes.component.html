@@ -58,11 +58,64 @@
       </div>
 
       <div class="action-buttons">
+        <!-- Botón Exportar CSV -->
+        <app-button
+          variant="primary"
+          icon="download"
+          (click)="exportarCSV()"
+          [disabled]="loading || paquetes.length === 0"
+          class="toolbar-btn"
+        >
+          <span class="btn-text">Exportar CSV</span>
+        </app-button>
+
+        <!-- Botón Importar CSV -->
+        <app-button
+          variant="secondary"
+          icon="upload"
+          (click)="fileInput.click()"
+          [disabled]="loading || procesandoImportacion()"
+          class="toolbar-btn"
+        >
+          <span class="btn-text">Importar CSV</span>
+        </app-button>
+
+        <!-- Input oculto para seleccionar archivo -->
+        <input
+          #fileInput
+          type="file"
+          accept=".csv"
+          style="display: none"
+          (change)="importarCSV($event)"
+        />
+
         <button mat-icon-button (click)="cargarPaquetes()" matTooltip="Refrescar">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
     </div>
+
+    <!-- Mensaje de procesamiento de importación -->
+    @if (procesandoImportacion()) {
+      <div class="import-status processing">
+        <mat-progress-spinner diameter="20" mode="indeterminate" color="primary"></mat-progress-spinner>
+        <span>Procesando archivo CSV...</span>
+      </div>
+    }
+
+    <!-- Mensaje de error de importación -->
+    @if (errorImportacion()) {
+      <div class="import-status error">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <div class="error-content">
+          <strong>Error al importar:</strong>
+          <pre class="error-message">{{ errorImportacion() }}</pre>
+        </div>
+        <button mat-icon-button (click)="errorImportacion.set(null)" class="close-btn">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
 
     <mat-divider class="toolbar-divider"></mat-divider>
 

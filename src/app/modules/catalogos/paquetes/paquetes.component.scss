@@ -74,6 +74,21 @@
   }
 }
 
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-wrap: wrap;
+
+  .toolbar-btn {
+    white-space: nowrap;
+
+    .btn-text {
+      display: inline;
+    }
+  }
+}
+
 .toolbar-divider {
   margin: 0;
   border-color: var(--color-border);
@@ -213,6 +228,69 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* ===== IMPORT/EXPORT STATUS MESSAGES ===== */
+.import-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+
+  &.processing {
+    background-color: var(--color-primary-alpha-10);
+    color: var(--color-primary);
+
+    mat-progress-spinner {
+      flex-shrink: 0;
+    }
+
+    span {
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  &.error {
+    background-color: var(--color-error-alpha-10);
+    color: var(--color-error);
+    align-items: flex-start;
+
+    .error-icon {
+      flex-shrink: 0;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .error-content {
+      flex: 1;
+
+      strong {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .error-message {
+        margin: 0;
+        font-family: 'Courier New', monospace;
+        font-size: var(--font-size-sm);
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: var(--color-error-dark);
+      }
+    }
+
+    .close-btn {
+      flex-shrink: 0;
+      color: var(--color-error);
+
+      &:hover {
+        background-color: var(--color-error-alpha-20);
+      }
+    }
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .paquetes-container {
@@ -224,12 +302,37 @@
     gap: var(--spacing-md);
   }
 
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .search-container {
     flex-direction: column;
+    min-width: 100%;
   }
 
   .search-container .search-field,
   .search-container .filter-field {
     min-width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: stretch;
+    width: 100%;
+
+    .toolbar-btn {
+      flex: 1;
+    }
+
+    button[mat-icon-button] {
+      flex-shrink: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons .toolbar-btn .btn-text {
+    display: none;
   }
 }
