@@ -32,7 +32,7 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
-	selector: 'app-nueva-nota',
+	selector: 'app-nueva-cotizacion',
 	standalone: true,
 	imports: [
     CommonModule,
@@ -53,10 +53,10 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatRadioModule,
     ButtonComponent
 ],
-	templateUrl: './nueva.component.html',
-	styleUrl: './nueva.component.scss',
+	templateUrl: './nueva-cotizacion.component.html',
+	styleUrl: './nueva-cotizacion.component.scss',
 })
-export class NuevaComponent implements OnInit {
+export class NuevaCotizacionComponent implements OnInit {
 	private fb = inject(FormBuilder);
 	private nuevaNotaService = inject(NuevaNotaService);
 	private clientesService = inject(ClientesService);

@@ -112,10 +112,10 @@ export const routes: Routes = [
 
 			// Cotizaciones
 			{
-				path: 'cotizaciones/nueva',
+				path: 'cotizaciones/nueva-cotizacion',
 				loadComponent: () =>
-					import('./modules/cotizaciones/nueva/nueva.component').then(
-						(m) => m.NuevaComponent,
+					import('./modules/cotizaciones/nueva-cotizacion/nueva-cotizacion.component').then(
+						(m) => m.NuevaCotizacionComponent,
 					),
 			},
 			{
