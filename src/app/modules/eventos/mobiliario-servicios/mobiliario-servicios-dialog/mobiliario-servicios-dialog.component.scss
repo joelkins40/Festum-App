@@ -15,7 +15,7 @@
   .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, var(--mat-primary-color, #20b2aa) 0%, #17a398 100%);
+    // background: linear-gradient(135deg, var(--mat-primary-color, #20b2aa) 0%, #17a398 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -26,7 +26,7 @@
       font-size: 28px;
       width: 28px;
       height: 28px;
-      color: white;
+      // color: var(--color-accent);
     }
   }
 
@@ -179,6 +179,7 @@ mat-dialog-actions {
   mat-dialog-content {
     .item-form {
       .form-row {
+
         &:has(.half-width),
         &:has(.third-width) {
           grid-template-columns: 1fr;

@@ -12,6 +12,11 @@
         {{ isEditMode() ? 'Modifica la información del elemento' : 'Agrega mobiliario o servicio al evento' }}
       </p>
     </div>
+
+    <button mat-icon-button aria-label="Cerrar" class="close-icon" (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+
   </div>
 
   <!-- Form -->
@@ -143,13 +148,30 @@
 
   <!-- Actions -->
   <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">
+    <!-- <button mat-button (click)="onCancel()">
       <mat-icon>close</mat-icon>
       Cancelar
     </button>
     <button mat-raised-button color="primary" (click)="onSave()" [disabled]="itemForm.invalid">
       <mat-icon>{{ isEditMode() ? 'save' : 'add' }}</mat-icon>
       {{ isEditMode() ? 'Guardar cambios' : 'Agregar elemento' }}
-    </button>
+    </button> -->
+    <app-button
+      variant="ghost"
+      size="md"
+      icon="close"
+      (click)="onCancel()"
+    >
+      Cancelar
+    </app-button>
+    <app-button
+      variant="primary"
+      size="md"
+      icon="{{ isEditMode() ? 'save' : 'add' }}"
+      [disabled]="itemForm.invalid"
+      (click)="onSave()"
+    >
+      {{ isEditMode() ? 'Guardar cambios' : 'Agregar elemento' }}
+    </app-button>
   </mat-dialog-actions>
 </div>

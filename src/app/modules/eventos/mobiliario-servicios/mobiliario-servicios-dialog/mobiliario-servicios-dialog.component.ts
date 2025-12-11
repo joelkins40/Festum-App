@@ -17,20 +17,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MobiliarioServicio } from '../mobiliario-servicios.component';
+import { ButtonComponent } from "../../../../shared/components/button";
 
 @Component({
 	selector: 'app-mobiliario-servicios-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatSelectModule,
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule,
+    ButtonComponent
+],
 	templateUrl: './mobiliario-servicios-dialog.component.html',
 	styleUrl: './mobiliario-servicios-dialog.component.scss',
 })

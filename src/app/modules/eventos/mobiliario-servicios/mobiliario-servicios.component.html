@@ -10,10 +10,6 @@
         Gestión de mobiliario y servicios asignados al evento
       </p>
     </div>
-    <!-- <button mat-raised-button color="primary" (click)="openDialog()">
-      <mat-icon>add</mat-icon>
-      Agregar elemento
-    </button> -->
     <app-button
       variant="primary"
       size="md"
@@ -59,10 +55,15 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-stroked-button (click)="clearFilters()" matTooltip="Limpiar filtros">
-        <mat-icon>filter_alt_off</mat-icon>
+      <app-button
+        variant="secondary"
+        size="md"
+        icon="filter_alt_off"
+        (click)="clearFilters()"
+        tooltip="Limpiar filtros"
+      >
         Limpiar
-      </button>
+      </app-button>
     </div>
   </mat-card>
 
