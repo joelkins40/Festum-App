@@ -1,0 +1,89 @@
+/* ============================================================================
+   FESTUM APP - ANIMATIONS
+   ============================================================================
+   CSS animations, keyframes, and transition utilities.
+   ============================================================================ */
+
+// ========================================
+// KEYFRAME ANIMATIONS
+// ========================================
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDialog {
+    from {
+        transform: translateY(-30px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+// ========================================
+// ANIMATION UTILITY CLASSES
+// ========================================
+
+.animate-fade-in {
+    animation: fadeIn var(--transition-slow);
+}
+
+.animate-slide-up {
+    animation: slideInUp var(--transition-slow);
+}
+
+.animate-slide-dialog {
+    animation: slideInDialog var(--transition-slow) cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

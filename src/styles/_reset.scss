@@ -1,0 +1,129 @@
+/* ============================================================================
+   FESTUM APP - CSS RESET
+   ============================================================================
+   Modern CSS reset and base styles for cross-browser consistency.
+   ============================================================================ */
+
+// ========================================
+// BOX SIZING
+// ========================================
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+// ========================================
+// HTML & BODY DEFAULTS
+// ========================================
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    line-height: var(--line-height-normal);
+    color: var(--text-primary);
+    background-color: var(--bg-page);
+}
+
+// ========================================
+// HEADINGS RESET
+// ========================================
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+// ========================================
+// PARAGRAPH & LIST RESET
+// ========================================
+p,
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+// ========================================
+// LINKS
+// ========================================
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+// ========================================
+// BUTTONS & INPUTS
+// ========================================
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// ========================================
+// IMAGES
+// ========================================
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+// ========================================
+// TABLES
+// ========================================
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+// ========================================
+// SCROLLBAR CUSTOMIZATION
+// ========================================
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

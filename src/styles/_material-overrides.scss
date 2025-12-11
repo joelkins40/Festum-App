@@ -1,0 +1,191 @@
+/* ============================================================================
+   FESTUM APP - ANGULAR MATERIAL CUSTOMIZATIONS
+   ============================================================================
+   Custom styling overrides for Angular Material components to match the
+   Festum design system. Includes buttons, cards, forms, tables, dialogs, etc.
+   ============================================================================ */
+
+// ========================================
+// MATERIAL BUTTONS
+// ========================================
+
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+    transition: all var(--transition-base);
+
+    &:hover:not([disabled]) {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+}
+
+.mat-mdc-icon-button {
+    transition: all var(--transition-base);
+
+    &:hover:not([disabled]) {
+        transform: scale(1.1);
+    }
+}
+
+// ========================================
+// MATERIAL CARDS
+// ========================================
+
+.mat-mdc-card {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+// ========================================
+// MATERIAL FORM FIELDS
+// ========================================
+
+.mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+        border-radius: var(--radius-md);
+    }
+
+    // Outline color when focused
+    &.mat-focused {
+
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+            border-color: var(--color-primary) !important;
+        }
+    }
+}
+
+// ========================================
+// MATERIAL CHIPS
+// ========================================
+
+.mat-mdc-chip {
+    font-weight: var(--font-weight-medium);
+
+    &.mat-primary {
+        background-color: var(--color-primary-alpha-15);
+        color: var(--color-primary);
+    }
+
+    &.mat-warn {
+        background-color: var(--color-error-alpha-15);
+        color: var(--color-error);
+    }
+}
+
+// ========================================
+// MATERIAL TABS
+// ========================================
+
+.mat-mdc-tab-group {
+    .mat-mdc-tab-header {
+        .mat-mdc-tab-label {
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-base);
+        }
+    }
+}
+
+// ========================================
+// MATERIAL PAGINATOR
+// ========================================
+
+.mat-mdc-paginator {
+    border-top: 1px solid var(--border-light);
+    background-color: var(--bg-page);
+
+    .mat-mdc-paginator-range-label,
+    .mat-mdc-paginator-page-size-label {
+        color: var(--text-secondary);
+        font-size: var(--font-size-base);
+    }
+
+    .mat-mdc-icon-button {
+        color: var(--text-secondary);
+
+        &:hover:not(:disabled) {
+            background-color: var(--color-primary-alpha-10);
+            color: var(--color-primary);
+        }
+    }
+}
+
+// ========================================
+// MATERIAL TABLE
+// ========================================
+
+.mat-mdc-table {
+    background: var(--bg-surface);
+
+    .mat-mdc-header-row {
+        background-color: var(--bg-page);
+    }
+
+    .mat-mdc-header-cell {
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-primary);
+        font-size: var(--font-size-base);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing-wide);
+        border-bottom: 2px solid var(--border-light);
+    }
+
+    .mat-mdc-row {
+        transition: background-color var(--transition-base);
+
+        &:hover {
+            background-color: var(--bg-page);
+        }
+    }
+
+    .mat-mdc-cell {
+        border-bottom-color: var(--border-divider);
+    }
+}
+
+// ========================================
+// MATERIAL DIALOGS
+// ========================================
+
+.mat-mdc-dialog-container {
+    .mdc-dialog__surface {
+        border-radius: var(--radius-lg);
+    }
+}
+
+// ========================================
+// MATERIAL SNACKBAR
+// ========================================
+
+.snackbar-success {
+    --mdc-snackbar-container-color: var(--color-success) !important;
+    --mat-snack-bar-button-color: var(--text-white) !important;
+    --mdc-snackbar-supporting-text-color: var(--text-white) !important;
+}
+
+.snackbar-error {
+    --mdc-snackbar-container-color: var(--color-error) !important;
+    --mat-snack-bar-button-color: var(--text-white) !important;
+    --mdc-snackbar-supporting-text-color: var(--text-white) !important;
+}
+
+.snackbar-warning {
+    --mdc-snackbar-container-color: var(--color-warning) !important;
+    --mat-snack-bar-button-color: var(--text-white) !important;
+    --mdc-snackbar-supporting-text-color: var(--text-white) !important;
+}
+
+.snackbar-info {
+    --mdc-snackbar-container-color: var(--color-info) !important;
+    --mat-snack-bar-button-color: var(--text-white) !important;
+    --mdc-snackbar-supporting-text-color: var(--text-white) !important;
+}
+
+// ========================================
+// MATERIAL DRAWER
+// ========================================
+
+.mat-drawer-inner-container {
+    overflow-x: hidden !important;
+}

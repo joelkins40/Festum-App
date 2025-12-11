@@ -1,0 +1,186 @@
+/* ============================================================================
+   FESTUM APP - CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ============================================================================
+   This file contains all design tokens: colors, typography, spacing, shadows,
+   borders, transitions, z-index scale, and component-specific variables.
+   Based on: src/app/modules/catalogos/categorias (reference component)
+   ============================================================================ */
+
+:root {
+  // ========================================
+  // PRIMARY COLORS
+  // ========================================
+  --color-primary: #20b2aa; // Main brand color (turquoise)
+  --color-primary-hover: #1a9b94; // Darker on hover
+  --color-primary-light: #4dd0e1; // Light variant
+  --color-primary-dark: #00838f; // Dark variant
+  --color-primary-alpha-10: rgba(32, 178, 170, 0.1);
+  --color-primary-alpha-15: rgba(32, 178, 170, 0.15);
+  --color-primary-alpha-20: rgba(32, 178, 170, 0.2);
+  --color-primary-alpha-30: rgba(32, 178, 170, 0.3);
+
+  // ========================================
+  // SECONDARY COLORS
+  // ========================================
+  --color-secondary: #636e72; // Gray blue for secondary actions
+  --color-secondary-dark: #2d3436; // Darker variant
+  --color-accent: #17a2b8; // Alternative accent
+
+  // ========================================
+  // SEMANTIC COLORS
+  // ========================================
+  --color-success: #28a745;
+  --color-success-dark: #218838;
+  --color-success-alpha-15: rgba(40, 167, 69, 0.15);
+  --color-success-alpha-30: rgba(40, 167, 69, 0.3);
+
+  --color-error: #f44336;
+  --color-error-dark: #dc3545;
+  --color-error-alpha-10: rgba(244, 67, 54, 0.1);
+  --color-error-alpha-15: rgba(244, 67, 54, 0.15);
+  --color-error-alpha-20: rgba(244, 67, 54, 0.2);
+  --color-error-alpha-30: rgba(244, 67, 54, 0.3);
+
+  --color-warning: #ffc107;
+  --color-warning-dark: #ff9800;
+  --color-warning-alpha-15: rgba(255, 193, 7, 0.15);
+  --color-warning-alpha-30: rgba(255, 193, 7, 0.3);
+
+  --color-info: #2196f3;
+  --color-info-alpha-15: rgba(33, 150, 243, 0.15);
+
+  // ========================================
+  // TEXT COLORS
+  // ========================================
+  --text-primary: #2d3436; // Main text
+  --text-secondary: #636e72; // Secondary text, labels
+  --text-muted: #9ca3af; // Disabled, placeholders
+  --text-white: #ffffff;
+
+  // ========================================
+  // BACKGROUND COLORS
+  // ========================================
+  --bg-page: #f8f9fa; // Page background
+  --bg-surface: #ffffff; // Cards, dialogs
+  --bg-hover: #f1f3f4; // Hover states
+  --bg-selected: rgba(32, 178, 170, 0.1); // Selected rows
+  --bg-overlay: rgba(255, 255, 255, 0.9);
+  --bg-overlay-dark: rgba(255, 255, 255, 0.8);
+
+  // ========================================
+  // BORDER COLORS
+  // ========================================
+  --border-light: #e9ecef; // Main border color
+  --border-medium: #e0e0e0; // Medium borders
+  --border-dark: #d1d5db; // Strong borders
+  --border-divider: #f1f3f4; // Subtle dividers
+
+  // ========================================
+  // SHADOWS
+  // ========================================
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-button: 0 2px 8px rgba(32, 178, 170, 0.3);
+  --shadow-button-hover: 0 4px 12px rgba(32, 178, 170, 0.4);
+
+  // ========================================
+  // SPACING SCALE
+  // ========================================
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 48px;
+
+  // ========================================
+  // BORDER RADIUS
+  // ========================================
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 16px;
+  --radius-circle: 50%;
+  --radius-full: 9999px;
+
+  // ========================================
+  // TYPOGRAPHY
+  // ========================================
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 28px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  --letter-spacing-tight: -0.5px;
+  --letter-spacing-wide: 0.5px;
+
+  // ========================================
+  // TRANSITIONS
+  // ========================================
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.3s ease;
+  --transition-bounce: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  // ========================================
+  // Z-INDEX SCALE
+  // ========================================
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+
+  // ========================================
+  // COMPONENT SPECIFIC
+  // ========================================
+  --table-row-height: auto;
+  --table-header-height: auto;
+  --button-height: 40px;
+  --input-height: 56px;
+  --chip-height: 24px;
+}
+
+// ========================================
+// DARK THEME OVERRIDES
+// ========================================
+[data-theme="dark"] {
+  --bg-page: #303030;
+  --bg-surface: #424242;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --border-light: #374151;
+  --bg-hover: #374151;
+
+  ::-webkit-scrollbar-track {
+    background: #424242;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #616161;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #757575;
+  }
+}
