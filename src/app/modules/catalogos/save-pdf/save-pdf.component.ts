@@ -36,31 +36,33 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { DocumentoDialogComponent } from './documento-dialog/documento-dialog.component';
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ButtonIconComponent } from "../../../shared/components/button-icon";
 
 @Component({
 	selector: 'app-save-pdf',
 	standalone: true,
 	imports: [
-		CommonModule,
-		FormsModule,
-		MatCardModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTableModule,
-		MatPaginatorModule,
-		MatSortModule,
-		MatProgressSpinnerModule,
-		MatSnackBarModule,
-		MatDialogModule,
-		MatChipsModule,
-		MatTooltipModule,
-		MatDividerModule,
-		MatSelectModule,
-		MatMenuModule,
-		ButtonComponent,
-	],
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatMenuModule,
+    ButtonComponent,
+    ButtonIconComponent
+],
 	templateUrl: './save-pdf.component.html',
 	styleUrl: './save-pdf.component.scss',
 })
