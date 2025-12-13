@@ -82,9 +82,9 @@ export const routes: Routes = [
 
 			// Clientes
 			{
-				path: 'clientes/lista',
+				path: 'clientes/lista-clientes',
 				loadComponent: () =>
-					import('./modules/clientes/lista/lista.component').then(
+					import('./modules/clientes/lista-clientes/lista.component').then(
 						(m) => m.ListaComponent,
 					),
 			},
@@ -135,9 +135,9 @@ export const routes: Routes = [
 
 			// Ventas
 			{
-				path: 'ventas/notas',
+				path: 'ventas/nota-venta',
 				loadComponent: () =>
-					import('./modules/ventas/notas/notas.component').then(
+					import('./modules/ventas/nota-venta/notas.component').then(
 						(m) => m.NotasComponent,
 					),
 			},

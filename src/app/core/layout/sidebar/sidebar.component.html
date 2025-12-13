@@ -69,7 +69,7 @@
           <mat-icon class="expand-icon" [class.rotated]="clientesExpanded">expand_more</mat-icon>
         </div>
         <div class="sub-menu" *ngIf="clientesExpanded">
-          <a class="nav-sub-item" routerLink="/clientes/lista" (click)="onMenuClick()">
+          <a class="nav-sub-item" routerLink="/clientes/lista-clientes" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon clients">people</mat-icon>
             <span class="nav-sub-label">Lista de clientes</span>
           </a>
@@ -116,7 +116,7 @@
               <span class="nav-sub-label">Seguimiento</span>
             </a>
           </div>
-          <a class="nav-sub-item" routerLink="/ventas/notas" (click)="onMenuClick()">
+          <a class="nav-sub-item" routerLink="/ventas/nota-venta" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon orders">receipt</mat-icon>
             <span class="nav-sub-label">Notas (Pedidos)</span>
           </a>
