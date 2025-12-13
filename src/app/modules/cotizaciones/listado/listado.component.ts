@@ -34,6 +34,7 @@ import { CotizacionesListadoDialogComponent } from './cotizaciones-listado-dialo
 import { CotizacionDetalleDialogComponent } from './cotizacion-detalle-dialog/cotizacion-detalle-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 /**
  * Componente para mostrar el listado de cotizaciones
@@ -61,7 +62,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatDatepickerModule,
     MatNativeDateModule,
     MatDialogModule,
-    ButtonComponent
+	ButtonComponent,
+	ButtonIconComponent
 ],
 	templateUrl: './listado.component.html',
 	styleUrl: './listado.component.scss',

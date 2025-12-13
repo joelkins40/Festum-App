@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -77,6 +78,7 @@ export interface Permiso {
 		MatDividerModule,
 		MatChipsModule,
 		MatBadgeModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './roles-permisos.component.html',
 	styleUrl: './roles-permisos.component.scss',

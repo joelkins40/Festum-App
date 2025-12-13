@@ -33,6 +33,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-tipos-mobiliario',
@@ -57,6 +58,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 		MatTooltipModule,
 		MatDividerModule,
 		ButtonComponent,
+		ButtonIconComponent,
 	],
 	templateUrl: './tipos-mobiliario.component.html',
 	styleUrl: './tipos-mobiliario.component.scss',

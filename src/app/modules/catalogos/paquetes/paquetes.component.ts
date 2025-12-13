@@ -22,6 +22,7 @@ import type { Paquete } from '../../../core/models/paquete.model';
 import { PaqueteDialogComponent } from './paquete-dialog/paquete-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-paquetes',
@@ -44,6 +45,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 		MatDialogModule,
 		MatSnackBarModule,
 		ButtonComponent,
+		ButtonIconComponent,
 	],
 	templateUrl: './paquetes.component.html',
 	styleUrl: './paquetes.component.scss',

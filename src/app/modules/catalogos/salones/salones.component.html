@@ -199,20 +199,29 @@
           <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
           <td mat-cell *matCellDef="let salon" class="acciones-cell">
             <div class="acciones-container">
-              <button mat-icon-button class="action-btn action-btn-view" [routerLink]="['/catalogos/salones', salon.id]"
-                matTooltip="Ver detalles del salón" [disabled]="loading">
-                <mat-icon>visibility</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="visibility"
+                color="primary"
+                tooltip="Ver detalles del salón"
+                [disabled]="loading"
+                [routerLink]="['/catalogos/salones', salon.id]"
+              />
 
-              <button mat-icon-button class="action-btn action-btn-edit" (click)="abrirModalEditar(salon)" matTooltip="Editar salón"
-                [disabled]="loading">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="edit"
+                color="primary"
+                tooltip="Editar salón"
+                [disabled]="loading"
+                (pressed)="abrirModalEditar(salon)"
+              />
 
-              <button mat-icon-button class="action-btn action-btn-delete" (click)="confirmarEliminacion(salon)"
-                matTooltip="Eliminar salón" [disabled]="loading">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar salón"
+                [disabled]="loading"
+                (pressed)="confirmarEliminacion(salon)"
+              />
             </div>
           </td>
         </ng-container>

@@ -38,6 +38,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 // Models y Services
 import {
@@ -72,7 +73,8 @@ import { CategoriaDialogComponent } from './categoria-dialog/categoria-dialog.co
 		MatChipsModule,
 		MatTooltipModule,
 		MatDividerModule,
-    ButtonComponent,
+		ButtonComponent,
+		ButtonIconComponent,
 	],
 	templateUrl: './categorias.component.html',
 	styleUrl: './categorias.component.scss',

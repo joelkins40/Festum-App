@@ -120,16 +120,22 @@
           <td mat-cell *matCellDef="let usuario" class="acciones-cell">
             <div class="action-buttons-group">
               <!-- Botón Editar -->
-              <button mat-icon-button color="primary" (click)="editarUsuario(usuario)" matTooltip="Editar usuario"
-                class="action-button edit-button">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <ui-button-icon
+                class="action-button edit-button"
+                icon="edit"
+                color="primary"
+                tooltip="Editar usuario"
+                (pressed)="editarUsuario(usuario)"
+              />
 
               <!-- Botón Eliminar -->
-              <button mat-icon-button color="warn" (click)="eliminarUsuario(usuario)" matTooltip="Eliminar usuario"
-                class="action-button delete-button">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                class="action-button delete-button"
+                icon="delete"
+                color="error"
+                tooltip="Eliminar usuario"
+                (pressed)="eliminarUsuario(usuario)"
+              />
             </div>
           </td>
         </ng-container>

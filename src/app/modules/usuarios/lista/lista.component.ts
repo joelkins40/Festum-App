@@ -24,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -60,6 +61,7 @@ export interface Usuario {
 		MatTooltipModule,
 		MatDividerModule,
 		MatChipsModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './lista.component.html',
 	styleUrl: './lista.component.scss',

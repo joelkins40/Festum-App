@@ -32,6 +32,7 @@ import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-f
 import { calculateDialogWidth,
 DynamicFormConfig, DynamicFormResult } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
   selector: 'app-productos-servicios',
@@ -55,7 +56,8 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
     MatChipsModule,
     MatTooltipModule,
     MatDividerModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
   ],
   templateUrl: './productos-servicios.component.html',
   styleUrl: './productos-servicios.component.scss'

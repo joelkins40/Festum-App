@@ -27,6 +27,8 @@ import { TipoEventoService } from '../../../core/services/tipos-evento.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.component';
 import { DynamicFormConfig, DynamicFormResult } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
   selector: 'app-tipo-eventos',
@@ -48,8 +50,10 @@ import { DynamicFormConfig, DynamicFormResult } from '../../../shared/components
     MatDialogModule,
     MatChipsModule,
     MatTooltipModule,
-    MatDividerModule
-  ],
+    MatDividerModule,
+    ButtonIconComponent,
+    ButtonComponent
+],
   templateUrl: './tipo-eventos.component.html',
   styleUrl: './tipo-eventos.component.scss'
 })

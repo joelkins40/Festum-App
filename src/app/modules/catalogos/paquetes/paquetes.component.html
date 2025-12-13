@@ -196,15 +196,21 @@
           <th mat-header-cell *matHeaderCellDef>Acciones</th>
           <td mat-cell *matCellDef="let p">
             <div class="acciones-container">
-              <button mat-icon-button class="action-btn action-btn-edit" (click)="editarPaquete(p)" matTooltip="Editar paquete"
-                [disabled]="loading">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="edit"
+                color="primary"
+                tooltip="Editar paquete"
+                [disabled]="loading"
+                (pressed)="editarPaquete(p)"
+              />
 
-              <button mat-icon-button class="action-btn action-btn-delete" (click)="confirmarEliminacion(p)"
-                matTooltip="Eliminar paquete" [disabled]="loading">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar paquete"
+                [disabled]="loading"
+                (pressed)="confirmarEliminacion(p)"
+              />
             </div>
           </td>
         </ng-container>

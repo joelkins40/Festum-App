@@ -113,22 +113,32 @@
           <td mat-cell *matCellDef="let rol" class="acciones-cell">
             <div class="action-buttons-group">
               <!-- Botón Editar -->
-              <button mat-icon-button color="primary" (click)="editarRol(rol)" matTooltip="Editar rol"
-                class="action-button edit-button">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <ui-button-icon
+                class="action-button edit-button"
+                icon="edit"
+                color="primary"
+                tooltip="Editar rol"
+                (pressed)="editarRol(rol)"
+              />
 
               <!-- Botón Gestionar Permisos -->
-              <button mat-icon-button color="accent" (click)="gestionarPermisos(rol)" matTooltip="Gestionar permisos"
-                class="action-button permisos-button">
-                <mat-icon>settings</mat-icon>
-              </button>
+              <ui-button-icon
+                class="action-button permisos-button"
+                icon="settings"
+                color="secondary"
+                tooltip="Gestionar permisos"
+                (pressed)="gestionarPermisos(rol)"
+              />
 
               <!-- Botón Eliminar -->
-              <button mat-icon-button color="warn" (click)="eliminarRol(rol)" matTooltip="Eliminar rol"
-                [disabled]="rol.numeroDeUsuariosAsignados > 0" class="action-button delete-button">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                class="action-button delete-button"
+                icon="delete"
+                color="error"
+                tooltip="Eliminar rol"
+                [disabled]="rol.numeroDeUsuariosAsignados > 0"
+                (pressed)="eliminarRol(rol)"
+              />
             </div>
           </td>
         </ng-container>
