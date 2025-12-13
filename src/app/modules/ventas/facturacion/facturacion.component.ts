@@ -28,6 +28,7 @@ import {
 import { FacturacionDialogComponent } from './facturacion-dialog/facturacion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 interface InvoiceFormData {
 	id?: number;
@@ -61,7 +62,8 @@ interface InvoiceFormData {
     MatDividerModule,
     MatChipsModule,
     MatSelectModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './facturacion.component.html',
 	styleUrl: './facturacion.component.scss',

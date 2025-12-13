@@ -216,17 +216,26 @@
           <th mat-header-cell *matHeaderCellDef class="acciones-header">Acciones</th>
           <td mat-cell *matCellDef="let invoice" class="acciones-cell">
             <div class="action-buttons">
-              <button mat-icon-button (click)="viewInvoice(invoice)" matTooltip="Ver detalle">
-                <mat-icon>visibility</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="visibility"
+                color="primary"
+                tooltip="Ver detalle"
+                (pressed)="viewInvoice(invoice)"
+              />
 
-              <button mat-icon-button color="accent" (click)="openEditDialog(invoice)" matTooltip="Editar">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="edit"
+                color="secondary"
+                tooltip="Editar"
+                (pressed)="openEditDialog(invoice)"
+              />
 
-              <button mat-icon-button color="warn" (click)="openDeleteDialog(invoice)" matTooltip="Eliminar">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar"
+                (pressed)="openDeleteDialog(invoice)"
+              />
             </div>
           </td>
         </ng-container>

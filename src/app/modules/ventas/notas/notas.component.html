@@ -1,6 +1,6 @@
 <!-- ===== NOTAS DE VENTA COMPONENT ===== -->
 <div class="notas-container">
-  
+
   <!-- Header Principal -->
   <div class="page-header">
     <div class="header-content">
@@ -12,11 +12,11 @@
         Administra las notas de venta de paquetes y servicios
       </p>
     </div>
-    
+
     <!-- Action Button -->
     <div class="header-actions">
-      <button mat-raised-button 
-              color="primary" 
+      <button mat-raised-button
+              color="primary"
               (click)="abrirModalCrear()"
               class="create-button">
         <mat-icon>add_circle</mat-icon>
@@ -29,8 +29,8 @@
   @if (loading) {
     <div class="loading-overlay">
       <div class="loading-content">
-        <mat-progress-spinner 
-          diameter="60" 
+        <mat-progress-spinner
+          diameter="60"
           mode="indeterminate"
           color="primary">
         </mat-progress-spinner>
@@ -80,13 +80,13 @@
 
   <!-- Main Content Card -->
   <mat-card class="main-card">
-    
+
     <!-- Toolbar de Acciones -->
     <div class="table-toolbar">
       <div class="search-container">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Buscar notas</mat-label>
-          <input matInput 
+          <input matInput
                  [(ngModel)]="filtroTexto"
                  (keyup)="aplicarFiltro()"
                  placeholder="Buscar por folio, cliente, evento...">
@@ -96,8 +96,8 @@
 
       <div class="action-buttons">
         <!-- Botón Importar -->
-        <button mat-raised-button 
-                color="accent" 
+        <button mat-raised-button
+                color="accent"
                 (click)="abrirImportador()"
                 [disabled]="loading"
                 class="toolbar-button">
@@ -106,7 +106,7 @@
         </button>
 
         <!-- Botón Exportar -->
-        <button mat-raised-button 
+        <button mat-raised-button
                 color="primary"
                 (click)="exportarCSV()"
                 [disabled]="loading || dataSource.data.length === 0"
@@ -116,7 +116,7 @@
         </button>
 
         <!-- Botón Refrescar -->
-        <button mat-icon-button 
+        <button mat-icon-button
                 (click)="cargarNotas()"
                 [disabled]="loading"
                 matTooltip="Refrescar datos">
@@ -129,9 +129,9 @@
 
     <!-- Tabla de Notas -->
     <div class="table-container">
-      <table mat-table 
-             [dataSource]="dataSource" 
-             matSort 
+      <table mat-table
+             [dataSource]="dataSource"
+             matSort
              class="notas-table">
 
         <!-- Columna Tipo -->
@@ -208,26 +208,26 @@
           <th mat-header-cell *matHeaderCellDef class="acciones-column">Acciones</th>
           <td mat-cell *matCellDef="let nota" class="acciones-cell">
             <div class="action-buttons-group">
-              <button mat-icon-button 
-                      color="primary"
-                      (click)="abrirModalVer(nota)"
-                      matTooltip="Ver detalles">
-                <mat-icon>visibility</mat-icon>
-              </button>
-              
-              <button mat-icon-button 
-                      color="accent"
-                      (click)="abrirModalEditar(nota)"
-                      matTooltip="Editar nota">
-                <mat-icon>edit</mat-icon>
-              </button>
-              
-              <button mat-icon-button 
-                      color="warn"
-                      (click)="confirmarEliminacion(nota)"
-                      matTooltip="Eliminar nota">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="visibility"
+                color="primary"
+                tooltip="Ver detalles"
+                (pressed)="abrirModalVer(nota)"
+              />
+
+              <ui-button-icon
+                icon="edit"
+                color="secondary"
+                tooltip="Editar nota"
+                (pressed)="abrirModalEditar(nota)"
+              />
+
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar nota"
+                (pressed)="confirmarEliminacion(nota)"
+              />
             </div>
           </td>
         </ng-container>
@@ -251,7 +251,7 @@
     </div>
 
     <!-- Paginador -->
-    <mat-paginator 
+    <mat-paginator
       [pageSizeOptions]="[5, 10, 25, 50]"
       [pageSize]="10"
       showFirstLastButtons>
@@ -259,9 +259,9 @@
   </mat-card>
 
   <!-- Hidden file input for CSV import -->
-  <input #fileInput 
-         type="file" 
-         accept=".csv" 
+  <input #fileInput
+         type="file"
+         accept=".csv"
          (change)="procesarArchivoCSV($event)"
          style="display: none;">
 </div>

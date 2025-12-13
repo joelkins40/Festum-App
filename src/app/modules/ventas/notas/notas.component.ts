@@ -20,6 +20,7 @@ import { Nota, EstadisticasNotas } from '../../../core/models/notas.models';
 import { NotasService } from '../../../core/services/notas.service';
 import { VentaDialogComponent } from './venta-dialog/venta-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-notas',
@@ -41,6 +42,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 		MatTooltipModule,
 		MatDividerModule,
 		MatChipsModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './notas.component.html',
 	styleUrl: './notas.component.scss',
