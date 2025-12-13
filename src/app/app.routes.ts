@@ -82,32 +82,41 @@ export const routes: Routes = [
 
 			// Clientes
 			{
-				path: 'clientes/lista-clientes',
+				path: 'clientes',
 				loadComponent: () =>
 					import('./modules/clientes/lista-clientes/lista-clientes.component').then(
 						(m) => m.ListaComponent,
 					),
 			},
+			// Vistas globales (acceso opcional desde sidebar)
 			{
-				path: 'clientes/direcciones',
+				path: 'clientes/todas-direcciones',
 				loadComponent: () =>
 					import('./modules/clientes/direcciones/direcciones.component').then(
 						(m) => m.DireccionesComponent,
 					),
 			},
 			{
-				path: 'clientes/contactos-frecuentes',
+				path: 'clientes/todos-contactos',
 				loadComponent: () =>
 					import(
 						'./modules/clientes/contactos-frecuentes/contactos-frecuentes.component'
 					).then((m) => m.ContactosFrecuentesComponent),
 			},
 			{
-				path: 'clientes/historial-eventos',
+				path: 'clientes/todos-historiales',
 				loadComponent: () =>
 					import(
 						'./modules/clientes/historial-eventos/historial-eventos.component'
 					).then((m) => m.HistorialEventosComponent),
+			},
+			// Ruta dinámica para detalle de cliente
+			{
+				path: 'clientes/:id',
+				loadComponent: () =>
+					import('./modules/clientes/cliente-detalle/cliente-detalle.component').then(
+						(m) => m.ClienteDetalleComponent,
+					),
 			},
 
 			// Cotizaciones

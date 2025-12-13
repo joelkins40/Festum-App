@@ -1,0 +1,174 @@
+<!-- ===== DETALLE DEL CLIENTE ===== -->
+<div class="cliente-detalle-container">
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="loading-state">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Cargando información del cliente...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (hasError() && !isLoading()) {
+  <div class="error-state">
+    <mat-icon>error_outline</mat-icon>
+    <h2>Error al cargar el cliente</h2>
+    <p>No se pudo encontrar el cliente solicitado.</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a la lista
+    </button>
+  </div>
+  }
+
+  <!-- Content -->
+  @if (currentCliente() && !isLoading()) {
+
+  <!-- Header con acciones -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="goBack()" matTooltip="Volver a la lista" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <mat-icon class="page-icon">person</mat-icon>
+      <div class="header-text">
+        <h1>{{ currentCliente()!.nombre }}</h1>
+        <p class="subtitle">Cliente ID: {{ currentCliente()!.id }}</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button mat-stroked-button (click)="copyToClipboard(currentCliente()!.nombre)" matTooltip="Copiar nombre">
+        <mat-icon>content_copy</mat-icon>
+        Copiar
+      </button>
+      <button mat-raised-button color="primary" (click)="editCliente()" matTooltip="Editar cliente">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+    </div>
+  </div>
+
+  <!-- Información Básica del Cliente -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>info</mat-icon>
+        Información General
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <!-- Nombre -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>badge</mat-icon>
+            Nombre Completo
+          </label>
+          <div class="info-value">{{ currentCliente()!.nombre }}</div>
+        </div>
+
+        <!-- Dirección Principal -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>place</mat-icon>
+            Dirección Principal
+          </label>
+          <div class="info-value">{{ direccionPrincipal() }}</div>
+        </div>
+
+        <!-- Total de Direcciones -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>location_city</mat-icon>
+            Total de Direcciones
+          </label>
+          <div class="info-value">
+            <mat-chip class="chip-info">{{ totalDirecciones() }}</mat-chip>
+          </div>
+        </div>
+
+        <!-- Estado del Cliente -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>toggle_on</mat-icon>
+            Estado
+          </label>
+          <div class="info-value">
+            <mat-chip [class]="currentCliente()!.activo ? 'chip-success' : 'chip-error'">
+              {{ currentCliente()!.activo ? 'Activo' : 'Inactivo' }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <!-- Cliente Preferente -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>star</mat-icon>
+            Cliente Preferente
+          </label>
+          <div class="info-value">
+            <mat-chip [class]="currentCliente()!.clientePreferente ? 'chip-primary' : 'chip-secondary'">
+              {{ currentCliente()!.clientePreferente ? 'Sí' : 'No' }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <!-- Fecha de Creación -->
+        <div class="info-item">
+          <label class="info-label">
+            <mat-icon>calendar_today</mat-icon>
+            Fecha de Registro
+          </label>
+          <div class="info-value">{{ currentCliente()!.fechaCreacion | date: 'dd/MM/yyyy' }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-divider></mat-divider>
+
+  <!-- Tabs de Información Detallada -->
+  <mat-card class="tabs-card">
+    <mat-tab-group animationDuration="300ms" class="cliente-tabs">
+
+      <!-- Tab: Direcciones -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">place</mat-icon>
+          <span>Direcciones</span>
+          <mat-chip class="tab-badge">{{ totalDirecciones() }}</mat-chip>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-direcciones-section [clienteId]="currentCliente()!.id" />
+        </ng-template>
+      </mat-tab>
+
+      <!-- Tab: Contactos Frecuentes -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">contacts</mat-icon>
+          <span>Contactos</span>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-contactos-section [clienteId]="currentCliente()!.id" />
+        </ng-template>
+      </mat-tab>
+
+      <!-- Tab: Historial de Eventos -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">history</mat-icon>
+          <span>Historial</span>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-historial-section [clienteId]="currentCliente()!.id" />
+        </ng-template>
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-card>
+
+  }
+</div>

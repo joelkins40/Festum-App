@@ -190,8 +190,15 @@
           <td mat-cell *matCellDef="let cliente" class="acciones-cell">
             <div class="acciones-container">
               <ui-button-icon
-                icon="edit"
+                icon="visibility"
                 color="primary"
+                tooltip="Ver detalle"
+                [routerLink]="['/clientes', cliente.id]"
+              />
+
+              <ui-button-icon
+                icon="edit"
+                color="secondary"
                 tooltip="Editar cliente"
                 (pressed)="editarCliente(cliente)"
               />

@@ -69,22 +69,28 @@
           <mat-icon class="expand-icon" [class.rotated]="clientesExpanded">expand_more</mat-icon>
         </div>
         <div class="sub-menu" *ngIf="clientesExpanded">
-          <a class="nav-sub-item" routerLink="/clientes/lista-clientes" (click)="onMenuClick()">
+          <a class="nav-sub-item" routerLink="/clientes" (click)="onMenuClick()">
             <mat-icon class="nav-sub-icon clients">people</mat-icon>
             <span class="nav-sub-label">Lista de clientes</span>
           </a>
-          <a class="nav-sub-item" routerLink="/clientes/direcciones" (click)="onMenuClick()">
-            <mat-icon class="nav-sub-icon addresses">place</mat-icon>
-            <span class="nav-sub-label">Direcciones</span>
-          </a>
-          <a class="nav-sub-item" routerLink="/clientes/contactos-frecuentes" (click)="onMenuClick()">
-            <mat-icon class="nav-sub-icon contacts">contacts</mat-icon>
-            <span class="nav-sub-label">Contactos frecuentes</span>
-          </a>
-          <a class="nav-sub-item" routerLink="/clientes/historial-eventos" (click)="onMenuClick()">
-            <mat-icon class="nav-sub-icon history">history</mat-icon>
-            <span class="nav-sub-label">Historial de eventos</span>
-          </a>
+          <div class="nav-sub-group">
+            <span class="nav-sub-group-title">
+              <mat-icon class="group-icon">folder_open</mat-icon>
+              Vistas Globales
+            </span>
+            <a class="nav-sub-item nested" routerLink="/clientes/todas-direcciones" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon addresses">place</mat-icon>
+              <span class="nav-sub-label">Todas las direcciones</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/clientes/todos-contactos" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon contacts">contacts</mat-icon>
+              <span class="nav-sub-label">Todos los contactos</span>
+            </a>
+            <a class="nav-sub-item nested" routerLink="/clientes/todos-historiales" (click)="onMenuClick()">
+              <mat-icon class="nav-sub-icon history">history</mat-icon>
+              <span class="nav-sub-label">Todos los historiales</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

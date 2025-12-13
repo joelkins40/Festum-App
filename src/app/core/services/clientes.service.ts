@@ -237,6 +237,44 @@ export class ClientesService {
 	}
 
 	/**
+	 * 🔍 Obtener cliente por ID
+	 */
+	getClienteById(id: number): Observable<ClienteResponse> {
+		this.loadingSubject.next(true);
+
+		const cliente = this.mockClientes.find((c) => c.id === id);
+
+		if (!cliente) {
+			const errorResponse: ClienteResponse = {
+				success: false,
+				message: 'Cliente no encontrado',
+			};
+
+			return of(errorResponse).pipe(
+				delay(300),
+				map((res) => {
+					this.loadingSubject.next(false);
+					return res;
+				}),
+			);
+		}
+
+		const response: ClienteResponse = {
+			success: true,
+			message: 'Cliente obtenido exitosamente',
+			data: cliente,
+		};
+
+		return of(response).pipe(
+			delay(300),
+			map((res) => {
+				this.loadingSubject.next(false);
+				return res;
+			}),
+		);
+	}
+
+	/**
 	 * 🆕 Crear nuevo cliente
 	 */
 	crearCliente(dto: CrearClienteDto): Observable<ClienteResponse> {
