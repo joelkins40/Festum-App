@@ -12,20 +12,22 @@ import {
 	GalleryImage,
 } from '../../../core/services/gallery.service';
 import { ImagePreviewDialogComponent } from './image-preview-dialog.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-galeria',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatCardModule,
-		MatButtonModule,
-		MatIconModule,
-		MatTooltipModule,
-		MatProgressSpinnerModule,
-		MatDialogModule,
-		MatSnackBarModule,
-	],
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    ButtonComponent
+],
 	templateUrl: './galeria.component.html',
 	styleUrl: './galeria.component.scss',
 })

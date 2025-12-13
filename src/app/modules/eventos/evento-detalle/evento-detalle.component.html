@@ -39,14 +39,28 @@
     </div>
 
     <div class="header-actions">
-      <button mat-stroked-button matTooltip="Imprimir">
+      <!-- <button mat-stroked-button matTooltip="Imprimir">
         <mat-icon>print</mat-icon>
         Imprimir
       </button>
       <button mat-raised-button color="primary" matTooltip="Editar evento">
         <mat-icon>edit</mat-icon>
         Editar
-      </button>
+      </button> -->
+      <app-button
+        variant="primary"
+        icon="print"
+        (click)="imprimirEvento()"
+        matTooltip="Imprimir"
+      >
+        Imprimir
+      </app-button>
+      <app-button
+        variant="secondary"
+        icon="edit"
+        (click)="editarEvento()"
+        >Editar
+      </app-button>
     </div>
   </div>
 
@@ -113,7 +127,12 @@
 
     <mat-divider class="section-divider"></mat-divider>
 
-    <!-- Sección 2: Información del Cliente -->
+    <!-- Sección 2: Herramientas Avanzadas -->
+    <app-herramientas-avanzadas-section [eventoId]="currentEvent()!.folio"></app-herramientas-avanzadas-section>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Sección 3: Información del Cliente -->
     <section class="info-section">
       <div class="section-header">
         <mat-icon class="section-icon">person</mat-icon>
@@ -171,7 +190,7 @@
 
     <mat-divider class="section-divider"></mat-divider>
 
-    <!-- Sección 3: Lugar del Evento -->
+    <!-- Sección 4: Lugar del Evento -->
     <section class="info-section">
       <div class="section-header">
         <mat-icon class="section-icon">location_on</mat-icon>
@@ -256,11 +275,6 @@
 
     <!-- Sección 7: Observaciones -->
     <app-observaciones-section [eventoId]="currentEvent()!.folio"></app-observaciones-section>
-
-    <mat-divider class="section-divider"></mat-divider>
-
-    <!-- Sección 8: Herramientas Avanzadas -->
-    <app-herramientas-avanzadas-section [eventoId]="currentEvent()!.folio"></app-herramientas-avanzadas-section>
 
   </div>
   }

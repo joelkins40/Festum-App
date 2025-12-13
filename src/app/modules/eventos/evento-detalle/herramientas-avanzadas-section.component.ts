@@ -35,12 +35,11 @@ interface HerramientaAvanzada {
 					@for (herramienta of herramientas; track herramienta.ruta) {
 					<mat-card
 						class="herramienta-card"
-						[style.border-left-color]="herramienta.color"
 						(click)="navegarA(herramienta.ruta)"
 						matTooltip="Clic para acceder"
 					>
 						<div class="card-content">
-							<div class="card-icon" [style.color]="herramienta.color">
+							<div class="card-icon">
 								<mat-icon>{{ herramienta.icono }}</mat-icon>
 							</div>
 							<div class="card-text">
@@ -64,7 +63,7 @@ interface HerramientaAvanzada {
 				border-radius: 12px;
 				padding: 24px;
 				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-				border-left: 4px solid #20b2aa;
+				// border-left: 4px solid #20b2aa;
 				margin-bottom: 24px;
 			}
 
@@ -105,7 +104,7 @@ interface HerramientaAvanzada {
 			.herramienta-card {
 				cursor: pointer;
 				transition: all 0.3s ease;
-				border-left: 4px solid #20b2aa;
+				// border-left: 4px solid #20b2aa;
 				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 			}
 
@@ -136,6 +135,8 @@ interface HerramientaAvanzada {
 				font-size: 32px;
 				width: 32px;
 				height: 32px;
+
+        color: var(--color-primary);
 			}
 
 			.card-text {

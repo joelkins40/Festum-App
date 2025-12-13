@@ -13,26 +13,34 @@ import { Evento } from '../../../core/services/lista-eventos.service';
 import { MultimediaSectionComponent } from './multimedia-section.component';
 import { ObservacionesSectionComponent } from './observaciones-section.component';
 import { HerramientasAvanzadasSectionComponent } from './herramientas-avanzadas-section.component';
+import { ButtonComponent } from "../../../shared/components/button";
 
 @Component({
 	selector: 'app-evento-detalle-component',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatButtonModule,
-		MatIconModule,
-		MatChipsModule,
-		MatDividerModule,
-		MatTooltipModule,
-		MatProgressSpinnerModule,
-		MultimediaSectionComponent,
-		ObservacionesSectionComponent,
-		HerramientasAvanzadasSectionComponent,
-	],
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MultimediaSectionComponent,
+    ObservacionesSectionComponent,
+    HerramientasAvanzadasSectionComponent,
+    ButtonComponent
+],
 	templateUrl: './evento-detalle.component.html',
 	styleUrl: './evento-detalle.component.scss',
 })
 export class EventoDetalleComponent {
+editarEvento() {
+throw new Error('Method not implemented.');
+}
+imprimirEvento() {
+throw new Error('Method not implemented.');
+}
 	private route = inject(ActivatedRoute);
 	private router = inject(Router);
 	private eventosService = inject(ListaEventosService);

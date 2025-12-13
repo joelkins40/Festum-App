@@ -2,15 +2,23 @@
   <!-- Header Section -->
   <div class="gallery-header">
     <h1>Galería de Eventos</h1>
-    <button 
-      mat-raised-button 
-      color="primary" 
+    <!-- <button
+      mat-raised-button
+      color="primary"
       (click)="refreshGallery()"
       [disabled]="loading()"
     >
       <mat-icon>refresh</mat-icon>
       Actualizar
-    </button>
+    </button> -->
+    <app-button
+      variant="primary"
+      (click)="refreshGallery()"
+      [disabled]="loading()"
+      icon="refresh"
+    >
+      Actualizar
+    </app-button>
   </div>
 
   <!-- Loading State -->
@@ -38,19 +46,19 @@
       @for (image of images(); track image.id) {
         <mat-card class="image-card" appearance="outlined">
           <div class="image-wrapper">
-            <img 
+            <img
               mat-card-image
-              [src]="image.thumbnailUrl" 
+              [src]="image.thumbnailUrl"
               [alt]="image.description || 'Imagen de galería'"
               loading="lazy"
               class="gallery-image"
             />
-            
+
             <!-- Overlay con acciones -->
             <div class="image-overlay">
               <div class="overlay-actions">
-                <button 
-                  mat-icon-button 
+                <button
+                  mat-icon-button
                   color="primary"
                   matTooltip="Ver imagen"
                   (click)="viewImage(image)"
@@ -58,9 +66,9 @@
                 >
                   <mat-icon>search</mat-icon>
                 </button>
-                
-                <button 
-                  mat-icon-button 
+
+                <button
+                  mat-icon-button
                   color="warn"
                   matTooltip="Eliminar"
                   (click)="deleteImage(image, $event)"
@@ -79,7 +87,7 @@
                 <span>{{ image.photographer }}</span>
               </div>
             }
-            
+
             @if (image.description) {
               <p class="image-description">{{ image.description }}</p>
             }
