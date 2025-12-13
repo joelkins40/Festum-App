@@ -151,56 +151,13 @@ export const routes: Routes = [
 
 			// Eventos
 			{
-				path: 'eventos/lista',
-				loadComponent: () =>
-					import('./modules/eventos/lista/lista.component').then(
-						(m) => m.ListaComponent,
-					),
-			},
-			// Nueva vista de eventos con rutas dinámicas para cada evento
-			{
 				path: 'eventos',
 				loadComponent: () =>
 					import('./modules/eventos/lista-tabla/lista-tabla.component').then(
 						(m) => m.ListaTablaComponent,
 					),
 			},
-			{
-				path: 'eventos/nueva-nota',
-				loadComponent: () =>
-					import('./modules/eventos/nueva-nota/nueva-nota.component').then(
-						(m) => m.NuevaNotaComponent,
-					),
-			},
-			{
-				path: 'eventos/informacion-general',
-				loadComponent: () =>
-					import(
-						'./modules/eventos/informacion-general/informacion-general.component'
-					).then((m) => m.InformacionGeneralComponent),
-			},
-			// Rutas estáticas de eventos (mantener para acceso directo desde sidebar)
-			{
-				path: 'eventos/cronograma',
-				loadComponent: () =>
-					import('./modules/eventos/cronograma/cronograma.component').then(
-						(m) => m.CronogramaComponent,
-					),
-			},
-			{
-				path: 'eventos/invitados',
-				loadComponent: () =>
-					import('./modules/eventos/invitados/invitados.component').then(
-						(m) => m.InvitadosComponent,
-					),
-			},
-			{
-				path: 'eventos/confirmaciones',
-				loadComponent: () =>
-					import(
-						'./modules/eventos/checking-invitados/checking-invitados.component'
-					).then((m) => m.CheckingInvitadosComponent),
-			},
+			// Ruta para mobiliario-servicios (acceso directo desde sidebar)
 			{
 				path: 'eventos/mobiliario-servicios',
 				loadComponent: () =>
@@ -208,29 +165,7 @@ export const routes: Routes = [
 						'./modules/eventos/mobiliario-servicios/mobiliario-servicios.component'
 					).then((m) => m.MobiliarioServiciosComponent),
 			},
-			{
-				path: 'eventos/plano',
-				loadComponent: () =>
-					import('./modules/eventos/plano/plano.component').then(
-						(m) => m.PlanoComponent,
-					),
-			},
-			{
-				path: 'eventos/galeria',
-				loadComponent: () =>
-					import('./modules/eventos/galeria/galeria.component').then(
-						(m) => m.GaleriaComponent,
-					),
-			},
-			{
-				path: 'eventos/observaciones',
-				loadComponent: () =>
-					import(
-						'./modules/eventos/observaciones/observaciones.component'
-					).then((m) => m.ObservacionesComponent),
-			},
-
-			// Rutas dinámicas para eventos específicos (deben ir después de las rutas estáticas)
+			// Rutas dinámicas para eventos específicos
 			{
 				path: 'eventos/:id',
 				loadComponent: () =>
@@ -273,18 +208,7 @@ export const routes: Routes = [
 						'./modules/eventos/observaciones/observaciones.component'
 					).then((m) => m.ObservacionesComponent),
 			},
-			{
-				path: 'eventos/:id/productos-servicios',
-				loadComponent: () =>
-					import(
-						'./modules/catalogos/productos-servicios/productos-servicios.component'
-					).then((m) => m.ProductosServiciosComponent),
-			},
-
 			// Ruta para crear un nuevo evento
-
-			// 'evento' es módulo standalone para creación/edición, 'eventos' maneja
-			// listado y rutas dinámicas con :id
 			{
 				path: 'evento/nuevo-evento',
 				loadComponent: () =>
