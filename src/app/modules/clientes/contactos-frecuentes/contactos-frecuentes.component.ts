@@ -20,6 +20,7 @@ import { ContactosService } from '../../../core/services/contactos-frecuentes.se
 import { ContactoDialogComponent } from './contacto-dialog/contacto-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-contactos-frecuentes',
@@ -40,7 +41,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatDialogModule,
     MatChipsModule,
     MatTooltipModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './contactos-frecuentes.component.html',
 	styleUrl: './contactos-frecuentes.component.scss',

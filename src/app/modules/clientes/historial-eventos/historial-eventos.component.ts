@@ -14,6 +14,7 @@ import { EventoHistorial } from '../../../core/models/evento-historial.model';
 import { HistorialEventosService } from '../../../core/services/historial-eventos.service';
 import { HistorialEventosDialogComponent } from './historial-eventos-dialog/historial-eventos-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-historial-eventos',
@@ -30,7 +31,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatSortModule,
     MatDialogModule,
     MatSnackBarModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './historial-eventos.component.html',
 	styleUrl: './historial-eventos.component.scss',

@@ -32,6 +32,7 @@ import { ClientesService } from '../../../core/services/clientes.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-lista',
@@ -55,7 +56,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatChipsModule,
     MatTooltipModule,
     MatDividerModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './lista.component.html',
 	styleUrl: './lista.component.scss',

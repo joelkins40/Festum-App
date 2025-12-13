@@ -10,10 +10,6 @@
     </div>
 
     <div class="header-actions">
-      <!-- <button mat-raised-button color="primary" (click)="createDireccion()">
-        <mat-icon>add_location</mat-icon>
-        Nueva Dirección
-      </button> -->
       <app-button
         variant="primary"
         size="md"
@@ -118,16 +114,24 @@
           <th mat-header-cell *matHeaderCellDef>Acciones</th>
           <td mat-cell *matCellDef="let direccion">
             <div class="actions-container">
-              <button mat-icon-button (click)="editDireccion(direccion)" matTooltip="Editar">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="deleteDireccion(direccion)" matTooltip="Eliminar" color="warn">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <button mat-icon-button (click)="toggleActive(direccion)"
-                [matTooltip]="direccion.active ? 'Desactivar' : 'Activar'">
-                <mat-icon>{{ direccion.active ? 'toggle_on' : 'toggle_off' }}</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="edit"
+                color="primary"
+                tooltip="Editar"
+                (pressed)="editDireccion(direccion)"
+              />
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar"
+                (pressed)="deleteDireccion(direccion)"
+              />
+              <ui-button-icon
+                [icon]="direccion.active ? 'toggle_on' : 'toggle_off'"
+                color="primary"
+                [tooltip]="direccion.active ? 'Desactivar' : 'Activar'"
+                (pressed)="toggleActive(direccion)"
+              />
             </div>
           </td>
         </ng-container>

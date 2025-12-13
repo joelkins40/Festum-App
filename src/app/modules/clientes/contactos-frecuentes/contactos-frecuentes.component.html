@@ -142,16 +142,24 @@
           <th mat-header-cell *matHeaderCellDef>Acciones</th>
           <td mat-cell *matCellDef="let contacto">
             <div class="actions-container">
-              <button mat-icon-button (click)="editContacto(contacto)" matTooltip="Editar">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="deleteContacto(contacto)" matTooltip="Eliminar" color="warn">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <button mat-icon-button (click)="toggleActive(contacto)"
-                [matTooltip]="contacto.activo ? 'Desactivar' : 'Activar'">
-                <mat-icon>{{ contacto.activo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="edit"
+                color="primary"
+                tooltip="Editar"
+                (pressed)="editContacto(contacto)"
+              />
+              <ui-button-icon
+                icon="delete"
+                color="error"
+                tooltip="Eliminar"
+                (pressed)="deleteContacto(contacto)"
+              />
+              <ui-button-icon
+                [icon]="contacto.activo ? 'toggle_on' : 'toggle_off'"
+                color="primary"
+                [tooltip]="contacto.activo ? 'Desactivar' : 'Activar'"
+                (pressed)="toggleActive(contacto)"
+              />
             </div>
           </td>
         </ng-container>

@@ -20,6 +20,7 @@ import { DireccionesService } from '../../../core/services/direcciones.service';
 import { DireccionDialogComponent } from './direccion-dialog/direccion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-direcciones',
@@ -40,7 +41,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatDialogModule,
     MatChipsModule,
     MatTooltipModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './direcciones.component.html',
 	styleUrl: './direcciones.component.scss',
