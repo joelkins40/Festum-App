@@ -169,8 +169,8 @@ export const routes: Routes = [
 			{
 				path: 'eventos/:id',
 				loadComponent: () =>
-					import('./modules/eventos/evento-page/evento-page.component').then(
-						(m) => m.EventoPageComponent,
+					import('./modules/eventos/evento-detalle/evento-detalle.component').then(
+						(m) => m.EventoDetalleComponent,
 					),
 			},
 			{

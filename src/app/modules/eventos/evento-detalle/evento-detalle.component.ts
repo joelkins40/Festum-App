@@ -29,10 +29,10 @@ import { HerramientasAvanzadasSectionComponent } from './herramientas-avanzadas-
 		ObservacionesSectionComponent,
 		HerramientasAvanzadasSectionComponent,
 	],
-	templateUrl: './evento-page.component.html',
-	styleUrl: './evento-page.component.scss',
+	templateUrl: './evento-detalle.component.html',
+	styleUrl: './evento-detalle.component.scss',
 })
-export class EventoPageComponent {
+export class EventoDetalleComponent {
 	private route = inject(ActivatedRoute);
 	private router = inject(Router);
 	private eventosService = inject(ListaEventosService);
