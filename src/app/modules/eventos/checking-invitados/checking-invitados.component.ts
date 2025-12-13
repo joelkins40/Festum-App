@@ -20,6 +20,7 @@ import {
 	Evento,
 	CheckingStats,
 } from '../../../core/models/invitado.model';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 /**
  * Componente para realizar el checking de invitados en eventos
@@ -43,6 +44,7 @@ import {
 		MatPaginatorModule,
 		MatSortModule,
 		MatProgressSpinnerModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './checking-invitados.component.html',
 	styleUrl: './checking-invitados.component.scss',

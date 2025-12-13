@@ -17,6 +17,7 @@ import {
 	Evento,
 } from '../../../core/services/lista-eventos.service';
 import { EventoListaDialogComponent } from './evento-lista-dialog/evento-lista-dialog.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-lista',
@@ -35,6 +36,7 @@ import { EventoListaDialogComponent } from './evento-lista-dialog/evento-lista-d
 		MatSnackBarModule,
 		MatChipsModule,
 		MatTooltipModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './lista.component.html',
 	styleUrl: './lista.component.scss',

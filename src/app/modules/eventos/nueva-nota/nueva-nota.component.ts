@@ -26,6 +26,7 @@ import { Cliente } from '../../../core/models/cliente.model';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { ProductosServiciosService } from '../../../core/services/productos-servicios.service';
 import { ProductoServicio } from '../../../core/models/productos-servicios.model';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-nueva-nota',
@@ -47,6 +48,7 @@ import { ProductoServicio } from '../../../core/models/productos-servicios.model
 		MatSnackBarModule,
 		MatTooltipModule,
 		MatRadioModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './nueva-nota.component.html',
 	styleUrl: './nueva-nota.component.scss',

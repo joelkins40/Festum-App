@@ -41,6 +41,7 @@ import {
 	PlantillaEvento,
 } from '../../../core/services/plantillas.service';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-nueva-nota',
@@ -63,7 +64,8 @@ import { ButtonComponent } from "../../../shared/components/button";
     MatTooltipModule,
     MatRadioModule,
     PlanoViewComponent,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './nuevo-evento.component.html',
 	styleUrl: './nuevo-evento.component.scss',

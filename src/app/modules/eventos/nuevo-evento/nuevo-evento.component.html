@@ -347,10 +347,12 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Acciones</th>
               <td mat-cell *matCellDef="let producto">
-                <button mat-icon-button color="warn" type="button" (click)="eliminarProducto(producto)"
-                  matTooltip="Eliminar">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ui-button-icon
+                  icon="delete"
+                  color="error"
+                  tooltip="Eliminar"
+                  (pressed)="eliminarProducto(producto)"
+                />
               </td>
             </ng-container>
 

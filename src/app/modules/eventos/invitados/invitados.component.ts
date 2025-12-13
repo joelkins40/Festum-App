@@ -17,6 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Invitado } from '../../../core/mocks/invitados-mock.service';
 import { InvitadoDialogComponent } from './invitado-dialog/invitado-dialog.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 export interface Evento {
 	id: number;
@@ -50,6 +51,7 @@ export interface Evento {
 		MatChipsModule,
 		MatTooltipModule,
 		MatSnackBarModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './invitados.component.html',
 	styleUrl: './invitados.component.scss',

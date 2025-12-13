@@ -125,9 +125,12 @@
             <td mat-cell *matCellDef="let evento">
               <div class="action-buttons">
                 <a [routerLink]="['/eventos', getFolio(evento)]">Ver Evento</a>
-                <button mat-icon-button color="warn" (click)="deleteEvento(evento)" matTooltip="Eliminar evento">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ui-button-icon
+                  icon="delete"
+                  color="error"
+                  tooltip="Eliminar evento"
+                  (pressed)="deleteEvento(evento)"
+                />
               </div>
             </td>
           </ng-container>

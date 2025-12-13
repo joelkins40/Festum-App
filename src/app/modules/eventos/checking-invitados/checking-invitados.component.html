@@ -326,10 +326,13 @@
                 Registrar
               </button>
               } @else {
-              <button mat-icon-button color="warn" (click)="undoCheckIn(invitado)" matTooltip="Deshacer registro"
-                class="undo-btn">
-                <mat-icon>undo</mat-icon>
-              </button>
+              <ui-button-icon
+                icon="undo"
+                color="error"
+                tooltip="Deshacer registro"
+                class="undo-btn"
+                (pressed)="undoCheckIn(invitado)"
+              />
               }
             </td>
           </ng-container>

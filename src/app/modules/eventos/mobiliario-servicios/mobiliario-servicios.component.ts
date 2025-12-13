@@ -14,6 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MobiliarioServiciosDialogComponent } from './mobiliario-servicios-dialog/mobiliario-servicios-dialog.component';
 import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 export interface MobiliarioServicio {
 	id: number;
@@ -43,7 +44,8 @@ export interface MobiliarioServicio {
     MatCardModule,
     MatDialogModule,
     MatSnackBarModule,
-    ButtonComponent
+    ButtonComponent,
+    ButtonIconComponent
 ],
 	templateUrl: './mobiliario-servicios.component.html',
 	styleUrl: './mobiliario-servicios.component.scss',

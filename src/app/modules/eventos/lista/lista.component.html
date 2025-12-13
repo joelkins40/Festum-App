@@ -117,12 +117,18 @@
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
             <td mat-cell *matCellDef="let evento">
               <div class="action-buttons">
-                <button mat-icon-button color="primary" (click)="openEditDialog(evento)" matTooltip="Editar evento">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="deleteEvento(evento)" matTooltip="Eliminar evento">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <ui-button-icon
+                  icon="edit"
+                  color="primary"
+                  tooltip="Editar evento"
+                  (pressed)="openEditDialog(evento)"
+                />
+                <ui-button-icon
+                  icon="delete"
+                  color="error"
+                  tooltip="Eliminar evento"
+                  (pressed)="deleteEvento(evento)"
+                />
               </div>
             </td>
           </ng-container>
