@@ -35,7 +35,7 @@ import { ButtonComponent } from "../../../shared/components/button";
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
-	selector: 'app-lista',
+	selector: 'app-lista-clientes',
 	imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -56,11 +56,11 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
     MatChipsModule,
     MatTooltipModule,
     MatDividerModule,
-    ButtonComponent,
-    ButtonIconComponent
-],
-	templateUrl: './lista.component.html',
-	styleUrl: './lista.component.scss',
+		ButtonComponent,
+		ButtonIconComponent
+	],
+	templateUrl: './lista-clientes.component.html',
+	styleUrl: './lista-clientes.component.scss',
 })
 export class ListaComponent implements OnInit {
 	// ===== TABLA Y DATOS =====

@@ -23,7 +23,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
-	selector: 'app-notas',
+	selector: 'app-nota-venta',
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -44,8 +44,8 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
 		MatChipsModule,
 		ButtonIconComponent,
 	],
-	templateUrl: './notas.component.html',
-	styleUrl: './notas.component.scss',
+	templateUrl: './nota-venta.component.html',
+	styleUrl: './nota-venta.component.scss',
 })
 export class NotasComponent implements OnInit {
 	// Tabla y datos
