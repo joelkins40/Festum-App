@@ -22,6 +22,7 @@ import {
 	CotizacionEstado,
 } from '../../../core/models/cotizacion.model';
 import { SeguimientoDialogComponent } from './seguimiento-dialog/seguimiento-dialog.component';
+import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 // Extensión del modelo para incluir seguimiento
 interface CotizacionConSeguimiento extends Cotizacion {
@@ -50,6 +51,7 @@ interface CotizacionConSeguimiento extends Cotizacion {
 		MatTooltipModule,
 		MatDividerModule,
 		MatSelectModule,
+		ButtonIconComponent,
 	],
 	templateUrl: './seguimiento.component.html',
 	styleUrl: './seguimiento.component.scss',

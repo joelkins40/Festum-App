@@ -200,21 +200,18 @@
         <td mat-cell *matCellDef="let cotizacion">
           <div class="action-buttons">
             <ui-button-icon
-              class="action-visibility"
               icon="visibility"
               color="primary"
               tooltip="Ver detalle"
               (pressed)="viewDetail(cotizacion)"
             />
             <ui-button-icon
-              class="action-edit"
               icon="edit"
               color="primary"
               tooltip="Editar"
               (pressed)="editCotizacion(cotizacion)"
             />
             <ui-button-icon
-              class="action-delete"
               icon="delete"
               color="error"
               tooltip="Eliminar"
