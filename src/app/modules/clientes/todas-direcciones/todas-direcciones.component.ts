@@ -118,7 +118,6 @@ export class TodasDireccionesComponent implements OnInit {
 
 	createDireccion(): void {
 		const dialogRef = this.dialog.open(DireccionDialogComponent, {
-			width: '800px',
 			disableClose: true,
 			data: { mode: 'create' },
 		});

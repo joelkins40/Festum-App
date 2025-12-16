@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EventoHistorial } from '../../../../core/models/evento-historial.model';
+import { ButtonComponent } from '../../../../shared/components/button';
 
 export interface EventoDialogData {
 	evento?: EventoHistorial;
@@ -32,6 +33,7 @@ export interface EventoDialogData {
 		MatIconModule,
 		MatDatepickerModule,
 		MatNativeDateModule,
+		ButtonComponent,
 	],
 	templateUrl: './historial-dialog.component.html',
 	styleUrl: './historial-dialog.component.scss',

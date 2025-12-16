@@ -1,8 +1,8 @@
 <div class="dialog-container">
   <div class="dialog-header">
     <div class="header-content">
-      <mat-icon>{{ isEditMode ? 'edit_note' : 'event_available' }}</mat-icon>
-      <h2>{{ isEditMode ? 'Editar Evento' : 'Nuevo Evento' }}</h2>
+      <mat-icon>{{ isEditMode ? "edit_note" : "event_available" }}</mat-icon>
+      <h2>{{ isEditMode ? "Editar Evento" : "Nuevo Evento" }}</h2>
     </div>
     <button mat-icon-button (click)="onCancel()" class="close-button">
       <mat-icon>close</mat-icon>
@@ -17,7 +17,11 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Cliente</mat-label>
-            <input matInput formControlName="cliente" placeholder="Ej: Juan Pérez García" />
+            <input
+              matInput
+              formControlName="cliente"
+              placeholder="Ej: Juan Pérez García"
+            />
             <mat-icon matPrefix>person</mat-icon>
             @if (eventoForm.get('cliente')?.hasError('required') &&
             eventoForm.get('cliente')?.touched) {
@@ -32,7 +36,11 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Tipo de Evento</mat-label>
-            <input matInput formControlName="tipoEvento" placeholder="Ej: Boda, XV Años, Bautizo" />
+            <input
+              matInput
+              formControlName="tipoEvento"
+              placeholder="Ej: Boda, XV Años, Bautizo"
+            />
             <mat-icon matPrefix>celebration</mat-icon>
             @if (eventoForm.get('tipoEvento')?.hasError('required') &&
             eventoForm.get('tipoEvento')?.touched) {
@@ -44,8 +52,15 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Fecha del Evento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="fechaEvento" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="fechaEvento"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-icon matPrefix>calendar_today</mat-icon>
             @if (eventoForm.get('fechaEvento')?.hasError('required') &&
@@ -58,7 +73,11 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Lugar</mat-label>
-            <input matInput formControlName="lugar" placeholder="Ej: Salón Real del Bosque" />
+            <input
+              matInput
+              formControlName="lugar"
+              placeholder="Ej: Salón Real del Bosque"
+            />
             <mat-icon matPrefix>place</mat-icon>
             @if (eventoForm.get('lugar')?.hasError('required') &&
             eventoForm.get('lugar')?.touched) {
@@ -73,7 +92,12 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Monto Total (opcional)</mat-label>
-            <input matInput type="number" formControlName="montoTotal" placeholder="0.00" />
+            <input
+              matInput
+              type="number"
+              formControlName="montoTotal"
+              placeholder="0.00"
+            />
             <span matPrefix>$&nbsp;</span>
             <mat-icon matPrefix>attach_money</mat-icon>
             @if (eventoForm.get('montoTotal')?.hasError('min') &&
@@ -88,13 +112,16 @@
   </div>
 
   <div class="dialog-footer">
-    <button mat-stroked-button (click)="onCancel()" type="button">
-      <mat-icon>cancel</mat-icon>
+    <app-button variant="ghost" icon="cancel" (click)="onCancel()">
       Cancelar
-    </button>
-    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="eventoForm.invalid">
-      <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
-      {{ isEditMode ? 'Guardar Cambios' : 'Crear Evento' }}
-    </button>
+    </app-button>
+    <app-button
+      color="primary"
+      [disabled]="eventoForm.invalid"
+      icon="{{ isEditMode ? 'save' : 'add' }}"
+      (click)="onSubmit()"
+    >
+      {{ isEditMode ? "Guardar Cambios" : "Crear Evento" }}
+    </app-button>
   </div>
 </div>

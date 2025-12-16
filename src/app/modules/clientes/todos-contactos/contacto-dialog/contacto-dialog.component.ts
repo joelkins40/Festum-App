@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Contacto } from '../../../../core/models/contacto.model';
+import { ButtonComponent } from '../../../../shared/components/button';
 
 export interface ContactoDialogData {
 	contacto?: Contacto;
@@ -30,6 +31,7 @@ export interface ContactoDialogData {
 		MatButtonModule,
 		MatIconModule,
 		MatCheckboxModule,
+		ButtonComponent,
 	],
 	templateUrl: './contacto-dialog.component.html',
 	styleUrl: './contacto-dialog.component.scss',
