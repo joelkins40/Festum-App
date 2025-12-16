@@ -28,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { ChipComponent } from '../../../../shared/components/chip';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -63,6 +64,7 @@ export interface ClienteDialogData {
 		MatTooltipModule,
 		MatCheckboxModule,
 		MatCardModule,
+		ChipComponent,
 		MatChipsModule,
 	],
 	templateUrl: './cliente-dialog.component.html',

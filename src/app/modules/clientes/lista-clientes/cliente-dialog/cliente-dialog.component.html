@@ -1,13 +1,21 @@
 <!-- 📝 Modal para Crear/Editar Clientes -->
 <div class="cliente-dialog">
-
   <!-- Header del Modal -->
   <div class="dialog-header">
     <div class="header-content">
-      <mat-icon class="header-icon">{{ modo === 'crear' ? 'person_add' : 'edit' }}</mat-icon>
-      <h2 class="header-title">{{ modo === 'crear' ? 'Nuevo Cliente' : 'Editar Cliente' }}</h2>
+      <mat-icon class="header-icon">{{
+        modo === "crear" ? "person_add" : "edit"
+      }}</mat-icon>
+      <h2 class="header-title">
+        {{ modo === "crear" ? "Nuevo Cliente" : "Editar Cliente" }}
+      </h2>
     </div>
-    <button mat-icon-button (click)="cancelar()" class="close-button" matTooltip="Cerrar">
+    <button
+      mat-icon-button
+      (click)="cancelar()"
+      class="close-button"
+      matTooltip="Cerrar"
+    >
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -15,14 +23,18 @@
   <!-- Contenido del Modal -->
   <div class="dialog-content">
     <form [formGroup]="clienteForm" class="cliente-form">
-
       <!-- CAMPO NOMBRE -->
       <div class="section-card">
         <div class="form-section">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nombre completo del cliente</mat-label>
-            <input matInput formControlName="nombre" placeholder="Ej: María González Rodríguez..." maxlength="100"
-              #nombreInput>
+            <input
+              matInput
+              formControlName="nombre"
+              placeholder="Ej: María González Rodríguez..."
+              maxlength="100"
+              #nombreInput
+            />
             <mat-icon matPrefix class="input-icon">person</mat-icon>
 
             <!-- Mensajes de Error -->
@@ -57,22 +69,37 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Buscar dirección con autocompletado</mat-label>
-            <input matInput #searchInput [(ngModel)]="searchText" (input)="buscarDirecciones(searchInput.value)"
-              placeholder="Ej: Av. Revolución 1234, Guadalajara..." [ngModelOptions]="{standalone: true}">
+            <input
+              matInput
+              #searchInput
+              [(ngModel)]="searchText"
+              (input)="buscarDirecciones(searchInput.value)"
+              placeholder="Ej: Av. Revolución 1234, Guadalajara..."
+              [ngModelOptions]="{ standalone: true }"
+            />
             <mat-icon matPrefix class="input-icon">location_on</mat-icon>
-            <mat-hint>Escribe al menos 3 caracteres para buscar direcciones</mat-hint>
+            <mat-hint
+              >Escribe al menos 3 caracteres para buscar direcciones</mat-hint
+            >
           </mat-form-field>
 
           <!-- Resultados del autocompletado -->
           @if (showAutocomplete && autocompleteResults.length > 0) {
           <div class="autocomplete-results">
-            @for (result of autocompleteResults; track result.properties.place_id) {
-            <div class="autocomplete-item" (click)="seleccionarDireccion(result)">
+            @for (result of autocompleteResults; track
+            result.properties.place_id) {
+            <div
+              class="autocomplete-item"
+              (click)="seleccionarDireccion(result)"
+            >
               <mat-icon class="result-icon">place</mat-icon>
               <div class="result-content">
-                <div class="result-address">{{ result.properties.formatted }}</div>
+                <div class="result-address">
+                  {{ result.properties.formatted }}
+                </div>
                 <div class="result-details">
-                  {{ result.properties.city }}, {{ result.properties.state }}, {{ result.properties.country }}
+                  {{ result.properties.city }}, {{ result.properties.state }},
+                  {{ result.properties.country }}
                 </div>
               </div>
               <mat-icon class="add-icon">add_circle</mat-icon>
@@ -83,22 +110,28 @@
         </div>
       </div>
 
-
       <!-- SECCIÓN DE DIRECCIONES REGISTRADAS -->
       <div class="section-card">
         <div class="form-section">
           <div class="section-header">
             <mat-icon class="section-icon">location_city</mat-icon>
             <h3 class="section-title">Direcciones del Cliente</h3>
-            <button type="button" mat-mini-fab color="primary" (click)="agregarDireccion()" class="add-address-btn"
-              matTooltip="Agregar dirección manualmente">
+            <button
+              type="button"
+              mat-mini-fab
+              color="primary"
+              (click)="agregarDireccion()"
+              class="add-address-btn"
+              matTooltip="Agregar dirección manualmente"
+            >
               <mat-icon>add</mat-icon>
             </button>
           </div>
 
           <!-- Lista de direcciones -->
           <div formArrayName="direcciones" class="direcciones-list">
-            @for (direccion of direccionesArray.controls; track $index; let i = $index) {
+            @for (direccion of direccionesArray.controls; track $index; let i =
+            $index) {
             <mat-card class="direccion-card" [formGroupName]="i">
               <mat-card-header>
                 <mat-card-title>
@@ -106,8 +139,13 @@
                   Dirección {{ i + 1 }}
                 </mat-card-title>
                 @if (puedeEliminarDirecciones) {
-                <button type="button" mat-icon-button color="warn" (click)="eliminarDireccion(i)"
-                  matTooltip="Eliminar dirección">
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="warn"
+                  (click)="eliminarDireccion(i)"
+                  matTooltip="Eliminar dirección"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
                 }
@@ -118,7 +156,11 @@
                 <div formGroupName="formatted">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Dirección principal</mat-label>
-                    <input matInput formControlName="line1" placeholder="Dirección completa">
+                    <input
+                      matInput
+                      formControlName="line1"
+                      placeholder="Dirección completa"
+                    />
                     <mat-icon matPrefix>location_on</mat-icon>
                   </mat-form-field>
                 </div>
@@ -127,12 +169,20 @@
                 <div class="form-row">
                   <mat-form-field appearance="outline" class="form-field-large">
                     <mat-label>Calle</mat-label>
-                    <input matInput formControlName="street" placeholder="Ej: Av. Revolución">
+                    <input
+                      matInput
+                      formControlName="street"
+                      placeholder="Ej: Av. Revolución"
+                    />
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="form-field-small">
                     <mat-label>Número</mat-label>
-                    <input matInput formControlName="number" placeholder="1234">
+                    <input
+                      matInput
+                      formControlName="number"
+                      placeholder="1234"
+                    />
                   </mat-form-field>
                 </div>
 
@@ -140,12 +190,20 @@
                 <div class="form-row">
                   <mat-form-field appearance="outline" class="form-field-half">
                     <mat-label>Colonia/Barrio</mat-label>
-                    <input matInput formControlName="neighborhood" placeholder="Ej: Centro">
+                    <input
+                      matInput
+                      formControlName="neighborhood"
+                      placeholder="Ej: Centro"
+                    />
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="form-field-half">
                     <mat-label>Ciudad</mat-label>
-                    <input matInput formControlName="city" placeholder="Ej: Guadalajara">
+                    <input
+                      matInput
+                      formControlName="city"
+                      placeholder="Ej: Guadalajara"
+                    />
                   </mat-form-field>
                 </div>
 
@@ -153,41 +211,57 @@
                 <div class="form-row">
                   <mat-form-field appearance="outline" class="form-field-third">
                     <mat-label>Estado</mat-label>
-                    <input matInput formControlName="state" placeholder="Ej: Jalisco">
+                    <input
+                      matInput
+                      formControlName="state"
+                      placeholder="Ej: Jalisco"
+                    />
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="form-field-third">
                     <mat-label>País</mat-label>
-                    <input matInput formControlName="country" placeholder="México">
+                    <input
+                      matInput
+                      formControlName="country"
+                      placeholder="México"
+                    />
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="form-field-third">
                     <mat-label>C.P.</mat-label>
-                    <input matInput formControlName="postalCode" placeholder="44100">
+                    <input
+                      matInput
+                      formControlName="postalCode"
+                      placeholder="44100"
+                    />
                   </mat-form-field>
                 </div>
 
                 <!-- Información de Geoapify -->
-                @if (getDireccionFormGroup(i).get('source')?.value === 'Geoapify') {
+                @if (getDireccionFormGroup(i).get('source')?.value ===
+                'Geoapify') {
                 <div class="geoapify-info">
-                  <mat-chip color="accent" selected>
-                    <mat-icon>verified</mat-icon>
+                  <ui-chip variant="accent" icon="verified" size="sm">
                     Validada por Geoapify
-                  </mat-chip>
+                  </ui-chip>
                   <span class="confidence-score">
-                    Confianza: {{ getDireccionFormGroup(i).get('confidence')?.value | number:'1.0-2' }}%
+                    Confianza:
+                    {{
+                      getDireccionFormGroup(i).get("confidence")?.value
+                        | number : "1.0-2"
+                    }}%
                   </span>
                 </div>
                 }
               </mat-card-content>
             </mat-card>
-            }
-
-            @if (direccionesArray.length === 0) {
+            } @if (direccionesArray.length === 0) {
             <div class="no-addresses">
               <mat-icon>location_off</mat-icon>
               <p>No hay direcciones registradas</p>
-              <p class="hint">Usa el buscador arriba para agregar direcciones</p>
+              <p class="hint">
+                Usa el buscador arriba para agregar direcciones
+              </p>
             </div>
             }
           </div>
@@ -198,14 +272,18 @@
       <div class="section-card">
         <div class="form-section">
           <div class="checkbox-container">
-            <mat-checkbox formControlName="clientePreferente" class="cliente-preferente-checkbox">
+            <mat-checkbox
+              formControlName="clientePreferente"
+              class="cliente-preferente-checkbox"
+            >
               <div class="checkbox-content">
                 <div class="checkbox-label">
                   <mat-icon class="checkbox-icon">star</mat-icon>
                   <span class="checkbox-text">Cliente Preferente</span>
                 </div>
                 <div class="checkbox-description">
-                  Los clientes preferentes reciben descuentos especiales y atención prioritaria
+                  Los clientes preferentes reciben descuentos especiales y
+                  atención prioritaria
                 </div>
               </div>
             </mat-checkbox>
@@ -224,7 +302,9 @@
           <div class="info-grid">
             <div class="info-item">
               <span class="info-label">Fecha de creación:</span>
-              <span class="info-value">{{ data.cliente.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+              <span class="info-value">{{
+                data.cliente.fechaCreacion | date : "dd/MM/yyyy HH:mm"
+              }}</span>
             </div>
             <div class="info-item">
               <span class="info-label">ID:</span>
@@ -233,24 +313,40 @@
           </div>
         </div>
       </div>
-
     </form>
   </div>
 
   <!-- Footer con botones de acción -->
   <div class="dialog-footer">
     <div class="button-group">
-      <button mat-button (click)="cancelar()" class="cancel-button" [disabled]="guardando">
+      <button
+        mat-button
+        (click)="cancelar()"
+        class="cancel-button"
+        [disabled]="guardando"
+      >
         <mat-icon>cancel</mat-icon>
         Cancelar
       </button>
 
-      <button mat-raised-button color="primary" (click)="guardar()" class="save-button"
-        [disabled]="!esFormularioValido || guardando">
-        <mat-icon>{{ guardando ? 'hourglass_empty' : (modo === 'crear' ? 'save' : 'update') }}</mat-icon>
-        {{ guardando ? 'Guardando...' : (modo === 'crear' ? 'Crear Cliente' : 'Actualizar Cliente') }}
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="guardar()"
+        class="save-button"
+        [disabled]="!esFormularioValido || guardando"
+      >
+        <mat-icon>{{
+          guardando ? "hourglass_empty" : modo === "crear" ? "save" : "update"
+        }}</mat-icon>
+        {{
+          guardando
+            ? "Guardando..."
+            : modo === "crear"
+            ? "Crear Cliente"
+            : "Actualizar Cliente"
+        }}
       </button>
     </div>
   </div>
-
 </div>

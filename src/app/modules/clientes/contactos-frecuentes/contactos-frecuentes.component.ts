@@ -18,32 +18,34 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Contacto } from '../../../core/models/contacto.model';
 import { ContactosService } from '../../../core/services/contactos-frecuentes.service';
 import { ContactoDialogComponent } from './contacto-dialog/contacto-dialog.component';
+import { ChipComponent } from '../../../shared/components/chip';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonComponent } from '../../../shared/components/button';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
 	selector: 'app-contactos-frecuentes',
 	standalone: true,
 	imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatChipsModule,
-    MatTooltipModule,
-    ButtonComponent,
-    ButtonIconComponent
-],
+		CommonModule,
+		FormsModule,
+		MatCardModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatButtonModule,
+		MatIconModule,
+		MatTableModule,
+		MatPaginatorModule,
+		MatSortModule,
+		MatProgressSpinnerModule,
+		MatSnackBarModule,
+		MatDialogModule,
+		MatChipsModule,
+		MatTooltipModule,
+		ButtonComponent,
+		ButtonIconComponent,
+		ChipComponent,
+	],
 	templateUrl: './contactos-frecuentes.component.html',
 	styleUrl: './contactos-frecuentes.component.scss',
 })

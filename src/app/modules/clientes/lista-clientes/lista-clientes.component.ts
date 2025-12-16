@@ -32,34 +32,36 @@ import { ClientesService } from '../../../core/services/clientes.service';
 // Dialog Components
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.component';
-import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonComponent } from '../../../shared/components/button';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
+import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
 	selector: 'app-lista-clientes',
 	imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatCardModule,
-    MatTabsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatDividerModule,
+		CommonModule,
+		RouterModule,
+		ReactiveFormsModule,
+		FormsModule,
+		MatCardModule,
+		MatTabsModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatSelectModule,
+		MatButtonModule,
+		MatIconModule,
+		MatTableModule,
+		MatPaginatorModule,
+		MatSortModule,
+		MatProgressSpinnerModule,
+		MatSnackBarModule,
+		MatDialogModule,
+		MatChipsModule,
+		MatTooltipModule,
+		MatDividerModule,
+		ChipComponent,
 		ButtonComponent,
-		ButtonIconComponent
+		ButtonIconComponent,
 	],
 	templateUrl: './lista-clientes.component.html',
 	styleUrl: './lista-clientes.component.scss',

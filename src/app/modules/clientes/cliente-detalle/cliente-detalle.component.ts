@@ -14,11 +14,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { Cliente } from '../../../core/models/cliente.model';
 
-
 import { DireccionesSectionComponent } from './sections/direcciones-section.component';
 import { ContactosSectionComponent } from './sections/contactos-section.component';
 import { HistorialSectionComponent } from './sections/historial-section.component';
 import { ClienteDialogComponent } from '../lista-clientes/cliente-dialog/cliente-dialog.component';
+import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
 	selector: 'app-cliente-detalle',
@@ -38,6 +38,7 @@ import { ClienteDialogComponent } from '../lista-clientes/cliente-dialog/cliente
 		DireccionesSectionComponent,
 		ContactosSectionComponent,
 		HistorialSectionComponent,
+		ChipComponent,
 	],
 	templateUrl: './cliente-detalle.component.html',
 	styleUrl: './cliente-detalle.component.scss',
@@ -79,7 +80,11 @@ export class ClienteDetalleComponent implements OnInit {
 
 		this.clientesService.getClienteById(Number(id)).subscribe({
 			next: (response) => {
-				if (response.success && response.data && !Array.isArray(response.data)) {
+				if (
+					response.success &&
+					response.data &&
+					!Array.isArray(response.data)
+				) {
 					this.currentCliente.set(response.data);
 					this.hasError.set(false);
 				} else {

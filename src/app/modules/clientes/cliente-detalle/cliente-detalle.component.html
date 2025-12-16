@@ -1,6 +1,5 @@
 <!-- ===== DETALLE DEL CLIENTE ===== -->
 <div class="cliente-detalle-container">
-
   <!-- Loading State -->
   @if (isLoading()) {
   <div class="loading-state">
@@ -28,7 +27,12 @@
   <!-- Header con acciones -->
   <div class="page-header">
     <div class="header-left">
-      <button mat-icon-button (click)="goBack()" matTooltip="Volver a la lista" class="back-button">
+      <button
+        mat-icon-button
+        (click)="goBack()"
+        matTooltip="Volver a la lista"
+        class="back-button"
+      >
         <mat-icon>arrow_back</mat-icon>
       </button>
       <mat-icon class="page-icon">person</mat-icon>
@@ -39,11 +43,20 @@
     </div>
 
     <div class="header-actions">
-      <button mat-stroked-button (click)="copyToClipboard(currentCliente()!.nombre)" matTooltip="Copiar nombre">
+      <button
+        mat-stroked-button
+        (click)="copyToClipboard(currentCliente()!.nombre)"
+        matTooltip="Copiar nombre"
+      >
         <mat-icon>content_copy</mat-icon>
         Copiar
       </button>
-      <button mat-raised-button color="primary" (click)="editCliente()" matTooltip="Editar cliente">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="editCliente()"
+        matTooltip="Editar cliente"
+      >
         <mat-icon>edit</mat-icon>
         Editar
       </button>
@@ -85,7 +98,7 @@
             Total de Direcciones
           </label>
           <div class="info-value">
-            <mat-chip class="chip-info">{{ totalDirecciones() }}</mat-chip>
+            <ui-chip variant="info" size="sm">{{ totalDirecciones() }}</ui-chip>
           </div>
         </div>
 
@@ -96,9 +109,13 @@
             Estado
           </label>
           <div class="info-value">
-            <mat-chip [class]="currentCliente()!.activo ? 'chip-success' : 'chip-error'">
-              {{ currentCliente()!.activo ? 'Activo' : 'Inactivo' }}
-            </mat-chip>
+            <ui-chip
+              [variant]="currentCliente()!.activo ? 'success' : 'error'"
+              [icon]="currentCliente()!.activo ? 'check_circle' : 'cancel'"
+              size="sm"
+            >
+              {{ currentCliente()!.activo ? "Activo" : "Inactivo" }}
+            </ui-chip>
           </div>
         </div>
 
@@ -109,9 +126,17 @@
             Cliente Preferente
           </label>
           <div class="info-value">
-            <mat-chip [class]="currentCliente()!.clientePreferente ? 'chip-primary' : 'chip-secondary'">
-              {{ currentCliente()!.clientePreferente ? 'Sí' : 'No' }}
-            </mat-chip>
+            <ui-chip
+              [variant]="
+                currentCliente()!.clientePreferente ? 'primary' : 'secondary'
+              "
+              [icon]="
+                currentCliente()!.clientePreferente ? 'star' : 'star_outline'
+              "
+              size="sm"
+            >
+              {{ currentCliente()!.clientePreferente ? "Sí" : "No" }}
+            </ui-chip>
           </div>
         </div>
 
@@ -121,7 +146,9 @@
             <mat-icon>calendar_today</mat-icon>
             Fecha de Registro
           </label>
-          <div class="info-value">{{ currentCliente()!.fechaCreacion | date: 'dd/MM/yyyy' }}</div>
+          <div class="info-value">
+            {{ currentCliente()!.fechaCreacion | date : "dd/MM/yyyy" }}
+          </div>
         </div>
       </div>
     </mat-card-content>
@@ -132,13 +159,12 @@
   <!-- Tabs de Información Detallada -->
   <mat-card class="tabs-card">
     <mat-tab-group animationDuration="300ms" class="cliente-tabs">
-
       <!-- Tab: Direcciones -->
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">place</mat-icon>
           <span>Direcciones</span>
-          <mat-chip class="tab-badge">{{ totalDirecciones() }}</mat-chip>
+          <ui-chip variant="info" size="sm">{{ totalDirecciones() }}</ui-chip>
         </ng-template>
         <ng-template matTabContent>
           <app-direcciones-section [clienteId]="currentCliente()!.id" />
@@ -166,7 +192,6 @@
           <app-historial-section [clienteId]="currentCliente()!.id" />
         </ng-template>
       </mat-tab>
-
     </mat-tab-group>
   </mat-card>
 
