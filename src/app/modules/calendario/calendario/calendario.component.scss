@@ -1,24 +1,7 @@
-/* ===== VARIABLES ===== */
-:root {
-  --primary-color: #20b2aa;
-  --primary-light: #4dd0c7;
-  --primary-dark: #158a7f;
-  --accent-color: #ff6b35;
-  --background-color: #f8f9fa;
-  --card-background: #ffffff;
-  --text-primary: #2c3e50;
-  --text-secondary: #6c757d;
-  --border-color: #e9ecef;
-  --success-color: #28a745;
-  --warning-color: #ffc107;
-  --danger-color: #dc3545;
-  --info-color: #17a2b8;
-}
-
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .calendario-container {
   padding: 24px;
-  background: var(--background-color);
+  background: var(--bg-page);
   min-height: 100vh;
   max-width: 1400px;
   margin: 0 auto;
@@ -42,7 +25,7 @@
         font-size: 32px;
         width: 32px;
         height: 32px;
-        color: var(--primary-color);
+        color: var(--color-primary);
       }
 
       h1 {
@@ -65,10 +48,10 @@
 
 /* ===== TARJETA PRINCIPAL ===== */
 .calendario-card {
-  background: var(--card-background);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin-bottom: 24px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--spacing-xl);
   overflow: hidden;
 }
 
@@ -78,8 +61,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
-  background: #fafbfc;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-hover);
 
   .navegacion-fecha {
     display: flex;
@@ -111,12 +94,12 @@
     gap: 12px;
 
     .btn-hoy {
-      background: var(--primary-color);
-      color: white;
+      background: var(--color-primary);
+      color: var(--text-white);
       font-weight: 500;
 
       &:hover {
-        background: var(--primary-dark);
+        background: var(--color-primary-hover);
       }
     }
   }
@@ -159,8 +142,8 @@
       text-align: center;
       font-weight: 600;
       color: var(--text-secondary);
-      background: #f8f9fa;
-      border-radius: 6px;
+      background: var(--bg-hover);
+      border-radius: var(--radius-sm);
     }
   }
 
@@ -168,19 +151,19 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
     overflow: hidden;
 
     .celda-dia {
-      background: white;
+      background: var(--bg-surface);
       min-height: 120px;
       padding: 8px;
       position: relative;
-      transition: all 0.2s ease;
+      transition: all var(--transition-fast);
 
       &:not(.mes-actual) {
-        background: #f8f9fa;
+        background: var(--bg-hover);
         opacity: 0.6;
 
         .numero-dia {
@@ -189,18 +172,18 @@
       }
 
       &.hoy {
-        background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+        background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
 
         .numero-dia {
-          color: white;
+          color: var(--text-white);
           font-weight: 700;
         }
       }
 
       &.con-eventos:hover {
-        background: #f0f8ff;
+        background: var(--color-primary-alpha-10);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-md);
         z-index: 10;
       }
 
@@ -225,11 +208,11 @@
 
         .evento-preview {
           padding: 4px 6px;
-          border-radius: 4px;
-          color: white;
+          border-radius: var(--radius-sm);
+          color: var(--text-white);
           font-size: 11px;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all var(--transition-fast);
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -274,23 +257,23 @@
     gap: 24px;
 
     .mes-anual {
-      background: white;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 24px;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all var(--transition-base);
 
       &:hover {
-        border-color: var(--primary-color);
+        border-color: var(--color-primary);
         transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(32, 178, 170, 0.15);
+        box-shadow: var(--shadow-button);
       }
 
       &.mes-actual {
-        border-color: var(--primary-color);
-        background: linear-gradient(135deg, rgba(32, 178, 170, 0.05), rgba(32, 178, 170, 0.1));
+        border-color: var(--color-primary);
+        background: linear-gradient(135deg, var(--color-primary-alpha-10), var(--color-primary-alpha-15));
       }
 
       h3 {
@@ -310,7 +293,7 @@
           display: flex;
           align-items: center;
           gap: 8px;
-          color: var(--primary-color);
+          color: var(--color-primary);
           font-weight: 500;
 
           mat-icon {
@@ -339,9 +322,9 @@
 
 /* ===== PANEL DE DETALLES ===== */
 .evento-detalle {
-  background: var(--card-background);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 
   .detalle-header {
@@ -349,8 +332,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    background: #fafbfc;
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-light);
 
     h3 {
       font-size: 20px;
@@ -370,7 +353,7 @@
       margin-bottom: 16px;
 
       mat-icon {
-        color: var(--primary-color);
+        color: var(--color-primary);
         margin-top: 2px;
         flex-shrink: 0;
       }
@@ -412,9 +395,9 @@
 
   .detalle-acciones {
     padding: 20px 24px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-light);
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-md);
 
     button {
       font-weight: 500;
@@ -543,21 +526,21 @@
 
 /* ===== ESTADOS DE EVENTOS ===== */
 .estado-cotizacion {
-  background-color: var(--warning-color) !important;
+  background-color: var(--color-warning) !important;
 }
 
 .estado-confirmado {
-  background-color: var(--success-color) !important;
+  background-color: var(--color-success) !important;
 }
 
 .estado-en-proceso {
-  background-color: var(--info-color) !important;
+  background-color: var(--color-info) !important;
 }
 
 .estado-completado {
-  background-color: #8bc34a !important;
+  background-color: var(--color-primary) !important;
 }
 
 .estado-cancelado {
-  background-color: var(--danger-color) !important;
+  background-color: var(--color-error) !important;
 }
