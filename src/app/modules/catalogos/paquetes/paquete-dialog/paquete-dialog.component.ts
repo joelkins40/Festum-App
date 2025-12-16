@@ -17,6 +17,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { Paquete, ProductoIncluido } from '../../../../core/models/paquete.model';
 import { ProductoServicio } from '../../../../core/models/productos-servicios.model';
 import { ProductosServiciosService } from '../../../../core/services/productos-servicios.service';
+import { ChipComponent } from '../../../../shared/components/chip';
 
 export interface PaqueteDialogData {
   paquete?: Paquete;
@@ -43,7 +44,8 @@ export interface PaqueteDialogData {
     MatTooltipModule,
     MatAutocompleteModule,
     MatTableModule,
-    MatChipsModule
+    MatChipsModule,
+    ChipComponent
   ],
   templateUrl: './paquete-dialog.component.html',
   styleUrl: './paquete-dialog.component.scss'

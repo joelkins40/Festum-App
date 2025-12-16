@@ -19,31 +19,33 @@ import { DireccionCliente } from '../../../core/models/direccion.model';
 import { DireccionesService } from '../../../core/services/direcciones.service';
 import { DireccionDialogComponent } from './direccion-dialog/direccion-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ButtonComponent } from "../../../shared/components/button";
+import { ButtonComponent } from '../../../shared/components/button';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
+import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
 	selector: 'app-direcciones',
 	standalone: true,
 	imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatChipsModule,
-    MatTooltipModule,
-    ButtonComponent,
-    ButtonIconComponent
-],
+		CommonModule,
+		FormsModule,
+		MatCardModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatButtonModule,
+		MatIconModule,
+		MatTableModule,
+		MatPaginatorModule,
+		MatSortModule,
+		MatProgressSpinnerModule,
+		MatSnackBarModule,
+		MatDialogModule,
+		MatChipsModule,
+		MatTooltipModule,
+		ButtonComponent,
+		ButtonIconComponent,
+		ChipComponent,
+	],
 	templateUrl: './direcciones.component.html',
 	styleUrl: './direcciones.component.scss',
 })

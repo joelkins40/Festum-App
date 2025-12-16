@@ -42,6 +42,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { SalonDialogComponent } from './salon-dialog/salon-dialog.component';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
+import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
 	selector: 'app-salones',
@@ -68,6 +69,7 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
 		MatDividerModule,
 		ButtonComponent,
 		ButtonIconComponent,
+		ChipComponent,
 	],
 	templateUrl: './salones.component.html',
 	styleUrl: './salones.component.scss',

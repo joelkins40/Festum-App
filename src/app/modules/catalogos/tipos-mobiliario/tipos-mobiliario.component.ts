@@ -34,6 +34,7 @@ import { DynamicFormDialogComponent } from '../../../shared/components/dynamic-f
 import { DynamicFormConfig } from '../../../shared/components/dynamic-form-dialog/dynamic-form-dialog.types';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
+import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
 	selector: 'app-tipos-mobiliario',
@@ -58,6 +59,7 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
 		MatTooltipModule,
 		MatDividerModule,
 		ButtonComponent,
+		ChipComponent,
 		ButtonIconComponent,
 	],
 	templateUrl: './tipos-mobiliario.component.html',
