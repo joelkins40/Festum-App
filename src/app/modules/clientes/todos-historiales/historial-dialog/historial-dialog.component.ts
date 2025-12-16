@@ -20,7 +20,7 @@ export interface EventoDialogData {
 }
 
 @Component({
-	selector: 'app-historial-eventos-dialog',
+	selector: 'app-historial-dialog',
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -33,12 +33,12 @@ export interface EventoDialogData {
 		MatDatepickerModule,
 		MatNativeDateModule,
 	],
-	templateUrl: './historial-eventos-dialog.component.html',
-	styleUrl: './historial-eventos-dialog.component.scss',
+	templateUrl: './historial-dialog.component.html',
+	styleUrl: './historial-dialog.component.scss',
 })
-export class HistorialEventosDialogComponent {
+export class HistorialDialogComponent {
 	private fb = inject(FormBuilder);
-	private dialogRef = inject(MatDialogRef<HistorialEventosDialogComponent>);
+	private dialogRef = inject(MatDialogRef<HistorialDialogComponent>);
 	data = inject<EventoDialogData>(MAT_DIALOG_DATA);
 
 	eventoForm = this.fb.group({

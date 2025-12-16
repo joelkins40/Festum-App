@@ -24,7 +24,7 @@ import { ButtonComponent } from '../../../shared/components/button';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
-	selector: 'app-contactos-frecuentes',
+	selector: 'app-todos-contactos',
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -46,10 +46,10 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
 		ButtonIconComponent,
 		ChipComponent,
 	],
-	templateUrl: './contactos-frecuentes.component.html',
-	styleUrl: './contactos-frecuentes.component.scss',
+	templateUrl: './todos-contactos.component.html',
+	styleUrl: './todos-contactos.component.scss',
 })
-export class ContactosFrecuentesComponent implements OnInit {
+export class TodosContactosComponent implements OnInit {
 	private contactosService = inject(ContactosService);
 	private snackBar = inject(MatSnackBar);
 	private dialog = inject(MatDialog);

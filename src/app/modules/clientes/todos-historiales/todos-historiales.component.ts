@@ -12,32 +12,32 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventoHistorial } from '../../../core/models/evento-historial.model';
 import { HistorialEventosService } from '../../../core/services/historial-eventos.service';
-import { HistorialEventosDialogComponent } from './historial-eventos-dialog/historial-eventos-dialog.component';
-import { ButtonComponent } from "../../../shared/components/button";
+import { HistorialDialogComponent } from './historial-dialog/historial-dialog.component';
+import { ButtonComponent } from '../../../shared/components/button';
 import { ButtonIconComponent } from '../../../shared/components/button-icon';
 
 @Component({
-	selector: 'app-historial-eventos',
+	selector: 'app-todos-historiales',
 	standalone: true,
 	imports: [
-    CommonModule,
-    MatTableModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    ButtonComponent,
-    ButtonIconComponent
-],
-	templateUrl: './historial-eventos.component.html',
-	styleUrl: './historial-eventos.component.scss',
+		CommonModule,
+		MatTableModule,
+		MatButtonModule,
+		MatIconModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatCardModule,
+		MatPaginatorModule,
+		MatSortModule,
+		MatDialogModule,
+		MatSnackBarModule,
+		ButtonComponent,
+		ButtonIconComponent,
+	],
+	templateUrl: './todos-historiales.component.html',
+	styleUrl: './todos-historiales.component.scss',
 })
-export class HistorialEventosComponent implements OnInit {
+export class TodosHistorialesComponent implements OnInit {
 	private eventosService = inject(HistorialEventosService);
 	private dialog = inject(MatDialog);
 	private snackBar = inject(MatSnackBar);
@@ -88,7 +88,7 @@ export class HistorialEventosComponent implements OnInit {
 	}
 
 	openCreateDialog(): void {
-		const dialogRef = this.dialog.open(HistorialEventosDialogComponent, {
+		const dialogRef = this.dialog.open(HistorialDialogComponent, {
 			width: '600px',
 			data: { mode: 'create' },
 		});
@@ -111,7 +111,7 @@ export class HistorialEventosComponent implements OnInit {
 	}
 
 	openEditDialog(evento: EventoHistorial): void {
-		const dialogRef = this.dialog.open(HistorialEventosDialogComponent, {
+		const dialogRef = this.dialog.open(HistorialDialogComponent, {
 			width: '600px',
 			data: { evento, mode: 'edit' },
 		});

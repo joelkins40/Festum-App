@@ -84,48 +84,48 @@ export const routes: Routes = [
 			{
 				path: 'clientes',
 				loadComponent: () =>
-					import('./modules/clientes/lista-clientes/lista-clientes.component').then(
-						(m) => m.ListaComponent,
-					),
+					import(
+						'./modules/clientes/lista-clientes/lista-clientes.component'
+					).then((m) => m.ListaComponent),
 			},
 			// Vistas globales (acceso opcional desde sidebar)
 			{
 				path: 'clientes/todas-direcciones',
 				loadComponent: () =>
-					import('./modules/clientes/direcciones/direcciones.component').then(
-						(m) => m.DireccionesComponent,
-					),
+					import(
+						'./modules/clientes/todas-direcciones/todas-direcciones.component'
+					).then((m) => m.TodasDireccionesComponent),
 			},
 			{
 				path: 'clientes/todos-contactos',
 				loadComponent: () =>
 					import(
-						'./modules/clientes/contactos-frecuentes/contactos-frecuentes.component'
-					).then((m) => m.ContactosFrecuentesComponent),
+						'./modules/clientes/todos-contactos/todos-contactos.component'
+					).then((m) => m.TodosContactosComponent),
 			},
 			{
 				path: 'clientes/todos-historiales',
 				loadComponent: () =>
 					import(
-						'./modules/clientes/historial-eventos/historial-eventos.component'
-					).then((m) => m.HistorialEventosComponent),
+						'./modules/clientes/todos-historiales/todos-historiales.component'
+					).then((m) => m.TodosHistorialesComponent),
 			},
 			// Ruta dinámica para detalle de cliente
 			{
 				path: 'clientes/:id',
 				loadComponent: () =>
-					import('./modules/clientes/cliente-detalle/cliente-detalle.component').then(
-						(m) => m.ClienteDetalleComponent,
-					),
+					import(
+						'./modules/clientes/cliente-detalle/cliente-detalle.component'
+					).then((m) => m.ClienteDetalleComponent),
 			},
 
 			// Cotizaciones
 			{
 				path: 'cotizaciones/nueva-cotizacion',
 				loadComponent: () =>
-					import('./modules/cotizaciones/nueva-cotizacion/nueva-cotizacion.component').then(
-						(m) => m.NuevaCotizacionComponent,
-					),
+					import(
+						'./modules/cotizaciones/nueva-cotizacion/nueva-cotizacion.component'
+					).then((m) => m.NuevaCotizacionComponent),
 			},
 			{
 				path: 'cotizaciones/listado',
@@ -178,9 +178,9 @@ export const routes: Routes = [
 			{
 				path: 'eventos/:id',
 				loadComponent: () =>
-					import('./modules/eventos/evento-detalle/evento-detalle.component').then(
-						(m) => m.EventoDetalleComponent,
-					),
+					import(
+						'./modules/eventos/evento-detalle/evento-detalle.component'
+					).then((m) => m.EventoDetalleComponent),
 			},
 			{
 				path: 'eventos/:id/cronograma',

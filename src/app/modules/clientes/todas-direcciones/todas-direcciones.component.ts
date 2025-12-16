@@ -24,7 +24,7 @@ import { ButtonIconComponent } from '../../../shared/components/button-icon';
 import { ChipComponent } from '../../../shared/components/chip';
 
 @Component({
-	selector: 'app-direcciones',
+	selector: 'app-todas-direcciones',
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -46,10 +46,10 @@ import { ChipComponent } from '../../../shared/components/chip';
 		ButtonIconComponent,
 		ChipComponent,
 	],
-	templateUrl: './direcciones.component.html',
-	styleUrl: './direcciones.component.scss',
+	templateUrl: './todas-direcciones.component.html',
+	styleUrl: './todas-direcciones.component.scss',
 })
-export class DireccionesComponent implements OnInit {
+export class TodasDireccionesComponent implements OnInit {
 	private direccionesService = inject(DireccionesService);
 	private snackBar = inject(MatSnackBar);
 	private dialog = inject(MatDialog);
