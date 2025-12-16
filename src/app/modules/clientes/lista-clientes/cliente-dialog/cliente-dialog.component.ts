@@ -39,6 +39,7 @@ import {
 } from '../../../../core/models/cliente.model';
 import { LoggerService } from '../../../../core/services/logger.service';
 import { GeoapifyService } from '../../../../core/services/geoapify.service';
+import { ButtonComponent } from '../../../../shared/components/button';
 
 export interface ClienteDialogData {
 	cliente?: Cliente;
@@ -66,6 +67,7 @@ export interface ClienteDialogData {
 		MatCardModule,
 		ChipComponent,
 		MatChipsModule,
+		ButtonComponent,
 	],
 	templateUrl: './cliente-dialog.component.html',
 	styleUrl: './cliente-dialog.component.scss',

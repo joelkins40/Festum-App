@@ -319,26 +319,22 @@
   <!-- Footer con botones de acción -->
   <div class="dialog-footer">
     <div class="button-group">
-      <button
-        mat-button
+      <app-button
+        variant="ghost"
+        size="md"
+        icon="cancel"
         (click)="cancelar()"
-        class="cancel-button"
         [disabled]="guardando"
       >
-        <mat-icon>cancel</mat-icon>
         Cancelar
-      </button>
-
-      <button
-        mat-raised-button
-        color="primary"
+      </app-button>
+      <app-button
+        variant="primary"
+        size="md"
+        icon="{{ modo === 'crear' ? 'save' : 'update' }}"
         (click)="guardar()"
-        class="save-button"
         [disabled]="!esFormularioValido || guardando"
       >
-        <mat-icon>{{
-          guardando ? "hourglass_empty" : modo === "crear" ? "save" : "update"
-        }}</mat-icon>
         {{
           guardando
             ? "Guardando..."
@@ -346,7 +342,7 @@
             ? "Crear Cliente"
             : "Actualizar Cliente"
         }}
-      </button>
+      </app-button>
     </div>
   </div>
 </div>
