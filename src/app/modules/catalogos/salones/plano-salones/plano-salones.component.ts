@@ -10,7 +10,7 @@ import { SalonesService } from '../../../../core/services/salones.service';
 import { Salon } from '../../../../core/models/salon.model';
 import { PlanoViewComponent } from '../../../../shared/components/plano-view/plano-view.component';
 import { ElementItem } from '../../../../shared/components/plano-view/types';
-
+import { ButtonComponent } from '../../../../shared/components/button';
 
 /**
  * Componente para visualizar el plano de un salón específico.
@@ -31,6 +31,7 @@ import { ElementItem } from '../../../../shared/components/plano-view/types';
 		MatTooltipModule,
 		MatProgressSpinnerModule,
 		PlanoViewComponent,
+		ButtonComponent,
 	],
 	templateUrl: './plano-salones.component.html',
 	styleUrl: './plano-salones.component.scss',
@@ -86,7 +87,11 @@ export class PlanoSalonesComponent implements OnInit {
 
 		this.salonesService.getSalonById(id).subscribe({
 			next: (response) => {
-				if (response.success && response.data && !Array.isArray(response.data)) {
+				if (
+					response.success &&
+					response.data &&
+					!Array.isArray(response.data)
+				) {
 					this.salon.set(response.data);
 					this.loadPlanoTemplate(response.data);
 				} else {
@@ -99,7 +104,7 @@ export class PlanoSalonesComponent implements OnInit {
 			},
 			complete: () => {
 				this.loading.set(false);
-			}
+			},
 		});
 	}
 
@@ -109,7 +114,9 @@ export class PlanoSalonesComponent implements OnInit {
 	private loadPlanoTemplate(salon: Salon): void {
 		if (salon.planoTemplate?.elementos) {
 			this.planoElements.set(salon.planoTemplate.elementos);
-			this.plantillaNombre.set(salon.planoTemplate.plantillaNombre || 'Sin plantilla');
+			this.plantillaNombre.set(
+				salon.planoTemplate.plantillaNombre || 'Sin plantilla',
+			);
 		} else {
 			// Si no hay plantilla, mostrar arreglo vacío
 			this.planoElements.set([]);

@@ -1,68 +1,70 @@
 <!-- Plano Salones Component - Vista moderna con Angular 19 -->
 <div class="plano-container">
-
   <!-- Loading State -->
   @if (loading()) {
-    <div class="loading-overlay">
-      <div class="loading-content">
-        <mat-progress-spinner diameter="60" mode="indeterminate" color="primary"></mat-progress-spinner>
-        <p>Cargando plano del salón...</p>
-      </div>
+  <div class="loading-overlay">
+    <div class="loading-content">
+      <mat-progress-spinner
+        diameter="60"
+        mode="indeterminate"
+        color="primary"
+      ></mat-progress-spinner>
+      <p>Cargando plano del salón...</p>
     </div>
+  </div>
   }
 
   <!-- Error State -->
   @else if (errorCarga()) {
-    <div class="error-container">
-      <mat-card class="error-card">
-        <mat-card-content>
-          <div class="error-content">
-            <mat-icon class="error-icon">error_outline</mat-icon>
-            <h2>Error al cargar el plano</h2>
-            <p>{{ errorMessage() }}</p>
-            <button mat-raised-button color="primary" (click)="navigateBack()">
-              <mat-icon>arrow_back</mat-icon>
-              Volver a Salones
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  <div class="error-container">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-content">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <h2>Error al cargar el plano</h2>
+          <p>{{ errorMessage() }}</p>
+          <button mat-raised-button color="primary" (click)="navigateBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Volver a Salones
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
   }
 
   <!-- Contenido Principal -->
   @else {
-    <!-- Header -->
-    <div class="page-header">
-      <div class="header-content">
-        <div class="page-title">
-          <mat-icon class="page-icon">map</mat-icon>
-          <h1>Plano del Salón{{ salonNombre() ? ': ' + salonNombre() : '' }}</h1>
-        </div>
-        <p class="page-description">
-          Vista del diseño del salón (solo lectura)
-        </p>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <mat-icon class="page-icon">map</mat-icon>
+        <h1>Plano del Salón{{ salonNombre() ? ": " + salonNombre() : "" }}</h1>
       </div>
-
-      <div class="header-actions">
-        <button
-          mat-raised-button
-          (click)="navigateBack()"
-          matTooltip="Volver a lista de salones">
-          <mat-icon>arrow_back</mat-icon>
-          Volver
-        </button>
-      </div>
+      <p class="page-description">Vista del diseño del salón (solo lectura)</p>
     </div>
 
-    <!-- Plano View Component -->
-    <div class="plano-view-wrapper">
-      <app-plano-view
-        [elements]="planoElements()"
-        [plantillaNombre]="plantillaNombre()"
-        [showSidebar]="false">
-      </app-plano-view>
+    <div class="header-actions">
+      <app-button
+        variant="primary"
+        (click)="navigateBack()"
+        icon="arrow_back"
+        matTooltip="Volver a lista de salones"
+      >
+        Volver
+      </app-button>
     </div>
+  </div>
+
+  <!-- Plano View Component -->
+  <div class="plano-view-wrapper">
+    <app-plano-view
+      [elements]="planoElements()"
+      [plantillaNombre]="plantillaNombre()"
+      [showSidebar]="false"
+    >
+    </app-plano-view>
+  </div>
   }
-
 </div>
