@@ -1,0 +1,229 @@
+// ============================================================================
+// UI CHIP COMPONENT - STYLES
+// ============================================================================
+
+.ui-chip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-xs);
+	border-radius: var(--radius-pill);
+	font-family: var(--font-family);
+	font-weight: var(--font-weight-medium);
+	transition: all var(--transition-fast);
+	cursor: default;
+	user-select: none;
+	white-space: nowrap;
+	line-height: 1;
+
+	// ========================================
+	// SIZES
+	// ========================================
+
+	&--sm {
+		height: 20px;
+		padding: 0 var(--spacing-sm);
+		font-size: var(--font-size-xs);
+
+		.ui-chip__icon {
+			font-size: 14px;
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	&--md {
+		height: 28px;
+		padding: 0 var(--spacing-md);
+		font-size: var(--font-size-sm);
+
+		.ui-chip__icon {
+			font-size: 16px;
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	&--lg {
+		height: 36px;
+		padding: 0 var(--spacing-lg);
+		font-size: var(--font-size-base);
+
+		.ui-chip__icon {
+			font-size: 20px;
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	// ========================================
+	// VARIANTS
+	// ========================================
+
+	// Default
+	&--default {
+		background-color: var(--bg-hover);
+		color: var(--text-secondary);
+		border: 1px solid var(--border-medium);
+
+		.ui-chip__icon {
+			color: var(--text-secondary);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: var(--border-light);
+			border-color: var(--border-dark);
+		}
+	}
+
+	// Primary
+	&--primary {
+		background-color: var(--color-primary-alpha-15);
+		color: var(--color-primary);
+		border: 1px solid var(--color-primary-alpha-30);
+
+		.ui-chip__icon {
+			color: var(--color-primary);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: var(--color-primary-alpha-20);
+			border-color: var(--color-primary);
+		}
+	}
+
+	// Accent
+	&--accent {
+		background-color: rgba(23, 162, 184, 0.15);
+		color: var(--color-accent);
+		border: 1px solid rgba(23, 162, 184, 0.3);
+
+		.ui-chip__icon {
+			color: var(--color-accent);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: rgba(23, 162, 184, 0.2);
+			border-color: var(--color-accent);
+		}
+	}
+
+	// Success
+	&--success {
+		background-color: var(--color-success-alpha-15);
+		color: var(--color-success);
+		border: 1px solid var(--color-success-alpha-30);
+
+		.ui-chip__icon {
+			color: var(--color-success);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: rgba(40, 167, 69, 0.2);
+			border-color: var(--color-success);
+		}
+	}
+
+	// Error
+	&--error {
+		background-color: var(--color-error-alpha-15);
+		color: var(--color-error);
+		border: 1px solid var(--color-error-alpha-30);
+
+		.ui-chip__icon {
+			color: var(--color-error);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: var(--color-error-alpha-20);
+			border-color: var(--color-error);
+		}
+	}
+
+	// Warning
+	&--warning {
+		background-color: var(--color-warning-alpha-15);
+		color: var(--color-warning-dark);
+		border: 1px solid var(--color-warning-alpha-30);
+
+		.ui-chip__icon {
+			color: var(--color-warning-dark);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: rgba(255, 193, 7, 0.2);
+			border-color: var(--color-warning);
+		}
+	}
+
+	// Info
+	&--info {
+		background-color: var(--color-info-alpha-15);
+		color: var(--color-info);
+		border: 1px solid rgba(33, 150, 243, 0.3);
+
+		.ui-chip__icon {
+			color: var(--color-info);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: rgba(33, 150, 243, 0.2);
+			border-color: var(--color-info);
+		}
+	}
+
+	// Secondary
+	&--secondary {
+		background-color: rgba(99, 110, 114, 0.15);
+		color: var(--color-secondary);
+		border: 1px solid rgba(99, 110, 114, 0.3);
+
+		.ui-chip__icon {
+			color: var(--color-secondary);
+		}
+
+		&:hover:not(.ui-chip--disabled) {
+			background-color: rgba(99, 110, 114, 0.2);
+			border-color: var(--color-secondary);
+		}
+	}
+
+	// ========================================
+	// STATES
+	// ========================================
+
+	&--disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	// ========================================
+	// ELEMENTS
+	// ========================================
+
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+		margin: 0;
+	}
+
+	&__label {
+		display: flex;
+		align-items: center;
+		line-height: 1;
+	}
+
+	// With icon adjustment
+	&--with-icon {
+		padding-left: var(--spacing-sm);
+	}
+
+	// Uppercase text
+	&--uppercase {
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+}

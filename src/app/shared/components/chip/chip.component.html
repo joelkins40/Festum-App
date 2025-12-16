@@ -1,0 +1,26 @@
+<div
+  class="ui-chip"
+  [ngClass]="{
+    'ui-chip--default': variant === 'default',
+    'ui-chip--primary': variant === 'primary',
+    'ui-chip--accent': variant === 'accent',
+    'ui-chip--success': variant === 'success',
+    'ui-chip--error': variant === 'error',
+    'ui-chip--warning': variant === 'warning',
+    'ui-chip--info': variant === 'info',
+    'ui-chip--secondary': variant === 'secondary',
+    'ui-chip--sm': size === 'sm',
+    'ui-chip--md': size === 'md',
+    'ui-chip--lg': size === 'lg',
+    'ui-chip--disabled': disabled,
+    'ui-chip--with-icon': icon,
+    'ui-chip--uppercase': uppercase
+  }"
+>
+  @if (icon) {
+  <mat-icon class="ui-chip__icon">{{ icon }}</mat-icon>
+  }
+  <span class="ui-chip__label">
+    <ng-content></ng-content>
+  </span>
+</div>
